@@ -16,6 +16,7 @@ import './index.css';
 Blockly.common.defineBlocks(blocks);
 Object.assign(javascriptGenerator.forBlock, forBlock);
 
+
 // Set up UI elements and inject Blockly
 const codeDiv = document.getElementById('generatedCode').firstChild;
 const outputDiv = document.getElementById('output');
@@ -25,6 +26,7 @@ const ws = Blockly.inject(blocklyDiv, {toolbox});
 // This function resets the code and output divs, shows the
 // generated code from the workspace, and evals the code.
 // In a real application, you probably shouldn't use `eval`.
+javascriptGenerator.addReservedWords('code');
 const runCode = () => {
   const code = javascriptGenerator.workspaceToCode(ws);
   codeDiv.innerText = code;
@@ -34,9 +36,22 @@ const runCode = () => {
   eval(code);
 };
 
+Blockly.Blocks['Start'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField('Program starts here');
+    this.setColour(345);
+    this.setTooltip('This is the starting block');
+    this.setNextStatement(true, null);
+    this.setHelpUrl('');
+  }
+};
 //add click event listener to run button
 document.getElementById('runButton').addEventListener('click', runCode);
 // Load the initial state from storage and run the code.
+const initialBlock = ws.newBlock('Start');
+initialBlock.moveBy(50, 50);
+save(ws);
 load(ws);
 runCode();
 

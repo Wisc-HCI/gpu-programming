@@ -44,5 +44,8 @@ forBlock["Turn"] = function (block) {
 	return `${time}`;
 };
 
+forBlock["Start"] = function (block) {
+  return ''
+}
 
 
