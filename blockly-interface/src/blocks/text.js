@@ -32,6 +32,23 @@ const addText = {
   'helpUrl': '',
 };
 
+Blockly.Blocks["Turn"] = {
+  init: function () {
+    this.setColour('#ff0000');
+    this.appendDummyInput()
+      .appendField("Turn")
+      .appendField(new Blockly.FieldDropdown([["Left", "L"], ["Right", "R"]]), "FIELD_Turn_Direction")
+      .appendField("for time of")
+      .appendField(new Blockly.FieldNumber(4500), "FIELD_Turn_Duration")
+      .appendField("milliseconds");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Turns Misty in the specified direction (1000ms = 1 second and 4500ms is approximately 90 degrees)");
+    this.setHelpUrl("Turn");
+  }
+};
+
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.
 // This file has no side effects!

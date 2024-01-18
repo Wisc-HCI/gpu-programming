@@ -30,19 +30,12 @@ const runCode = () => {
   codeDiv.innerText = code;
 
   outputDiv.innerHTML = '';
-  // sample API from CS571 
-  fetch(`https://cs571.org/api/f23/hw6/chatrooms?=`, {
-            headers: {
-                "X-CS571-ID": 'bid_40ffb1b4e6ff06c3bb2bfe78390eb7f96ea66f4d2c1b38e5ef481c04746096b5'
-            }
-        }).then(res => res.json()).then(json => {
-          
-            console.log(`successfully send a post request, the response is: ${json}`)
-        })
   
-  //eval(code);
+  eval(code);
 };
 
+//add click event listener to run button
+document.getElementById('runButton').addEventListener('click', runCode);
 // Load the initial state from storage and run the code.
 load(ws);
 runCode();
@@ -65,5 +58,5 @@ ws.addChangeListener((e) => {
     ws.isDragging()) {
     return;
   }
-  runCode();
+  //runCode();
 });
