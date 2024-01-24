@@ -18,6 +18,11 @@ Object.assign(javascriptGenerator.forBlock, forBlock);
 
 
 // Set up UI elements and inject Blockly
+let ip = '';
+const ipInputfrom = document.getElementById('robotIpAddress');
+const confirmButton = document.getElementById('confirmButton');
+const ipDisplay = document.getElementById('ipDisplay');
+ipDisplay.textContent = `IP: ---.---.---`;
 const codeDiv = document.getElementById('generatedCode').firstChild;
 const outputDiv = document.getElementById('output');
 const blocklyDiv = document.getElementById('blocklyDiv');
@@ -54,6 +59,12 @@ initialBlock.moveBy(50, 50);
 save(ws);
 load(ws);
 runCode();
+
+//add change listener to the ip input form
+confirmButton.addEventListener('click', function() {
+  ip = ipInputfrom.value;
+  ipDisplay.textContent = `IP: ${ip}`;
+});
 
 // Every time the workspace changes state, save the changes to storage.
 ws.addChangeListener((e) => {

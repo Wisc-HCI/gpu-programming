@@ -8,6 +8,12 @@
     
     <div id="topbar">
       <h2>Top Bar</h2>
+      <div id="inputContainer">
+        <input type="text" id="robotIpAddress" placeholder="Enter Robot IP Address">
+        <button id="confirmButton" onclick="confirmIpAddress()">Confirm</button>
+        <div id="ipDisplay"></div>
+      </div>
+      
       <button id="runButton">Run</button>
     </div>
     <div id="pageContainer">
@@ -17,5 +23,13 @@
       </div>
       <div id="blocklyDiv"></div>
     </div>
+    <script>
+      function confirmIpAddress() {
+        // Get the value from the input field
+        var ip = document.getElementById("robotIpAddress").value;
+        // alert user with the entered IP address
+        alert("Confirmed IP Address: " + ip);
+      }
+    </script>
    </body>
  </html>

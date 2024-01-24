@@ -24,6 +24,24 @@ pre, code {
     align-items: center;
 }
 
+#inputContainer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-left: auto; 
+}
+
+#runButton {
+    margin-left: 10px; 
+}
+
+#robotIpAddress {
+    height: 35px; 
+    width: 200px; 
+    border-radius: 5px; /* Adjust the border radius as needed */
+    border: 1px solid #ccc; /* Add a border for better visibility */
+}
+
 #topbar button {
     background-color: #4CAF50; /* Green color, can change it */
     color: white;
