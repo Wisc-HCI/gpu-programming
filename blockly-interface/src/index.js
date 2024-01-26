@@ -51,6 +51,8 @@ Blockly.Blocks['Start'] = {
     this.setHelpUrl('');
   }
 };
+
+
 //add click event listener to run button
 document.getElementById('runButton').addEventListener('click', runCode);
 // Load the initial state from storage and run the code.
@@ -65,6 +67,21 @@ confirmButton.addEventListener('click', function() {
   ip = ipInputfrom.value;
   ipDisplay.textContent = `IP: ${ip}`;
 });
+
+function sendPostRequestToRobot(endpoint,payload) {
+  fetch(`http://${ip}/api/${endpoint}`, {
+    method: 'POST',
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload)
+    }).then(res => res.json()).then(json => {
+          
+      console.log(`successfully send a post request, the response is: ${json}`)
+    })
+
+        
+}
 
 // Every time the workspace changes state, save the changes to storage.
 ws.addChangeListener((e) => {

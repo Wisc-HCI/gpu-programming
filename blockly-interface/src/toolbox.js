@@ -622,7 +622,47 @@ export const toolbox = {
         },
         {
           'kind': 'block',
-          'type': 'Turn', ///
+          'type': 'ChangeLED',
+        },
+        {
+          'kind': 'block',
+          'type': 'DisplayImage',
+        },
+        {
+          'kind': 'block',
+          'type': 'MoveArm',
+        },
+        {
+          'kind': 'block',
+          'type': 'MoveArm2',
+        },
+        {
+          'kind': 'block',
+          'type': 'MoveArms',
+        },
+        {
+          'kind': 'block',
+          'type': 'MoveHead',
+        },
+        {
+          'kind': 'block',
+          'type': 'MoveHead2',
+        },
+        {
+          'kind': 'block',
+          'type': 'MoveHead3',
+        },
+        {
+          'kind': 'block',
+          'type': 'DriveTime',
+        },
+        {
+          'kind': 'block',
+          'type': 'DriveTime2',
+        },
+        {
+          'kind': 'block',
+          'type': 'Turn', 
         },
         {
           'kind': 'block',
