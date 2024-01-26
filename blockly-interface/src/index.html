@@ -17,13 +17,19 @@
       <button id="runButton">Run</button>
     </div>
     <div id="pageContainer">
+      <div id="blocklyDiv"></div>
+      <!-- <div id="robotSceneContainer"></div> -->
       <div id="outputPane">
           <pre id="generatedCode"><code></code></pre>
-          <div id="output"></div>
+          <!-- <div id="output"></div> -->
+          <div id="robotSceneContainer"></div>
       </div>
-      <div id="blocklyDiv"></div>
+      
     </div>
-    <script>
+
+    
+    <script type="module">
+      import { Scene } from 'robot-scene';
       function confirmIpAddress() {
         // Get the value from the input field
         var ip = document.getElementById("robotIpAddress").value;

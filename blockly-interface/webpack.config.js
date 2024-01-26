@@ -21,6 +21,14 @@ const config = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        // Transpile JavaScript files with Babel
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
     ],
   },
   plugins: [

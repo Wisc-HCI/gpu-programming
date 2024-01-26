@@ -10,6 +10,9 @@ import {forBlock} from './generators/javascript';
 import {javascriptGenerator} from 'blockly/javascript';
 import {save, load} from './serialization';
 import {toolbox} from './toolbox';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
 import './index.css';
 
 // Register the blocks and generator with Blockly
@@ -51,6 +54,15 @@ Blockly.Blocks['Start'] = {
     this.setHelpUrl('');
   }
 };
+
+
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('robotSceneContainer')
+);
 
 
 //add click event listener to run button
