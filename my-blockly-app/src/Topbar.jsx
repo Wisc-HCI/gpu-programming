@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Col,Button, Container, Form, Row, Pagination } from "react-bootstrap";
+import useStore from "./Store";
 
 import React from 'react';
 export default function TopBar(props){
-    const [ip, setIp]= useState(0)
     const [inputVal, setInputVal] = useState("")
+    const setIp = useStore((state) => state.setIp);
+    const ip = useStore((state) => state.ip);
     const confirmIpAddress =()=> {
       setIp(inputVal)
       // alert user with the entered IP address
