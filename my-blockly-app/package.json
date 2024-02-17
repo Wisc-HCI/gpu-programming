@@ -1,6 +1,7 @@
 {
   "name": "my-blockly-app",
   "version": "0.1.0",
+  "homepage": "https://wisc-hci.github.io/gpu-programming/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -20,6 +21,8 @@
     "zustand": "^4.5.0"
   },
   "scripts": {
+    "build:gh": "react-scripts build && git add build -f && git commit -m \"Updating gh-pages\" && git subtree push --prefix my-blockly-app/build origin gh-pages",
+    "push:gh": "git subtree push --prefix my-blockly-app/build origin gh-pages",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
