@@ -8,10 +8,16 @@ import { javascriptGenerator } from 'blockly/javascript';
 import {save, load} from './serialization';
 import {toolbox} from './toolbox';
 import './index.css';
+import useStore from "./Store";
 
 
 
 export default function BlocklyInterface(props){
+    const addBlock = useStore((state) => state.addBlock);
+    const blocks = useStore((state) => state.blocks);
+    useEffect(() => {
+      console.log(blocks);
+    }, [blocks]);
     // Register the blocks and generator with Blockly
     Blockly.common.defineBlocks(blocks);
     Object.assign(javascriptGenerator.forBlock, forBlock);
@@ -22,7 +28,9 @@ export default function BlocklyInterface(props){
         javascriptGenerator.addReservedWords('code');
         const runCode = () => {
             console.log("runcode clicked")
+
             const code = javascriptGenerator.workspaceToCode(ws);
+            //console.log(code)
             eval(code);
         }
         //add click event listener to run button
@@ -31,7 +39,27 @@ export default function BlocklyInterface(props){
         ws.addChangeListener((e) => {
             // UI events are things like scrolling, zooming, etc.
             // No need to save after one of these.
+            
             if (e.isUiEvent) return;
+
+            //check for create blocks
+            if (e.type === "create") {
+
+              //create block in store
+              //console.log(e)
+              let params ={id: e.json.id, type: e.json.type}
+
+              //check if the blocks have field
+              if(e.json.fields){
+                params['fields'] = e.json.fields;
+              }
+              addBlock(e.json.id,params)
+            }
+
+            //check for move blocks
+            if (e.type === "move") {
+              //console.log(e)
+            }
             save(ws);
         }
     )}},[])
