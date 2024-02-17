@@ -10,21 +10,39 @@ import {toolbox} from './toolbox';
 import './index.css';
 import useStore from "./Store";
 
-
+Blockly.Blocks['Start'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField('Program starts here');
+    this.setColour(345);
+    this.setTooltip('This is the starting block');
+    this.setNextStatement(true, null);
+    this.setHelpUrl('');
+  }
+};
 
 export default function BlocklyInterface(props){
     const addBlock = useStore((state) => state.addBlock);
     const blocks = useStore((state) => state.blocks);
+    const removeBlock = useStore((state) => state.removeBlock);
+    
+
     useEffect(() => {
       console.log(blocks);
     }, [blocks]);
+
     // Register the blocks and generator with Blockly
     Blockly.common.defineBlocks(blocks);
     Object.assign(javascriptGenerator.forBlock, forBlock);
+
+    
     useEffect(() =>{
         if (!document.querySelector('.blocklySvg')) { 
         const ws = Blockly.inject('blocklyDiv', { toolbox:toolbox});
-
+        const initialBlock = ws.newBlock('Start');
+        initialBlock.moveBy(50, 50);
+        save(ws);
+        load(ws);
         javascriptGenerator.addReservedWords('code');
         const runCode = () => {
             console.log("runcode clicked")
@@ -53,11 +71,24 @@ export default function BlocklyInterface(props){
               if(e.json.fields){
                 params['fields'] = e.json.fields;
               }
+              // check for inputs
+              if(e.json.inputs){
+                params['inputs'] = e.json.inputs;
+              }
               addBlock(e.json.id,params)
             }
 
             //check for move blocks
             if (e.type === "move") {
+              let blockId = ws.getBlockById(e.blockId);
+              if (!blockId) {
+                // Block has been deleted, remove it from store
+
+                removeBlock(e.blockId);
+              } else {
+                // If block is moved but still in the workspace
+                // updateBlockPosition(e.blockId, {newPosition}); // Implement this as needed
+              }
               //console.log(e)
             }
             save(ws);
