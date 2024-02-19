@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Col,Button, Container, Form, Row, Pagination } from "react-bootstrap";
-import useStore from "./Store";
+import useStore from "../Store";
 
 import React from 'react';
 export default function TopBar(props){
