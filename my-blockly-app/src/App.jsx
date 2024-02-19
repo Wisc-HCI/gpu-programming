@@ -33,13 +33,13 @@ function App() {
       <TopBar/>
       <Box display="flex" minHeight="90vh">
         <Grid display="flex" container spacing={2}>
-          <Grid item xs={12} sm={12} md={12} lg={9}>
+          <Grid item xs={12} sm={12} md={9} lg={9}>
             <Item style={{width: "100%", height:"100%", paddingLeft: "2px"}}>
               <BlocklyInterface/>
             </Item>
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={3}>
-            <Stack>
+          <Grid item xs={12} sm={12} md={3} lg={3}>
+            <Stack style={{height:"100%", paddingRight: "5px"}}>
               <Item style={{height:"30%"}}>
                 <Scene/>
               </Item>

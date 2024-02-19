@@ -18,6 +18,7 @@ Blockly.Blocks['Start'] = {
     this.setTooltip('This is the starting block');
     this.setNextStatement(true, null);
     this.setHelpUrl('');
+    this.setDeletable(false);
   }
 };
 
