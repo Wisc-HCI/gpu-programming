@@ -20,7 +20,7 @@ const useStore = create((set,get) => ({
     return { blocks: newBlocks };
   }),
   updateBlock: (id, updatedJson) => set((state) => ({
-    blocks: { ...state.blocks, [id]: { ...state.blocks[id], ...updatedJson } }
+    blocks: { ...state.blocks, [id]: updatedJson  }
   })),
   getBlock: (id) => get().blocks[id],
 }));

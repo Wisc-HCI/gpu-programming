@@ -120,11 +120,37 @@ export default function BlocklyInterface(props) {
             let blockId = ws.getBlockById(e.blockId);
             if (!blockId) {
               // Block has been deleted, remove it from store
- 
               removeBlock(e.blockId);
             } else {
               // If block is moved but still in the workspace
-              // updateBlockPosition(e.blockId, {newPosition}); // Implement this as needed
+              
+              //if it is connected as input for other block
+              if (e.reason&&e.reason.includes('connect')){
+                let id = e.newParentId
+                let params = getBlock(e.newParentId)
+
+                //if newInputName is undefined, then it is sequencial relationship
+                if(!e.newInputName){
+                  params['child'] = e.blockId
+                  updateBlock(id, params)
+                }
+                if (!params['block_input']) {
+                  params['block_input'] = {}; 
+                }
+                params['block_input'][e.newInputName] = e.blockId;
+                updateBlock(id, params)
+              }
+              //disconnect
+              if (e.reason && e.reason.includes('disconnect')){
+                let id = e.oldParentId
+                let params = getBlock(e.oldParentId)
+                if(!e.oldInputName){
+                  delete params['child'];
+                  updateBlock(id, params)
+                }
+                delete params['block_input'][e.oldInputName];
+                updateBlock(id, params)
+              }
             }
             //console.log(e)
           }
