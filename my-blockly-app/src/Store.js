@@ -1,6 +1,6 @@
 import {create }from 'zustand';
-
-const useStore = create((set) => ({
+ 
+const useStore = create((set,get) => ({
   ip: '',
   blocks: {}, 
   setIp: (ip) => set({ ip }),
@@ -15,10 +15,14 @@ const useStore = create((set) => ({
       }
       return acc;
     }, {});
-
+ 
     // Update the state with the new blocks object
     return { blocks: newBlocks };
   }),
+  updateBlock: (id, updatedJson) => set((state) => ({
+    blocks: { ...state.blocks, [id]: { ...state.blocks[id], ...updatedJson } }
+  })),
+  getBlock: (id) => get().blocks[id],
 }));
 
 export default useStore;
