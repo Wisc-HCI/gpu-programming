@@ -60,27 +60,28 @@ export default function BlocklyInterface(props) {
         //add click event listener to run button
         document.getElementById('runButton').addEventListener('click', runCode);
 
-        const onresize = function(e) {
-          // Compute the absolute coordinates and dimensions of blocklyArea.
-          let element = blocklyArea;
-          let x = 0;
-          let y = 0;
-          do {
-            x += element.offsetLeft;
-            y += element.offsetTop;
-            element = element.offsetParent;
-          } while (element);
-          // Position blocklyDiv over blocklyArea.
-          blocklyDiv.style.left = x + 'px';
-          blocklyDiv.style.top = y + 'px';
-          blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
-          blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
-          Blockly.svgResize(ws);
-        };
-        window.addEventListener('resize', onresize, false);
-        onresize();
+        // Observe the pageContainer for resizing
+        const observer = new ResizeObserver(entries => {
+          for (let entry of entries) {
+              // Compute the absolute coordinates and dimensions of blocklyArea.
+              let element = blocklyArea;
+              let x = 0;
+              let y = 0;
+              do {
+                x += element.offsetLeft;
+                y += element.offsetTop;
+                element = element.offsetParent;
+              } while (element);
+              // Position blocklyDiv over blocklyArea.
+              blocklyDiv.style.left = x + 'px';
+              blocklyDiv.style.top = y + 'px';
+              blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+              blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+              Blockly.svgResize(ws);
+          }
+        });
+        observer.observe(blocklyArea);
 
-      
         // Every time the workspace changes state, save the changes to storage.
         ws.addChangeListener((e) => {
           // UI events are things like scrolling, zooming, etc.

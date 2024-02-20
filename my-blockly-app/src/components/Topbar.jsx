@@ -19,8 +19,6 @@ export default function TopBar(props){
     const topbarStyle = {
       backgroundColor: '#333', // Change the background color as needed
       color: '#FFFFFF', // Change the text color as needed
-      paddingLeft: '10px',
-      // textAlign: 'center',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -40,7 +38,9 @@ export default function TopBar(props){
           justifyContent: 'right',
           alignItems: 'center',
           width: "100%",
-          margin: "5px"
+          marginTop: "5px",
+          marginBottom: "5px",
+          paddingRight: "0px"
         }}>
           <TextField
             id="robotIpAddress"
