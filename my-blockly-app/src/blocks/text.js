@@ -36,7 +36,7 @@ const addText = {
 // Set up the format of the block in the Blocky IDE
 Blockly.Blocks["ChangeLED"] = {
   init: function () {
-    this.setColour('#ff0000'); // set color 
+    this.setColour('260'); // set color 
     this.appendDummyInput() // format input
       .appendField("Change the LED color to")
       .appendField(new Blockly.FieldColour("#FF0000"), "FIELD_ChangeLED");
@@ -49,7 +49,7 @@ Blockly.Blocks["ChangeLED"] = {
 
 Blockly.Blocks["DisplayImage"] = {
   init: function () {
-    this.setColour('#ff0000');
+    this.setColour('260');
     this.appendDummyInput()
       .appendField("Change face expression to: ")
       .appendField(new Blockly.FieldTextInput("default"), "FIELD_DisplayImage_Filename");
@@ -61,7 +61,7 @@ Blockly.Blocks["DisplayImage"] = {
 
 Blockly.Blocks["MoveHead"] = {
   init: function () {
-    this.setColour('#ff0000');
+    this.setColour('260');
     this.appendDummyInput()
       .appendField("Move head")
       .appendField(new Blockly.FieldDropdown([["Up", "U"], ["Down", "D"]]), "FIELD_MoveHead_Pitch")
@@ -74,7 +74,7 @@ Blockly.Blocks["MoveHead"] = {
 
 Blockly.Blocks["MoveHead2"] = {
   init: function () {
-    this.setColour('#ff0000');
+    this.setColour('260');
     this.appendDummyInput()
       .appendField("Move head")
       .appendField("Pitch (-40 to 25):")
@@ -96,7 +96,7 @@ Blockly.Blocks["MoveHead2"] = {
 
 Blockly.Blocks["MoveArm"] = {
   init: function () {
-    this.setColour('#ff0000');
+    this.setColour('260');
     this.appendDummyInput()
       .appendField("Move ")
       .appendField(new Blockly.FieldDropdown([["Right", "Right"], ["Left", "Left"]]), "FIELD_MoveArm_Arm")
@@ -113,7 +113,7 @@ Blockly.Blocks["MoveArm"] = {
 
 Blockly.Blocks["MoveArm2"] = {
   init: function () {
-    this.setColour('#ff0000');
+    this.setColour('260');
     this.appendDummyInput()
       .appendField("Move both arms to position")
       .appendField(new Blockly.FieldNumber(0), "FIELD_MoveArm2_Position")
@@ -129,7 +129,7 @@ Blockly.Blocks["MoveArm2"] = {
 
 Blockly.Blocks["MoveArms"] = {
   init: function () {
-    this.setColour('#ff0000');
+    this.setColour('260');
     this.appendDummyInput()
       .appendField("Move left arm to position")
       .appendField(new Blockly.FieldNumber(0, -29, 90, 1), "FIELD_MoveArm_LeftPosition")
@@ -148,7 +148,7 @@ Blockly.Blocks["MoveArms"] = {
 
 Blockly.Blocks["DriveTime"] = {
   init: function () {
-    this.setColour('#ff0000');
+    this.setColour('260');
     this.appendDummyInput()
       .appendField("Move ")
       .appendField(new Blockly.FieldDropdown([["Forward", "F"], ["Backward", "B"]]), "FIELD_DriveTime_Direction")
@@ -186,7 +186,7 @@ Blockly.Blocks["MoveHead3"] = {
     var yawBlock = shadowBlock_3.outputConnection;
 
 
-    this.setColour('#ff0000');
+    this.setColour('260');
     this.appendValueInput("FIELD_MoveHead_Pitch").setCheck('Number')
       .appendField("Move head")
       .appendField("Pitch (-40 to 25):");
@@ -230,7 +230,7 @@ Blockly.Blocks["DriveTime2"] = {
     shadowBlock_3.render();
     var timeBlock = shadowBlock_3.outputConnection;
 
-    this.setColour('#ff0000');
+    this.setColour('260');
     this.appendValueInput("FIELD_DriveTime_Velocity").setCheck('Number')
       .appendField("Move at a speed of (-100 to 100)");
     var shadowBlockConnectionVelocity = this.getInput("FIELD_DriveTime_Velocity").connection;
@@ -253,7 +253,7 @@ Blockly.Blocks["DriveTime2"] = {
 
 Blockly.Blocks["Turn"] = {
   init: function () {
-    this.setColour('#ff0000');
+    this.setColour('260');
     this.appendDummyInput()
       .appendField("Turn")
       .appendField(new Blockly.FieldDropdown([["Left", "L"], ["Right", "R"]]), "FIELD_Turn_Direction")

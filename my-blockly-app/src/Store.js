@@ -3,6 +3,7 @@ import {create }from 'zustand';
 const useStore = create((set,get) => ({
   ip: '',
   blocks: {}, 
+  Start:{},
   setIp: (ip) => set({ ip }),
   addBlock: (id, json) => set((state) => ({ 
     blocks: { ...state.blocks, [id]: json}
@@ -23,6 +24,26 @@ const useStore = create((set,get) => ({
     blocks: { ...state.blocks, [id]: updatedJson  }
   })),
   getBlock: (id) => get().blocks[id],
+
+
+
+
+  addBlocktoStart: (id, json) => set((state) => ({ 
+    Start: { ...state.Start, [id]: json}
+  })),
+  removeBlockfromStart: (id) => set((state) => {
+    // Create a new object excluding the block with the given id
+    const newBlocks = Object.keys(state.Start).reduce((acc, currentId) => {
+      if (currentId !== id) {
+        acc[currentId] = state.Start[currentId];
+      }
+      return acc;
+    }, {});
+ 
+    // Update the state with the new blocks object
+    return { Start: newBlocks };
+  }),
+  
 }));
 
 export default useStore;

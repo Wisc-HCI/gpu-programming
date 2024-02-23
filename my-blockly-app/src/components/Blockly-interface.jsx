@@ -101,7 +101,7 @@ export default function BlocklyInterface(props) {
           if (e.type === "create") {
  
             //create block in store
-            console.log(e)
+            //console.log(e)
             let params ={id: e.json.id, type: e.json.type}
  
             //check if the blocks have field
