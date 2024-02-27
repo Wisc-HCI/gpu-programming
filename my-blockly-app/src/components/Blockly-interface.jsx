@@ -143,7 +143,7 @@ export default function BlocklyInterface(props) {
                 if(!e.newInputName && startId){
                   params = getBlock(startId)
                   CHILDREN = params['children']
-                  if(CHILDREN.includes(id) ||id ==startId){
+                  if(CHILDREN.includes(id) || id == startId){
                     params['children'].push(e.blockId)
                     updateBlock(startId, params)
                   }
@@ -163,16 +163,20 @@ export default function BlocklyInterface(props) {
               if (e.reason && e.reason.includes('disconnect')){
                 let id = e.oldParentId
                 let params = getBlock(e.oldParentId)
-                //delete a child
-                if(!e.oldInputName && CHILDREN.includes(id)){
-                  params = getBlock(startId)
-                  params['children'] = params['children'].filter(obj => obj !== e. blockId);
-                  console.log(params['children'])
-                  updateBlock(startId, params)
+                //delete a child from start block
+                if(!e.oldInputName){
+                  console.log(id)
+                  if(CHILDREN.includes(id) || id === startId){
+                    params = getBlock(startId)
+                    let index = params['children'].findIndex(obj => obj === e.blockId);
+                    console.log(index)
+                    if (index !== -1) { 
+                      params['children'] = params['children'].slice(0, index);
+                    }
+                    //console.log(params['children'])
+                    updateBlock(startId, params)
+                  }
                 }
-                //
-                // delete params['block_input'][e.oldInputName];
-                // updateBlock(id, params)
               }
             }
             //console.log(e)
