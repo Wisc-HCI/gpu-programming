@@ -28,6 +28,7 @@ export default function BlocklyInterface(props) {
   const removeBlock = useStore((state) => state.removeBlock);
   const getBlock = useStore((state) => state.getBlock);
   const updateBlock = useStore((state) => state.updateBlock);
+  const getBlocksByType = useStore((state) => state.getBlocksByType);
 
  
   useEffect(() => {
@@ -43,6 +44,8 @@ export default function BlocklyInterface(props) {
       if (!document.querySelector('.blocklySvg')) { 
         var blocklyArea = document.getElementById("pageContainer");
         var blocklyDiv = document.getElementById("blocklyDiv");
+        let startId =''
+        let CHILDREN = []
  
         const ws = Blockly.inject(blocklyDiv, { toolbox:toolbox});
         const initialBlock = ws.newBlock('Start');
@@ -83,6 +86,8 @@ export default function BlocklyInterface(props) {
         });
         observer.observe(blocklyArea);
       
+        
+
         // Every time the workspace changes state, save the changes to storage.
         ws.addChangeListener((e) => {
           // UI events are things like scrolling, zooming, etc.
@@ -99,10 +104,14 @@ export default function BlocklyInterface(props) {
           }
           //check for create blocks
           if (e.type === "create") {
- 
+            
             //create block in store
             //console.log(e)
             let params ={id: e.json.id, type: e.json.type}
+            if (e.json.type ==="Start"){
+              startId = e.json.id
+              params ={id: e.json.id, type: e.json.type, children:[]}
+            }
  
             //check if the blocks have field
             if(e.json.fields){
@@ -129,27 +138,41 @@ export default function BlocklyInterface(props) {
                 let id = e.newParentId
                 let params = getBlock(e.newParentId)
 
-                //if newInputName is undefined, then it is sequencial relationship
-                if(!e.newInputName){
-                  params['child'] = e.blockId
+                // case 1: if newInputName is undefined, then it is sequencial relationship
+                // newParenName exist, newInputname don't, handle the case that it is connect to parent
+                if(!e.newInputName && startId){
+                  params = getBlock(startId)
+                  CHILDREN = params['children']
+                  if(CHILDREN.includes(id) ||id ==startId){
+                    params['children'].push(e.blockId)
+                    updateBlock(startId, params)
+                  }
+                  
+                }
+
+                // case2: new input is the children, newInputname and newParenName both exist
+                else{
+                  if (!params['children']) {
+                    params['children'] = []; 
+                  }
+                  params['children'].push(e.blockId)
                   updateBlock(id, params)
                 }
-                if (!params['block_input']) {
-                  params['block_input'] = {}; 
-                }
-                params['block_input'][e.newInputName] = e.blockId;
-                updateBlock(id, params)
               }
               //disconnect
               if (e.reason && e.reason.includes('disconnect')){
                 let id = e.oldParentId
                 let params = getBlock(e.oldParentId)
-                if(!e.oldInputName){
-                  delete params['child'];
-                  updateBlock(id, params)
+                //delete a child
+                if(!e.oldInputName && CHILDREN.includes(id)){
+                  params = getBlock(startId)
+                  params['children'] = params['children'].filter(obj => obj !== e. blockId);
+                  console.log(params['children'])
+                  updateBlock(startId, params)
                 }
-                delete params['block_input'][e.oldInputName];
-                updateBlock(id, params)
+                //
+                // delete params['block_input'][e.oldInputName];
+                // updateBlock(id, params)
               }
             }
             //console.log(e)
@@ -158,6 +181,9 @@ export default function BlocklyInterface(props) {
         })
       }
     },[])
+
+    
+
     return <div id="pageContainer" style={{width: "100%", height: "100%"}}>
 <div id="blocklyDiv" style={{width: "100%", height: "100%", minHeight: "480px", minWidth: "480px"}}></div>
 <xml id="toolbox" style={{ display: 'none' }}>

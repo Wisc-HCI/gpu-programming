@@ -25,6 +25,11 @@ const useStore = create((set,get) => ({
   })),
   getBlock: (id) => get().blocks[id],
 
+  getBlocksByType: (type) => {
+    const blocks = get().blocks;
+    return Object.values(blocks).filter(block => block.type === type)[0];
+  }, 
+
 
 
 
