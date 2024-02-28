@@ -153,16 +153,11 @@ export default function BlocklyInterface(props) {
 
                 // case2: new input is the children, newInputname and newParenName both exist
                 else{
-                  // if (!params['children']) {
-                  //   params['children'] = []; 
-                  // }
-                  // params['children'].push(e.blockId)
-                  // if(getBlock(e.blockId)['linking']){
-                  //   let linkings = getBlock(e.blockId)['linking']
-                  //   params['children'].concat(linkings)
-                  // }
-                  // updateBlock(e.blockId, params)
-                  console.log("TODO: implement else")
+                  if (!params[e.newInputName]) {
+                    params[e.newInputName] = ''; 
+                  }
+                  params[e.newInputName]= e.blockId
+                  updateBlock(id, params)
                 }
               }
 
