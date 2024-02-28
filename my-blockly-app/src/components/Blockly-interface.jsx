@@ -102,15 +102,16 @@ export default function BlocklyInterface(props) {
             params['fields'][e.name] = e.newValue;
             updateBlock(id, params)
           }
+          
           //check for create blocks
           if (e.type === "create") {
             
             //create block in store
             //console.log(e)
-            let params ={id: e.json.id, type: e.json.type}
+            let params ={id: e.json.id, type: e.json.type, prev:'', next:''}
             if (e.json.type ==="Start"){
               startId = e.json.id
-              params ={id: e.json.id, type: e.json.type, children:[]}
+              params ={id: e.json.id, type: e.json.type, next:''}
             }
  
             //check if the blocks have field
@@ -134,52 +135,54 @@ export default function BlocklyInterface(props) {
               // If block is moved but still in the workspace
               
               //if it is connected as input for other block
-              if (e.reason&&e.reason.includes('connect')){
+              if (e.reason && e.reason.includes('connect')){
                 let id = e.newParentId
                 let params = getBlock(e.newParentId)
 
                 // case 1: if newInputName is undefined, then it is sequencial relationship
                 // newParenName exist, newInputname don't, handle the case that it is connect to parent
-                if(!e.newInputName && startId){
-                  params = getBlock(startId)
-                  CHILDREN = params['children']
-                  if(CHILDREN.includes(id) || id == startId){
-                    params['children'].push(e.blockId)
-                    updateBlock(startId, params)
-                  }
+                if(!e.newInputName){
+                  params['next'] = e.blockId
+                  updateBlock(id, params)
+                  params = getBlock(e.blockId)
+                  params['prev'] = id
+                  updateBlock(e.blockId, params)
+                  
                   
                 }
 
                 // case2: new input is the children, newInputname and newParenName both exist
                 else{
-                  if (!params['children']) {
-                    params['children'] = []; 
-                  }
-                  params['children'].push(e.blockId)
-                  updateBlock(id, params)
+                  // if (!params['children']) {
+                  //   params['children'] = []; 
+                  // }
+                  // params['children'].push(e.blockId)
+                  // if(getBlock(e.blockId)['linking']){
+                  //   let linkings = getBlock(e.blockId)['linking']
+                  //   params['children'].concat(linkings)
+                  // }
+                  // updateBlock(e.blockId, params)
+                  console.log("TODO: implement else")
                 }
               }
+
+
               //disconnect
               if (e.reason && e.reason.includes('disconnect')){
                 let id = e.oldParentId
                 let params = getBlock(e.oldParentId)
-                //delete a child from start block
+                
                 if(!e.oldInputName){
-                  console.log(id)
-                  if(CHILDREN.includes(id) || id === startId){
-                    params = getBlock(startId)
-                    let index = params['children'].findIndex(obj => obj === e.blockId);
-                    console.log(index)
-                    if (index !== -1) { 
-                      params['children'] = params['children'].slice(0, index);
-                    }
-                    //console.log(params['children'])
-                    updateBlock(startId, params)
-                  }
+                  params['next'] = ''
+                  updateBlock(id, params)
+                  params = getBlock(e.blockId)
+                  params['prev'] = ''
+                  updateBlock(e.blockId, params)
+                  
                 }
               }
             }
-            //console.log(e)
+            
           }
           save(ws);
         })
