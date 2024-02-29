@@ -94,6 +94,13 @@ export default function BlocklyInterface(props) {
           // No need to save after one of these.
           console.log(e)
           if (e.isUiEvent) return;
+
+          // Block has been deleted, remove it from store
+          if(e.type === Blockly.Events.BLOCK_DELETE){
+
+            removeBlock(e.blockId);
+            //TODO: also rmove anything that is connect to it
+          }
  
           if(e.type === Blockly.Events.BLOCK_CHANGE){
             //console.log(e)
@@ -107,8 +114,18 @@ export default function BlocklyInterface(props) {
           if (e.type === "create") {
             
             //create block in store
-            //console.log(e)
-            let params ={id: e.json.id, type: e.json.type, prev:'', next:''}
+            
+            let params ={id: e.json.id, type: e.json.type, prev:'', next:'', isShadow: false}
+            //fields, id, type would be the three params for shadow block
+
+            if (e.ids.length > 1){
+              //shadow blocks should be created
+              for (let input of Object.values(e.json.inputs)) {
+                let params ={id: input.shadow.id, type: input.shadow.type, fields: input.shadow.fields, isShadow: true}
+                addBlock(input.shadow.id,params)
+              }
+
+            }
             if (e.json.type ==="Start"){
               startId = e.json.id
               params ={id: e.json.id, type: e.json.type, next:''}
@@ -127,56 +144,58 @@ export default function BlocklyInterface(props) {
  
           //check for move blocks
           if (e.type === "move") {
-            let blockId = ws.getBlockById(e.blockId);
-            if (!blockId) {
-              // Block has been deleted, remove it from store
-              removeBlock(e.blockId);
-            } else {
-              // If block is moved but still in the workspace
-              
-              //if it is connected as input for other block
-              if (e.reason && e.reason.includes('connect')){
-                let id = e.newParentId
-                let params = getBlock(e.newParentId)
+            let blockId = ws.getBlockById(e.blockId);    
+            // If block is moved but still in the workspace
+            
+            //if it is connected as input for other block
+            if (e.reason && e.reason.includes('connect')){
+              let id = e.newParentId
+              let params = getBlock(e.newParentId)
 
-                // case 1: if newInputName is undefined, then it is sequencial relationship
-                // newParenName exist, newInputname don't, handle the case that it is connect to parent
-                if(!e.newInputName){
-                  params['next'] = e.blockId
-                  updateBlock(id, params)
-                  params = getBlock(e.blockId)
-                  params['prev'] = id
-                  updateBlock(e.blockId, params)
-                  
-                  
-                }
-
-                // case2: new input is the children, newInputname and newParenName both exist
-                else{
-                  if (!params[e.newInputName]) {
-                    params[e.newInputName] = ''; 
-                  }
-                  params[e.newInputName]= e.blockId
-                  updateBlock(id, params)
-                }
+              // case 1: if newInputName is undefined, then it is sequencial relationship
+              // newParenName exist, newInputname don't, handle the case that it is connect to parent
+              if(!e.newInputName){
+                params['next'] = e.blockId
+                updateBlock(id, params)
+                params = getBlock(e.blockId)
+                params['prev'] = id
+                updateBlock(e.blockId, params)
+                
+                
               }
 
-
-              //disconnect
-              if (e.reason && e.reason.includes('disconnect')){
-                let id = e.oldParentId
-                let params = getBlock(e.oldParentId)
-                
-                if(!e.oldInputName){
-                  params['next'] = ''
-                  updateBlock(id, params)
-                  params = getBlock(e.blockId)
-                  params['prev'] = ''
-                  updateBlock(e.blockId, params)
-                  
+              // case2: new input is the children, newInputname and newParenName both exist
+              else{
+                if (!('inputs' in params)) {
+                  params.inputs={};
+                  params.inputs[e.newInputName]= e.blockId
+                }else{
+                  params.inputs[e.newInputName]= e.blockId
                 }
+                
+                updateBlock(id, params)
               }
             }
+
+
+            //disconnect
+            if (e.reason && e.reason.includes('disconnect')){
+              let id = e.oldParentId
+              let params = getBlock(e.oldParentId)
+              
+              if(!e.oldInputName){
+                params['next'] = ''
+                updateBlock(id, params)
+                params = getBlock(e.blockId)
+                params['prev'] = ''
+                updateBlock(e.blockId, params)
+                
+              }
+
+            //TODO: when a block is removed, check if there is a shadow block which has corresponding inputname and parent id
+            //if yes, resore refrence to shadow box
+            }
+            
             
           }
           save(ws);
