@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import * as Blockly from 'blockly';
-
  
 // Import custom blocks and generators
 import { blocks } from '../blocks/text';
@@ -25,13 +24,10 @@ Blockly.Blocks['Start'] = {
  
 export default function BlocklyInterface(props) {
   const addBlock = useStore((state) => state.addBlock);
-  const addShadowBlock = useStore((state) => state.addShadowBlock);
   const blocks = useStore((state) => state.blocks);
-  const shadowBlocks = useStore((state) => state.shadowBlocks);
   const removeBlock = useStore((state) => state.removeBlock);
   const getBlock = useStore((state) => state.getBlock);
   const updateBlock = useStore((state) => state.updateBlock);
-  const getShadowId = useStore((state) => state.getShadowId);
   const findNext = (arr,blockId)=>{
     arr.push(blockId)
     let currBlock = getBlock(blockId)
