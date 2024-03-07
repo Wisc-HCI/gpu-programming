@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import * as Blockly from 'blockly';
+
  
 // Import custom blocks and generators
 import { blocks } from '../blocks/text';
@@ -24,11 +25,22 @@ Blockly.Blocks['Start'] = {
  
 export default function BlocklyInterface(props) {
   const addBlock = useStore((state) => state.addBlock);
+  const addShadowBlock = useStore((state) => state.addShadowBlock);
   const blocks = useStore((state) => state.blocks);
+  const shadowBlocks = useStore((state) => state.shadowBlocks);
   const removeBlock = useStore((state) => state.removeBlock);
   const getBlock = useStore((state) => state.getBlock);
   const updateBlock = useStore((state) => state.updateBlock);
-  const getBlocksByType = useStore((state) => state.getBlocksByType);
+  const getShadowId = useStore((state) => state.getShadowId);
+  const findNext = (arr,blockId)=>{
+    arr.push(blockId)
+    let currBlock = getBlock(blockId)
+    while(currBlock.next){
+      currBlock = currBlock.next
+      arr.push(currBlock)
+    }
+  }
+ 
 
  
   useEffect(() => {
@@ -86,6 +98,7 @@ export default function BlocklyInterface(props) {
         });
         observer.observe(blocklyArea);
       
+       
         
 
         // Every time the workspace changes state, save the changes to storage.
@@ -95,11 +108,24 @@ export default function BlocklyInterface(props) {
           console.log(e)
           if (e.isUiEvent) return;
 
-          // Block has been deleted, remove it from store
+          // Block has been deleted, remove it from store, as well as anything connect to it
           if(e.type === Blockly.Events.BLOCK_DELETE){
+            
+            let currID = e.blockId
+            let delArray = [currID];
+            let currInputs = getBlock(currID).inputs
+            if(currInputs){
+              for (let [key, value] of Object.entries(currInputs)){
+                findNext(delArray, value)
+              }
+            }
+            let currNext = getBlock(e.blockId).next;
+            if(currNext){
+              findNext(delArray,currNext)
+            }
 
-            removeBlock(e.blockId);
-            //TODO: also rmove anything that is connect to it
+            removeBlock(delArray);
+            
           }
  
           if(e.type === Blockly.Events.BLOCK_CHANGE){
@@ -117,20 +143,13 @@ export default function BlocklyInterface(props) {
             
             let params ={id: e.json.id, type: e.json.type, prev:'', next:'', isShadow: false}
             //fields, id, type would be the three params for shadow block
-
-            if (e.ids.length > 1){
-              //shadow blocks should be created
-              for (let input of Object.values(e.json.inputs)) {
-                let params ={id: input.shadow.id, type: input.shadow.type, fields: input.shadow.fields, isShadow: true}
-                addBlock(input.shadow.id,params)
-              }
-
-            }
+            
+            
             if (e.json.type ==="Start"){
               startId = e.json.id
               params ={id: e.json.id, type: e.json.type, next:''}
             }
- 
+            
             //check if the blocks have field
             if(e.json.fields){
               params['fields'] = e.json.fields;
@@ -138,8 +157,32 @@ export default function BlocklyInterface(props) {
             // check for inputs
             if(e.json.inputs){
               params['inputs'] = e.json.inputs;
+              
+              //shadow blocks should be created
+              for (let [key, value] of Object.entries(e.json.inputs)) {
+                if(value.shadow){
+                  let shadowParams ={
+                    id: value.shadow.id,
+                    type: value.shadow.type,
+                    fields: value.shadow.fields,
+                    isShadow: true,
+                    initialParent: e.ids[0],
+                    initialInput: key 
+                  }
+                  if (!('shadows' in params)) {
+                    params.shadows={};
+                    params.shadows[key]= value.shadow.id
+                  }else{
+                    params.shadows[key]= value.shadow.id
+                  }
+                  addBlock(value.shadow.id,shadowParams)
+                }
+              }
+  
+              
             }
             addBlock(e.json.id,params)
+            
           }
  
           //check for move blocks
@@ -190,6 +233,16 @@ export default function BlocklyInterface(props) {
                 params['prev'] = ''
                 updateBlock(e.blockId, params)
                 
+              }else{
+                // there is an old input name
+                params.inputs[e.oldInputName] = ''
+                //check if it is shadow block, if yes,
+                if(params.shadows[e.oldInputName]){
+                  let shadowId = params.shadows[e.oldInputName]
+                  params.inputs[e.oldInputName] = shadowId
+                }
+                
+
               }
 
             //TODO: when a block is removed, check if there is a shadow block which has corresponding inputname and parent id
