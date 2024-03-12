@@ -61,12 +61,18 @@ export default function BlocklyInterface(props) {
         save(ws);
         load(ws);
         javascriptGenerator.addReservedWords('code');
+
         const runCode = () => {
-            console.log("runcode clicked")
+          // get start block, then iteratively check for children as well as inputs
  
-            const code = javascriptGenerator.workspaceToCode(ws);
-            //console.log(code)
-            eval(code);
+
+
+
+
+
+          
+            //const code = javascriptGenerator.workspaceToCode(ws);
+            //eval(code);
         }
  
         //add click event listener to run button
@@ -114,13 +120,10 @@ export default function BlocklyInterface(props) {
               
               for (let [key, value] of Object.entries(currInputs)){
                 // check for shadows
-                
                 if (typeof value !== 'string'){
-                  
                   delArray.push(value.id)
                 }
                 else{
-                  //console.log("not shadow")
                   findNext(delArray, value)
                 }
               }
