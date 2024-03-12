@@ -111,8 +111,18 @@ export default function BlocklyInterface(props) {
             let delArray = [currID];
             let currInputs = getBlock(currID).inputs
             if(currInputs){
+              
               for (let [key, value] of Object.entries(currInputs)){
-                findNext(delArray, value)
+                // check for shadows
+                
+                if (typeof value !== 'string'){
+                  
+                  delArray.push(value.id)
+                }
+                else{
+                  //console.log("not shadow")
+                  findNext(delArray, value)
+                }
               }
             }
             let currNext = getBlock(e.blockId).next;
