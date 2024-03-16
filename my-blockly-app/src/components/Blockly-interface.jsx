@@ -7,6 +7,7 @@ import { forBlock } from '../generators/javascript';
 import { javascriptGenerator } from 'blockly/javascript';
 import {save, load} from '../serialization';
 import {toolbox} from '../toolbox';
+import useCompile from '../compile/useCompile'
 import '../index.css';
 import useStore from "../Store";
  
@@ -28,6 +29,8 @@ export default function BlocklyInterface(props) {
   const removeBlock = useStore((state) => state.removeBlock);
   const getBlock = useStore((state) => state.getBlock);
   const updateBlock = useStore((state) => state.updateBlock);
+  const getBlocksByType = useStore((state) => state.getBlocksByType);
+  const { compile } = useCompile();
   const findNext = (arr,blockId)=>{
     arr.push(blockId)
     let currBlock = getBlock(blockId)
@@ -64,6 +67,18 @@ export default function BlocklyInterface(props) {
 
         const runCode = () => {
           // get start block, then iteratively check for children as well as inputs
+          const start = getBlocksByType('Start')
+          
+          const compileBlocks = blocks
+          console.log('runcode')
+          console.log(start)
+          let currParam = start
+          while(currParam.next){
+            currParam = getBlock(currParam.next)
+            console.log(currParam)
+            compile(currParam, currParam.type)
+            currParam = currParam.next
+          }
  
 
 

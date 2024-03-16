@@ -43,7 +43,10 @@ const useStore = create((set,get) => ({
     // Update the state with the new blocks object
     return { Start: newBlocks };
   }),
-  
+  getBlocksByType: (type) => {
+    const blocks = get().blocks;
+    return Object.values(blocks).filter(block => block.type === type)[0];
+  }, 
 }));
 
 export default useStore;
