@@ -261,7 +261,7 @@ export default function BlocklyInterface(props) {
                 // there is an old input name
                 params.inputs[e.oldInputName] = ''
                 //check if it is shadow block, if yes,
-                if(params.shadows[e.oldInputName]){
+                if(params.shadows && params.shadows[e.oldInputName]){
                   let shadowId = params.shadows[e.oldInputName]
                   params.inputs[e.oldInputName] = shadowId
                 }
