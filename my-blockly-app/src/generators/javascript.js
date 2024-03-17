@@ -95,20 +95,30 @@ forBlock["MoveHead"] = function (block) {
   return code;
 };
 
-forBlock["MoveHead2"] = function (block) {
+// forBlock["MoveHead2"] = function (block) {
+//   var pitch, roll, yaw;
+
+//   pitch = block.getFieldValue("FIELD_MoveHead_Pitch");
+//   roll = block.getFieldValue("FIELD_MoveHead_Roll");
+//   yaw = block.getFieldValue("FIELD_MoveHead_Yaw");
+
+//   var endpoint = "head";
+//   let payload = '{"Pitch":'+pitch+',"Yaw":'+yaw+',"Roll":'+roll+',"Units": "degrees"}';
+//   var code = 'sendPostRequestToRobot("' + endpoint + '",' + payload + ");";
+//   return code;
+// };
+
+forBlock["MoveHead3"] = function (block) {
   var pitch, roll, yaw;
-
-  pitch = block.getFieldValue("FIELD_MoveHead_Pitch");
-  roll = block.getFieldValue("FIELD_MoveHead_Roll");
-  yaw = block.getFieldValue("FIELD_MoveHead_Yaw");
-
   var endpoint = "head";
+  pitch = forBlock.valueToCode(block, "FIELD_MoveHead_Pitch", forBlock.ORDER_ATOMIC);
+  roll = forBlock.valueToCode(block, "FIELD_MoveHead_Roll", forBlock.ORDER_ATOMIC);
+  yaw = forBlock.valueToCode(block, "FIELD_MoveHead_Yaw", forBlock.ORDER_ATOMIC);
+
   let payload = '{"Pitch":'+pitch+',"Yaw":'+yaw+',"Roll":'+roll+',"Units": "degrees"}';
   var code = 'sendPostRequestToRobot("' + endpoint + '",' + payload + ");";
   return code;
 };
-
-
 
 forBlock["MoveArm"] = function (block) {
   var arm = block.getFieldValue("FIELD_MoveArm_Arm") === "Right" ? "Right" : "Left";
@@ -138,15 +148,16 @@ forBlock["MoveArms"] = function (block) {
   var code = 'sendPostRequestToRobot("' + endpoint + '",' + payload + ");";
   return code;
 };
-// forBlock["MoveArms2"] = function (block) {
-//   var left_position = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_LeftPosition", Blockly.JavaScript.ORDER_ATOMIC);
-//   var left_velocity = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_LeftVelocity", Blockly.JavaScript.ORDER_ATOMIC);
-//   var right_position = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_RightPosition", Blockly.JavaScript.ORDER_ATOMIC);
-//   var right_velocity = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_RightVelocity", Blockly.JavaScript.ORDER_ATOMIC);
-//   let payload = '{"LeftArmPosition":'+left_position+',"RightArmPosition":'+right_position+',"LeftArmVelocity":'+left_velocity+',"RightArmVelocity":'+right_velocity+',"Units": "Position"}'
-//   var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
-//   return code;
-// };
+forBlock["MoveArms2"] = function (block) {
+  var left_position = forBlock.valueToCode(block, "FIELD_MoveArm_LeftPosition", forBlock.ORDER_ATOMIC);
+  var left_velocity = forBlock.valueToCode(block, "FIELD_MoveArm_LeftVelocity", forBlock.ORDER_ATOMIC);
+  var right_position = forBlock.valueToCode(block, "FIELD_MoveArm_RightPosition", forBlock.ORDER_ATOMIC);
+  var right_velocity = forBlock.valueToCode(block, "FIELD_MoveArm_RightVelocity", forBlock.ORDER_ATOMIC);
+  let payload = '{"LeftArmPosition":'+left_position+',"RightArmPosition":'+right_position+',"LeftArmVelocity":'+left_velocity+',"RightArmVelocity":'+right_velocity+',"Units": "Position"}'
+  var endpoint = "arms/set"
+  var code = 'sendPostRequestToRobot("' + endpoint + '",' + payload + ");";
+  return code;
+};
 
 forBlock["DriveTime"] = function (block) {
   var direction = block.getFieldValue("FIELD_DriveTime_Direction");
@@ -155,6 +166,15 @@ forBlock["DriveTime"] = function (block) {
   var endpoint = "drive/time"		
   var linearVelocity = direction === "F" ? velocity : -velocity;
   let payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":0,"TimeMs":'+time+'}';
+  var code = 'sendPostRequestToRobot("' + endpoint + '",' +  payload + ');';
+  return code;
+};
+forBlock["DriveTime2"] = function (block) {
+	var endpoint = "drive/time"	
+  var linearVelocity = forBlock.valueToCode(block, "FIELD_DriveTime_Velocity", forBlock.ORDER_ATOMIC);
+  var angularVelocity = forBlock.valueToCode(block, "FIELD_DriveTime_Angular", forBlock.ORDER_ATOMIC);
+  var time = forBlock.valueToCode(block, "FIELD_DriveTime_TimeMs", forBlock.ORDER_ATOMIC);
+  let payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+'}';
   var code = 'sendPostRequestToRobot("' + endpoint + '",' +  payload + ');';
   return code;
 };
@@ -172,16 +192,17 @@ forBlock["Turn"] = function (block) {
   return code;
 };
 
-// forBlock["Turn2"] = function (block) {
-//   var direction = block.getFieldValue("FIELD_Turn_Direction");
-//   var time = Blockly.JavaScript.valueToCode(block, "FIELD_Turn_Duration", Blockly.JavaScript.ORDER_ATOMIC);		
-//   var angularVelocity = 100;
-//   var linearVelocity = 0;
-//   var degree = direction === "L" ? 90 : -90;
-//   let payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
-//   var code = 'sendPostRequestToRobot("' + endpoint + '","' + ip + '",' + payload + ');'+delayJS(time+'+500');
-//   return code;
-// };
+forBlock["Turn2"] = function (block) {
+  var direction = block.getFieldValue("FIELD_Turn_Direction");
+  var time = forBlock.valueToCode(block, "FIELD_Turn_Duration", forBlock.ORDER_ATOMIC);		
+  var angularVelocity = 100;
+  var linearVelocity = 0;
+  var degree = direction === "L" ? 90 : -90;
+  let payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
+  var endpoint = "drive/time"
+  var code = 'sendPostRequestToRobot("' + endpoint + '",' + payload + ');';
+  return code;
+};
 
 forBlock["Start"] = function (block) {
   return ''
