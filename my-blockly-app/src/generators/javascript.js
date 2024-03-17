@@ -138,6 +138,15 @@ forBlock["MoveArms"] = function (block) {
   var code = 'sendPostRequestToRobot("' + endpoint + '",' + payload + ");";
   return code;
 };
+// forBlock["MoveArms2"] = function (block) {
+//   var left_position = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_LeftPosition", Blockly.JavaScript.ORDER_ATOMIC);
+//   var left_velocity = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_LeftVelocity", Blockly.JavaScript.ORDER_ATOMIC);
+//   var right_position = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_RightPosition", Blockly.JavaScript.ORDER_ATOMIC);
+//   var right_velocity = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_RightVelocity", Blockly.JavaScript.ORDER_ATOMIC);
+//   let payload = '{"LeftArmPosition":'+left_position+',"RightArmPosition":'+right_position+',"LeftArmVelocity":'+left_velocity+',"RightArmVelocity":'+right_velocity+',"Units": "Position"}'
+//   var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
+//   return code;
+// };
 
 forBlock["DriveTime"] = function (block) {
   var direction = block.getFieldValue("FIELD_DriveTime_Direction");
@@ -163,6 +172,16 @@ forBlock["Turn"] = function (block) {
   return code;
 };
 
+// forBlock["Turn2"] = function (block) {
+//   var direction = block.getFieldValue("FIELD_Turn_Direction");
+//   var time = Blockly.JavaScript.valueToCode(block, "FIELD_Turn_Duration", Blockly.JavaScript.ORDER_ATOMIC);		
+//   var angularVelocity = 100;
+//   var linearVelocity = 0;
+//   var degree = direction === "L" ? 90 : -90;
+//   let payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
+//   var code = 'sendPostRequestToRobot("' + endpoint + '","' + ip + '",' + payload + ');'+delayJS(time+'+500');
+//   return code;
+// };
 
 forBlock["Start"] = function (block) {
   return ''

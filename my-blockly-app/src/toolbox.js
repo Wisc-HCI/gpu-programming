@@ -479,18 +479,22 @@ export const toolbox = {
             'kind': 'block',
             'type': 'MoveArm2',
           },
+          // {
+          //   'kind': 'block',
+          //   'type': 'MoveArms',
+          // },
           {
             'kind': 'block',
-            'type': 'MoveArms',
+            'type': 'MoveArms2',
           },
           {
             'kind': 'block',
             'type': 'MoveHead',
           },
-          {
-            'kind': 'block',
-            'type': 'MoveHead2',
-          },
+          // {
+          //   'kind': 'block',
+          //   'type': 'MoveHead2',
+          // },
           {
             'kind': 'block',
             'type': 'MoveHead3',
@@ -507,6 +511,10 @@ export const toolbox = {
             'kind': 'block',
             'type': 'Turn', 
           },   
+          {
+            'kind': 'block',
+            'type': 'Turn2',
+          },
         ],
       },
     ],

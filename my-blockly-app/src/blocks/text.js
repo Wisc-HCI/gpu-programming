@@ -145,6 +145,56 @@ Blockly.Blocks["MoveArms"] = {
     this.setHelpUrl("MoveArms");
   }
 };
+Blockly.Blocks["MoveArms2"] = {
+  init: function () {
+    var shadowBlock_1 = this.workspace.newBlock('math_number');
+    shadowBlock_1.setShadow(true);
+    shadowBlock_1.initSvg();
+    shadowBlock_1.render();
+    var lPosBlock = shadowBlock_1.outputConnection;
+
+    var shadowBlock_2 = this.workspace.newBlock('math_number');
+    shadowBlock_2.setShadow(true);
+    shadowBlock_2.initSvg();
+    shadowBlock_2.render();
+    var lVelBlock = shadowBlock_2.outputConnection;
+
+    var shadowBlock_3 = this.workspace.newBlock('math_number');
+    shadowBlock_3.setShadow(true);
+    shadowBlock_3.initSvg();
+    shadowBlock_3.render();
+    var rPosBlock = shadowBlock_3.outputConnection;
+
+    var shadowBlock_4 = this.workspace.newBlock('math_number');
+    shadowBlock_4.setShadow(true);
+    shadowBlock_4.initSvg();
+    shadowBlock_4.render();
+    var rVelBlock = shadowBlock_4.outputConnection;
+
+    this.setColour('260');
+    this.appendValueInput("FIELD_MoveArm_LeftPosition").setCheck('Number')
+      .appendField("Move left arm to position");
+    var shadowBlockConnectionLPosition = this.getInput("FIELD_MoveArm_LeftPosition").connection;
+    shadowBlockConnectionLPosition.connect(lPosBlock);
+    this.appendValueInput("FIELD_MoveArm_LeftVelocity").setCheck('Number')
+      .appendField("at a speed of (0 to 100)");
+    var shadowBlockConnectionLVelocity = this.getInput("FIELD_MoveArm_LeftVelocity").connection;
+    shadowBlockConnectionLVelocity.connect(lVelBlock);
+    this.appendValueInput("FIELD_MoveArm_RightPosition").setCheck('Number')
+      .appendField("and move right arm to position");
+    var shadowBlockConnectionRPosition = this.getInput("FIELD_MoveArm_RightPosition").connection;
+    shadowBlockConnectionRPosition.connect(rPosBlock);
+    this.appendValueInput("FIELD_MoveArm_RightVelocity").setCheck('Number')
+      .appendField("at a speed of (0 to 100)");
+    var shadowBlockConnectionLVelocity = this.getInput("FIELD_MoveArm_RightVelocity").connection;
+    shadowBlockConnectionLVelocity.connect(rVelBlock);
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Moves both of Misty's arms to a specified position (expects a value from 0-10, 5 points the arm straight forward) at a specified speed");
+    this.setHelpUrl("MoveArms");
+  }
+};
 
 Blockly.Blocks["DriveTime"] = {
   init: function () {
@@ -259,6 +309,32 @@ Blockly.Blocks["Turn"] = {
       .appendField(new Blockly.FieldDropdown([["Left", "L"], ["Right", "R"]]), "FIELD_Turn_Direction")
       .appendField("for time of")
       .appendField(new Blockly.FieldNumber(4500), "FIELD_Turn_Duration")
+      .appendField("milliseconds");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Turns Misty in the specified direction (1000ms = 1 second and 4500ms is approximately 90 degrees)");
+    this.setHelpUrl("Turn");
+  }
+};
+
+Blockly.Blocks["Turn2"] = {
+  init: function () {
+    var shadowBlock_1 = this.workspace.newBlock('math_number');
+    shadowBlock_1.setShadow(true);
+    shadowBlock_1.initSvg();
+    shadowBlock_1.render();
+    var timeBlock = shadowBlock_1.outputConnection;
+
+    this.setColour('260');
+    this.appendDummyInput()
+      .appendField("Turn")
+      .appendField(new Blockly.FieldDropdown([["Left", "L"], ["Right", "R"]]), "FIELD_Turn_Direction");
+    this.appendValueInput("FIELD_Turn_Duration").setCheck('Number')
+      .appendField("for time of");
+      var shadowBlockConnectionTime = this.getInput("FIELD_Turn_Duration").connection;
+      shadowBlockConnectionTime.connect(timeBlock);
+    this.appendDummyInput()
       .appendField("milliseconds");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
