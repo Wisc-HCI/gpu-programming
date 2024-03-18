@@ -22,6 +22,7 @@ Blockly.Blocks['Start'] = {
     this.setDeletable(false);
   }
 };
+
  
 export default function BlocklyInterface(props) {
   const addBlock = useStore((state) => state.addBlock);
@@ -30,6 +31,7 @@ export default function BlocklyInterface(props) {
   const getBlock = useStore((state) => state.getBlock);
   const updateBlock = useStore((state) => state.updateBlock);
   const getBlocksByType = useStore((state) => state.getBlocksByType);
+  const ip = useStore((state) => state.ip);
   const { compile } = useCompile();
   const findNext = (arr,blockId)=>{
     arr.push(blockId)
@@ -40,7 +42,20 @@ export default function BlocklyInterface(props) {
     }
   }
  
-
+  const sendPostRequestToRobot=(endpoint,payload) =>{
+    fetch(`http://${ip}/api/${endpoint}`, {
+      method: 'POST',
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload)
+      }).then(res => res.json()).then(json => {
+            
+        console.log(`successfully send a post request, the response is: ${json}`)
+      })
+  
+          
+  }
  
   useEffect(() => {
     console.log(blocks);
@@ -86,8 +101,8 @@ export default function BlocklyInterface(props) {
 
 
           
-            //const code = javascriptGenerator.workspaceToCode(ws);
-            //eval(code);
+            const code = javascriptGenerator.workspaceToCode(ws);
+            eval(code);
         }
  
         //add click event listener to run button

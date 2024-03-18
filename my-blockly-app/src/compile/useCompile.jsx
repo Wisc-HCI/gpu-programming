@@ -1,5 +1,7 @@
 import React from 'react';
 import useStore from "../Store";
+import * as Blockly from 'blockly';
+import { forBlock } from '../generators/javascript';
 
 // Convert to a custom hook or move logic into a React component
 const useCompile = (props) => {
@@ -155,6 +157,26 @@ const useCompile = (props) => {
   // return code;
   //       sendPostRequestToRobot();
         return ;
+      
+      case type === "MoveHead":
+        //  = function (block) {
+        //   var pitch = block.getFieldValue("FIELD_MoveHead_Pitch") === "D" ? 5 : -5;
+        //   var velocity = parseInt(block.getFieldValue("FIELD_MoveHead_Velocity"));
+        //   var payload = null;
+        //   var endpoint = "head";
+        //   payload = {
+        //     "Pitch": pitch,		//-5 - 5
+        //     "Yaw": 0,											
+        //     "Roll": 0,
+        //     "Units": "position" 
+        //   };
+        //   var code = 'sendPostRequestToRobot("' + endpoint + '",'  + JSON.stringify(payload) + ");";
+        const MoveHead = forBlock["MoveHead"]
+        
+        console.log("Movehead")
+        //console.log(MoveHead(params.id))
+        return ;
+        //};
       default:
         return "Mixed case";
     }
