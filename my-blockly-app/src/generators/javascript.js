@@ -33,52 +33,11 @@ forBlock['add_text'] = function (block, generator) {
   return code;
 };
 
-// Give the block functionality
-forBlock["ChangeLED"] = function (block) {
-  // Declare list of arguments the block will use, if any
-  const args = ["Red", "Green", "Blue"]
-  //const payload = {};
-  var endpoint = "led"
-  var input = block.getFieldValue("FIELD_ChangeLED");
-  var payload = hexToRgb(input);
-  // For each argument, get the current value in the corresponding field and append it to the payload
-  // for (var arg of args) {
-  //   var input = block.getFieldValue("FIELD_ChangeLED");
-  //   payload[arg] = hexToRgb(input)[arg];
-  // } 
-  // Tell the robot what to do based on the payload
-  var code = 'sendPostRequestToRobot("'+ endpoint + '",' + JSON.stringify(payload) + ");";
-  return code;
-};
 
-function hexToRgb(hex) {
-  // Remove the hash if it exists
-  hex = hex.replace(/^#/, '');
 
-  // Parse the hex values
-  var bigint = parseInt(hex, 16);
 
-  // Extract RGB components
-  var r = (bigint >> 16) & 255;
-  var g = (bigint >> 8) & 255;
-  var b = bigint & 255;
 
-  // Return the result as an object
-  return { red: r, green: g, blue: b };
-}
 
-forBlock["DisplayImage"] = function (block) {
-  var alpha = 1
-  var filename = block.getFieldValue("FIELD_DisplayImage_Filename");
-  var endpoint = "images/display";
-  var payload = {
-    "FileName": filename,
-    "Alpha": alpha
-    
-  };
-  var code = 'sendPostRequestToRobot("' + endpoint + '",' + JSON.stringify(payload) + ");";
-  return code;
-};
 
 forBlock["MoveHead"] = function (block) {
   var pitch = block.getFieldValue("FIELD_MoveHead_Pitch") === "D" ? 5 : -5;
@@ -95,18 +54,7 @@ forBlock["MoveHead"] = function (block) {
   return code;
 };
 
-// forBlock["MoveHead2"] = function (block) {
-//   var pitch, roll, yaw;
 
-//   pitch = block.getFieldValue("FIELD_MoveHead_Pitch");
-//   roll = block.getFieldValue("FIELD_MoveHead_Roll");
-//   yaw = block.getFieldValue("FIELD_MoveHead_Yaw");
-
-//   var endpoint = "head";
-//   let payload = '{"Pitch":'+pitch+',"Yaw":'+yaw+',"Roll":'+roll+',"Units": "degrees"}';
-//   var code = 'sendPostRequestToRobot("' + endpoint + '",' + payload + ");";
-//   return code;
-// };
 
 forBlock["MoveHead3"] = function (block) {
   var pitch, roll, yaw;
@@ -120,24 +68,8 @@ forBlock["MoveHead3"] = function (block) {
   return code;
 };
 
-forBlock["MoveArm"] = function (block) {
-  var arm = block.getFieldValue("FIELD_MoveArm_Arm") === "Right" ? "Right" : "Left";
-  var position = parseInt(block.getFieldValue("FIELD_MoveArm_Position"));
-  var velocity = parseInt(block.getFieldValue("FIELD_MoveArm_Velocity"));
-  var endpoint = "arms"
-  let payload = '{"Arm":'+"\""+arm+"\""+',"Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
-  var code = 'sendPostRequestToRobot("' + endpoint + '",' + payload + ");";
-  return code;
-};
 
-forBlock["MoveArm2"] = function (block) {
-  var position = parseInt(block.getFieldValue("FIELD_MoveArm2_Position"));
-  var velocity = parseInt(block.getFieldValue("FIELD_MoveArm2_Velocity"));
-  var endpoint = "arms"
-  let payload = '{"Arm": "both", "Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
-  var code = 'sendPostRequestToRobot("' + endpoint + '",' + payload + ");";
-  return code;
-};
+
 forBlock["MoveArms"] = function (block) {
   var left_position = parseInt(block.getFieldValue("FIELD_MoveArm_LeftPosition"));
   var left_velocity = parseInt(block.getFieldValue("FIELD_MoveArm_LeftVelocity"));

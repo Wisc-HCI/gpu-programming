@@ -101,8 +101,8 @@ export default function BlocklyInterface(props) {
 
 
           
-            const code = javascriptGenerator.workspaceToCode(ws);
-            eval(code);
+            //const code = javascriptGenerator.workspaceToCode(ws);
+            //eval(code);
         }
  
         //add click event listener to run button

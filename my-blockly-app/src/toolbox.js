@@ -459,10 +459,10 @@ export const toolbox = {
         'contents': [
           
           
-          {
-            'kind': 'block',
-            'type': 'lists_length',
-          },
+          // {
+          //   'kind': 'block',
+          //   'type': 'lists_length',
+          // },
           {
             'kind': 'block',
             'type': 'ChangeLED',

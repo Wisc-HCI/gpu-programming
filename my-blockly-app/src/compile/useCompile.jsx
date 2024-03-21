@@ -41,6 +41,22 @@ const useCompile = (props) => {
   
           
   }
+
+  function hexToRgb(hex) {
+    // Remove the hash if it exists
+    hex = hex.replace(/^#/, '');
+  
+    // Parse the hex values
+    var bigint = parseInt(hex, 16);
+  
+    // Extract RGB components
+    var r = (bigint >> 16) & 255;
+    var g = (bigint >> 8) & 255;
+    var b = bigint & 255;
+  
+    // Return the result as an object
+    return { red: r, green: g, blue: b };
+  }
   const compile = (params, type) => {
     console.log('compile')
     switch (true) {
@@ -119,6 +135,11 @@ const useCompile = (props) => {
         else{
           return true
         }
+      
+
+      case type ===  "logic_null":
+        return null
+
       case type === "logic_ternary":
         if(!params.inputs||!params.inputs.IF ||!params.inputs.THEN ||!params.inputs.ELSE){
           console.log('err: logic_ternary is not complete!')
@@ -139,24 +160,54 @@ const useCompile = (props) => {
           return compile(logic_ternary_ELSE_params, logic_ternary_ELSE_params.type)
         }
 
-
+/////////////////////////////////////////////LOGIC///////////////////////////////////////////////////////////////
       case type === "ChangeLED":
-        console.log('ChangeLED')
+
+        // Declare list of arguments the block will use, if any
+        const args = ["Red", "Green", "Blue"]
+        //const payload = {};
+        var endpoint = "led"
+        var input = params.fields.FIELD_ChangeLED;
+        var payload = hexToRgb(input);
+        // For each argument, get the current value in the corresponding field and append it to the payload
+        // for (var arg of args) {
+        //   var input = block.getFieldValue("FIELD_ChangeLED");
+        //   payload[arg] = hexToRgb(input)[arg];
+        // } 
+        // Tell the robot what to do based on the payload
+        //console.log(input,payload)
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return ;
       
       case type === "DisplayImage":
-  //       var alpha = 1
-  //       var filename = block.getFieldValue("FIELD_DisplayImage_Filename");
-  //       var endpoint = "images/display";
-  //       var payload = {
-  //   "FileName": filename,
-  //   "Alpha": alpha
-    
-  // };
-  // var code = 'sendPostRequestToRobot("' + endpoint + '",' + JSON.stringify(payload) + ");";
-  // return code;
-  //       sendPostRequestToRobot();
+        var alpha = 1
+        var filename = params.fields.FIELD_DisplayImage_Filename;
+        var endpoint = "images/display";
+        var payload = {
+          "FileName": filename,
+          "Alpha": alpha
+        };
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return ;
+
+      case type === "MoveArm":
+        var arm = params.fields.FIELD_MoveArm_Arm === "Right" ? "Right" : "Left";
+        var position = parseInt(params.fields.FIELD_MoveArm_Position);
+        var velocity = parseInt(params.fields.FIELD_MoveArm_Velocity);
+        var endpoint = "arms"
+        var payload = '{"Arm":'+"\""+arm+"\""+',"Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+      
+      case type === "MoveArm2":  
+        var position = parseInt(params.fields.FIELD_MoveArm2_Position);
+        var velocity = parseInt(params.fields.FIELD_MoveArm2_Velocity);
+        var endpoint = "arms"
+        var payload = '{"Arm": "both", "Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+      
+      case type === "MoveArm2":  
       
       case type === "MoveHead":
         //  = function (block) {
@@ -174,7 +225,7 @@ const useCompile = (props) => {
         const MoveHead = forBlock["MoveHead"]
         
         console.log("Movehead")
-        //console.log(MoveHead(params.id))
+        //console.log(MoveHead)
         return ;
         //};
       default:
