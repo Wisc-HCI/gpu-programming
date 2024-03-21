@@ -94,12 +94,6 @@ export default function BlocklyInterface(props) {
             compile(currParam, currParam.type)
             currParam = currParam.next
           }
- 
-
-
-
-
-
           
             //const code = javascriptGenerator.workspaceToCode(ws);
             //eval(code);

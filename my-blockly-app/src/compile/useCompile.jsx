@@ -38,8 +38,6 @@ const useCompile = (props) => {
             
         console.log(`successfully send a post request, the response is: ${json}`)
       })
-  
-          
   }
 
   function hexToRgb(hex) {
@@ -56,6 +54,15 @@ const useCompile = (props) => {
   
     // Return the result as an object
     return { red: r, green: g, blue: b };
+  }
+
+  function checkShadowinput(input){
+    if (typeof input !== 'string'){
+        return input.shadow.fields.NUM
+    }
+    else{
+      return compile(getBlock(input))
+    }
   }
   const compile = (params, type) => {
     console.log('compile')
@@ -206,30 +213,89 @@ const useCompile = (props) => {
         var payload = '{"Arm": "both", "Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
         sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return;
-      
-      case type === "MoveArm2":  
+        
+      case type === "MoveArms2":  
+        var left_position = checkShadowinput(params.inputs.FIELD_MoveArm_LeftPosition)
+        var left_velocity = checkShadowinput(params.inputs.FIELD_MoveArm_LeftVelocity)
+        var right_position = checkShadowinput(params.inputs.FIELD_MoveArm_RightPosition)
+        var right_velocity = checkShadowinput(params.inputs.FIELD_MoveArm_RightVelocity)
+        var payload = '{"LeftArmPosition":'+left_position+',"RightArmPosition":'+right_position+',"LeftArmVelocity":'+left_velocity+',"RightArmVelocity":'+right_velocity+',"Units": "Position"}'
+        var endpoint = "arms/set"
+        //console.log(payload)
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+
+
+
       
       case type === "MoveHead":
-        //  = function (block) {
-        //   var pitch = block.getFieldValue("FIELD_MoveHead_Pitch") === "D" ? 5 : -5;
-        //   var velocity = parseInt(block.getFieldValue("FIELD_MoveHead_Velocity"));
-        //   var payload = null;
-        //   var endpoint = "head";
-        //   payload = {
-        //     "Pitch": pitch,		//-5 - 5
-        //     "Yaw": 0,											
-        //     "Roll": 0,
-        //     "Units": "position" 
-        //   };
-        //   var code = 'sendPostRequestToRobot("' + endpoint + '",'  + JSON.stringify(payload) + ");";
-        const MoveHead = forBlock["MoveHead"]
-        
-        console.log("Movehead")
-        //console.log(MoveHead)
+        var pitch = params.fields.FIELD_MoveHead_Pitch === "D" ? 5 : -5;
+        var velocity = parseInt(params.fields.FIELD_MoveHead_Velocity);
+        var endpoint = "head";
+        var payload = {
+          "Pitch": pitch,		//-5 - 5
+          "Yaw": 0,											
+          "Roll": 0,
+          "Units": "position" 
+        };
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+
         return ;
-        //};
+  
+      case type === "MoveHead3": 
+        var pitch, roll, yaw;
+        var endpoint = "head";
+        pitch = checkShadowinput(params.inputs.FIELD_MoveHead_Pitch)
+        roll = checkShadowinput(params.inputs.FIELD_MoveHead_Roll)
+        yaw = checkShadowinput(params.inputs.FIELD_MoveHead_Yaw)
+        var payload = '{"Pitch":'+pitch+',"Yaw":'+yaw+',"Roll":'+roll+',"Units": "degrees"}';
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return ;
+
+      case type === "DriveTime": 
+        var direction = params.fields.FFIELD_DriveTime_Direction;
+        var velocity = parseInt(params.fields.FFIELD_DriveTime_Velocity);
+        var time = parseInt(params.fields.FFIELD_DriveTime_TimeMs);		
+        var endpoint = "drive/time"		
+        var linearVelocity = direction === "F" ? velocity : -velocity;
+        var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":0,"TimeMs":'+time+'}';
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+        
+      case type === "DriveTime2": 
+      
+        var endpoint = "drive/time"	
+        var linearVelocity = checkShadowinput(params.inputs.FIELD_DriveTime_Velocity)
+        var angularVelocity = checkShadowinput(params.inputs.FIELD_DriveTime_Angular)
+        var time = checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs)
+        var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+'}';
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+      
+      case type == "Turn":
+        var direction = params.fields.FIELD_Turn_Direction;
+        var time = parseInt(params.fields.FIELD_Turn_Duration);		
+        var angularVelocity = 100;
+        var linearVelocity = 0;
+        var degree = direction === "L" ? 90 : -90;
+        var endpoint = "drive/time"
+        var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+      
+      case type = "Turn2":
+        var direction = params.fields.FIELD_Turn_Direction;
+        var time = checkShadowinput(params.inputs.FIELD_Turn_Duration)
+        var angularVelocity = 100;
+        var linearVelocity = 0;
+        var degree = direction === "L" ? 90 : -90;
+        var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
+        var endpoint = "drive/time"
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+      
       default:
-        return "Mixed case";
+        return "No case match";
     }
   };
 
