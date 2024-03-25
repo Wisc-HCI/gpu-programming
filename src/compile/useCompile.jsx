@@ -9,16 +9,16 @@ const useCompile = (props) => {
   const ip = useStore((state) => state.ip);
 
   // Fixed case-sensitive function call
-  const ifDo = (ip, IF0, DO0) => {
+  const ifDo = (IF0, DO0) => {
     const ifInput = getBlock(IF0);
     let doInput = getBlock(DO0);
     // Check if input is logically true
-    if (compile(ip, ifInput, ifInput.type)) {
+    if (compile(ifInput, ifInput.type)) {
       //if true, iteratively run blocks
-      compile(ip, doInput, doInput.type);
+      compile(doInput, doInput.type);
       while (doInput.next){
         doInput = getBlock(doInput.next);
-        compile(ip, doInput, doInput.type);
+        compile(doInput, doInput.type);
       }
     }
   };
@@ -27,7 +27,7 @@ const useCompile = (props) => {
     return BOOL; 
   };
 
-  function sendPostRequestToRobot(ip, endpoint,payload) {
+  function sendPostRequestToRobot(endpoint,payload) {
     fetch(`http://${ip}/api/${endpoint}`, {
       method: 'POST',
       headers: {
@@ -56,15 +56,15 @@ const useCompile = (props) => {
     return { red: r, green: g, blue: b };
   }
 
-  function checkShadowinput(ip, input){
+  function checkShadowinput(input){
     if (typeof input !== 'string'){
         return input.shadow.fields.NUM
     }
     else{
-      return compile(ip, getBlock(input))
+      return compile(getBlock(input))
     }
   }
-  const compile = (ip, params, type) => {
+  const compile = (params, type) => {
     console.log('compile')
     switch (true) {
       case type === 'controls_if':
@@ -72,7 +72,7 @@ const useCompile = (props) => {
           console.log('err: controls_if not complete!')
           return
         }
-        else{ifDo(ip, params.inputs.IF0, params.inputs.DO0);}
+        else{ifDo(params.inputs.IF0, params.inputs.DO0);}
         break; // Add break to prevent fall-through
       case type === 'logic_boolean':
         return logicBoolean(params.fields.BOOL);
@@ -89,22 +89,22 @@ const useCompile = (props) => {
         const logic_compare_A_params = getBlock(logic_compare_A_id)
         const logic_compare_B_params = getBlock(logic_compare_B_id)
         if(logic_compare_oprand ==="EQ"){
-          return (compile(ip, logic_compare_A_params, logic_compare_A_params.type) == compile(ip, logic_compare_B_params, logic_compare_B_params.type)) 
+          return (compile(logic_compare_A_params, logic_compare_A_params.type) == compile(logic_compare_B_params, logic_compare_B_params.type)) 
         }
         else if(logic_compare_oprand ==="NEQ"){
-          return (compile(ip, logic_compare_A_params, logic_compare_A_params.type) !== compile(ip, logic_compare_B_params, logic_compare_B_params.type)) 
+          return (compile(logic_compare_A_params, logic_compare_A_params.type) !== compile(logic_compare_B_params, logic_compare_B_params.type)) 
         }
         else if(logic_compare_oprand ==="LT"){
-          return (compile(ip, logic_compare_A_params, logic_compare_A_params.type) < compile(ip, logic_compare_B_params, logic_compare_B_params.type)) 
+          return (compile(logic_compare_A_params, logic_compare_A_params.type) < compile(logic_compare_B_params, logic_compare_B_params.type)) 
         }
         else if(logic_compare_oprand ==="LTE"){
-          return (compile(ip, logic_compare_A_params, logic_compare_A_params.type) <= compile(ip, logic_compare_B_params, logic_compare_B_params.type)) 
+          return (compile(logic_compare_A_params, logic_compare_A_params.type) <= compile(logic_compare_B_params, logic_compare_B_params.type)) 
         }
         else if(logic_compare_oprand ==="GT"){
-          return (compile(ip, logic_compare_A_params, logic_compare_A_params.type) > compile(ip, logic_compare_B_params, logic_compare_B_params.type)) 
+          return (compile(logic_compare_A_params, logic_compare_A_params.type) > compile(logic_compare_B_params, logic_compare_B_params.type)) 
         }
         else if(logic_compare_oprand ==="GTE"){
-          return (compile(ip, logic_compare_A_params, logic_compare_A_params.type) >= compile(ip, logic_compare_B_params, logic_compare_B_params.type)) 
+          return (compile(logic_compare_A_params, logic_compare_A_params.type) >= compile(logic_compare_B_params, logic_compare_B_params.type)) 
         }
 
       case type === "logic_operation":
@@ -118,12 +118,12 @@ const useCompile = (props) => {
         const logic_operation_A_params = getBlock(logic_operation_A_id)
         const logic_operation_B_params = getBlock(logic_operation_B_id)
         if(oprand === 'OR'){
-          return (compile(ip, logic_operation_A_params, logic_operation_A_params.type) || compile(ip, logic_operation_B_params, logic_operation_B_params.type))
+          return (compile(logic_operation_A_params, logic_operation_A_params.type) || compile(logic_operation_B_params, logic_operation_B_params.type))
           break;
         }
         else{
           //oprand is and
-          return (compile(ip, logic_operation_A_params, logic_operation_A_params.type) && compile(ip, logic_operation_B_params, logic_operation_B_params.type))
+          return (compile(logic_operation_A_params, logic_operation_A_params.type) && compile(logic_operation_B_params, logic_operation_B_params.type))
         }
         break
 
@@ -133,7 +133,7 @@ const useCompile = (props) => {
           return
         }
         const logic_negate_BOOL = getBlock(params.inputs.BOOL)
-        return !compile(ip, logic_negate_BOOL, logic_negate_BOOL.type)
+        return !compile(logic_negate_BOOL, logic_negate_BOOL.type)
 
       case type ===  "logic_boolean":
         if(!params.fields.BOOL === "FALSE"){
@@ -158,13 +158,13 @@ const useCompile = (props) => {
         const logic_ternary_IF_params = getBlock(logic_ternary_IF_id)
         const logic_ternary_THEN_params = getBlock(logic_ternary_THEN_id)
         const logic_ternary_ELSE_params = getBlock(logic_ternary_ELSE_id)
-        const logic_ternary_condition = compile(ip, logic_ternary_IF_params, logic_ternary_IF_params.type)
+        const logic_ternary_condition = compile(logic_ternary_IF_params, logic_ternary_IF_params.type)
         //if the condition is true
         if(logic_ternary_condition){
-          return compile(ip, logic_ternary_THEN_params, logic_ternary_THEN_params.type)
+          return compile(logic_ternary_THEN_params, logic_ternary_THEN_params.type)
         }
         else{
-          return compile(ip, logic_ternary_ELSE_params, logic_ternary_ELSE_params.type)
+          return compile(logic_ternary_ELSE_params, logic_ternary_ELSE_params.type)
         }
 
 /////////////////////////////////////////////LOGIC///////////////////////////////////////////////////////////////
@@ -183,7 +183,7 @@ const useCompile = (props) => {
         // } 
         // Tell the robot what to do based on the payload
         //console.log(input,payload)
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return ;
       
       case type === "DisplayImage":
@@ -194,7 +194,7 @@ const useCompile = (props) => {
           "FileName": filename,
           "Alpha": alpha
         };
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return ;
 
       case type === "MoveArm":
@@ -203,7 +203,7 @@ const useCompile = (props) => {
         var velocity = parseInt(params.fields.FIELD_MoveArm_Velocity);
         var endpoint = "arms"
         var payload = '{"Arm":'+"\""+arm+"\""+',"Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return;
       
       case type === "MoveArm2":  
@@ -211,18 +211,18 @@ const useCompile = (props) => {
         var velocity = parseInt(params.fields.FIELD_MoveArm2_Velocity);
         var endpoint = "arms"
         var payload = '{"Arm": "both", "Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return;
         
       case type === "MoveArms2":  
-        var left_position = checkShadowinput(ip, params.inputs.FIELD_MoveArm_LeftPosition)
-        var left_velocity = checkShadowinput(ip, params.inputs.FIELD_MoveArm_LeftVelocity)
-        var right_position = checkShadowinput(ip, params.inputs.FIELD_MoveArm_RightPosition)
-        var right_velocity = checkShadowinput(ip, params.inputs.FIELD_MoveArm_RightVelocity)
+        var left_position = checkShadowinput(params.inputs.FIELD_MoveArm_LeftPosition)
+        var left_velocity = checkShadowinput(params.inputs.FIELD_MoveArm_LeftVelocity)
+        var right_position = checkShadowinput(params.inputs.FIELD_MoveArm_RightPosition)
+        var right_velocity = checkShadowinput( params.inputs.FIELD_MoveArm_RightVelocity)
         var payload = '{"LeftArmPosition":'+left_position+',"RightArmPosition":'+right_position+',"LeftArmVelocity":'+left_velocity+',"RightArmVelocity":'+right_velocity+',"Units": "Position"}'
         var endpoint = "arms/set"
         //console.log(payload)
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return;
 
 
@@ -238,18 +238,18 @@ const useCompile = (props) => {
           "Roll": 0,
           "Units": "position" 
         };
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
 
         return ;
   
       case type === "MoveHead3": 
         var pitch, roll, yaw;
         var endpoint = "head";
-        pitch = checkShadowinput(ip, params.inputs.FIELD_MoveHead_Pitch)
-        roll = checkShadowinput(ip, params.inputs.FIELD_MoveHead_Roll)
-        yaw = checkShadowinput(ip, params.inputs.FIELD_MoveHead_Yaw)
+        pitch = checkShadowinput(params.inputs.FIELD_MoveHead_Pitch)
+        roll = checkShadowinput(params.inputs.FIELD_MoveHead_Roll)
+        yaw = checkShadowinput(params.inputs.FIELD_MoveHead_Yaw)
         var payload = '{"Pitch":'+pitch+',"Yaw":'+yaw+',"Roll":'+roll+',"Units": "degrees"}';
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return ;
 
       case type === "DriveTime": 
@@ -259,17 +259,17 @@ const useCompile = (props) => {
         var endpoint = "drive/time"		
         var linearVelocity = direction === "F" ? velocity : -velocity;
         var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":0,"TimeMs":'+time+'}';
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return;
         
       case type === "DriveTime2": 
       
         var endpoint = "drive/time"	
-        var linearVelocity = checkShadowinput(ip, params.inputs.FIELD_DriveTime_Velocity)
-        var angularVelocity = checkShadowinput(ip, params.inputs.FIELD_DriveTime_Angular)
-        var time = checkShadowinput(ip, params.inputs.FIELD_DriveTime_TimeMs)
+        var linearVelocity = checkShadowinput(params.inputs.FIELD_DriveTime_Velocity)
+        var angularVelocity = checkShadowinput(params.inputs.FIELD_DriveTime_Angular)
+        var time = checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs)
         var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+'}';
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return;
       
       case type == "Turn":
@@ -280,18 +280,18 @@ const useCompile = (props) => {
         var degree = direction === "L" ? 90 : -90;
         var endpoint = "drive/time"
         var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return;
       
       case type = "Turn2":
         var direction = params.fields.FIELD_Turn_Direction;
-        var time = checkShadowinput(ip, params.inputs.FIELD_Turn_Duration)
+        var time = checkShadowinput(params.inputs.FIELD_Turn_Duration)
         var angularVelocity = 100;
         var linearVelocity = 0;
         var degree = direction === "L" ? 90 : -90;
         var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
         var endpoint = "drive/time"
-        sendPostRequestToRobot(ip, endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return;
       
       default:

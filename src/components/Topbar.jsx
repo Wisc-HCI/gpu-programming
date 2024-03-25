@@ -40,7 +40,7 @@ export default function TopBar(props){
       while(currParam.next){
         currParam = getBlock(currParam.next)
         console.log(currParam)
-        compile(ip, currParam, currParam.type)
+        compile(currParam, currParam.type)
         currParam = currParam.next
       }
       
