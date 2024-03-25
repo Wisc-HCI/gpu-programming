@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/gpu-programming/static/css/main.f855e6bc.css",
-    "main.js": "/gpu-programming/static/js/main.b2a4601e.js",
+    "main.css": "/gpu-programming/static/css/main.00264c49.css",
+    "main.js": "/gpu-programming/static/js/main.99719dad.js",
     "static/js/787.578359c5.chunk.js": "/gpu-programming/static/js/787.578359c5.chunk.js",
     "index.html": "/gpu-programming/index.html",
-    "main.f855e6bc.css.map": "/gpu-programming/static/css/main.f855e6bc.css.map",
-    "main.b2a4601e.js.map": "/gpu-programming/static/js/main.b2a4601e.js.map",
+    "main.00264c49.css.map": "/gpu-programming/static/css/main.00264c49.css.map",
+    "main.99719dad.js.map": "/gpu-programming/static/js/main.99719dad.js.map",
     "787.578359c5.chunk.js.map": "/gpu-programming/static/js/787.578359c5.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.b2a4601e.js"
+    "static/css/main.00264c49.css",
+    "static/js/main.99719dad.js"
   ]
 }
