@@ -68,49 +68,8 @@ export const toolbox = {
                 },
               },
             },
-          },
-          {
-            'kind': 'block',
-            'type': 'controls_whileUntil',
-          },
-          {
-            'kind': 'block',
-            'type': 'controls_for',
-            'inputs': {
-              'FROM': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 1,
-                  },
-                },
-              },
-              'TO': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 10,
-                  },
-                },
-              },
-              'BY': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 1,
-                  },
-                },
-              },
-            },
-          },
-          {
-            'kind': 'block',
-            'type': 'controls_forEach',
-          },
-          {
-            'kind': 'block',
-            'type': 'controls_flow_statements',
-          },
+          }
+          
         ],
       },
       {
@@ -125,60 +84,8 @@ export const toolbox = {
               'NUM': 123,
             },
           },
-          {
-            'kind': 'block',
-            'type': 'math_arithmetic',
-            'inputs': {
-              'A': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 1,
-                  },
-                },
-              },
-              'B': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 1,
-                  },
-                },
-              },
-            },
-          },
-          {
-            'kind': 'block',
-            'type': 'math_single',
-            'inputs': {
-              'NUM': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 9,
-                  },
-                },
-              },
-            },
-          },
-          {
-            'kind': 'block',
-            'type': 'math_trig',
-            'inputs': {
-              'NUM': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 45,
-                  },
-                },
-              },
-            },
-          },
-          {
-            'kind': 'block',
-            'type': 'math_constant',
-          },
+          
+        
           {
             'kind': 'block',
             'type': 'math_number_property',
@@ -193,82 +100,8 @@ export const toolbox = {
               },
             },
           },
-          {
-            'kind': 'block',
-            'type': 'math_round',
-            'fields': {
-              'OP': 'ROUND',
-            },
-            'inputs': {
-              'NUM': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 3.1,
-                  },
-                },
-              },
-            },
-          },
-          {
-            'kind': 'block',
-            'type': 'math_on_list',
-            'fields': {
-              'OP': 'SUM',
-            },
-          },
-          {
-            'kind': 'block',
-            'type': 'math_modulo',
-            'inputs': {
-              'DIVIDEND': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 64,
-                  },
-                },
-              },
-              'DIVISOR': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 10,
-                  },
-                },
-              },
-            },
-          },
-          {
-            'kind': 'block',
-            'type': 'math_constrain',
-            'inputs': {
-              'VALUE': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 50,
-                  },
-                },
-              },
-              'LOW': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 1,
-                  },
-                },
-              },
-              'HIGH': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 100,
-                  },
-                },
-              },
-            },
-          },
+        
+          
           {
             'kind': 'block',
             'type': 'math_random_int',
@@ -291,32 +124,8 @@ export const toolbox = {
               },
             },
           },
-          {
-            'kind': 'block',
-            'type': 'math_random_float',
-          },
-          {
-            'kind': 'block',
-            'type': 'math_atan2',
-            'inputs': {
-              'X': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 1,
-                  },
-                },
-              },
-              'Y': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 1,
-                  },
-                },
-              },
-            },
-          },
+        
+          
         ],
       },
       {
@@ -327,39 +136,7 @@ export const toolbox = {
           {
             'kind': 'block',
             'type': 'text',
-          },
-          {
-            'kind': 'block',
-            'type': 'text_multiline',
-          },
-          {
-            'kind': 'block',
-            'type': 'text_join',
-          },
-
-          
-          {
-            'kind': 'block',
-            'type': 'add_text',
-            'inputs': {
-              'TEXT': {
-                'shadow': {
-                  'type': 'text',
-                  'fields': {
-                    'TEXT': 'abc',
-                  },
-                },
-              },
-              'COLOR': {
-                'shadow': {
-                  'type': 'colour_picker',
-                  'fields': {
-                    'COLOUR': '#aa00cc',
-                  },
-                },
-              },
-            },
-          },
+          }
         ],
       },
       {

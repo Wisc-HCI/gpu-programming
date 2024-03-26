@@ -183,6 +183,7 @@ const useCompile = (props) => {
         // } 
         // Tell the robot what to do based on the payload
         //console.log(input,payload)
+        console.log(payload)
         sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return ;
       
