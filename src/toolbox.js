@@ -48,6 +48,7 @@ export const toolbox = {
             'kind': 'block',
             'type': 'logic_ternary',
           },
+          
         ],
       },
       {
@@ -68,7 +69,11 @@ export const toolbox = {
                 },
               },
             },
-          }
+          },
+          {
+            'kind': 'block',
+            'type': 'Test',
+          },
           
         ],
       },

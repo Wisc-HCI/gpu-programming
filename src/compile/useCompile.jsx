@@ -27,6 +27,12 @@ const useCompile = (props) => {
     return BOOL; 
   };
 
+  function getRandomInt(min, max) {
+    min = Math.ceil(min); // Ensure min is a ceil value so it's included in the range
+    max = Math.floor(max); // Ensure max is a floor value so it's included in the range
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   function sendPostRequestToRobot(endpoint,payload) {
     fetch(`http://${ip}/api/${endpoint}`, {
       method: 'POST',
@@ -67,6 +73,10 @@ const useCompile = (props) => {
   const compile = (params, type) => {
     console.log('compile')
     switch (true) {
+      case type === 'Test':
+        console.log('test block runs')
+        return
+
       case type === 'controls_if':
         if(!params.inputs||!params.inputs.IF0 ||!params.inputs.DO0){
           console.log('err: controls_if not complete!')
@@ -168,6 +178,38 @@ const useCompile = (props) => {
         }
 
 /////////////////////////////////////////////LOGIC///////////////////////////////////////////////////////////////
+      
+      case type === "controls_repeat_ext":
+        const controls_repeat_ext_TIMES = checkShadowinput(params.inputs.TIMES)
+        if(!params.inputs.DO){
+          console.log('err: controls_repeat_ext is not complete!')
+          return
+        }
+        const controls_repeat_ext_DO_params = getBlock(params.inputs.DO)
+        for (let i = 0; i < controls_repeat_ext_TIMES; i++) {
+          compile(controls_repeat_ext_DO_params,controls_repeat_ext_DO_params.type)
+        }
+        
+        return
+
+/////////////////////////////////////////////LOOP////////////////////////////////////////////////////////////////
+
+      case type === "math_number":
+        return params.fields.NUM
+      
+      case type === "math_number_property":
+        const math_number_property_PROPERTY = params.fields.PROPERTY
+        const math_number_property_NUMBER_TO_CHECK = checkShadowinput(params.inputs.NUMBER_TO_CHECK)
+        //TODO: implement this block
+        return
+
+      case type === "math_random_int":
+        const math_random_int_FROM = checkShadowinput(params.inputs.FROM)
+        const math_random_int_TO = checkShadowinput(params.inputs.TO)
+        return  getRandomInt(math_random_int_FROM, math_random_int_TO);
+
+
+/////////////////////////////////////////////MATH////////////////////////////////////////////////////////////////
       case type === "ChangeLED":
 
         // Declare list of arguments the block will use, if any

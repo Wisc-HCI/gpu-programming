@@ -344,6 +344,16 @@ Blockly.Blocks["Turn2"] = {
   }
 };
 
+Blockly.Blocks['Test'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField('Test');
+    this.setColour(230);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+  }
+};
+
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.
 // This file has no side effects!
