@@ -1,6 +1,5 @@
 import React from 'react';
 import * as Blockly from 'blockly';
-import {Scene} from 'robot-scene';
 import './App.css'; // Assuming index.css is renamed to App.css
 
 // Import custom blocks and generators
@@ -10,10 +9,9 @@ import { javascriptGenerator } from 'blockly/javascript';
 import './index.css';
 import TopBar from './components/Topbar';
 import BlocklyInterface from './components/Blockly-interface';
+import urdf from "./Misty-Robot/misty.xacro?raw";
 
 import { styled } from '@mui/material/styles';
-// import Grid from '@mui/material/Grid';
-// import { Box, Stack } from '@mui/material';
 
 import {
   ReflexContainer,
@@ -23,6 +21,8 @@ import {
 
 import 'react-reflex/styles.css';
 import { Box } from '@mui/material';
+import useStore from './Store.js';
+import Simulator from './components/Simulator.jsx';
 
 const Item = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -33,6 +33,8 @@ const Item = styled('div')(({ theme }) => ({
 Blockly.common.defineBlocks(blocks);
 Object.assign(javascriptGenerator.forBlock, forBlock);
 function App() {
+  const loadFromURDF = useStore((state) => state.loadFromURDF);
+  loadFromURDF(urdf);
 
   return (
     <Box height={"94vh"} padding={0}>
@@ -57,7 +59,7 @@ function App() {
           <ReflexContainer orientation='horizontal'>
             <ReflexElement>
               <Item>
-                <Scene/>
+                <Simulator />
               </Item>
             </ReflexElement>
             
