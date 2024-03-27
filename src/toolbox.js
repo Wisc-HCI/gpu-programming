@@ -240,7 +240,27 @@ export const toolbox = {
         'categorystyle': 'list_category',
         'contents': [
           
-          
+          {
+            'kind': 'block',
+            'type': 'Speak',
+          },
+          {
+            'kind': 'block',
+            'type': 'TurnOnFlashlight',
+          },
+          {
+            'kind': 'block',
+            'type': 'TurnOffFlashlight',
+          },
+          {
+            'kind': 'block',
+            'type': 'PlayAudio',
+          },
+          {
+            'kind': 'block',
+            'type': 'DisplayText',
+          },
+
           // {
           //   'kind': 'block',
           //   'type': 'lists_length',

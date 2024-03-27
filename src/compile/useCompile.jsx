@@ -188,8 +188,7 @@ const useCompile = (props) => {
         const controls_repeat_ext_DO_params = getBlock(params.inputs.DO)
         for (let i = 0; i < controls_repeat_ext_TIMES; i++) {
           compile(controls_repeat_ext_DO_params,controls_repeat_ext_DO_params.type)
-        }
-        
+        }   
         return
 
 /////////////////////////////////////////////LOOP////////////////////////////////////////////////////////////////
@@ -200,6 +199,11 @@ const useCompile = (props) => {
       case type === "math_number_property":
         const math_number_property_PROPERTY = params.fields.PROPERTY
         const math_number_property_NUMBER_TO_CHECK = checkShadowinput(params.inputs.NUMBER_TO_CHECK)
+        if(math_number_property_PROPERTY === "EVEN"){
+          return math_number_property_PROPERTY % 2 === 0
+        } else if(math_number_property_PROPERTY === "ODD"){
+          return math_number_property_PROPERTY % 2 === 1
+        }
         //TODO: implement this block
         return
 
@@ -210,6 +214,26 @@ const useCompile = (props) => {
 
 
 /////////////////////////////////////////////MATH////////////////////////////////////////////////////////////////
+
+      case type === "colour_picker":
+        return params.fields.COLOUR
+
+      case type === "colour_random":
+        //TODO: implement a random color
+        return
+      
+      case type === "colour_rgb":
+        const colour_rgb_RED = checkShadowinput(params.inputs.RED)
+        const colour_rgb_GREEN = checkShadowinput(params.inputs.GREEN)
+        const colour_rgb_BLUE = checkShadowinput(params.inputs.BLUE)
+        return { red: colour_rgb_RED, green: colour_rgb_GREEN, blue: colour_rgb_BLUE };
+          
+      case type === "colour_blend":
+        //TODO: implement blending color
+        return 
+
+
+/////////////////////////////////////////////Color///////////////////////////////////////////////////////////////
       case type === "ChangeLED":
 
         // Declare list of arguments the block will use, if any

@@ -353,6 +353,59 @@ Blockly.Blocks['Test'] = {
     this.setNextStatement(true, null);
   }
 };
+Blockly.Blocks["Speak"] = {
+  init: function () {
+    this.setColour('260');
+    this.appendDummyInput()
+      .appendField("Speak: ")
+      .appendField(new Blockly.FieldTextInput("default"), "FIELD_Speak_Filename");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Speak given input text");
+  }
+};
+Blockly.Blocks["TurnOnFlashlight"] = {
+  init: function () {
+    this.setColour('260');
+    this.appendDummyInput()
+      .appendField("Turn on Flashlight ")
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Turn on Flashlight");
+  }
+};
+Blockly.Blocks["TurnOffFlashlight"] = {
+  init: function () {
+    this.setColour('260');
+    this.appendDummyInput()
+      .appendField("Turn off Flashlight ")
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Turn off Flashlight");
+  }
+};
+Blockly.Blocks["PlayAudio"] = {
+  init: function () {
+    this.setColour('260');
+    this.appendDummyInput()
+      .appendField("Play audio: ")
+      .appendField(new Blockly.FieldTextInput("default"), "FIELD_PlayAudio_Filename");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("");
+  }
+};
+Blockly.Blocks["DisplayText"] = {
+  init: function () {
+    this.setColour('260');
+    this.appendDummyInput()
+      .appendField("Display Text: ")
+      .appendField(new Blockly.FieldTextInput("default"), "FIELD_DisplayText_Filename");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("");
+  }
+};
 
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.
