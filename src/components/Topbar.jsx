@@ -16,8 +16,28 @@ export default function TopBar(props){
 
     const confirmIpAddress =()=> {
       setIp(inputVal)
-      // alert user with the entered IP address
-      alert("Confirmed IP Address: " + inputVal);
+      fetch(`http://${ip}/api/battery`, {
+        method: 'GET'
+        }).then(res => {
+          if (!res.ok) {
+            // If the response status code is not in the 200-299 range,
+            throw new Error(`Request failed with status ${res.status}`);
+          }
+          return res.json();
+        })
+        .then(json => {
+          console.log(`Successfully sent a GET request, the response is: ${json}`);
+        })
+        .catch(error => {
+          // Handle the error
+          console.error('Error during fetch operation:', error.message);
+          alert(`Error fetching data: ${error.message}`);
+        })
+        .finally(() => {
+          alert("Confirmed IP Address: " + inputVal);
+        });
+
+      
     }
 
     const topbarStyle = {

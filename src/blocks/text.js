@@ -353,6 +353,7 @@ Blockly.Blocks['Test'] = {
     this.setNextStatement(true, null);
   }
 };
+
 Blockly.Blocks["Speak"] = {
   init: function () {
     this.setColour('260');
@@ -364,6 +365,7 @@ Blockly.Blocks["Speak"] = {
     this.setTooltip("Speak given input text");
   }
 };
+
 Blockly.Blocks["TurnOnFlashlight"] = {
   init: function () {
     this.setColour('260');
@@ -374,6 +376,7 @@ Blockly.Blocks["TurnOnFlashlight"] = {
     this.setTooltip("Turn on flashlight");
   }
 };
+
 Blockly.Blocks["TurnOffFlashlight"] = {
   init: function () {
     this.setColour('260');
@@ -384,6 +387,7 @@ Blockly.Blocks["TurnOffFlashlight"] = {
     this.setTooltip("Turn off flashlight");
   }
 };
+
 Blockly.Blocks["PlayAudio"] = {
   init: function () {
     this.setColour('260');
@@ -395,6 +399,7 @@ Blockly.Blocks["PlayAudio"] = {
     this.setTooltip("");
   }
 };
+
 Blockly.Blocks["DisplayText"] = {
   init: function () {
     this.setColour('260');
