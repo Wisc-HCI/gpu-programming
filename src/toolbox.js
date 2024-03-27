@@ -239,11 +239,63 @@ export const toolbox = {
         'name': 'Misty', //replace Lists with Misty
         'categorystyle': 'list_category',
         'contents': [
-          
           {
-            'kind': 'block',
-            'type': 'Speak',
+            "kind": "category",
+            "name": "Movement",
+            'categorystyle': 'list_category',
+            "contents": [
+              {
+                'kind': 'block',
+                'type': 'DriveTime',
+              },
+              {
+                'kind': 'block',
+                'type': 'DriveTime2',
+              },
+              {
+                'kind': 'block',
+                'type': 'Turn', 
+              },   
+              {
+                'kind': 'block',
+                'type': 'Turn2',
+              },
+              {
+                'kind': 'block',
+                'type': 'MoveHead',
+              },
+              {
+                'kind': 'block',
+                'type': 'MoveHead3',
+              },
+              {
+                'kind': 'block',
+                'type': 'MoveArm',
+              },
+              {
+                'kind': 'block',
+                'type': 'MoveArm2',
+              },
+              {
+                'kind': 'block',
+                'type': 'MoveArms2',
+              },
+              
+            ]
           },
+          {
+            "kind": "category",
+            "name": "Speech",
+            'categorystyle': 'list_category',
+            "contents": [
+              {
+                'kind': 'block',
+                'type': 'Speak',
+              },
+            ]
+          },
+          
+          
           {
             'kind': 'block',
             'type': 'TurnOnFlashlight',
@@ -260,11 +312,6 @@ export const toolbox = {
             'kind': 'block',
             'type': 'DisplayText',
           },
-
-          // {
-          //   'kind': 'block',
-          //   'type': 'lists_length',
-          // },
           {
             'kind': 'block',
             'type': 'ChangeLED',
@@ -273,50 +320,9 @@ export const toolbox = {
             'kind': 'block',
             'type': 'DisplayImage',
           },
-          {
-            'kind': 'block',
-            'type': 'MoveArm',
-          },
-          {
-            'kind': 'block',
-            'type': 'MoveArm2',
-          },
-          // {
-          //   'kind': 'block',
-          //   'type': 'MoveArms',
-          // },
-          {
-            'kind': 'block',
-            'type': 'MoveArms2',
-          },
-          {
-            'kind': 'block',
-            'type': 'MoveHead',
-          },
-          // {
-          //   'kind': 'block',
-          //   'type': 'MoveHead2',
-          // },
-          {
-            'kind': 'block',
-            'type': 'MoveHead3',
-          },
-          {
-            'kind': 'block',
-            'type': 'DriveTime',
-          },
-          {
-            'kind': 'block',
-            'type': 'DriveTime2',
-          },
-          {
-            'kind': 'block',
-            'type': 'Turn', 
-          },   
-          {
-            'kind': 'block',
-            'type': 'Turn2',
-          },
+          
+          
+          
         ],
       },
     ],

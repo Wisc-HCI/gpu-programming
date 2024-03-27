@@ -368,20 +368,20 @@ Blockly.Blocks["TurnOnFlashlight"] = {
   init: function () {
     this.setColour('260');
     this.appendDummyInput()
-      .appendField("Turn on Flashlight ")
+      .appendField("Turn on flashlight ")
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip("Turn on Flashlight");
+    this.setTooltip("Turn on flashlight");
   }
 };
 Blockly.Blocks["TurnOffFlashlight"] = {
   init: function () {
     this.setColour('260');
     this.appendDummyInput()
-      .appendField("Turn off Flashlight ")
+      .appendField("Turn off flashlight ")
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip("Turn off Flashlight");
+    this.setTooltip("Turn off flashlight");
   }
 };
 Blockly.Blocks["PlayAudio"] = {
