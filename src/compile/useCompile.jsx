@@ -317,6 +317,43 @@ const useCompile = (props) => {
         };
         sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return ;
+        
+      case type === "PlayAudio":
+        var endpoint = "audio/play"
+        var filename = params.fields.FIELD_PlayAudio_Filename;
+        var payload = {
+          "FileName": filename,
+        };
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+        
+
+      case type === "DisplayText":
+        var endpoint = "text/display"
+        var text = params.fields.FIELD_DisplayText_Text;
+        var payload = {
+          "Text": text
+        };
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+        
+      
+      case type === "TurnOnFlashlight":
+        var endpoint = "flashlight"
+        var payload = {
+          "On": true
+        }
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+      
+      
+      case type === "TurnOffFlashlight":
+        var endpoint = "flashlight"
+        var payload = {
+          "On": false
+        }
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
 
       case type === "MoveArm":
         var arm = params.fields.FIELD_MoveArm_Arm === "Right" ? "Right" : "Left";
@@ -414,7 +451,16 @@ const useCompile = (props) => {
         var endpoint = "drive/time"
         sendPostRequestToRobot(endpoint,JSON.stringify(payload));
         return;
-      
+
+      case type = "Speak":
+        var endpoint = "tts/speak"
+        var text = params.fields.FIELD_Speak_Text;
+        var payload = {
+          "Text": `<speak>${text}</speak>`
+        };
+        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        return;
+
       default:
         return "No case match";
     }

@@ -359,7 +359,7 @@ Blockly.Blocks["Speak"] = {
     this.setColour('260');
     this.appendDummyInput()
       .appendField("Speak: ")
-      .appendField(new Blockly.FieldTextInput("default"), "FIELD_Speak_Filename");
+      .appendField(new Blockly.FieldTextInput("default"), "FIELD_Speak_Text");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Speak given input text");
@@ -405,7 +405,7 @@ Blockly.Blocks["DisplayText"] = {
     this.setColour('260');
     this.appendDummyInput()
       .appendField("Display Text: ")
-      .appendField(new Blockly.FieldTextInput("default"), "FIELD_DisplayText_Filename");
+      .appendField(new Blockly.FieldTextInput("default"), "FIELD_DisplayText_Text");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("");

@@ -298,11 +298,11 @@ export const toolbox = {
           
           {
             'kind': 'block',
-            'type': 'TurnOnFlashlight',
+            'type': 'ChangeLED',
           },
           {
             'kind': 'block',
-            'type': 'TurnOffFlashlight',
+            'type': 'DisplayImage',
           },
           {
             'kind': 'block',
@@ -314,11 +314,11 @@ export const toolbox = {
           },
           {
             'kind': 'block',
-            'type': 'ChangeLED',
+            'type': 'TurnOnFlashlight',
           },
           {
             'kind': 'block',
-            'type': 'DisplayImage',
+            'type': 'TurnOffFlashlight',
           },
           
           
