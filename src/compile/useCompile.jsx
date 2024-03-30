@@ -61,6 +61,17 @@ const useCompile = (props) => {
     // Return the result as an object
     return { red: r, green: g, blue: b };
   }
+  function isPrime(num) {
+    if (num == 2 || num == 3)
+      return true;
+    if (num <= 1 || num % 2 == 0 || num % 3 == 0)
+      return false;  
+    for (let i = 5; i * i <= num ; i+=6) {
+      if (num % i == 0 || num % (i + 2) == 0)
+        return false;
+    }
+    return true;
+  }
 
   function checkShadowinput(input){
     if (typeof input !== 'string'){
@@ -70,6 +81,7 @@ const useCompile = (props) => {
       return compile(getBlock(input))
     }
   }
+
   const compile = (params, type) => {
     console.log('compile')
     switch (true) {
@@ -79,17 +91,19 @@ const useCompile = (props) => {
 
       case type === 'controls_if':
         if(!params.inputs||!params.inputs.IF0 ||!params.inputs.DO0){
-          console.log('err: controls_if not complete!')
+          alert('err: controls_if not complete!')
           return
         }
         else{ifDo(params.inputs.IF0, params.inputs.DO0);}
-        break; // Add break to prevent fall-through
+        break; 
+
+
       case type === 'logic_boolean':
         return logicBoolean(params.fields.BOOL);
         
       case type === "logic_compare":
         if(!params.inputs||!params.inputs.A ||!params.inputs.B){
-          console.log('err: logic_compare is not complete!')
+          alert('err: logic_compare is not complete!')
           return
         }
         //get the two input and see if they are logically equal
@@ -119,7 +133,7 @@ const useCompile = (props) => {
 
       case type === "logic_operation":
         if(!params.inputs||!params.inputs.A ||!params.inputs.B){
-          console.log('err: logic_operation is not complete!')
+          alert('err: logic_operation is not complete!')
           return
         }
         const oprand = params.fields.OP
@@ -129,17 +143,15 @@ const useCompile = (props) => {
         const logic_operation_B_params = getBlock(logic_operation_B_id)
         if(oprand === 'OR'){
           return (compile(logic_operation_A_params, logic_operation_A_params.type) || compile(logic_operation_B_params, logic_operation_B_params.type))
-          break;
         }
         else{
           //oprand is and
           return (compile(logic_operation_A_params, logic_operation_A_params.type) && compile(logic_operation_B_params, logic_operation_B_params.type))
         }
-        break
 
       case type === "logic_negate":
         if(!params.inputs){
-          console.log('err: logic_negate is not complete!')
+          alert('err: logic_negate is not complete!')
           return
         }
         const logic_negate_BOOL = getBlock(params.inputs.BOOL)
@@ -159,7 +171,7 @@ const useCompile = (props) => {
 
       case type === "logic_ternary":
         if(!params.inputs||!params.inputs.IF ||!params.inputs.THEN ||!params.inputs.ELSE){
-          console.log('err: logic_ternary is not complete!')
+          alert('err: logic_ternary is not complete!')
           return
         }
         const logic_ternary_IF_id = params.inputs.IF 
@@ -182,12 +194,16 @@ const useCompile = (props) => {
       case type === "controls_repeat_ext":
         const controls_repeat_ext_TIMES = checkShadowinput(params.inputs.TIMES)
         if(!params.inputs.DO){
-          console.log('err: controls_repeat_ext is not complete!')
+          alert('err: controls_repeat_ext is not complete!')
           return
         }
-        const controls_repeat_ext_DO_params = getBlock(params.inputs.DO)
+        let controls_repeat_ext_DO_params = getBlock(params.inputs.DO)
         for (let i = 0; i < controls_repeat_ext_TIMES; i++) {
           compile(controls_repeat_ext_DO_params,controls_repeat_ext_DO_params.type)
+          while (controls_repeat_ext_DO_params.next){
+            controls_repeat_ext_DO_params = getBlock(controls_repeat_ext_DO_params.next);
+            compile(controls_repeat_ext_DO_params, controls_repeat_ext_DO_params.type);
+          }
         }   
         return
 
@@ -200,11 +216,32 @@ const useCompile = (props) => {
         const math_number_property_PROPERTY = params.fields.PROPERTY
         const math_number_property_NUMBER_TO_CHECK = checkShadowinput(params.inputs.NUMBER_TO_CHECK)
         if(math_number_property_PROPERTY === "EVEN"){
-          return math_number_property_PROPERTY % 2 === 0
-        } else if(math_number_property_PROPERTY === "ODD"){
-          return math_number_property_PROPERTY % 2 === 1
+          //check if the number is even
+          return math_number_property_NUMBER_TO_CHECK % 2 === 0
+        }else if(math_number_property_PROPERTY === "ODD"){
+          //check if the number is odd
+          return math_number_property_NUMBER_TO_CHECK % 2 === 1
+        }else if(math_number_property_PROPERTY === "PRIME"){
+          //check if the number is prime number
+          return isPrime(math_number_property_NUMBER_TO_CHECK)
+        }else if(math_number_property_PROPERTY === "WHOLE"){
+          //check if the number is whole number
+          return math_number_property_NUMBER_TO_CHECK % 1 === 0;
+        }else if(math_number_property_PROPERTY === "POSITIVE"){
+          return math_number_property_NUMBER_TO_CHECK > 0
+        }else if(math_number_property_PROPERTY === "NEGATIVE"){
+          return math_number_property_NUMBER_TO_CHECK < 0
+        }else if(math_number_property_PROPERTY === "DIVISIBLE_BY"){
+          if(!params.inputs||!params.inputs.DIVISOR){
+            alert('err: DIVISOR is not filled!')
+            return
+          }else if(params.inputs.DIVISOR === 0){
+            alert('Note that divisor cannot be 0!')
+            return
+          }else{
+            return math_number_property_NUMBER_TO_CHECK % params.inputs.DIVISOR === 0 
+          } 
         }
-        //TODO: implement this block
         return
 
       case type === "math_random_int":
@@ -216,11 +253,13 @@ const useCompile = (props) => {
 /////////////////////////////////////////////MATH////////////////////////////////////////////////////////////////
 
       case type === "colour_picker":
-        return params.fields.COLOUR
+        return hexToRgb(params.fields.COLOUR)
 
       case type === "colour_random":
-        //TODO: implement a random color
-        return
+        let r = getRandomInt(0,255)
+        let g = getRandomInt(0,255)
+        let b = getRandomInt(0,255)
+        return { red: r, green: g, blue: b };
       
       case type === "colour_rgb":
         const colour_rgb_RED = checkShadowinput(params.inputs.RED)
@@ -229,8 +268,23 @@ const useCompile = (props) => {
         return { red: colour_rgb_RED, green: colour_rgb_GREEN, blue: colour_rgb_BLUE };
           
       case type === "colour_blend":
-        //TODO: implement blending color
-        return 
+        const colour_blend_RATIO = checkShadowinput(params.inputs.RATIO)
+        const colour_blend_COLOUR1 = hexToRgb(params.inputs.COLOUR1.shadow.fields.COLOUR)
+        const colour_blend_COLOUR2 = hexToRgb(params.inputs.COLOUR2.shadow.fields.COLOUR)
+        const colour_blend_COLOR1_r = colour_blend_COLOUR1.r * colour_blend_RATIO
+        const colour_blend_COLOR1_g = colour_blend_COLOUR1.g * colour_blend_RATIO
+        const colour_blend_COLOR1_b = colour_blend_COLOUR1.b * colour_blend_RATIO
+
+        const colour_blend_COLOR2_r = colour_blend_COLOUR2.r
+        const colour_blend_COLOR2_g = colour_blend_COLOUR2.g
+        const colour_blend_COLOR2_b = colour_blend_COLOUR2.b
+
+        const new_r = (colour_blend_COLOR2_r + colour_blend_COLOR1_r)/(colour_blend_RATIO + 1)
+        const new_g = (colour_blend_COLOR2_g + colour_blend_COLOR1_g)/(colour_blend_RATIO + 1)
+        const new_b = (colour_blend_COLOR2_b + colour_blend_COLOR1_b)/(colour_blend_RATIO + 1)
+
+
+        return { red: new_r, green: new_g, blue: new_b };
 
 
 /////////////////////////////////////////////Color///////////////////////////////////////////////////////////////
