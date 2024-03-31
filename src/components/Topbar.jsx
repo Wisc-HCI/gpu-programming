@@ -27,16 +27,14 @@ export default function TopBar(props){
         })
         .then(json => {
           console.log(`Successfully sent a GET request, the response is: ${json}`);
+          alert("Confirmed IP Address: " + inputVal);
         })
         .catch(error => {
           // Handle the error
           console.error('Error during fetch operation:', error.message);
           alert(`Error fetching data: ${error.message}`);
         })
-        .finally(() => {
-          alert("Confirmed IP Address: " + inputVal);
-        });
-
+      
       
     }
 
