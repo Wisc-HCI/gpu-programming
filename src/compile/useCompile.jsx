@@ -304,7 +304,7 @@ const useCompile = (props) => {
         // Tell the robot what to do based on the payload
         //console.log(input,payload)
         console.log(payload)
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,payload);
         return ;
       
       case type === "DisplayImage":
@@ -315,7 +315,7 @@ const useCompile = (props) => {
           "FileName": filename,
           "Alpha": alpha
         };
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,payload);
         return ;
         
       case type === "PlayAudio":
@@ -324,7 +324,7 @@ const useCompile = (props) => {
         var payload = {
           "FileName": filename,
         };
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,payload);
         return;
         
 
@@ -334,7 +334,7 @@ const useCompile = (props) => {
         var payload = {
           "Text": text
         };
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,payload);
         return;
         
       
@@ -343,7 +343,7 @@ const useCompile = (props) => {
         var payload = {
           "On": true
         }
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,payload);
         return;
       
       
@@ -352,7 +352,7 @@ const useCompile = (props) => {
         var payload = {
           "On": false
         }
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,payload);
         return;
 
       case type === "MoveArm":
@@ -360,16 +360,26 @@ const useCompile = (props) => {
         var position = parseInt(params.fields.FIELD_MoveArm_Position);
         var velocity = parseInt(params.fields.FIELD_MoveArm_Velocity);
         var endpoint = "arms"
-        var payload = '{"Arm":'+"\""+arm+"\""+',"Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        var payload = {
+          Arm: arm,
+          Position: position,
+          Velocity: velocity,
+          Units: "Position"
+        }
+        sendPostRequestToRobot(endpoint,payload);
         return;
       
       case type === "MoveArm2":  
         var position = parseInt(params.fields.FIELD_MoveArm2_Position);
         var velocity = parseInt(params.fields.FIELD_MoveArm2_Velocity);
         var endpoint = "arms"
-        var payload = '{"Arm": "both", "Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        var payload = {
+          Arm: both, 
+          Position: position,
+          Velocity: velocity,
+          Units: "Position"
+        };
+        sendPostRequestToRobot(endpoint,payload);
         return;
         
       case type === "MoveArms2":  
@@ -377,10 +387,16 @@ const useCompile = (props) => {
         var left_velocity = checkShadowinput(params.inputs.FIELD_MoveArm_LeftVelocity)
         var right_position = checkShadowinput(params.inputs.FIELD_MoveArm_RightPosition)
         var right_velocity = checkShadowinput( params.inputs.FIELD_MoveArm_RightVelocity)
-        var payload = '{"LeftArmPosition":'+left_position+',"RightArmPosition":'+right_position+',"LeftArmVelocity":'+left_velocity+',"RightArmVelocity":'+right_velocity+',"Units": "Position"}'
+        var payload = {
+          LeftArmPosition: left_position,
+          RightArmPosition: right_position,
+          LeftArmVelocity: left_velocity,
+          RightArmVelocity: right_velocity,
+          Units: "Position"
+        };
         var endpoint = "arms/set"
         //console.log(payload)
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,payload);
         return;
 
 
@@ -391,12 +407,12 @@ const useCompile = (props) => {
         var velocity = parseInt(params.fields.FIELD_MoveHead_Velocity);
         var endpoint = "head";
         var payload = {
-          "Pitch": pitch,		//-5 - 5
-          "Yaw": 0,											
-          "Roll": 0,
-          "Units": "position" 
+          Pitch: pitch,		//-5 - 5
+          Yaw: 0,
+          Roll: 0,
+          Units: "position" 
         };
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,payload);
 
         return ;
   
@@ -406,8 +422,13 @@ const useCompile = (props) => {
         pitch = checkShadowinput(params.inputs.FIELD_MoveHead_Pitch)
         roll = checkShadowinput(params.inputs.FIELD_MoveHead_Roll)
         yaw = checkShadowinput(params.inputs.FIELD_MoveHead_Yaw)
-        var payload = '{"Pitch":'+pitch+',"Yaw":'+yaw+',"Roll":'+roll+',"Units": "degrees"}';
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        var payload = {
+          Pitch:pitch,
+          Yaw:yaw,
+          Roll:roll,
+          Units: "degrees"
+        };
+        sendPostRequestToRobot(endpoint,payload);
         return ;
 
       case type === "DriveTime": 
@@ -416,8 +437,12 @@ const useCompile = (props) => {
         var time = parseInt(params.fields.FFIELD_DriveTime_TimeMs);		
         var endpoint = "drive/time"		
         var linearVelocity = direction === "F" ? velocity : -velocity;
-        var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":0,"TimeMs":'+time+'}';
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        var payload = {
+          LinearVelocity: linearVelocity,
+          AngularVelocity: 0,
+          TimeMs: time
+        };
+        sendPostRequestToRobot(endpoint,payload);
         return;
         
       case type === "DriveTime2": 
@@ -426,8 +451,12 @@ const useCompile = (props) => {
         var linearVelocity = checkShadowinput(params.inputs.FIELD_DriveTime_Velocity)
         var angularVelocity = checkShadowinput(params.inputs.FIELD_DriveTime_Angular)
         var time = checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs)
-        var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+'}';
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        var payload = {
+          LinearVelocity: linearVelocity,
+          AngularVelocity: angularVelocity,
+          TimeMs: time
+        };
+        sendPostRequestToRobot(endpoint,payload);
         return;
       
       case type == "Turn":
@@ -437,8 +466,13 @@ const useCompile = (props) => {
         var linearVelocity = 0;
         var degree = direction === "L" ? 90 : -90;
         var endpoint = "drive/time"
-        var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        var payload = {
+          LinearVelocity: linearVelocity,
+          AngularVelocity: angularVelocity,
+          TimeMs: time,
+          Degree: degree
+        };
+        sendPostRequestToRobot(endpoint,payload);
         return;
       
       case type = "Turn2":
@@ -447,9 +481,14 @@ const useCompile = (props) => {
         var angularVelocity = 100;
         var linearVelocity = 0;
         var degree = direction === "L" ? 90 : -90;
-        var payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
+        var payload = {
+          LinearVelocity: linearVelocity,
+          AngularVelocity: angularVelocity,
+          TimeMs: time,
+          Degree: degree
+        };
         var endpoint = "drive/time"
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,payload);
         return;
 
       case type = "Speak":
@@ -458,7 +497,7 @@ const useCompile = (props) => {
         var payload = {
           "Text": `<speak>${text}</speak>`
         };
-        sendPostRequestToRobot(endpoint,JSON.stringify(payload));
+        sendPostRequestToRobot(endpoint,payload);
         return;
 
       default:

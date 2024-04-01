@@ -12,26 +12,7 @@ const useStore = create((set,get) => ({
   points:{},
   widgets:{},
   clock: new Timer(),
-  tfs:{
-    world: {
-      position: {x: 0, y: 0, z: 0},
-      rotation: {w: 1, x: 0, y: 0, z: 0},
-      scale: {x: 1, y: 1, z: 1}
-    },
-    "test": {
-      frame: "world",
-      position: {x: 1, y: 0, z: 0},
-      rotation: {w: 1, x: 0, y: 0, z: 0},
-      scale: {x: 1, y: 1, z: 1}
-    },
-    
-    "test1": {
-      frame: "world",
-      position: {x: 1, y: 1, z: 0},
-      rotation: {w: 1, x: 0, y: 0, z: 0},
-      scale: {x: 1, y: 1, z: 1}
-    }
-  },
+  tfs:{},
   items:{},
   loadFromURDF: (urdfFile) => set({
     tfs: {...parseUrdfForJoints(urdfFile)},
