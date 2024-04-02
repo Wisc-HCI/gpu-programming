@@ -10,5 +10,6 @@ export default defineConfig({
       include: ["**/*.urdf","**/*.xacro",]
     }),
   ],
+  base: "/gpu-programming/",
   assetsInclude: ["**/*.gltf", "**/*.glb", "**/*.urdf","**/*.xacro"],
 })
