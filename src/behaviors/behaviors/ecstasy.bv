@@ -1,0 +1,6 @@
+SL 500
+FI eyes_ecstasy_frame_1.jpg
+DFI eyes_ecstasy_frame_2.jpg 2500
+TL 0 0 0 255 179 0 breathe 748
+MH 0 -15 0 90
+MAS -80 100 -80 25
