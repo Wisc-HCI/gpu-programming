@@ -171,7 +171,9 @@ export function parseUrdfForLinks(urdfContent) {
       let color;
       // Check if color is defined directly
       if (visual.material.color) {
-        color = visual.material.color["@_rgba"].split(' ').map(Number);
+        // Change this to a dict!
+        let arrcolor = visual.material.color["@_rgba"].split(' ').map(Number);
+        color = { "r": arrcolor[0], "g": arrcolor[1], "b": arrcolor[2], "a": arrcolor[3] };
       } else if (visual.material["@_name"] && materialsMap[visual.material["@_name"]]) {
         // Use material name to find color
         color = materialsMap[visual.material["@_name"]];
@@ -192,6 +194,7 @@ export function parseUrdfForLinks(urdfContent) {
         frame: linkName,
         position: { "x": origin[0], "y": origin[1], "z": origin[2] },
         rotation: { "w": quaternion[0], "x": quaternion[1], "y": quaternion[2], "z": quaternion[3] },
+        color: {"r": 0.7*255, "g": 0.7*255, "b": 0.7*255, "a": 1},
         scale: scale? {"x": scale[0], "y": scale[1], "z": scale[2]}: { "x": 1, "y": 1, "z": 1 },
         highlight: "false"
       };
