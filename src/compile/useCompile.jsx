@@ -18,6 +18,7 @@ const useCompile = (props) => {
       compile(doInput, doInput.type);
       while (doInput.next){
         doInput = getBlock(doInput.next);
+  
         compile(doInput, doInput.type);
       }
     }
@@ -83,7 +84,6 @@ const useCompile = (props) => {
   }
 
   const compile = (params, type) => {
-    console.log('compile')
     switch (true) {
       case type === 'Test':
         console.log('test block runs')
@@ -304,7 +304,7 @@ const useCompile = (props) => {
         // Tell the robot what to do based on the payload
         //console.log(input,payload)
         console.log(payload)
-        sendPostRequestToRobot(endpoint,payload);
+        sendPostRequestToRobot(endpoint, payload);
         return ;
       
       case type === "DisplayImage":
@@ -315,7 +315,7 @@ const useCompile = (props) => {
           "FileName": filename,
           "Alpha": alpha
         };
-        sendPostRequestToRobot(endpoint,payload);
+        sendPostRequestToRobot(endpoint, payload);
         return ;
         
       case type === "PlayAudio":
@@ -324,7 +324,7 @@ const useCompile = (props) => {
         var payload = {
           "FileName": filename,
         };
-        sendPostRequestToRobot(endpoint,payload);
+        sendPostRequestToRobot(endpoint, payload);
         return;
         
 
@@ -334,7 +334,7 @@ const useCompile = (props) => {
         var payload = {
           "Text": text
         };
-        sendPostRequestToRobot(endpoint,payload);
+        sendPostRequestToRobot(endpoint, payload);
         return;
         
       
@@ -343,7 +343,7 @@ const useCompile = (props) => {
         var payload = {
           "On": true
         }
-        sendPostRequestToRobot(endpoint,payload);
+        sendPostRequestToRobot(endpoint, payload);
         return;
       
       
@@ -352,7 +352,7 @@ const useCompile = (props) => {
         var payload = {
           "On": false
         }
-        sendPostRequestToRobot(endpoint,payload);
+        sendPostRequestToRobot(endpoint, payload);
         return;
 
       case type === "MoveArm":
@@ -366,7 +366,7 @@ const useCompile = (props) => {
           Velocity: velocity,
           Units: "Position"
         }
-        sendPostRequestToRobot(endpoint,payload);
+        sendPostRequestToRobot(endpoint, payload);
         return;
       
       case type === "MoveArm2":  
@@ -379,7 +379,7 @@ const useCompile = (props) => {
           Velocity: velocity,
           Units: "Position"
         };
-        sendPostRequestToRobot(endpoint,payload);
+        sendPostRequestToRobot(endpoint, payload);
         return;
         
       case type === "MoveArms2":  
@@ -412,7 +412,7 @@ const useCompile = (props) => {
           Roll: 0,
           Units: "position" 
         };
-        sendPostRequestToRobot(endpoint,payload);
+        sendPostRequestToRobot(endpoint, payload);
 
         return ;
   

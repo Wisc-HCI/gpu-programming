@@ -53,12 +53,16 @@ export default function TopBar(props){
       
       const compileBlocks = blocks
       console.log('runcode')
+      console.log(`starting from the first block: `)
       console.log(start)
+      let num = 1
       let currParam = start
       while(currParam.next){
+        num += 1
         currParam = getBlock(currParam.next)
+        console.log(`compiling block number ${num}`)
         compile(currParam, currParam.type)
-        currParam = currParam.next
+        
       }
       
         //const code = javascriptGenerator.workspaceToCode(ws);
