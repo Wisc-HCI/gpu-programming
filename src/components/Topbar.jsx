@@ -16,7 +16,7 @@ export default function TopBar(props){
 
     const confirmIpAddress =()=> {
       setIp(inputVal)
-      fetch(`http://${ip}/api/battery`, {
+      fetch(`http://${inputVal}/api/battery`, {
         method: 'GET'
         }).then(res => {
           if (!res.ok) {

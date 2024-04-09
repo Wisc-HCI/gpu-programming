@@ -208,10 +208,13 @@ const useCompile = (props) => {
         }
         let controls_repeat_ext_DO_params = getBlock(params.inputs.DO)
         for (let i = 0; i < controls_repeat_ext_TIMES; i++) {
+          console.log(i)
           compile(controls_repeat_ext_DO_params,controls_repeat_ext_DO_params.type)
-          while (controls_repeat_ext_DO_params.next){
-            controls_repeat_ext_DO_params = getBlock(controls_repeat_ext_DO_params.next);
-            compile(controls_repeat_ext_DO_params, controls_repeat_ext_DO_params.type);
+          let currBlock = controls_repeat_ext_DO_params
+          while (currBlock.next){
+            
+            currBlock = getBlock(currBlock.next);
+            compile(currBlock, currBlock.type);
           }
         }   
         return
