@@ -444,9 +444,9 @@ const useCompile = (props) => {
         return ;
 
       case type === "DriveTime": 
-        var direction = params.fields.FFIELD_DriveTime_Direction;
-        var velocity = parseInt(params.fields.FFIELD_DriveTime_Velocity);
-        var time = parseInt(params.fields.FFIELD_DriveTime_TimeMs);		
+        var direction = params.fields.FIELD_DriveTime_Direction;
+        var velocity = parseInt(params.fields.FIELD_DriveTime_Velocity);
+        var time = parseInt(params.fields.FIELD_DriveTime_TimeMs);		
         var endpoint = "drive/time"		
         var linearVelocity = direction === "F" ? velocity : -velocity;
         var payload = {
@@ -487,9 +487,9 @@ const useCompile = (props) => {
         sendPostRequestToRobot(endpoint,payload);
         return;
       
-      case type = "Turn2":
+      case type == "Turn2":
         var direction = params.fields.FIELD_Turn_Direction;
-        var time = checkShadowinput(params.inputs.FIELD_Turn_Duration)
+        var time = parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration))
         var angularVelocity = 100;
         var linearVelocity = 0;
         var degree = direction === "L" ? 90 : -90;
@@ -503,7 +503,7 @@ const useCompile = (props) => {
         sendPostRequestToRobot(endpoint,payload);
         return;
 
-      case type = "Speak":
+      case type == "Speak":
         var endpoint = "tts/speak"
         var text = params.fields.FIELD_Speak_Text;
         var payload = {
