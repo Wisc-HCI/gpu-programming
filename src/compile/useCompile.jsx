@@ -21,11 +21,18 @@ const useCompile = (props) => {
   
         compile(doInput, doInput.type);
       }
+    }else{
+      return
     }
   };
 
   const logicBoolean = (BOOL) => {
-    return BOOL; 
+    if(BOOL ==="TRUE"){
+      return true
+    }
+    else{
+      return false
+    }
   };
 
   function getRandomInt(min, max) {
@@ -94,7 +101,9 @@ const useCompile = (props) => {
           alert('err: controls_if not complete!')
           return
         }
-        else{ifDo(params.inputs.IF0, params.inputs.DO0);}
+        else{
+          ifDo(params.inputs.IF0, params.inputs.DO0);
+        }
         break; 
 
 
