@@ -42,7 +42,7 @@ const useCompile = (props) => {
   }
 
   function sendPostRequestToRobot(endpoint,payload) {
-    fetch(`http://${ip}/api/${endpoint}`, {
+    fetch(`https://${ip}/api/${endpoint}`, {
       method: 'POST',
       headers: {
           "Content-Type": "application/json",
