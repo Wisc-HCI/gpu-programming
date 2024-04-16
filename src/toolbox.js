@@ -292,13 +292,449 @@ export const toolbox = {
                 'kind': 'block',
                 'type': 'Speak',
               },
+              {
+                'kind': 'block',
+                'type': 'SpeakDefault',
+              }
             ]
           },
-          
-          
+          {
+            "kind": "category",
+            "name": "Face",
+            'categorystyle': 'list_category',
+            "contents": [
+              {
+                'kind': 'block',
+                'type': 'eyes_acceptance',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_admiration',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_amazement',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_anger',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_annoyed',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_anticipation',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_apprehension',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_boredom',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_default',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_disgust',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_distraction',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_ecstasy_frame_1',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_ecstasy_frame_2',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_fear',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_grief',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_interest',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_joy',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_loathing',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_pensiveness',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_rage',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_sad',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_serenity',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_surprise',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_terror',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_trust',
+              },
+              {
+                'kind': 'block',
+                'type': 'eyes_vigilance',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_Sleeping',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_SleepingZZZ',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_Contempt',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_ContentLeft',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_ContentRight',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_Disoriented',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_EcstacyHilarious',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_EcstacyStarryEyed',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_JoyGoofy',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_JoyGoofy2',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_JoyGoofy3',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_Love',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_Rage',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_Rage2',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_Rage3',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_Rage4',
+              },
+              {
+                'kind': 'block',
+                'type': 'e_RemorseShame',
+              }
+            ]
+          },
+          {
+            "kind": "category",
+            "name": "Audio",
+            'categorystyle': 'list_category',
+            "contents": [
+              {
+                'kind': 'block',
+                'type': 's_Acceptance',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Amazement',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Amazement2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Anger',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Anger2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Anger3',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Anger4',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Annoyance',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Annoyance2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Annoyance3',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Annoyance4',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Awe',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Awe2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Awe3',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Boredom',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Disapproval',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Disgust',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Disgust2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Disgust3',
+              },
+              {
+                'kind': 'block',
+                'type': 's_DisorientedConfused',
+              },
+              {
+                'kind': 'block',
+                'type': 's_DisorientedConfused2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_DisorientedConfused3',
+              },
+              {
+                'kind': 'block',
+                'type': 's_DisorientedConfused4',
+              },
+              {
+                'kind': 'block',
+                'type': 's_DisorientedConfused5',
+              },
+              {
+                'kind': 'block',
+                'type': 's_DisorientedConfused6',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Distraction',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Ecstacy',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Ecstacy2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Fear',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Grief',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Grief2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Grief3',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Grief4',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Joy',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Joy2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Joy3',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Joy4',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Loathing',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Love',
+              },
+              {
+                'kind': 'block',
+                'type': 's_PhraseByeBye',
+              },
+              {
+                'kind': 'block',
+                'type': 's_PhraseEvilAhHa',
+              },
+              {
+                'kind': 'block',
+                'type': 's_PhraseHello',
+              },
+              {
+                'kind': 'block',
+                'type': 's_PhraseNoNoNo',
+              },
+              {
+                'kind': 'block',
+                'type': 's_PhraseOopsy',
+              },
+              {
+                'kind': 'block',
+                'type': 's_PhraseOwOwOw',
+              },
+              {
+                'kind': 'block',
+                'type': 's_PhraseOwwww',
+              },
+              {
+                'kind': 'block',
+                'type': 's_PhraseUhOh',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Rage',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sadness',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sadness2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sadness3',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sadness4',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sadness5',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sadness6',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sadness7',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sleepy',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sleepy2',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sleepy3',
+              },
+              {
+                'kind': 'block',
+                'type': 's_Sleepy4',
+              },
+              {
+                'kind': 'block',
+                'type': 's_SleepySnore',
+              },
+              {
+                'kind': 'block',
+                'type': 's_SystemCameraShutter',
+              }
+            ]
+          },         
           {
             'kind': 'block',
             'type': 'ChangeLED',
+          },
+          {
+            'kind': 'block',
+            'type': 'TransitionLED',
           },
           {
             'kind': 'block',
