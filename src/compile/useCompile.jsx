@@ -41,8 +41,22 @@ const useCompile = (props) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  /**
+    * delayJS(time)
+    * Delay timeMS milliseconds
+    * @param {int} number of milliseconds to delay
+    * @private
+  */
+  function delayJS(timeMS) {
+    var start = new Date().getTime();
+    var end = start;
+    while(end < start + timeMS){
+      end = new Date().getTime();
+    }
+  }
+
   function sendPostRequestToRobot(endpoint,payload) {
-    fetch(`https://${ip}/api/${endpoint}`, {
+    fetch(`http://${ip}/api/${endpoint}`, {
       method: 'POST',
       headers: {
           "Content-Type": "application/json",

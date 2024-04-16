@@ -69,6 +69,10 @@ export default function TopBar(props){
         //eval(code);
     }
 
+    const stopCode = () => {
+      delayJS(10000)
+      currParam.next = ''
+    }
 
     return (
       <Box style={topbarStyle}>
@@ -88,6 +92,7 @@ export default function TopBar(props){
           marginBottom: "5px",
           paddingRight: "0px"
         }}>
+          <Button style={{color: "#FFFFFF"}} onClick={stopCode}>Stop</Button>
           <TextField
             id="robotIpAddress"
             label="IP"
