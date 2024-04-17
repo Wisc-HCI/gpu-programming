@@ -230,9 +230,9 @@ export const starting_tfs = {
     "HEAD_VENT_RIGHT_1": {
       "frame": "HEAD_1",
       "position": {
-        "x": 0.08973,
-        "y": -0.057013,
-        "z": 0.04831
+        "x": 0.08973-0.019009,
+        "y": -0.057013+0.025,
+        "z": 0.04831+0.238601-0.05
       },
       "rotation": {
         "w": 1,
@@ -249,9 +249,9 @@ export const starting_tfs = {
     "HEAD_1": {
       "frame": "NECK_GLOBE_BASE_1",
       "position": {
-        "x": 0.015323,
-        "y": 0.001375,
-        "z": 0.238601
+        "x": 0.034239,
+        "y": -0.02,
+        "z": 0.05
       },
       "rotation": {
         "w": 1,
@@ -268,9 +268,10 @@ export const starting_tfs = {
     "EYE_LENS_1": {
       "frame": "HEAD_1",
       "position": {
-        "x": 0.016845,
-        "y": 0.061941,
-        "z": 0.034753
+        "x": 0.016845-0.019009,
+        "y": 0.061941+0.025,
+        "z": 0.034753+0.238601-0.05
+
       },
       "rotation": {
         "w": 1,
@@ -306,9 +307,9 @@ export const starting_tfs = {
     "VISOR_GLASS_1": {
       "frame": "HEAD_1",
       "position": {
-        "x": 0.111798,
-        "y": -0.024175,
-        "z": -0.124256
+        "x": 0.111798-0.019009,
+        "y": -0.024175+0.025,
+        "z": -0.124256+0.238601-0.05
       },
       "rotation": {
         "w": 1,
@@ -325,9 +326,9 @@ export const starting_tfs = {
     "HEAD_VENT_LEFT_1": {
       "frame": "HEAD_1",
       "position": {
-        "x": -0.042326,
-        "y": 0.038377,
-        "z": -0.162881
+        "x": -0.042326-0.019009,
+        "y": 0.038377+0.025,
+        "z": -0.162881+0.238601-0.05
       },
       "rotation": {
         "w": 1,
@@ -406,9 +407,9 @@ export const starting_tfs = {
         "z": 0.057987
       },
       "rotation": {
-        "w": 1,
+        "w": 0.924,
         "x": 0,
-        "y": 0,
+        "y": 0.383,
         "z": 0
       },
       "scale": {
@@ -425,9 +426,9 @@ export const starting_tfs = {
         "z": 0.057987
       },
       "rotation": {
-        "w": 1,
+        "w": 0.924,
         "x": 0,
-        "y": 0,
+        "y": 0.383,
         "z": 0
       },
       "scale": {
@@ -501,10 +502,10 @@ export const starting_tfs = {
         "z": 0
       },
       "rotation": {
-        "w": 1,
+        "w": 0.707,
         "x": 0,
         "y": 0,
-        "z": 0
+        "z": -0.707
       },
       "scale": {
         "x": 1,
@@ -856,9 +857,9 @@ export const starting_items = {
       "name": "HEAD_1",
       "frame": "HEAD_1",
       "position": {
-        "x": 0.018916,
-        "y": -0.024175,
-        "z": -0.437354
+        "x": 0,
+        "y": 0,
+        "z": -0.25
       },
       "rotation": {
         "w": 1,

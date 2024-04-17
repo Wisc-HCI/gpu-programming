@@ -446,17 +446,18 @@ const useCompile = (props) => {
 
       
       case type === "MoveHead":
-        var pitch = params.fields.FIELD_MoveHead_Pitch === "D" ? 5 : -5;
+        var pitch = params.fields.FIELD_MoveHead_Pitch === "D" ? 25 : -40;
         var velocity = parseInt(params.fields.FIELD_MoveHead_Velocity);
         var endpoint = "head";
         var payload = {
           Pitch: pitch,		//-5 - 5
           Yaw: 0,
           Roll: 0,
-          Units: "degrees" 
+          Duration: 2,
+          Units: "degrees"
         };
 
-        animateHead(roll, pitch, yaw);
+        animateHead(0, pitch, 0, 2);
         sendPostRequestToRobot(endpoint, payload);
 
         return ;
@@ -467,13 +468,15 @@ const useCompile = (props) => {
         pitch = checkShadowinput(params.inputs.FIELD_MoveHead_Pitch)
         roll = checkShadowinput(params.inputs.FIELD_MoveHead_Roll)
         yaw = checkShadowinput(params.inputs.FIELD_MoveHead_Yaw)
+        time = checkShadowinput(params.inputs.FIELD_MoveHead_Time)
         var payload = {
           Pitch:pitch,
           Yaw:yaw,
           Roll:roll,
+          Duration:time,
           Units: "degrees"
         };
-        animateHead(roll, pitch, yaw);
+        animateHead(roll, pitch, yaw, time);
         sendPostRequestToRobot(endpoint,payload);
         return ;
 

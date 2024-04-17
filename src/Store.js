@@ -3,7 +3,7 @@ import { parseUrdfForJoints, parseUrdfForLinks } from './urdfParser.js';
 import { Timer } from './Timer.js';
 import { eulerToQuaternion, interpolateScalar, quaternionFromEuler, quaternionToEuler } from './utils.js';
 import { JointLookup } from './Misty-Robot/JointLookup.js';
-import { MISTY_ARM_LENGTH, PI, MAX_ARM_SPEED } from './Constants.js';
+import { MISTY_ARM_LENGTH, PI, MAX_ARM_SPEED, ARM_OFFSET_ANGLE } from './Constants.js';
 import { starting_tfs, starting_items } from './Misty_Load_File.js';
 import { Quaternion } from "three";
  
@@ -83,7 +83,62 @@ const useStore = create((set,get) => ({
       }
     })
   },
-  animateHead: (roll, pitch, yaw) => {
+  animateHead: (roll, pitch, yaw, time) => {
+    const allTfs = JSON.parse(JSON.stringify(get().endingTfs));
+    let headTf = JSON.parse(JSON.stringify(allTfs[JointLookup("Head")]));
+    let endHeadTf = JSON.parse(JSON.stringify(allTfs[JointLookup("Head")]));
+
+    const headQuat = eulerToQuaternion(roll * PI/180, pitch * PI/180, yaw * PI/180);
+
+    let timeVector = [0];
+    let wVector = [headTf.rotation.w];
+    let xVector = [headTf.rotation.x];
+    let yVector = [headTf.rotation.y];
+    let zVector = [headTf.rotation.z];
+
+    const maxTime = 600;
+    for (let i = 10; i <= maxTime; i+= 10) {
+      timeVector.push(time*i);
+      let q = new Quaternion(xVector[0], yVector[0], zVector[0], wVector[0]);
+      q.slerp(headQuat, i/maxTime);
+      wVector.push(q._w);
+      xVector.push(q._x);
+      yVector.push(q._y);
+      zVector.push(q._z);
+    }
+    
+    // Hold at final position until next action
+    timeVector.push(Infinity);
+    wVector.push(headQuat._w);
+    xVector.push(headQuat._x);
+    yVector.push(headQuat._y);
+    zVector.push(headQuat._z);
+
+    endHeadTf.rotation.w = headQuat._w;
+    endHeadTf.rotation.x = headQuat._x;
+    endHeadTf.rotation.y = headQuat._y;
+    endHeadTf.rotation.z = headQuat._z;
+    
+    headTf.rotation.w = interpolateScalar(timeVector, wVector);
+    headTf.rotation.x = interpolateScalar(timeVector, xVector);
+    headTf.rotation.y = interpolateScalar(timeVector, yVector);
+    headTf.rotation.z = interpolateScalar(timeVector, zVector);
+
+    let result = {};
+    result[JointLookup("Head")] = {...headTf};
+    let endResult = {};
+    endResult[JointLookup("Head")] = {...endHeadTf};
+
+    set({
+      tfs: {
+        ...allTfs,
+        ...result
+      },
+      endingTfs: {
+        ...allTfs,
+        ...endResult
+      }
+    })
 
   },
   animateBothArms: (lPosition, lVelocity, rPosition, rVelocity) => {
@@ -101,11 +156,11 @@ const useStore = create((set,get) => ({
     distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(rEuler.y - rPosition);
     const rTime = distance / ((rVelocity / 100) * MAX_ARM_SPEED);
     
-    let temp = {x: 0, y: lPosition, z: 0};
-    const lNewQuat = eulerToQuaternion(temp.x, temp.y, temp.z);
+    let temp = {x: 0, y: lPosition-ARM_OFFSET_ANGLE, z: 0};
+    const lNewQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
 
-    temp = {x: 0, y: rPosition, z: 0};
-    const rNewQuat = eulerToQuaternion(temp.x, temp.y, temp.z);
+    temp = {x: 0, y: rPosition-ARM_OFFSET_ANGLE, z: 0};
+    const rNewQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
 
     let lTimeVector = [0];
     let lwVector = [];
@@ -222,10 +277,10 @@ const useStore = create((set,get) => ({
     const distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(euler.y - position);
     const time = distance / ((velocity / 100) * MAX_ARM_SPEED);
     
-    let temp = {x: 0, y: 0, z: position};
-    // const newQuat = eulerToQuaternion(temp.x, temp.y, temp.z);
-    let newQuatArray = quaternionFromEuler([temp.x, temp.y, temp.z]);
-    const newQuat = new Quaternion(newQuatArray[1], newQuatArray[2], newQuatArray[3], newQuatArray[0])
+    let temp = {x: 0, y: position-ARM_OFFSET_ANGLE, z: 0};
+    const newQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
+    // let newQuatArray = quaternionFromEuler([temp.x* PI/180, temp.y* PI/180, temp.z* PI/180]);
+    // const newQuat = new Quaternion(newQuatArray[1], newQuatArray[2], newQuatArray[3], newQuatArray[0])
 
     let timeVector = [0];
     let wVector = [];

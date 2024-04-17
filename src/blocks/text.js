@@ -259,21 +259,35 @@ Blockly.Blocks["MoveHead3"] = {
     shadowBlock_3.render();
     var yawBlock = shadowBlock_3.outputConnection;
 
+    var shadowBlock_4 = this.workspace.newBlock('math_number');
+    shadowBlock_4.setShadow(true);
+    shadowBlock_4.initSvg();
+    shadowBlock_4.render();
+    var timeBlock = shadowBlock_4.outputConnection;
 
     this.setColour('260');
+
     this.appendValueInput("FIELD_MoveHead_Pitch").setCheck('Number')
       .appendField("Move head")
       .appendField("Pitch (-40 to 25):");
     var shadowBlockConnectionPitch = this.getInput("FIELD_MoveHead_Pitch").connection;
     shadowBlockConnectionPitch.connect(pitchBlock);
+
     this.appendValueInput("FIELD_MoveHead_Roll").setCheck('Number')
       .appendField("Roll (-42 to 42):");
     var shadowBlockConnectionRoll = this.getInput("FIELD_MoveHead_Roll").connection;
-    shadowBlockConnectionRoll.connect(rollBlock);	
+    shadowBlockConnectionRoll.connect(rollBlock);
+
     this.appendValueInput("FIELD_MoveHead_Yaw").setCheck('Number')
       .appendField("Yaw (-90 to 90):");
     var shadowBlockConnectionYaw = this.getInput("FIELD_MoveHead_Yaw").connection;
     shadowBlockConnectionYaw.connect(yawBlock);
+
+    this.appendValueInput("FIELD_MoveHead_Time").setCheck('Number')
+      .appendField("Time (0 to 60 seconds):");
+    var shadowBlockConnectionTime = this.getInput("FIELD_MoveHead_Time").connection;
+    shadowBlockConnectionTime.connect(timeBlock);
+
     this.setInputsInline(false);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);

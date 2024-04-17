@@ -3,6 +3,7 @@ const JointLookupTable = {
   "Left": "LEFT_ARM_CONNECTOR_1",
   "Right": "RIGHT_ARM_CONNECTOR_1",
   "Head": "HEAD_1",
+  "Neck": "NECK_GLOBE_BASE_1",
   "Base": "base_link",
   
   // "package://misty_description/meshes/base_link.stl": base_link,
