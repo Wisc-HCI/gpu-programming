@@ -1214,4 +1214,4 @@ export const starting_items = {
         "z": 1
       },
     }
-  }
+}
