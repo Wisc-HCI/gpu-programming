@@ -1,10 +1,11 @@
 import { useState } from "react";
 import useStore from "../Store";
+import ActivityTracker, { activityLog, appendActivity } from './ActivityTracker';
 
 import React from 'react';
 import { Box, Button, TextField, Container, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import useCompile from "../compile/useCompile";
+import useCompile,{delayJS} from "../compile/useCompile";
 export default function TopBar(props){
     const [inputVal, setInputVal] = useState("")
     const setIp = useStore((state) => state.setIp);
@@ -34,7 +35,7 @@ export default function TopBar(props){
           console.error('Error during fetch operation:', error.message);
           alert(`Error fetching data: ${error.message}`);
         })
-      
+      appendActivity("Hit Confirm IP Address Button")
       
     }
 
@@ -67,11 +68,14 @@ export default function TopBar(props){
       
         //const code = javascriptGenerator.workspaceToCode(ws);
         //eval(code);
+       appendActivity("Click Run Code button")
     }
 
     const stopCode = () => {
-      delayJS(10000)
-      currParam.next = ''
+      delayJS(1000)
+      //currParam.next = ''
+      appendActivity("Click Stop Code button")
+      console.log(activityLog)
     }
 
     return (
