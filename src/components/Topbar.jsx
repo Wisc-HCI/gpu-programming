@@ -14,6 +14,9 @@ export default function TopBar(props){
     const getBlock = useStore((state) => state.getBlock);
     const getBlocksByType = useStore((state) => state.getBlocksByType);
     const { compile } = useCompile();
+    const start = getBlocksByType('Start')
+    let currParam = start
+    
 
     const confirmIpAddress =()=> {
       setIp(inputVal)
@@ -50,14 +53,12 @@ export default function TopBar(props){
 
     const runCode = () => {
       // get start block, then iteratively check for children as well as inputs
-      const start = getBlocksByType('Start')
       
       const compileBlocks = blocks
       console.log('runcode')
       console.log(`starting from the first block: `)
       console.log(start)
       let num = 1
-      let currParam = start
       while(currParam.next){
         num += 1
         currParam = getBlock(currParam.next)
@@ -72,8 +73,8 @@ export default function TopBar(props){
     }
 
     const stopCode = () => {
-      delayJS(1000)
-      //currParam.next = ''
+      //delayJS(1000)
+      currParam.next = ''
       appendActivity("Click Stop Code button")
       console.log(activityLog)
     }
