@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useStore from "../Store";
 import ActivityTracker, { activityLog, appendActivity } from './ActivityTracker';
+import { useShallow } from 'zustand/react/shallow';
 
 import React from 'react';
 import { Box, Button, TextField, Container, Typography } from "@mui/material";
@@ -8,14 +9,12 @@ import { Stack } from "@mui/system";
 import useCompile,{delayJS} from "../compile/useCompile";
 export default function TopBar(props){
     const [inputVal, setInputVal] = useState("")
-    const setIp = useStore((state) => state.setIp);
-    const ip = useStore((state) => state.ip);
-    const blocks = useStore((state) => state.blocks);
-    const getBlock = useStore((state) => state.getBlock);
-    const getBlocksByType = useStore((state) => state.getBlocksByType);
+    const setIp = useStore(useShallow((state) => state.setIp));
+    const ip = useStore(useShallow((state) => state.ip));
+    const getBlock = useStore(useShallow((state) => state.getBlock));
+    const getBlocksByType = useStore(useShallow((state) => state.getBlocksByType));
+    const clock = useStore(useShallow((state) => state.clock));
     const { compile } = useCompile();
-    const start = getBlocksByType('Start')
-    let currParam = start
     
 
     const confirmIpAddress =()=> {
@@ -53,13 +52,15 @@ export default function TopBar(props){
 
     const runCode = () => {
       // get start block, then iteratively check for children as well as inputs
-      
-      const compileBlocks = blocks
+      const start = getBlocksByType('Start');
+      clock.reset_elapsed();
+
+      let currParam = start
       console.log('runcode')
       console.log(`starting from the first block: `)
       console.log(start)
       let num = 1
-      while(currParam.next){
+      while(currParam && currParam.next){
         num += 1
         currParam = getBlock(currParam.next)
         console.log(`compiling block number ${num}`)

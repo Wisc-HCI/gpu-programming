@@ -21,7 +21,6 @@ import {
 
 import 'react-reflex/styles.css';
 import { Box } from '@mui/material';
-import useStore from './Store.js';
 import Simulator from './components/Simulator.jsx';
 
 const Item = styled('div')(({ theme }) => ({
@@ -33,8 +32,6 @@ const Item = styled('div')(({ theme }) => ({
 Blockly.common.defineBlocks(blocks);
 Object.assign(javascriptGenerator.forBlock, forBlock);
 function App() {
-  const loadFromURDF = useStore((state) => state.loadFromURDF);
-  loadFromURDF(urdf);
 
   return (
     <Box height={"94vh"} padding={0}>

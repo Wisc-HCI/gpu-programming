@@ -125,7 +125,7 @@ Blockly.Blocks["MoveArm"] = {
       .appendField("Move ")
       .appendField(new Blockly.FieldDropdown([["Right", "Right"], ["Left", "Left"]]), "FIELD_MoveArm_Arm")
       .appendField("arm to position")
-      .appendField(new Blockly.FieldNumber(0, 0, 10, 1), "FIELD_MoveArm_Position")
+      .appendField(new Blockly.FieldNumber(0, -90, 90, 1), "FIELD_MoveArm_Position")
       .appendField("at a speed of (0 to 100)")
       .appendField(new Blockly.FieldNumber(50, 0, 100, 1), "FIELD_MoveArm_Velocity");
     this.setPreviousStatement(true, null);

@@ -30,6 +30,12 @@ class Timer {
 
 	}
 
+	reset_elapsed() {
+		this._elapsed = 0;
+
+		return this;
+	}
+
 	disableFixedDelta() {
 
 		this._useFixedDelta = false;

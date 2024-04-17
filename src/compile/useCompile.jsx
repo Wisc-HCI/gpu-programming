@@ -1,5 +1,6 @@
 import React from 'react';
 import useStore from "../Store";
+import { useShallow } from 'zustand/react/shallow'
 import * as Blockly from 'blockly';
 import { forBlock } from '../generators/javascript';
 
@@ -18,8 +19,11 @@ export function delayJS(timeMS) {
 }
 // Convert to a custom hook or move logic into a React component
 const useCompile = (props) => {
-  const getBlock = useStore((state) => state.getBlock);
-  const ip = useStore((state) => state.ip);
+  const getBlock = useStore(useShallow((state) => state.getBlock));
+  const animateArm = useStore(useShallow((state) => state.animateArm));
+  const animateBothArms = useStore(useShallow((state) => state.animateBothArms));
+  const animateHead = useStore(useShallow((state) => state.animateHead));
+  const ip = useStore(useShallow((state) => state.ip));
 
   // Fixed case-sensitive function call
   const ifDo = (IF0, DO0) => {
@@ -57,7 +61,8 @@ const useCompile = (props) => {
   
 
   function sendPostRequestToRobot(endpoint,payload) {
-    fetch(`http://${ip}/api/${endpoint}`, {
+    if (ip) {
+      fetch(`http://${ip}/api/${endpoint}`, {
       method: 'POST',
       headers: {
           "Content-Type": "application/json",
@@ -67,6 +72,7 @@ const useCompile = (props) => {
             
         console.log(`successfully send a post request, the response is: ${json}`)
       })
+    }
   }
 
   function hexToRgb(hex) {
@@ -397,8 +403,9 @@ const useCompile = (props) => {
           Arm: arm,
           Position: position,
           Velocity: velocity,
-          Units: "Position"
+          Units: "Degrees"
         }
+        animateArm(arm, position, velocity);
         sendPostRequestToRobot(endpoint, payload);
         return;
       
@@ -407,11 +414,13 @@ const useCompile = (props) => {
         var velocity = parseInt(params.fields.FIELD_MoveArm2_Velocity);
         var endpoint = "arms"
         var payload = {
-          Arm: both, 
+          Arm: "both", 
           Position: position,
           Velocity: velocity,
-          Units: "Position"
+          Units: "Degrees"
         };
+
+        animateBothArms(position, velocity, position, velocity);
         sendPostRequestToRobot(endpoint, payload);
         return;
         
@@ -425,10 +434,11 @@ const useCompile = (props) => {
           RightArmPosition: right_position,
           LeftArmVelocity: left_velocity,
           RightArmVelocity: right_velocity,
-          Units: "Position"
+          Units: "Degrees"
         };
         var endpoint = "arms/set"
         //console.log(payload)
+        animateBothArms(left_position, left_velocity, right_position, right_velocity);
         sendPostRequestToRobot(endpoint,payload);
         return;
 
@@ -443,8 +453,10 @@ const useCompile = (props) => {
           Pitch: pitch,		//-5 - 5
           Yaw: 0,
           Roll: 0,
-          Units: "position" 
+          Units: "degrees" 
         };
+
+        animateHead(roll, pitch, yaw);
         sendPostRequestToRobot(endpoint, payload);
 
         return ;
@@ -461,6 +473,7 @@ const useCompile = (props) => {
           Roll:roll,
           Units: "degrees"
         };
+        animateHead(roll, pitch, yaw);
         sendPostRequestToRobot(endpoint,payload);
         return ;
 
