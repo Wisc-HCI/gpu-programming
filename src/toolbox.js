@@ -757,7 +757,10 @@ export const toolbox = {
             'type': 'TurnOffFlashlight',
           },
           
-          
+          {
+            'kind': 'block',
+            'type': 'WaitForSeconds',
+          },
           
         ],
       },

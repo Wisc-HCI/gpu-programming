@@ -430,6 +430,25 @@ Blockly.Blocks["TurnOffFlashlight"] = {
   }
 };
 
+Blockly.Blocks["WaitForSeconds"] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("wait for");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField(new Blockly.FieldNumber(0, -Infinity, Infinity, 0.1), "NumSeconds");
+    this.appendDummyInput()
+        .appendField("Seconds");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(260);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+
 Blockly.Blocks["PlayAudio"] = {
   init: function () {
     this.setColour('260');

@@ -381,6 +381,12 @@ const useCompile = (props) => {
         sendPostRequestToRobot(endpoint, payload);
         return;
 
+      case type === "WaitForSeconds":
+        var time = parseFloat(params.fields.NumSeconds);
+        delayJS(time*1000)
+        return;
+        
+
       case type === "MoveArm":
         var arm = params.fields.FIELD_MoveArm_Arm === "Right" ? "Right" : "Left";
         var position = parseInt(params.fields.FIELD_MoveArm_Position);
