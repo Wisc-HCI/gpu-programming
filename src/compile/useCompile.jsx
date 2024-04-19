@@ -322,13 +322,14 @@ const useCompile = (props) => {
 
 /////////////////////////////////////////////Color///////////////////////////////////////////////////////////////
       case type === "ChangeLED":
-
+        if(!params.inputs||!params.inputs.FIELD_ChangeLED){
+          alert('err: ChangeLED is not complete!')
+          return
+        }
         // Declare list of arguments the block will use, if any
         const args = ["Red", "Green", "Blue"]
-        //const payload = {};
         var endpoint = "led"
-        var input = params.fields.FIELD_ChangeLED;
-        var payload = hexToRgb(input);
+        var input = params.inputs.FIELD_ChangeLED;
         // For each argument, get the current value in the corresponding field and append it to the payload
         // for (var arg of args) {
         //   var input = block.getFieldValue("FIELD_ChangeLED");
@@ -336,24 +337,34 @@ const useCompile = (props) => {
         // } 
         // Tell the robot what to do based on the payload
         //console.log(input,payload)
-        console.log(payload)
-        sendPostRequestToRobot(endpoint, payload);
-        return ;
+        console.log(input)
+        sendPostRequestToRobot(endpoint, input);
+        delayJS(500)
+        return;
       
       case type === "DisplayImage":
+        if(!params.inputs||!params.inputs.FIELD_DisplayImage_Filename){
+          alert('err: DisplayImage is not complete!')
+          return
+        }
         var alpha = 1
-        var filename = params.fields.FIELD_DisplayImage_Filename;
+        var filename = params.inputs.FIELD_DisplayImage_Filename;
         var endpoint = "images/display";
         var payload = {
           "FileName": filename,
           "Alpha": alpha
         };
         sendPostRequestToRobot(endpoint, payload);
+        delayJS(500)
         return ;
         
       case type === "PlayAudio":
+        if(!params.inputs||!params.inputs.FIELD_PlayAudio_Filename){
+          alert('err: PlayAudio is not complete!')
+          return
+        }
         var endpoint = "audio/play"
-        var filename = params.fields.FIELD_PlayAudio_Filename;
+        var filename = params.inputs.FIELD_PlayAudio_Filename;
         var payload = {
           "FileName": filename,
         };
