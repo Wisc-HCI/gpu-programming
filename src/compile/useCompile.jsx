@@ -341,7 +341,29 @@ const useCompile = (props) => {
         sendPostRequestToRobot(endpoint, input);
         delayJS(500)
         return;
-      
+
+      case type === "TransitionLED":
+        if(!params.inputs||!params.inputs.COLOR1||!params.inputs.COLOR2){
+          alert('err: TransitionLED is not complete!')
+          return
+        }
+        var endpoint = "led/transition"
+        var COLOR1 = hexToRgb(params.inputs.COLOR1)
+        var COLOR2 = hexToRgb(params.inputs.COLOR2)
+        var time = params.fields.FIELD_TransitionTime_TimeMs
+        sendPostRequestToRobot(endpoint, {
+        "Red": COLOR1.r, 
+        "Green": COLOR1.g,
+        "Blue": COLOR1.b,
+        "Red2": COLOR2.r,
+        "Green2": COLOR2.g,
+        "Blue2": COLOR2.b,
+        "TransitionType": params.fields.TRANSITION_TYPE,
+        "TimeMS": time});
+        delayJS(time+500)
+        return;
+
+
       case type === "DisplayImage":
         if(!params.inputs||!params.inputs.FIELD_DisplayImage_Filename){
           alert('err: DisplayImage is not complete!')
@@ -562,11 +584,22 @@ const useCompile = (props) => {
 
       case type == "Speak":
         var endpoint = "tts/speak"
-        var text = params.fields.FIELD_Speak_Text;
+        var text = params.inputs.FIELD_Speak_Text;
         var payload = {
           "Text": `<speak>${text}</speak>`
         };
         sendPostRequestToRobot(endpoint,payload);
+        delayJS(500)
+        return;
+
+      case type == "SpeakDefault":
+        var endpoint = "tts/speak"
+        var text = params.fields.FIELD_SpeakDefault_Text;
+        var payload = {
+          "Text": `<speak>${text}</speak>`
+        };
+        sendPostRequestToRobot(endpoint,payload);
+        delayJS(500)
         return;
 
       default:
