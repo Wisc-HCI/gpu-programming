@@ -418,6 +418,7 @@ const useCompile = (props) => {
         }
         animateArm(arm, position, velocity);
         sendPostRequestToRobot(endpoint, payload);
+        delayJS(1000)
         return;
       
       case type === "MoveArm2":  
@@ -433,6 +434,7 @@ const useCompile = (props) => {
 
         animateBothArms(position, velocity, position, velocity);
         sendPostRequestToRobot(endpoint, payload);
+        delayJS(1000)
         return;
         
       case type === "MoveArms2":  
@@ -451,6 +453,7 @@ const useCompile = (props) => {
         //console.log(payload)
         animateBothArms(left_position, left_velocity, right_position, right_velocity);
         sendPostRequestToRobot(endpoint,payload);
+        delayJS(1000)
         return;
 
 
@@ -470,6 +473,7 @@ const useCompile = (props) => {
 
         animateHead(0, pitch, 0, 2);
         sendPostRequestToRobot(endpoint, payload);
+        delayJS(500)
 
         return ;
   
@@ -489,6 +493,7 @@ const useCompile = (props) => {
         };
         animateHead(roll, pitch, yaw, time);
         sendPostRequestToRobot(endpoint,payload);
+        delayJS(500)
         return ;
 
       case type === "DriveTime": 
@@ -503,6 +508,7 @@ const useCompile = (props) => {
           TimeMs: time
         };
         sendPostRequestToRobot(endpoint,payload);
+        delayJS(time + 500)
         return;
         
       case type === "DriveTime2": 
@@ -517,6 +523,7 @@ const useCompile = (props) => {
           TimeMs: time
         };
         sendPostRequestToRobot(endpoint,payload);
+        delayJS(time + 500)
         return;
       
       case type == "Turn":
@@ -533,6 +540,7 @@ const useCompile = (props) => {
           Degree: degree
         };
         sendPostRequestToRobot(endpoint,payload);
+        delayJS(time + 500)
         return;
       
       case type == "Turn2":
@@ -549,6 +557,7 @@ const useCompile = (props) => {
         };
         var endpoint = "drive/time"
         sendPostRequestToRobot(endpoint,payload);
+        delayJS(time + 500)
         return;
 
       case type == "Speak":
