@@ -62,14 +62,41 @@ Blockly.Blocks["TransitionLED"] = {
         ["Blink", "BLINK"],
         ["Transition Once", "TRANSITION_ONCE"]
       ]), "TRANSITION_TYPE")
-      .appendField("transition for a duration of")
-      .appendField(new Blockly.FieldNumber(100), "FIELD_TransitionTime_TimeMs")
+      .appendField("transition");
+    this.appendDummyInput()
+      .appendField("for a duration of")
+      .appendField(new Blockly.FieldNumber(1000), "FIELD_TransitionTime_TimeMs")
       .appendField("ms");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Transition LED between two colors with the specified transition type and time.");
   }
 };
+
+// Blockly.Blocks["TransitionLED"] = {
+//   init: function () {
+//     this.setColour('260');
+//     this.appendValueInput("COLOR1")
+//       .setCheck("Colour")
+//       .appendField("Transition LED from");
+//     this.appendValueInput("COLOR2")
+//       .setCheck("Colour")
+//       .appendField("to");
+//     this.appendDummyInput()
+//       .appendField("using the")
+//       .appendField(new Blockly.FieldDropdown([
+//         ["Breathe", "BREATHE"],
+//         ["Blink", "BLINK"],
+//         ["Transition Once", "TRANSITION_ONCE"]
+//       ]), "TRANSITION_TYPE")
+//       .appendField("transition for a duration of")
+//       .appendField(new Blockly.FieldNumber(100), "FIELD_TransitionTime_TimeMs")
+//       .appendField("ms");
+//     this.setPreviousStatement(true, null);
+//     this.setNextStatement(true, null);
+//     this.setTooltip("Transition LED between two colors with the specified transition type and time.");
+//   }
+// };
 
 Blockly.Blocks["DisplayImage"] = {
   init: function () {
@@ -491,7 +518,7 @@ Blockly.Blocks["DisplayText"] = {
 Blockly.Blocks['eyes_acceptance'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("acceptance");
+        .appendField("Expression: acceptance");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'acceptance'");
@@ -501,7 +528,7 @@ Blockly.Blocks['eyes_acceptance'] = {
 Blockly.Blocks['eyes_admiration'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("admiration");
+        .appendField("Expression: admiration");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'admiration'");
@@ -511,7 +538,7 @@ Blockly.Blocks['eyes_admiration'] = {
 Blockly.Blocks['eyes_amazement'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("amazement");
+        .appendField("Expression: amazement");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'amazement'");
@@ -521,7 +548,7 @@ Blockly.Blocks['eyes_amazement'] = {
 Blockly.Blocks['eyes_anger'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("anger");
+        .appendField("Expression: anger");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'anger'");
@@ -531,7 +558,7 @@ Blockly.Blocks['eyes_anger'] = {
 Blockly.Blocks['eyes_annoyed'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("annoyed");
+        .appendField("Expression: annoyed");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'annoyed'");
@@ -541,7 +568,7 @@ Blockly.Blocks['eyes_annoyed'] = {
 Blockly.Blocks['eyes_anticipation'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("anticipation");
+        .appendField("Expression: anticipation");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'anticipation'");
@@ -551,7 +578,7 @@ Blockly.Blocks['eyes_anticipation'] = {
 Blockly.Blocks['eyes_apprehension'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("apprehension");
+        .appendField("Expression: apprehension");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'apprehension'");
@@ -561,7 +588,7 @@ Blockly.Blocks['eyes_apprehension'] = {
 Blockly.Blocks['eyes_boredom'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("boredom");
+        .appendField("Expression: boredom");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'boredom'");
@@ -571,7 +598,7 @@ Blockly.Blocks['eyes_boredom'] = {
 Blockly.Blocks['eyes_default'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("default");
+        .appendField("Expression: default");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'default'");
@@ -581,7 +608,7 @@ Blockly.Blocks['eyes_default'] = {
 Blockly.Blocks['eyes_disgust'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disgust");
+        .appendField("Expression: disgust");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'disgust'");
@@ -591,7 +618,7 @@ Blockly.Blocks['eyes_disgust'] = {
 Blockly.Blocks['eyes_distraction'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("distraction");
+        .appendField("Expression: distraction");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'distraction'");
@@ -601,7 +628,7 @@ Blockly.Blocks['eyes_distraction'] = {
 Blockly.Blocks['eyes_ecstasy_frame_1'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("ecstasy 1");
+        .appendField("Expression: ecstasy 1");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'ecstasy 1'");
@@ -611,7 +638,7 @@ Blockly.Blocks['eyes_ecstasy_frame_1'] = {
 Blockly.Blocks['eyes_ecstasy_frame_2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("ecstasy 2");
+        .appendField("Expression: ecstasy 2");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'ecstasy 2'");
@@ -621,7 +648,7 @@ Blockly.Blocks['eyes_ecstasy_frame_2'] = {
 Blockly.Blocks['eyes_fear'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("fear");
+        .appendField("Expression: fear");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'fear'");
@@ -631,7 +658,7 @@ Blockly.Blocks['eyes_fear'] = {
 Blockly.Blocks['eyes_grief'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("grief");
+        .appendField("Expression: grief");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'grief'");
@@ -641,7 +668,7 @@ Blockly.Blocks['eyes_grief'] = {
 Blockly.Blocks['eyes_interest'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("interest");
+        .appendField("Expression: interest");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'interest'");
@@ -651,7 +678,7 @@ Blockly.Blocks['eyes_interest'] = {
 Blockly.Blocks['eyes_joy'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("joy");
+        .appendField("Expression: joy");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'joy'");
@@ -661,7 +688,7 @@ Blockly.Blocks['eyes_joy'] = {
 Blockly.Blocks['eyes_loathing'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("loathing");
+        .appendField("Expression: loathing");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'loathing'");
@@ -671,7 +698,7 @@ Blockly.Blocks['eyes_loathing'] = {
 Blockly.Blocks['eyes_pensiveness'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("pensiveness");
+        .appendField("Expression: pensiveness");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'pensiveness'");
@@ -681,7 +708,7 @@ Blockly.Blocks['eyes_pensiveness'] = {
 Blockly.Blocks['eyes_rage'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("rage eyes");
+        .appendField("Expression: rage eyes");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'rage eyes'");
@@ -691,7 +718,7 @@ Blockly.Blocks['eyes_rage'] = {
 Blockly.Blocks['eyes_sad'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sad");
+        .appendField("Expression: sad");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'sad'");
@@ -701,7 +728,7 @@ Blockly.Blocks['eyes_sad'] = {
 Blockly.Blocks['eyes_serenity'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("serenity");
+        .appendField("Expression: serenity");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'serenity'");
@@ -711,7 +738,7 @@ Blockly.Blocks['eyes_serenity'] = {
 Blockly.Blocks['eyes_surprise'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("surprise");
+        .appendField("Expression: surprise");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'surprise'");
@@ -721,7 +748,7 @@ Blockly.Blocks['eyes_surprise'] = {
 Blockly.Blocks['eyes_terror'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("terror");
+        .appendField("Expression: terror");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'terror'");
@@ -731,7 +758,7 @@ Blockly.Blocks['eyes_terror'] = {
 Blockly.Blocks['eyes_trust'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("trust");
+        .appendField("Expression: trust");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'trust'");
@@ -741,7 +768,7 @@ Blockly.Blocks['eyes_trust'] = {
 Blockly.Blocks['eyes_vigilance'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("vigilance");
+        .appendField("Expression: vigilance");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'vigilance'");
@@ -751,7 +778,7 @@ Blockly.Blocks['eyes_vigilance'] = {
 Blockly.Blocks['e_Sleeping'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sleeping");
+        .appendField("Expression: sleeping");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'sleeping'");
@@ -761,7 +788,7 @@ Blockly.Blocks['e_Sleeping'] = {
 Blockly.Blocks['e_SleepingZZZ'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sleeping ZZZ");
+        .appendField("Expression: sleeping ZZZ");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'sleeping ZZZ'");
@@ -771,7 +798,7 @@ Blockly.Blocks['e_SleepingZZZ'] = {
 Blockly.Blocks['e_Contempt'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("contempt");
+        .appendField("Expression: contempt");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'contempt'");
@@ -781,7 +808,7 @@ Blockly.Blocks['e_Contempt'] = {
 Blockly.Blocks['e_ContentLeft'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("content (left)");
+        .appendField("Expression: content (left)");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'content (left)'");
@@ -791,7 +818,7 @@ Blockly.Blocks['e_ContentLeft'] = {
 Blockly.Blocks['e_ContentRight'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("content (right)");
+        .appendField("Expression: content (right)");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'content (right)'");
@@ -801,7 +828,7 @@ Blockly.Blocks['e_ContentRight'] = {
 Blockly.Blocks['e_Disoriented'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disoriented");
+        .appendField("Expression: disoriented");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'disoriented'");
@@ -811,7 +838,7 @@ Blockly.Blocks['e_Disoriented'] = {
 Blockly.Blocks['e_EcstacyHilarious'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("ecstacy hilarious");
+        .appendField("Expression: ecstacy hilarious");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'ecstacy hilarious'");
@@ -821,7 +848,7 @@ Blockly.Blocks['e_EcstacyHilarious'] = {
 Blockly.Blocks['e_EcstacyStarryEyed'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("ecstacy starry eyed");
+        .appendField("Expression: ecstacy starry eyed");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'ecstacy starry eyed'");
@@ -831,7 +858,7 @@ Blockly.Blocks['e_EcstacyStarryEyed'] = {
 Blockly.Blocks['e_JoyGoofy'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("joy goofy");
+        .appendField("Expression: joy goofy");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'joy goofy'");
@@ -841,7 +868,7 @@ Blockly.Blocks['e_JoyGoofy'] = {
 Blockly.Blocks['e_JoyGoofy2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("joy goofy 2");
+        .appendField("Expression: joy goofy 2");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'joy goofy 2'");
@@ -851,7 +878,7 @@ Blockly.Blocks['e_JoyGoofy2'] = {
 Blockly.Blocks['e_JoyGoofy3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("joy goofy 3");
+        .appendField("Expression: joy goofy 3");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'joy goofy 3'");
@@ -861,7 +888,7 @@ Blockly.Blocks['e_JoyGoofy3'] = {
 Blockly.Blocks['e_Love'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("love");
+        .appendField("Expression: love");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'love'");
@@ -871,7 +898,7 @@ Blockly.Blocks['e_Love'] = {
 Blockly.Blocks['e_Rage'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("rage");
+        .appendField("Expression: rage");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'rage'");
@@ -881,7 +908,7 @@ Blockly.Blocks['e_Rage'] = {
 Blockly.Blocks['e_Rage2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("rage 2");
+        .appendField("Expression: rage 2");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'rage 2'");
@@ -891,7 +918,7 @@ Blockly.Blocks['e_Rage2'] = {
 Blockly.Blocks['e_Rage3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("rage 3");
+        .appendField("Expression: rage 3");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'rage 3'");
@@ -901,7 +928,7 @@ Blockly.Blocks['e_Rage3'] = {
 Blockly.Blocks['e_Rage4'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("rage 4");
+        .appendField("Expression: rage 4");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'rage 4'");
@@ -911,7 +938,7 @@ Blockly.Blocks['e_Rage4'] = {
 Blockly.Blocks['e_RemorseShame'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("remorse shame");
+        .appendField("Expression: remorse shame");
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'remorse shame'");
@@ -922,7 +949,7 @@ Blockly.Blocks['e_RemorseShame'] = {
 Blockly.Blocks['s_Acceptance'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("acceptance");
+        .appendField("Sound: acceptance");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'acceptance'");
@@ -932,7 +959,7 @@ Blockly.Blocks['s_Acceptance'] = {
 Blockly.Blocks['s_Amazement'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("amazement");
+        .appendField("Sound: amazement");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'amazement'");
@@ -942,7 +969,7 @@ Blockly.Blocks['s_Amazement'] = {
 Blockly.Blocks['s_Amazement2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("amazement 2");
+        .appendField("Sound: amazement 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'amazement 2'");
@@ -952,7 +979,7 @@ Blockly.Blocks['s_Amazement2'] = {
 Blockly.Blocks['s_Anger'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("anger");
+        .appendField("Sound: anger");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'anger'");
@@ -962,7 +989,7 @@ Blockly.Blocks['s_Anger'] = {
 Blockly.Blocks['s_Anger2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("anger 2");
+        .appendField("Sound: anger 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'anger 2'");
@@ -972,7 +999,7 @@ Blockly.Blocks['s_Anger2'] = {
 Blockly.Blocks['s_Anger3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("anger 3");
+        .appendField("Sound: anger 3");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'anger 3'");
@@ -982,7 +1009,7 @@ Blockly.Blocks['s_Anger3'] = {
 Blockly.Blocks['s_Anger4'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("anger 4");
+        .appendField("Sound: anger 4");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'anger 4'");
@@ -992,7 +1019,7 @@ Blockly.Blocks['s_Anger4'] = {
 Blockly.Blocks['s_Annoyance'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("annoyance");
+        .appendField("Sound: annoyance");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'annoyance'");
@@ -1002,7 +1029,7 @@ Blockly.Blocks['s_Annoyance'] = {
 Blockly.Blocks['s_Annoyance2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("annoyance 2");
+        .appendField("Sound: annoyance 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'annoyance 2'");
@@ -1012,7 +1039,7 @@ Blockly.Blocks['s_Annoyance2'] = {
 Blockly.Blocks['s_Annoyance3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("annoyance 3");
+        .appendField("Sound: annoyance 3");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'annoyance 3'");
@@ -1022,7 +1049,7 @@ Blockly.Blocks['s_Annoyance3'] = {
 Blockly.Blocks['s_Annoyance4'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("annoyance 4");
+        .appendField("Sound: annoyance 4");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'annoyance 4'");
@@ -1032,7 +1059,7 @@ Blockly.Blocks['s_Annoyance4'] = {
 Blockly.Blocks['s_Awe'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("awe");
+        .appendField("Sound: awe");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'awe'");
@@ -1042,7 +1069,7 @@ Blockly.Blocks['s_Awe'] = {
 Blockly.Blocks['s_Awe2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("awe 2");
+        .appendField("Sound: awe 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'awe 2'");
@@ -1052,7 +1079,7 @@ Blockly.Blocks['s_Awe2'] = {
 Blockly.Blocks['s_Awe3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("awe 3");
+        .appendField("Sound: awe 3");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'awe 3'");
@@ -1062,7 +1089,7 @@ Blockly.Blocks['s_Awe3'] = {
 Blockly.Blocks['s_Boredom'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("boredom");
+        .appendField("Sound: boredom");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'boredom'");
@@ -1072,7 +1099,7 @@ Blockly.Blocks['s_Boredom'] = {
 Blockly.Blocks['s_Disapproval'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disapproval");
+        .appendField("Sound: disapproval");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'disapproval'");
@@ -1082,7 +1109,7 @@ Blockly.Blocks['s_Disapproval'] = {
 Blockly.Blocks['s_Disgust'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disgust");
+        .appendField("Sound: disgust");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'disgust'");
@@ -1092,7 +1119,7 @@ Blockly.Blocks['s_Disgust'] = {
 Blockly.Blocks['s_Disgust2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disgust 2");
+        .appendField("Sound: disgust 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'disgust 2'");
@@ -1102,7 +1129,7 @@ Blockly.Blocks['s_Disgust2'] = {
 Blockly.Blocks['s_Disgust3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disgust 3");
+        .appendField("Sound: disgust 3");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'disgust 3'");
@@ -1112,7 +1139,7 @@ Blockly.Blocks['s_Disgust3'] = {
 Blockly.Blocks['s_DisorientedConfused'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disoriented confused");
+        .appendField("Sound: disoriented confused");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'disoriented confused'");
@@ -1122,7 +1149,7 @@ Blockly.Blocks['s_DisorientedConfused'] = {
 Blockly.Blocks['s_DisorientedConfused2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disoriented confused 2");
+        .appendField("Sound: disoriented confused 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'disoriented confused 2'");
@@ -1132,7 +1159,7 @@ Blockly.Blocks['s_DisorientedConfused2'] = {
 Blockly.Blocks['s_DisorientedConfused3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disoriented confused 3");
+        .appendField("Sound: disoriented confused 3");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'disoriented confused 3'");
@@ -1142,7 +1169,7 @@ Blockly.Blocks['s_DisorientedConfused3'] = {
 Blockly.Blocks['s_DisorientedConfused4'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disoriented confused 4");
+        .appendField("Sound: disoriented confused 4");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'disoriented confused 4'");
@@ -1152,7 +1179,7 @@ Blockly.Blocks['s_DisorientedConfused4'] = {
 Blockly.Blocks['s_DisorientedConfused5'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disoriented confused 5");
+        .appendField("Sound: disoriented confused 5");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'disoriented confused 5'");
@@ -1162,7 +1189,7 @@ Blockly.Blocks['s_DisorientedConfused5'] = {
 Blockly.Blocks['s_DisorientedConfused6'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("disoriented confused 6");
+        .appendField("Sound: disoriented confused 6");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'disoriented confused 6'");
@@ -1172,7 +1199,7 @@ Blockly.Blocks['s_DisorientedConfused6'] = {
 Blockly.Blocks['s_Distraction'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("distraction");
+        .appendField("Sound: distraction");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'distraction'");
@@ -1182,7 +1209,7 @@ Blockly.Blocks['s_Distraction'] = {
 Blockly.Blocks['s_Ecstacy'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("ecstacy");
+        .appendField("Sound: ecstacy");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'ecstacy'");
@@ -1192,7 +1219,7 @@ Blockly.Blocks['s_Ecstacy'] = {
 Blockly.Blocks['s_Ecstacy2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("ecstacy 2");
+        .appendField("Sound: ecstacy 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'ecstacy 2'");
@@ -1202,7 +1229,7 @@ Blockly.Blocks['s_Ecstacy2'] = {
 Blockly.Blocks['s_Fear'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("fear");
+        .appendField("Sound: fear");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'fear'");
@@ -1212,7 +1239,7 @@ Blockly.Blocks['s_Fear'] = {
 Blockly.Blocks['s_Grief'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("grief");
+        .appendField("Sound: grief");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'grief'");
@@ -1222,7 +1249,7 @@ Blockly.Blocks['s_Grief'] = {
 Blockly.Blocks['s_Grief2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("grief 2");
+        .appendField("Sound: grief 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'grief 2'");
@@ -1232,7 +1259,7 @@ Blockly.Blocks['s_Grief2'] = {
 Blockly.Blocks['s_Grief3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("grief 3");
+        .appendField("Sound: grief 3");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'grief 3'");
@@ -1242,7 +1269,7 @@ Blockly.Blocks['s_Grief3'] = {
 Blockly.Blocks['s_Grief4'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("grief 4");
+        .appendField("Sound: grief 4");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'grief 4'");
@@ -1252,7 +1279,7 @@ Blockly.Blocks['s_Grief4'] = {
 Blockly.Blocks['s_Joy'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("joy");
+        .appendField("Sound: joy");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'joy'");
@@ -1262,7 +1289,7 @@ Blockly.Blocks['s_Joy'] = {
 Blockly.Blocks['s_Joy2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("joy 2");
+        .appendField("Sound: joy 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'joy 2'");
@@ -1272,7 +1299,7 @@ Blockly.Blocks['s_Joy2'] = {
 Blockly.Blocks['s_Joy3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("joy 3");
+        .appendField("Sound: joy 3");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'joy 3'");
@@ -1282,7 +1309,7 @@ Blockly.Blocks['s_Joy3'] = {
 Blockly.Blocks['s_Joy4'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("joy 4");
+        .appendField("Sound: joy 4");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'joy 4'");
@@ -1292,7 +1319,7 @@ Blockly.Blocks['s_Joy4'] = {
 Blockly.Blocks['s_Loathing'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("loathing");
+        .appendField("Sound: loathing");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'loathing'");
@@ -1302,7 +1329,7 @@ Blockly.Blocks['s_Loathing'] = {
 Blockly.Blocks['s_Love'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("love");
+        .appendField("Sound: love");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'love'");
@@ -1312,7 +1339,7 @@ Blockly.Blocks['s_Love'] = {
 Blockly.Blocks['s_PhraseByeBye'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("phrase: Bye Bye");
+        .appendField("Sound: Bye Bye");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'phrase: Bye Bye'");
@@ -1322,7 +1349,7 @@ Blockly.Blocks['s_PhraseByeBye'] = {
 Blockly.Blocks['s_PhraseEvilAhHa'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("phrase: Evil Ah Ha");
+        .appendField("Sound: Evil Ah Ha");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'phrase: Evil Ah Ha'");
@@ -1332,7 +1359,7 @@ Blockly.Blocks['s_PhraseEvilAhHa'] = {
 Blockly.Blocks['s_PhraseHello'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("phrase: Hello");
+        .appendField("Sound: Hello");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'phrase: Hello'");
@@ -1342,7 +1369,7 @@ Blockly.Blocks['s_PhraseHello'] = {
 Blockly.Blocks['s_PhraseNoNoNo'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("phrase: No No No");
+        .appendField("Sound: No No No");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'phrase: No No No'");
@@ -1352,7 +1379,7 @@ Blockly.Blocks['s_PhraseNoNoNo'] = {
 Blockly.Blocks['s_PhraseOopsy'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("phrase: Oopsy");
+        .appendField("Sound: Oopsy");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'phrase: Oopsy'");
@@ -1362,7 +1389,7 @@ Blockly.Blocks['s_PhraseOopsy'] = {
 Blockly.Blocks['s_PhraseOwOwOw'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("phrase: Ow Ow Ow");
+        .appendField("Sound: Ow Ow Ow");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'phrase: Ow Ow Ow'");
@@ -1372,7 +1399,7 @@ Blockly.Blocks['s_PhraseOwOwOw'] = {
 Blockly.Blocks['s_PhraseOwwww'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("phrase: Owwww");
+        .appendField("Sound: Owwww");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'phrase: Owwww'");
@@ -1382,7 +1409,7 @@ Blockly.Blocks['s_PhraseOwwww'] = {
 Blockly.Blocks['s_PhraseUhOh'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("phrase: Uh Oh");
+        .appendField("Sound: Uh Oh");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'phrase: Uh Oh'");
@@ -1392,7 +1419,7 @@ Blockly.Blocks['s_PhraseUhOh'] = {
 Blockly.Blocks['s_Rage'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("rage");
+        .appendField("Sound: rage");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'rage'");
@@ -1402,7 +1429,7 @@ Blockly.Blocks['s_Rage'] = {
 Blockly.Blocks['s_Sadness'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sadness");
+        .appendField("Sound: sadness");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sadness'");
@@ -1412,7 +1439,7 @@ Blockly.Blocks['s_Sadness'] = {
 Blockly.Blocks['s_Sadness2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sadness 2");
+        .appendField("Sound: sadness 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sadness 2'");
@@ -1422,7 +1449,7 @@ Blockly.Blocks['s_Sadness2'] = {
 Blockly.Blocks['s_Sadness3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sadness 3");
+        .appendField("Sound: sadness 3");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sadness 3'");
@@ -1432,7 +1459,7 @@ Blockly.Blocks['s_Sadness3'] = {
 Blockly.Blocks['s_Sadness4'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sadness 4");
+        .appendField("Sound: sadness 4");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sadness 4'");
@@ -1442,7 +1469,7 @@ Blockly.Blocks['s_Sadness4'] = {
 Blockly.Blocks['s_Sadness5'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sadness 5");
+        .appendField("Sound: sadness 5");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sadness 5'");
@@ -1452,7 +1479,7 @@ Blockly.Blocks['s_Sadness5'] = {
 Blockly.Blocks['s_Sadness6'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sadness 6");
+        .appendField("Sound: sadness 6");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sadness 6'");
@@ -1462,7 +1489,7 @@ Blockly.Blocks['s_Sadness6'] = {
 Blockly.Blocks['s_Sadness7'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sadness 7");
+        .appendField("Sound: sadness 7");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sadness 7'");
@@ -1472,7 +1499,7 @@ Blockly.Blocks['s_Sadness7'] = {
 Blockly.Blocks['s_Sleepy'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sleepy");
+        .appendField("Sound: sleepy");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sleepy'");
@@ -1482,7 +1509,7 @@ Blockly.Blocks['s_Sleepy'] = {
 Blockly.Blocks['s_Sleepy2'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sleepy 2");
+        .appendField("Sound: sleepy 2");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sleepy 2'");
@@ -1492,7 +1519,7 @@ Blockly.Blocks['s_Sleepy2'] = {
 Blockly.Blocks['s_Sleepy3'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sleepy 3");
+        .appendField("Sound: sleepy 3");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sleepy 3'");
@@ -1502,7 +1529,7 @@ Blockly.Blocks['s_Sleepy3'] = {
 Blockly.Blocks['s_Sleepy4'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sleepy 4");
+        .appendField("Sound: sleepy 4");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sleepy 4'");
@@ -1512,7 +1539,7 @@ Blockly.Blocks['s_Sleepy4'] = {
 Blockly.Blocks['s_SleepySnore'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("sleepy snore");
+        .appendField("Sound: sleepy snore");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'sleepy snore'");
@@ -1522,7 +1549,7 @@ Blockly.Blocks['s_SleepySnore'] = {
 Blockly.Blocks['s_SystemCameraShutter'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("system camera shutter");
+        .appendField("Sound: system camera shutter");
     this.setOutput(true, 'Audio');
     this.setColour(240);
     this.setTooltip("Represents the audio 'system camera shutter'");

@@ -3,6 +3,8 @@ import useStore from "../Store";
 import { useShallow } from 'zustand/react/shallow'
 import * as Blockly from 'blockly';
 import { forBlock } from '../generators/javascript';
+import { hexToRgb } from '../utils.js';
+import { JointLookup } from '../Misty-Robot/JointLookup.js';
 
 /**
   * delayJS(time)
@@ -75,21 +77,6 @@ const useCompile = (props) => {
     }
   }
 
-  function hexToRgb(hex) {
-    // Remove the hash if it exists
-    hex = hex.replace(/^#/, '');
-  
-    // Parse the hex values
-    var bigint = parseInt(hex, 16);
-  
-    // Extract RGB components
-    var r = (bigint >> 16) & 255;
-    var g = (bigint >> 8) & 255;
-    var b = bigint & 255;
-  
-    // Return the result as an object
-    return { red: r, green: g, blue: b };
-  }
   function isPrime(num) {
     if (num == 2 || num == 3)
       return true;
@@ -322,84 +309,87 @@ const useCompile = (props) => {
 
 /////////////////////////////////////////////Color///////////////////////////////////////////////////////////////
       case type === "ChangeLED":
-        if(!params.inputs||!params.inputs.FIELD_ChangeLED){
-          alert('err: ChangeLED is not complete!')
-          return
+        if (!params.inputs||!params.inputs.FIELD_ChangeLED) {
+          alert('err: ChangeLED is not complete!');
+          return;
         }
-        // Declare list of arguments the block will use, if any
-        const args = ["Red", "Green", "Blue"]
-        var endpoint = "led"
-        var input = params.inputs.FIELD_ChangeLED;
-        // For each argument, get the current value in the corresponding field and append it to the payload
-        // for (var arg of args) {
-        //   var input = block.getFieldValue("FIELD_ChangeLED");
-        //   payload[arg] = hexToRgb(input)[arg];
-        // } 
-        // Tell the robot what to do based on the payload
-        //console.log(input,payload)
-        console.log(input)
-        sendPostRequestToRobot(endpoint, input);
-        delayJS(500)
+        var endpoint = "led";
+        var colorBlock = getBlock(params.inputs.FIELD_ChangeLED);
+        var COLOR = hexToRgb(colorBlock.fields.COLOUR);
+        var payload = {
+          "Red": COLOR.r,
+          "Green": COLOR.g,
+          "Blue": COLOR.b
+        }        
+        sendPostRequestToRobot(endpoint, payload);
+        delayJS(500);
         return;
 
       case type === "TransitionLED":
-        if(!params.inputs||!params.inputs.COLOR1||!params.inputs.COLOR2){
-          alert('err: TransitionLED is not complete!')
-          return
+        if (!params.inputs||!params.inputs.COLOR1||!params.inputs.COLOR2) {
+          alert('err: TransitionLED is not complete!');
+          return;
         }
-        var endpoint = "led/transition"
-        var COLOR1 = hexToRgb(params.inputs.COLOR1)
-        var COLOR2 = hexToRgb(params.inputs.COLOR2)
-        var time = params.fields.FIELD_TransitionTime_TimeMs
-        sendPostRequestToRobot(endpoint, {
-        "Red": COLOR1.r, 
-        "Green": COLOR1.g,
-        "Blue": COLOR1.b,
-        "Red2": COLOR2.r,
-        "Green2": COLOR2.g,
-        "Blue2": COLOR2.b,
-        "TransitionType": params.fields.TRANSITION_TYPE,
-        "TimeMS": time});
-        delayJS(time+500)
+        var endpoint = "led/transition";
+        var colorBlock1 = getBlock(params.inputs.COLOR1);
+        var colorBlock2 = getBlock(params.inputs.COLOR2);
+        var COLOR1 = hexToRgb(colorBlock1.fields.COLOUR);
+        var COLOR2 = hexToRgb(colorBlock2.fields.COLOUR);
+        var time = params.fields.FIELD_TransitionTime_TimeMs;
+        var transition = params.fields.TRANSITION_TYPE;
+        var payload = {
+          "Red": COLOR1.r,
+          "Green": COLOR1.g,
+          "Blue": COLOR1.b,
+          "Red2": COLOR2.r,
+          "Green2": COLOR2.g,
+          "Blue2": COLOR2.b,
+          "TransitionType": transition,
+          "TimeMS": time
+        }
+        sendPostRequestToRobot(endpoint, payload);
+        delayJS(time+500);
         return;
 
-
       case type === "DisplayImage":
-        if(!params.inputs||!params.inputs.FIELD_DisplayImage_Filename){
-          alert('err: DisplayImage is not complete!')
-          return
+        if (!params.inputs||!params.inputs.FIELD_DisplayImage_Filename) {
+          alert('err: DisplayImage is not complete!');
+          return;
         }
         var alpha = 1
-        var filename = params.inputs.FIELD_DisplayImage_Filename;
+        var exprBlock = getBlock(params.inputs.FIELD_DisplayImage_Filename);
+        var filename = JointLookup(exprBlock.type);
         var endpoint = "images/display";
         var payload = {
           "FileName": filename,
           "Alpha": alpha
         };
         sendPostRequestToRobot(endpoint, payload);
-        delayJS(500)
-        return ;
+        delayJS(500);
+        return;
         
       case type === "PlayAudio":
         if(!params.inputs||!params.inputs.FIELD_PlayAudio_Filename){
-          alert('err: PlayAudio is not complete!')
-          return
+          alert('err: PlayAudio is not complete!');
+          return;
         }
-        var endpoint = "audio/play"
-        var filename = params.inputs.FIELD_PlayAudio_Filename;
+        var endpoint = "audio/play";
+        var exprBlock = getBlock(params.inputs.FIELD_PlayAudio_Filename);
+        var filename = JointLookup(exprBlock.type);
         var payload = {
           "FileName": filename,
         };
         sendPostRequestToRobot(endpoint, payload);
         return;
-        
 
       case type === "DisplayText":
         var endpoint = "text/display"
         var text = params.fields.FIELD_DisplayText_Text;
+        console.log(text);
         var payload = {
           "Text": text
         };
+        console.log(payload);
         sendPostRequestToRobot(endpoint, payload);
         return;
         
