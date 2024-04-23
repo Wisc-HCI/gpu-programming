@@ -135,17 +135,6 @@ export const toolbox = {
       },
       {
         'kind': 'category',
-        'name': 'Text',
-        'categorystyle': 'text_category',
-        'contents': [
-          {
-            'kind': 'block',
-            'type': 'text',
-          }
-        ],
-      },
-      {
-        'kind': 'category',
         'name': 'Color',
         'categorystyle': 'colour_category',
         'contents': [
@@ -224,12 +213,6 @@ export const toolbox = {
       },
       {
         'kind': 'category',
-        'name': 'Variables',
-        'categorystyle': 'variable_category',
-        'custom': 'VARIABLE',
-      },
-      {
-        'kind': 'category',
         'name': 'Functions',
         'categorystyle': 'procedure_category',
         'custom': 'PROCEDURE',
@@ -237,12 +220,12 @@ export const toolbox = {
       {
         'kind': 'category',
         'name': 'Misty', //replace Lists with Misty
-        'categorystyle': 'list_category',
+        'categorystyle': 'misty_category',
         'contents': [
           {
             "kind": "category",
             "name": "Movement",
-            'categorystyle': 'list_category',
+            'categorystyle': 'movement_category',
             "contents": [
               {
                 'kind': 'block',
@@ -286,7 +269,7 @@ export const toolbox = {
           {
             "kind": "category",
             "name": "Speech",
-            'categorystyle': 'list_category',
+            'categorystyle': 'speech_category',
             "contents": [
               {
                 'kind': 'block',
@@ -295,13 +278,17 @@ export const toolbox = {
               {
                 'kind': 'block',
                 'type': 'SpeakDefault',
+              },
+              {
+                'kind': 'block',
+                'type': 'text',
               }
             ]
           },
           {
             "kind": "category",
             "name": "Face",
-            'categorystyle': 'list_category',
+            'categorystyle': 'face_category',
             "contents": [
               {
                 'kind': 'block',
@@ -480,7 +467,7 @@ export const toolbox = {
           {
             "kind": "category",
             "name": "Audio",
-            'categorystyle': 'list_category',
+            'categorystyle': 'audio_category',
             "contents": [
               {
                 'kind': 'block',
@@ -727,41 +714,47 @@ export const toolbox = {
                 'type': 's_SystemCameraShutter',
               }
             ]
-          },         
-          {
-            'kind': 'block',
-            'type': 'ChangeLED',
           },
           {
-            'kind': 'block',
-            'type': 'TransitionLED',
-          },
-          {
-            'kind': 'block',
-            'type': 'DisplayImage',
-          },
-          {
-            'kind': 'block',
-            'type': 'PlayAudio',
-          },
-          {
-            'kind': 'block',
-            'type': 'DisplayText',
-          },
-          {
-            'kind': 'block',
-            'type': 'TurnOnFlashlight',
-          },
-          {
-            'kind': 'block',
-            'type': 'TurnOffFlashlight',
-          },
-          
-          {
-            'kind': 'block',
-            'type': 'WaitForSeconds',
-          },
-          
+            "kind": "category",
+            "name": "Misc",
+            "categorystyle": "misc_category",
+            "contents": [
+              {
+                'kind': 'block',
+                'type': 'ChangeLED',
+              },
+              {
+                'kind': 'block',
+                'type': 'TransitionLED',
+              },
+              {
+                'kind': 'block',
+                'type': 'DisplayImage',
+              },
+              {
+                'kind': 'block',
+                'type': 'PlayAudio',
+              },
+              {
+                'kind': 'block',
+                'type': 'DisplayText',
+              },
+              {
+                'kind': 'block',
+                'type': 'TurnOnFlashlight',
+              },
+              {
+                'kind': 'block',
+                'type': 'TurnOffFlashlight',
+              },
+              
+              {
+                'kind': 'block',
+                'type': 'WaitForSeconds',
+              },
+            ]
+          }
         ],
       },
     ],

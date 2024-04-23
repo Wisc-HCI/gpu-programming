@@ -1,11 +1,11 @@
 import {create }from 'zustand';
 import { parseUrdfForJoints, parseUrdfForLinks } from './urdfParser.js';
 import { Timer } from './Timer.js';
-import { eulerToQuaternion, interpolateScalar, quaternionFromEuler, quaternionToEuler } from './utils.js';
+import { determineZAngleFromQuaternion, eulerToQuaternion, interpolateScalar, quaternionFromEuler, quaternionToEuler } from './utils.js';
 import { JointLookup } from './Misty-Robot/JointLookup.js';
-import { MISTY_ARM_LENGTH, PI, MAX_ARM_SPEED, ARM_OFFSET_ANGLE } from './Constants.js';
+import { MISTY_ARM_LENGTH, PI, MAX_ARM_SPEED, ARM_OFFSET_ANGLE, MAX_DIST_PER_SEC, MAX_ANGLE_PER_SEC } from './Constants.js';
 import { starting_tfs, starting_items } from './Misty_Load_File.js';
-import { Quaternion } from "three";
+import { Quaternion, Vector3 } from "three";
  
 const useStore = create((set,get) => ({
   ip: '',
@@ -265,13 +265,13 @@ const useStore = create((set,get) => ({
         ...endResult
       }
     })
+
+    return time;
   },
   animateArm: (arm, position, velocity) => {
     const allTfs = JSON.parse(JSON.stringify(get().endingTfs));
     let endArmTf = JSON.parse(JSON.stringify(allTfs[JointLookup(arm)]));
     let armTf = JSON.parse(JSON.stringify(allTfs[JointLookup(arm)]));
-    console.log(JSON.stringify(endArmTf));
-    console.log(JSON.stringify(armTf));
 
     let euler = quaternionToEuler(armTf.rotation);
     const distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(euler.y - position);
@@ -279,8 +279,6 @@ const useStore = create((set,get) => ({
     
     let temp = {x: 0, y: position-ARM_OFFSET_ANGLE, z: 0};
     const newQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
-    // let newQuatArray = quaternionFromEuler([temp.x* PI/180, temp.y* PI/180, temp.z* PI/180]);
-    // const newQuat = new Quaternion(newQuatArray[1], newQuatArray[2], newQuatArray[3], newQuatArray[0])
 
     let timeVector = [0];
     let wVector = [];
@@ -333,6 +331,116 @@ const useStore = create((set,get) => ({
     result[JointLookup(arm)] = {...armTf};
     let endResult = {};
     endResult[JointLookup(arm)] = {...endArmTf};
+
+    set({
+      tfs: {
+        ...allTfs,
+        ...result
+      },
+      endingTfs: {
+        ...allTfs,
+        ...endResult
+      }
+    })
+
+    return time;
+  },
+  animateDrive: (linearVelocity, angularVelocity, degree, time) => {
+    // todo, rotate by time, should be able to slerp.
+    const allTfs = JSON.parse(JSON.stringify(get().endingTfs));
+    let endBaseTf = JSON.parse(JSON.stringify(allTfs[JointLookup("Base")]));
+    let baseTf = JSON.parse(JSON.stringify(allTfs[JointLookup("Base")]));
+
+    const angle = (angularVelocity/100 * MAX_ANGLE_PER_SEC) * time/1000;
+    const distance = linearVelocity/100 * MAX_DIST_PER_SEC * time/1000;
+    const r = angle !== 0 ? distance/angle : distance;
+
+    let newQuat = new Quaternion(baseTf.rotation.x, baseTf.rotation.y, baseTf.rotation.z, baseTf.rotation.w);
+    const currentEulerZ = determineZAngleFromQuaternion(newQuat);
+    console.log(currentEulerZ);
+    if (angle !== 0) {
+      let temp = {x: 0, y: 0, z: angle};
+      newQuat = eulerToQuaternion(temp.x, temp.y, temp.z);
+      newQuat.multiply(new Quaternion(baseTf.rotation.x, baseTf.rotation.y, baseTf.rotation.z, baseTf.rotation.w));
+    }
+
+    let timeVector = [0];
+    let xVector = [baseTf.position.x];
+    let yVector = [baseTf.position.y];
+    let zVector = [baseTf.position.z];
+    
+    let qWVector = [baseTf.rotation.w];
+    let qXVector = [baseTf.rotation.x];
+    let qYVector = [baseTf.rotation.y];
+    let qZVector = [baseTf.rotation.z];
+
+    const maxTime = 600;
+    
+    // offset to circle center
+    let aX = baseTf.position.x;
+    let aY = baseTf.position.y;
+    if (angle > 0) {
+      aX += r;
+    } else if (angle < 0) {
+      aX -= r;
+    }
+
+    console.log(angle);
+    let newPosition = null;
+    for (let i=10; i <= maxTime; i+=10) {
+      timeVector.push(time/1000*i);
+      let tAngle = angle * i/maxTime;
+      let tDist = distance * i/maxTime;
+      if (angle != 0) {
+        newPosition = new Vector3(aX + (Math.cos(currentEulerZ) * tDist / tAngle * Math.cos(tDist)), aY + (Math.sin(currentEulerZ) * tDist / tAngle * Math.sin(tDist)), zVector[0]);
+      } else {
+        newPosition = new Vector3(aX + (Math.cos(currentEulerZ) * tDist), aY + (Math.sin(currentEulerZ) * tDist), zVector[0]);
+      }
+      
+      xVector.push(newPosition.x);
+      yVector.push(newPosition.y);
+      zVector.push(newPosition.z);
+
+      let q = new Quaternion(qXVector[0], qYVector[0], qZVector[0], qWVector[0]);
+      q.slerp(newQuat, i/maxTime);
+
+      qWVector.push(q._w);
+      qXVector.push(q._x);
+      qYVector.push(q._y);
+      qZVector.push(q._z);
+    }
+    
+    timeVector.push(Infinity);
+    xVector.push(newPosition.x);
+    yVector.push(newPosition.y);
+    zVector.push(newPosition.z);
+    qWVector.push(newQuat._w);
+    qXVector.push(newQuat._x);
+    qYVector.push(newQuat._y);
+    qZVector.push(newQuat._z);
+
+    endBaseTf.position.x = newPosition.x;
+    endBaseTf.position.y = newPosition.y;
+    endBaseTf.position.z = newPosition.z;
+
+    endBaseTf.rotation.w = newQuat._w;
+    endBaseTf.rotation.x = newQuat._x;
+    endBaseTf.rotation.y = newQuat._y;
+    endBaseTf.rotation.z = newQuat._z;
+    
+    baseTf.position.x = interpolateScalar(timeVector, xVector);
+    baseTf.position.y = interpolateScalar(timeVector, yVector);
+    baseTf.position.z = interpolateScalar(timeVector, zVector);
+    
+    baseTf.rotation.w = interpolateScalar(timeVector, qWVector);
+    baseTf.rotation.x = interpolateScalar(timeVector, qXVector);
+    baseTf.rotation.y = interpolateScalar(timeVector, qYVector);
+    baseTf.rotation.z = interpolateScalar(timeVector, qZVector);
+
+    let result = {};
+    result[JointLookup("Base")] = {...baseTf};
+    let endResult = {};
+    endResult[JointLookup("Base")] = {...endBaseTf};
 
     set({
       tfs: {

@@ -137,6 +137,31 @@ export const eulerToQuaternion = (x, y, z) => {
     return q;
 }
 
+
+export const determineZAngleFromQuaternion = (quaternion) => {
+  // Check for defaults
+  if (quaternion._w === 0.707 && quaternion._z === 0.707) {
+    return PI/2;
+  }
+  if (quaternion._w === 0.707 && quaternion._z === -0.707) {
+    return -PI/2;
+  }
+  if (quaternion._w === -0.707 && quaternion._z === 0.707) {
+    return 3*PI/4;
+  }
+  if (quaternion._w === -0.707 && quaternion._z === -0.707) {
+    return -3*PI/4;
+  }
+  if (quaternion._z === 1) {
+    return PI;
+  }
+  if (quaternion._z === -1) {
+    return -PI;
+  }
+  // Otherwise return conversion
+  return quaternionToEuler(quaternion).z;
+}
+
 export function hexToRgb(hex) {
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;

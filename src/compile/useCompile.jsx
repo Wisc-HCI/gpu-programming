@@ -25,6 +25,7 @@ const useCompile = (props) => {
   const animateArm = useStore(useShallow((state) => state.animateArm));
   const animateBothArms = useStore(useShallow((state) => state.animateBothArms));
   const animateHead = useStore(useShallow((state) => state.animateHead));
+  const animateDrive = useStore(useShallow((state) => state.animateDrive));
   const ip = useStore(useShallow((state) => state.ip));
 
   // Fixed case-sensitive function call
@@ -519,6 +520,7 @@ const useCompile = (props) => {
           AngularVelocity: 0,
           TimeMs: time
         };
+        animateDrive(linearVelocity, 0, 0, time);
         sendPostRequestToRobot(endpoint,payload);
         delayJS(time + 500)
         return;
@@ -534,6 +536,7 @@ const useCompile = (props) => {
           AngularVelocity: angularVelocity,
           TimeMs: time
         };
+        animateDrive(linearVelocity, angularVelocity, 0, time);
         sendPostRequestToRobot(endpoint,payload);
         delayJS(time + 500)
         return;
@@ -551,6 +554,7 @@ const useCompile = (props) => {
           TimeMs: time,
           Degree: degree
         };
+        animateDrive(linearVelocity, angularVelocity, degree, time);
         sendPostRequestToRobot(endpoint,payload);
         delayJS(time + 500)
         return;
@@ -568,6 +572,7 @@ const useCompile = (props) => {
           Degree: degree
         };
         var endpoint = "drive/time"
+        animateDrive(linearVelocity, angularVelocity, degree, time);
         sendPostRequestToRobot(endpoint,payload);
         delayJS(time + 500)
         return;
