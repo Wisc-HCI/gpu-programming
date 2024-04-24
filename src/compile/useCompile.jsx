@@ -383,6 +383,20 @@ const useCompile = (props) => {
         sendPostRequestToRobot(endpoint, payload);
         return;
 
+      case type === "DisplayAnimation":
+        if(!params.inputs||!params.inputs.FIELD_DisplayAnimation_Filename){
+          alert('err: DisplayAnimation is not complete!');
+          return;
+        }
+        var endpoint = "animations/display";
+        var exprBlock = getBlock(params.inputs.FIELD_DisplayAnimation_Filename);
+        var filename = JointLookup(exprBlock.type);
+        var payload = {
+          "FileName": filename,
+        };
+        sendPostRequestToRobot(endpoint, payload);
+        return;
+
       case type === "DisplayText":
         var endpoint = "text/display"
         var text = params.fields.FIELD_DisplayText_Text;

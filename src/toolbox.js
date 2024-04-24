@@ -733,6 +733,10 @@ export const toolbox = {
                 'type': 'DisplayImage',
               },
               {
+                'kind': 'block', 
+                'type': 'DisplayAnimation',
+              },
+              {
                 'kind': 'block',
                 'type': 'PlayAudio',
               },

@@ -110,6 +110,18 @@ Blockly.Blocks["DisplayImage"] = {
   }
 };
 
+Blockly.Blocks["DisplayAnimation"] = {
+  init: function () {
+    this.setColour('260');
+    this.appendValueInput("FIELD_DisplayAnimation_Filename")
+      .setCheck("Animation")
+      .appendField("Show this animation on Misty: ");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Runs a specified animation on Misty");
+  }
+};
+
 Blockly.Blocks["MoveHead"] = {
   init: function () {
     this.setColour('260');
@@ -942,6 +954,37 @@ Blockly.Blocks['e_RemorseShame'] = {
     this.setOutput(true, 'Face');
     this.setColour(240);
     this.setTooltip("Represents the facial expression 'remorse shame'");
+  }
+};
+
+// Animation blocks
+Blockly.Blocks['animation_sleepy.bv'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Animation: Sleeping");
+    this.setOutput(true, 'Animation');
+    this.setColour(240);
+    this.setTooltip("Run the animation 'sleepy'");
+  }
+};
+
+Blockly.Blocks['animation_dancing.bv'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Animation: Dancing");
+    this.setOutput(true, 'Animation');
+    this.setColour(240);
+    this.setTooltip("Run the animation 'dancing'");
+  }
+};
+
+Blockly.Blocks['animation_spooked.bv'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Animation: Spooked");
+    this.setOutput(true, 'Animation');
+    this.setColour(240);
+    this.setTooltip("Run the animation 'spooked'");
   }
 };
 
