@@ -4,16 +4,17 @@ import ActivityTracker, { activityLog, appendActivity } from './ActivityTracker'
 import { useShallow } from 'zustand/react/shallow';
 
 import React from 'react';
-import { Box, Button, TextField, Container, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Box, Button, TextField, Container, Typography, Switch } from "@mui/material";
 import useCompile,{delayJS} from "../compile/useCompile";
+
 export default function TopBar(props){
     const [inputVal, setInputVal] = useState("")
     const setIp = useStore(useShallow((state) => state.setIp));
-    const ip = useStore(useShallow((state) => state.ip));
     const getBlock = useStore(useShallow((state) => state.getBlock));
     const getBlocksByType = useStore(useShallow((state) => state.getBlocksByType));
     const clock = useStore(useShallow((state) => state.clock));
+    const setImageList = useStore(useShallow((state) => state.setImageList));
+    const setAudioList = useStore(useShallow((state) => state.setAudioList));
     const { compile } = useCompile();
     
 
@@ -31,6 +32,30 @@ export default function TopBar(props){
         .then(json => {
           console.log(`Successfully sent a GET request, the response is: ${json}`);
           alert("Confirmed IP Address: " + inputVal);
+
+          return fetch(`http://${inputVal}/api/audio/list`)
+        })
+        .then(res => {
+          if (!res.ok) {
+            // If the response status code is not in the 200-299 range,
+            throw new Error(`Request failed with status ${res.status}`);
+          }
+          return res.json();
+        })
+        .then(json => {
+          setAudioList(json["result"])
+
+          return fetch(`http://${inputVal}/api/images/list`)
+        })
+        .then(res => {
+          if (!res.ok) {
+            // If the response status code is not in the 200-299 range,
+            throw new Error(`Request failed with status ${res.status}`);
+          }
+          return res.json();
+        })
+        .then(json => {
+          setImageList(json["result"])
         })
         .catch(error => {
           // Handle the error
