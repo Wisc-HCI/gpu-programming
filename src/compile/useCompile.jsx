@@ -5,6 +5,7 @@ import * as Blockly from 'blockly';
 import { forBlock } from '../generators/javascript';
 import { hexToRgb } from '../utils.js';
 import { JointLookup } from '../Misty-Robot/JointLookup.js';
+import { FaceLookup } from '../Misty-Robot/faces/facemap.js';
 
 /**
   * delayJS(time)
@@ -26,6 +27,8 @@ const useCompile = (props) => {
   const animateBothArms = useStore(useShallow((state) => state.animateBothArms));
   const animateHead = useStore(useShallow((state) => state.animateHead));
   const animateDrive = useStore(useShallow((state) => state.animateDrive));
+  const mistyAudioList = useStore(useShallow(state => state.mistyAudioList));
+  const mistyImageList = useStore(useShallow(state => state.mistyImageList));
   const ip = useStore(useShallow((state) => state.ip));
 
   // Fixed case-sensitive function call
@@ -360,11 +363,23 @@ const useCompile = (props) => {
         var alpha = 1
         var exprBlock = getBlock(params.inputs.FIELD_DisplayImage_Filename);
         var filename = JointLookup(exprBlock.type);
+        
         var endpoint = "images/display";
         var payload = {
           "FileName": filename,
           "Alpha": alpha
         };
+
+        if (!mistyImageList.includes(filename)) {
+          endpoint = "images";
+          payload = {
+            "FileName": filename,
+            "File": FaceLookup(filename),
+            "ImmediatelyApply": true,
+            "Overwrite": true
+          }
+        } 
+
         sendPostRequestToRobot(endpoint, payload);
         delayJS(500);
         return;

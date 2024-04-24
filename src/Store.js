@@ -17,11 +17,23 @@ const useStore = create((set,get) => ({
   points:{},
   widgets:{},
   counter: 0,
+  lightMode: true,
+  mistyAudioList: [],
+  mistyImageList: [],
   clock: new Timer(),
   tfs:{...starting_tfs},
   startingTfs: JSON.parse(JSON.stringify(starting_tfs)), // Used to start the animation from the center everytime
   endingTfs: JSON.parse(JSON.stringify(starting_tfs)), 
   items:{...starting_items},
+  toggleTheme: (toggle) => set({
+    lightMode: toggle
+  }),
+  setImageList: (list) => set({
+    mistyImageList: list
+  }),
+  setAudioList: (list) => set({
+    mistyAudioList: list
+  }),
   loadFromURDF: (urdfFile) => set({
     tfs: {...parseUrdfForJoints(urdfFile)},
     items: {...parseUrdfForLinks(urdfFile)}
