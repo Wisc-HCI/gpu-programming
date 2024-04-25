@@ -448,13 +448,12 @@ const useCompile = (props) => {
           alert("err: DisplayAnimation is not complete!");
           return;
         }
-        var endpoint = "animations/display";
         var exprBlock = getBlock(params.inputs.FIELD_DisplayAnimation_Filename);
         var filename = JointLookup(exprBlock.type);
         var payload = {
           FileName: filename,
         };
-        sendPostRequestToRobot(endpoint, payload);
+        readFile(payload);
         return;
 
       case type === "DisplayText":
