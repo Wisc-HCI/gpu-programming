@@ -1,7 +1,7 @@
 import {create }from 'zustand';
 import { parseUrdfForJoints, parseUrdfForLinks } from './urdfParser.js';
 import { Timer } from './Timer.js';
-import { determineZAngleFromQuaternion, eulerToQuaternion, interpolateScalar, quaternionFromEuler, quaternionToEuler } from './utils.js';
+import { determineZAngleFromQuaternion, eulerToQuaternion, interpolateScalar, quaternionToEuler } from './utils.js';
 import { JointLookup } from './Misty-Robot/JointLookup.js';
 import { MISTY_ARM_LENGTH, PI, MAX_ARM_SPEED, ARM_OFFSET_ANGLE, MAX_DIST_PER_SEC, MAX_ANGLE_PER_SEC } from './Constants.js';
 import { starting_tfs, starting_items } from './Misty_Load_File.js';
@@ -59,7 +59,7 @@ const useStore = create((set,get) => ({
     blocks: { ...state.blocks, [id]: updatedJson  }
   })),
   getBlock: (id) => get().blocks[id],
-
+  getBlocks:()=>get().blocks,
 
   addBlocktoStart: (id, json) => set((state) => ({ 
     Start: { ...state.Start, [id]: json}
@@ -73,8 +73,6 @@ const useStore = create((set,get) => ({
       }
       return acc;
     }, {});
- 
-    // Update the state with the new blocks object
     return { Start: newBlocks };
   }),
   getBlocksByType: (type) => {
@@ -403,7 +401,7 @@ const useStore = create((set,get) => ({
       timeVector.push(time/1000*i);
       let tAngle = angle * i/maxTime;
       let tDist = distance * i/maxTime;
-      if (angle != 0) {
+      if (angle !== 0) {
         newPosition = new Vector3(aX + (Math.cos(currentEulerZ) * tDist / tAngle * Math.cos(tDist)), aY + (Math.sin(currentEulerZ) * tDist / tAngle * Math.sin(tDist)), zVector[0]);
       } else {
         newPosition = new Vector3(aX + (Math.cos(currentEulerZ) * tDist), aY + (Math.sin(currentEulerZ) * tDist), zVector[0]);

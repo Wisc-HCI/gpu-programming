@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useStore from "../Store";
 import { activityLog, appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
@@ -8,8 +8,12 @@ import { Box, Button, TextField, Container, Typography } from "@mui/material";
 import useCompile, { delayJS } from "../compile/useCompile";
 
 export default function TopBar(props) {
+  const [worker, setWorker] = useState(null);
+  const [data, setData] = useState([]);
+  const [result, setResult] = useState([]);
   const [inputVal, setInputVal] = useState("");
   const setIp = useStore(useShallow((state) => state.setIp));
+  const getBlocks = useStore(useShallow((state) => state.getBlocks));
   const getBlock = useStore(useShallow((state) => state.getBlock));
   const getBlocksByType = useStore(
     useShallow((state) => state.getBlocksByType)
@@ -21,6 +25,23 @@ export default function TopBar(props) {
   const setAudioList = useStore(useShallow((state) => state.setAudioList));
   const { compile } = useCompile();
 
+  useEffect(() => {
+    const newWorker = new Worker(`${process.env.PUBLIC_URL}/worker.js`);
+    newWorker.onmessage = (e) => {
+      console.log("Message received from worker:", e.data);
+      setResult(e.data);
+    };
+    newWorker.onerror = (error) => {
+      console.error("Worker error:", error);
+    };
+
+    setWorker(newWorker);
+
+    // Cleanup on component unmount
+    return () => {
+      newWorker.terminate();
+    };
+  }, []);
   const confirmIpAddress = () => {
     setIp(inputVal);
     fetch(`http://${inputVal}/api/battery`, {
@@ -86,16 +107,12 @@ export default function TopBar(props) {
     console.log("runcode");
     console.log(`starting from the first block: `);
     console.log(start);
-    let num = 1;
-    while (currParam && currParam.next) {
-      num += 1;
-      currParam = getBlock(currParam.next);
-      console.log(`compiling block number ${num}`);
-      compile(currParam, currParam.type);
+    if (worker) {
+      setData(getBlocks());
+      worker.postMessage(data);
+    } else {
+      console.log("worker not setup");
     }
-
-    //const code = javascriptGenerator.workspaceToCode(ws);
-    //eval(code);
     appendActivity("Click Run Code button");
   };
 
