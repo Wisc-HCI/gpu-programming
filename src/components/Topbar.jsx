@@ -1,141 +1,153 @@
 import { useState } from "react";
 import useStore from "../Store";
-import ActivityTracker, { activityLog, appendActivity } from './ActivityTracker';
-import { useShallow } from 'zustand/react/shallow';
+import ActivityTracker, {
+  activityLog,
+  appendActivity,
+} from "./ActivityTracker";
+import { useShallow } from "zustand/react/shallow";
 
-import React from 'react';
-import { Box, Button, TextField, Container, Typography, Switch } from "@mui/material";
-import useCompile,{delayJS} from "../compile/useCompile";
+import React from "react";
+import { Box, Button, TextField, Container, Typography } from "@mui/material";
+import useCompile, { delayJS } from "../compile/useCompile";
 
-export default function TopBar(props){
-    const [inputVal, setInputVal] = useState("")
-    const setIp = useStore(useShallow((state) => state.setIp));
-    const getBlock = useStore(useShallow((state) => state.getBlock));
-    const getBlocksByType = useStore(useShallow((state) => state.getBlocksByType));
-    const clock = useStore(useShallow((state) => state.clock));
-    const setImageList = useStore(useShallow((state) => state.setImageList));
-    const setAudioList = useStore(useShallow((state) => state.setAudioList));
-    const { compile } = useCompile();
-    
+export default function TopBar(props) {
+  const [inputVal, setInputVal] = useState("");
+  const setIp = useStore(useShallow((state) => state.setIp));
+  const getBlock = useStore(useShallow((state) => state.getBlock));
+  const getBlocksByType = useStore(
+    useShallow((state) => state.getBlocksByType)
+  );
+  const clock = useStore(useShallow((state) => state.clock));
+  const setImageList = useStore(useShallow((state) => state.setImageList));
+  const setAudioList = useStore(useShallow((state) => state.setAudioList));
+  const { compile } = useCompile();
 
-    const confirmIpAddress =()=> {
-      setIp(inputVal)
-      fetch(`http://${inputVal}/api/battery`, {
-        method: 'GET'
-        }).then(res => {
-          if (!res.ok) {
-            // If the response status code is not in the 200-299 range,
-            throw new Error(`Request failed with status ${res.status}`);
-          }
-          return res.json();
-        })
-        .then(json => {
-          console.log(`Successfully sent a GET request, the response is: ${json}`);
-          alert("Confirmed IP Address: " + inputVal);
+  const confirmIpAddress = () => {
+    setIp(inputVal);
+    fetch(`http://${inputVal}/api/battery`, {
+      method: "GET",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          // If the response status code is not in the 200-299 range,
+          throw new Error(`Request failed with status ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((json) => {
+        console.log(
+          `Successfully sent a GET request, the response is: ${json}`
+        );
+        alert("Confirmed IP Address: " + inputVal);
 
-          return fetch(`http://${inputVal}/api/audio/list`)
-        })
-        .then(res => {
-          if (!res.ok) {
-            // If the response status code is not in the 200-299 range,
-            throw new Error(`Request failed with status ${res.status}`);
-          }
-          return res.json();
-        })
-        .then(json => {
-          setAudioList(json["result"])
+        return fetch(`http://${inputVal}/api/audio/list`);
+      })
+      .then((res) => {
+        if (!res.ok) {
+          // If the response status code is not in the 200-299 range,
+          throw new Error(`Request failed with status ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((json) => {
+        setAudioList(json["result"]);
 
-          return fetch(`http://${inputVal}/api/images/list`)
-        })
-        .then(res => {
-          if (!res.ok) {
-            // If the response status code is not in the 200-299 range,
-            throw new Error(`Request failed with status ${res.status}`);
-          }
-          return res.json();
-        })
-        .then(json => {
-          setImageList(json["result"])
-        })
-        .catch(error => {
-          // Handle the error
-          console.error('Error during fetch operation:', error.message);
-          alert(`Error fetching data: ${error.message}`);
-        })
-      appendActivity("Hit Confirm IP Address Button")
-      
+        return fetch(`http://${inputVal}/api/images/list`);
+      })
+      .then((res) => {
+        if (!res.ok) {
+          // If the response status code is not in the 200-299 range,
+          throw new Error(`Request failed with status ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((json) => {
+        setImageList(json["result"]);
+      })
+      .catch((error) => {
+        // Handle the error
+        console.error("Error during fetch operation:", error.message);
+        alert(`Error fetching data: ${error.message}`);
+      });
+    appendActivity("Hit Confirm IP Address Button");
+  };
+
+  const topbarStyle = {
+    backgroundColor: "#333", // Change the background color as needed
+    color: "#FFFFFF", // Change the text color as needed
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+  };
+
+  const runCode = () => {
+    // get start block, then iteratively check for children as well as inputs
+    const start = getBlocksByType("Start");
+    clock.reset_elapsed();
+
+    let currParam = start;
+    console.log("runcode");
+    console.log(`starting from the first block: `);
+    console.log(start);
+    let num = 1;
+    while (currParam && currParam.next) {
+      num += 1;
+      currParam = getBlock(currParam.next);
+      console.log(`compiling block number ${num}`);
+      compile(currParam, currParam.type);
     }
 
-    const topbarStyle = {
-      backgroundColor: '#333', // Change the background color as needed
-      color: '#FFFFFF', // Change the text color as needed
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      width: "100%"
-    };
+    //const code = javascriptGenerator.workspaceToCode(ws);
+    //eval(code);
+    appendActivity("Click Run Code button");
+  };
 
-    const runCode = () => {
-      // get start block, then iteratively check for children as well as inputs
-      const start = getBlocksByType('Start');
-      clock.reset_elapsed();
+  const stopCode = () => {
+    //delayJS(1000)
+    currParam.next = "";
+    appendActivity("Click Stop Code button");
+    console.log(activityLog);
+  };
 
-      let currParam = start
-      console.log('runcode')
-      console.log(`starting from the first block: `)
-      console.log(start)
-      let num = 1
-      while(currParam && currParam.next){
-        num += 1
-        currParam = getBlock(currParam.next)
-        console.log(`compiling block number ${num}`)
-        compile(currParam, currParam.type)
-        
-      }
-      
-        //const code = javascriptGenerator.workspaceToCode(ws);
-        //eval(code);
-       appendActivity("Click Run Code button")
-    }
+  return (
+    <Box style={topbarStyle}>
+      <Container>
+        <Typography variant="h5">
+          University of Wisconsin - Grandparents University Programming
+        </Typography>
+      </Container>
 
-    const stopCode = () => {
-      //delayJS(1000)
-      currParam.next = ''
-      appendActivity("Click Stop Code button")
-      console.log(activityLog)
-    }
-
-    return (
-      <Box style={topbarStyle}>
-        <Container>
-          <Typography variant="h5">
-            University of Wisconsin - Grandparents University Programming
-          </Typography>
-        </Container>
-        
-        <Container style={{
-          textAlign: 'center',
-          display: 'flex',
-          justifyContent: 'right',
-          alignItems: 'center',
+      <Container
+        style={{
+          textAlign: "center",
+          display: "flex",
+          justifyContent: "right",
+          alignItems: "center",
           width: "100%",
           marginTop: "5px",
           marginBottom: "5px",
-          paddingRight: "0px"
-        }}>
-          <Button style={{color: "#FFFFFF"}} onClick={stopCode}>Stop</Button>
-          <TextField
-            id="robotIpAddress"
-            label="IP"
-            variant="filled"
-            style={{backgroundColor: "#FFFFFF50", borderRadius: "5px"}}
-            defaultValue=""
-            onChange={(e)=> setInputVal(e.target.value)}
-          />
-            <Button style={{color: "#FFFFFF"}} onClick={confirmIpAddress}>Confirm</Button>
-            <Button style={{color: "#FFFFFF"}} onClick={runCode} id="runButton">Run</Button>
-          </Container>
-      </Box>
-    );
-    
+          paddingRight: "0px",
+        }}
+      >
+        <Button style={{ color: "#FFFFFF" }} onClick={stopCode}>
+          Stop
+        </Button>
+        <TextField
+          id="robotIpAddress"
+          label="IP"
+          variant="filled"
+          style={{ backgroundColor: "#FFFFFF50", borderRadius: "5px" }}
+          defaultValue=""
+          onChange={(e) => setInputVal(e.target.value)}
+        />
+        <Button style={{ color: "#FFFFFF" }} onClick={confirmIpAddress}>
+          Confirm
+        </Button>
+        <Button style={{ color: "#FFFFFF" }} onClick={runCode} id="runButton">
+          Run
+        </Button>
+      </Container>
+    </Box>
+  );
 }
