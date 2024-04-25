@@ -1,9 +1,6 @@
 import { useState } from "react";
 import useStore from "../Store";
-import ActivityTracker, {
-  activityLog,
-  appendActivity,
-} from "./ActivityTracker";
+import { activityLog, appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
 
 import React from "react";
@@ -17,6 +14,8 @@ export default function TopBar(props) {
   const getBlocksByType = useStore(
     useShallow((state) => state.getBlocksByType)
   );
+  const start = getBlocksByType("Start");
+  let currParam = start;
   const clock = useStore(useShallow((state) => state.clock));
   const setImageList = useStore(useShallow((state) => state.setImageList));
   const setAudioList = useStore(useShallow((state) => state.setAudioList));
@@ -82,11 +81,8 @@ export default function TopBar(props) {
   };
 
   const runCode = () => {
-    // get start block, then iteratively check for children as well as inputs
-    const start = getBlocksByType("Start");
     clock.reset_elapsed();
 
-    let currParam = start;
     console.log("runcode");
     console.log(`starting from the first block: `);
     console.log(start);
