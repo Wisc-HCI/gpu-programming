@@ -125,7 +125,7 @@ export default function TopBar(props) {
       workerRef.current = null; // Clear the ref post termination
     }
 
-    //delayJS(1000)
+    delayJS(10000);
     currParam.next = "";
     appendActivity("Click Stop Code button");
     console.log(activityLog);
