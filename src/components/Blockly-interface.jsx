@@ -30,7 +30,6 @@ export default function BlocklyInterface(props) {
   const updateBlock = useStore((state) => state.updateBlock);
   const getBlocksByType = useStore((state) => state.getBlocksByType);
   const ip = useStore((state) => state.ip);
-  const { compile } = useCompile();
   const findNext = (arr, blockId) => {
     arr.push(blockId);
     let currBlock = getBlock(blockId);
@@ -69,7 +68,6 @@ export default function BlocklyInterface(props) {
       var blocklyArea = document.getElementById("pageContainer");
       var blocklyDiv = document.getElementById("blocklyDiv");
       let startId = "";
-      let CHILDREN = [];
 
       const ws = Blockly.inject(blocklyDiv, { toolbox: toolbox });
       const initialBlock = ws.newBlock("Start");
@@ -116,6 +114,7 @@ export default function BlocklyInterface(props) {
           let delArray = [currID];
           let currInputs = getBlock(currID).inputs;
           if (currInputs) {
+            // eslint-disable-next-line no-unused-vars
             for (let [key, value] of Object.entries(currInputs)) {
               // check for shadows
               if (typeof value !== "string") {
@@ -193,7 +192,6 @@ export default function BlocklyInterface(props) {
 
         //check for move blocks
         if (e.type === "move") {
-          let blockId = ws.getBlockById(e.blockId);
           // If block is moved but still in the workspace
 
           //if it is connected as input for other block

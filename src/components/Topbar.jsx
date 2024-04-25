@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useStore from "../Store";
 import { activityLog, appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
@@ -24,6 +24,7 @@ export default function TopBar(props) {
   const setImageList = useStore(useShallow((state) => state.setImageList));
   const setAudioList = useStore(useShallow((state) => state.setAudioList));
   const { compile } = useCompile();
+  const workerRef = useRef(null);
 
   useEffect(() => {
     const newWorker = new Worker(`${process.env.PUBLIC_URL}/worker.js`);
@@ -37,11 +38,13 @@ export default function TopBar(props) {
 
     setWorker(newWorker);
 
+    workerRef.current = newWorker;
     // Cleanup on component unmount
     return () => {
       newWorker.terminate();
     };
   }, []);
+
   const confirmIpAddress = () => {
     setIp(inputVal);
     fetch(`http://${inputVal}/api/battery`, {
@@ -117,6 +120,11 @@ export default function TopBar(props) {
   };
 
   const stopCode = () => {
+    if (workerRef.current) {
+      workerRef.current.terminate();
+      workerRef.current = null; // Clear the ref post termination
+    }
+
     //delayJS(1000)
     currParam.next = "";
     appendActivity("Click Stop Code button");
