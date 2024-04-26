@@ -6,6 +6,7 @@ import { forBlock } from "../generators/javascript";
 import { hexToRgb } from "../utils.js";
 import { JointLookup } from "../Misty-Robot/JointLookup.js";
 import { FaceLookup } from "../Misty-Robot/faces/facemap.js";
+import { activityLog, appendActivity } from "../components/ActivityTracker.jsx";
 
 /**
  * delayJS(time)
@@ -84,10 +85,10 @@ const useCompile = (props) => {
   }
 
   function isPrime(num) {
-    if (num == 2 || num == 3) return true;
-    if (num <= 1 || num % 2 == 0 || num % 3 == 0) return false;
+    if (num === 2 || num === 3) return true;
+    if (num <= 1 || num % 2 === 0 || num % 3 === 0) return false;
     for (let i = 5; i * i <= num; i += 6) {
-      if (num % i == 0 || num % (i + 2) == 0) return false;
+      if (num % i === 0 || num % (i + 2) === 0) return false;
     }
     return true;
   }
@@ -109,6 +110,7 @@ const useCompile = (props) => {
       case type === "controls_if":
         if (!params.inputs || !params.inputs.IF0 || !params.inputs.DO0) {
           alert("err: controls_if not complete!");
+          appendActivity("Try running with incomplete controls_if");
           return;
         } else {
           ifDo(params.inputs.IF0, params.inputs.DO0);
@@ -121,6 +123,7 @@ const useCompile = (props) => {
       case type === "logic_compare":
         if (!params.inputs || !params.inputs.A || !params.inputs.B) {
           alert("err: logic_compare is not complete!");
+          appendActivity("Try running with incomplete logic_compare");
           return;
         }
         //get the two input and see if they are logically equal
@@ -161,11 +164,14 @@ const useCompile = (props) => {
           );
         }
 
+      /* eslint-disable-next-line no-fallthrough */
       case type === "logic_operation":
         if (!params.inputs || !params.inputs.A || !params.inputs.B) {
           alert("err: logic_operation is not complete!");
+          appendActivity("Try running with incomplete logic_operation");
           return;
         }
+
         const oprand = params.fields.OP;
         const logic_operation_A_id = params.inputs.A;
         const logic_operation_B_id = params.inputs.B;
@@ -187,6 +193,7 @@ const useCompile = (props) => {
       case type === "logic_negate":
         if (!params.inputs) {
           alert("err: logic_negate is not complete!");
+          appendActivity("Try running with incomplete logic_negate");
           return;
         }
         const logic_negate_BOOL = getBlock(params.inputs.BOOL);
@@ -210,6 +217,7 @@ const useCompile = (props) => {
           !params.inputs.ELSE
         ) {
           alert("err: logic_ternary is not complete!");
+          appendActivity("Try running with incomplete logic_ternary");
           return;
         }
         const logic_ternary_IF_id = params.inputs.IF;
@@ -241,6 +249,7 @@ const useCompile = (props) => {
         const controls_repeat_ext_TIMES = checkShadowinput(params.inputs.TIMES);
         if (!params.inputs.DO) {
           alert("err: controls_repeat_ext is not complete!");
+          appendActivity("Try running with incomplete controls_repeat_ext");
           return;
         }
         let controls_repeat_ext_DO_params = getBlock(params.inputs.DO);
@@ -287,9 +296,15 @@ const useCompile = (props) => {
         } else if (math_number_property_PROPERTY === "DIVISIBLE_BY") {
           if (!params.inputs || !params.inputs.DIVISOR) {
             alert("err: DIVISOR is not filled!");
+            appendActivity(
+              "Try running with incomplete math_number_property, DIVISOR is not filled"
+            );
             return;
           } else if (params.inputs.DIVISOR === 0) {
             alert("Note that divisor cannot be 0!");
+            appendActivity(
+              "Try running with incomplete math_number_property, divisor cannot be 0"
+            );
             return;
           } else {
             return (
@@ -360,6 +375,7 @@ const useCompile = (props) => {
       case type === "ChangeLED":
         if (!params.inputs || !params.inputs.FIELD_ChangeLED) {
           alert("err: ChangeLED is not complete!");
+          appendActivity("Try running with incomplete ChangeLED");
           return;
         }
         var endpoint = "led";
@@ -377,6 +393,7 @@ const useCompile = (props) => {
       case type === "TransitionLED":
         if (!params.inputs || !params.inputs.COLOR1 || !params.inputs.COLOR2) {
           alert("err: TransitionLED is not complete!");
+          appendActivity("Try running with incomplete TransitionLED");
           return;
         }
         var endpoint = "led/transition";
@@ -403,6 +420,7 @@ const useCompile = (props) => {
       case type === "DisplayImage":
         if (!params.inputs || !params.inputs.FIELD_DisplayImage_Filename) {
           alert("err: DisplayImage is not complete!");
+          appendActivity("Try running with incomplete DisplayImage");
           return;
         }
         var alpha = 1;
@@ -432,6 +450,7 @@ const useCompile = (props) => {
       case type === "PlayAudio":
         if (!params.inputs || !params.inputs.FIELD_PlayAudio_Filename) {
           alert("err: PlayAudio is not complete!");
+          appendActivity("Try running with incomplete PlayAudio");
           return;
         }
         var endpoint = "audio/play";
@@ -446,6 +465,7 @@ const useCompile = (props) => {
       case type === "DisplayAnimation":
         if (!params.inputs || !params.inputs.FIELD_DisplayAnimation_Filename) {
           alert("err: DisplayAnimation is not complete!");
+          appendActivity("Try running with incomplete DisplayAnimation");
           return;
         }
         var endpoint = "animations/display";
@@ -626,7 +646,7 @@ const useCompile = (props) => {
         delayJS(time + 500);
         return;
 
-      case type == "Turn":
+      case type === "Turn":
         var direction = params.fields.FIELD_Turn_Direction;
         var time = parseInt(params.fields.FIELD_Turn_Duration);
         var angularVelocity = 100;
@@ -644,7 +664,7 @@ const useCompile = (props) => {
         delayJS(time + 500);
         return;
 
-      case type == "Turn2":
+      case type === "Turn2":
         var direction = params.fields.FIELD_Turn_Direction;
         var time = parseInt(
           checkShadowinput(params.inputs.FIELD_Turn_Duration)
