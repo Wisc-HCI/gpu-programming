@@ -5,7 +5,11 @@ import { useShallow } from "zustand/react/shallow";
 
 import React from "react";
 import { Box, Button, TextField, Container, Typography } from "@mui/material";
-import useCompile, { delayJS } from "../compile/useCompile";
+// import useCompile, { delayJS } from "../compile/useCompile";
+import { styled } from '@mui/material/styles';
+import CompileWorker from "../compile/compile-worker?worker";
+import * as Comlink from "comlink";
+import useCompile from "../compile/useCompile";
 
 export default function TopBar(props) {
   const [worker, setWorker] = useState(null);
@@ -23,27 +27,32 @@ export default function TopBar(props) {
   const clock = useStore(useShallow((state) => state.clock));
   const setImageList = useStore(useShallow((state) => state.setImageList));
   const setAudioList = useStore(useShallow((state) => state.setAudioList));
+  const lightMode = useStore(useShallow((state) => state.lightMode));
+  const toggleTheme = useStore(useShallow((state) => state.toggleTheme));
   const { compile } = useCompile();
   const workerRef = useRef(null);
 
-  useEffect(() => {
-    const newWorker = new Worker(`${process.env.PUBLIC_URL}/worker.js`);
-    newWorker.onmessage = (e) => {
-      console.log("Message received from worker:", e.data);
-      setResult(e.data);
-    };
-    newWorker.onerror = (error) => {
-      console.error("Worker error:", error);
-    };
+  // useEffect(() => {
+  //   const newWorker = new Worker(`worker.js`);
+    
+  //   newWorker.onmessage = (e) => {
+  //     console.log("Message received from worker:", e.data);
+  //     setResult(e.data);
+  //   };
 
-    setWorker(newWorker);
+  //   newWorker.onerror = (error) => {
+  //     console.error("Worker error:", error);
+  //   };
 
-    workerRef.current = newWorker;
-    // Cleanup on component unmount
-    return () => {
-      newWorker.terminate();
-    };
-  }, []);
+  //   setWorker(newWorker);
+
+  //   workerRef.current = newWorker;
+
+  //   // Cleanup on component unmount
+  //   return () => {
+  //     newWorker.terminate();
+  //   };
+  // }, []);
 
   const confirmIpAddress = () => {
     setIp(inputVal);
@@ -105,30 +114,39 @@ export default function TopBar(props) {
   };
 
   const runCode = () => {
+    // get start block, then iteratively check for children as well as inputs
+    const start = getBlocksByType('Start');
     clock.reset_elapsed();
 
-    console.log("runcode");
-    console.log(`starting from the first block: `);
-    console.log(start);
-    if (worker) {
-      setData(getBlocks());
-      worker.postMessage(data);
-    } else {
-      console.log("worker not setup");
+    let currParam = start
+    console.log('runcode')
+    console.log(`starting from the first block: `)
+    console.log(start)
+    let num = 1
+    while(currParam && currParam.next){
+      num += 1
+      currParam = getBlock(currParam.next)
+      console.log(`compiling block number ${num}`)
+      compile(currParam, currParam.type)
+      
     }
-    appendActivity("Click Run Code button");
-  };
+    
+      //const code = javascriptGenerator.workspaceToCode(ws);
+      //eval(code);
+     appendActivity("Click Run Code button")
+  }
 
   const stopCode = () => {
-    if (workerRef.current) {
-      workerRef.current.terminate();
-      workerRef.current = null; // Clear the ref post termination
-    }
+    // if (workerRef.current) {
+    //   workerRef.current.terminate();
+    //   workerRef.current = null; // Clear the ref post termination
+    //   setWorker(null);
+    // }
 
-    delayJS(10000);
-    currParam.next = "";
-    appendActivity("Click Stop Code button");
-    console.log(activityLog);
+    // delayJS(10000);
+    // currParam.next = "";
+    // appendActivity("Click Stop Code button");
+    // console.log(activityLog);
   };
 
   return (

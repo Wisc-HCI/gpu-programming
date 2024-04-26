@@ -15,14 +15,15 @@ import { activityLog, appendActivity } from "../components/ActivityTracker.jsx";
  * @private
  */
 export function delayJS(timeMS) {
-  var start = new Date().getTime();
-  var end = start;
-  while (end < start + timeMS) {
-    end = new Date().getTime();
-  }
+  // Temporarily Commenting this out
+  // var start = new Date().getTime();
+  // var end = start;
+  // while (end < start + timeMS) {
+  //   end = new Date().getTime();
+  // }
 }
 // Convert to a custom hook or move logic into a React component
-const useCompile = (props) => {
+const useCompile = (props) => {;
   const getBlock = useStore(useShallow((state) => state.getBlock));
   const animateArm = useStore(useShallow((state) => state.animateArm));
   const animateBothArms = useStore(

@@ -1,15 +1,25 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import string from 'vite-plugin-string';
+import { comlink } from "vite-plugin-comlink";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), 
+  plugins: [
+    react(), 
+    comlink(),
     string({
       // Add file extensions as needed
       include: ["**/*.urdf","**/*.xacro",]
     }),
   ],
+  worker: {
+    format: 'es',
+    plugins: [
+      react(),
+      comlink()
+    ]
+  },
   base: "/gpu-programming/",
   assetsInclude: ["**/*.gltf", "**/*.glb", "**/*.urdf","**/*.xacro"],
 })
