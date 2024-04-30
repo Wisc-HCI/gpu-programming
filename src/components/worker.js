@@ -1,39 +1,34 @@
-import React from "react";
-import useStore from "../Store";
-import { useShallow } from "zustand/react/shallow";
-import * as Blockly from "blockly";
-import { forBlock } from "../generators/javascript";
-import { hexToRgb } from "../utils.js";
-import { JointLookup } from "../Misty-Robot/JointLookup.js";
+import { AudioLookup } from "../Misty-Robot/audio/audiolookup.js";
+import { FaceFilenameLookup } from "../Misty-Robot/faces/facefilename.js";
 import { FaceLookup } from "../Misty-Robot/faces/facemap.js";
-import { activityLog, appendActivity } from "../components/ActivityTracker.jsx";
 
-/**
- * delayJS(time)
- * Delay timeMS milliseconds
- * @param {int} number of milliseconds to delay
- * @private
- */
-export function delayJS(timeMS) {
+const delayJS = (timeMS) => {
   // Temporarily Commenting this out
-  // var start = new Date().getTime();
-  // var end = start;
-  // while (end < start + timeMS) {
-  //   end = new Date().getTime();
-  // }
+  var start = new Date().getTime();
+  var end = start;
+  while (end < start + timeMS) {
+    end = new Date().getTime();
+  }
 }
-// Convert to a custom hook or move logic into a React component
-const useCompile = (props) => {
-  const getBlock = useStore(useShallow((state) => state.getBlock));
-  const animateArm = useStore(useShallow((state) => state.animateArm));
-  const animateBothArms = useStore(
-    useShallow((state) => state.animateBothArms)
-  );
-  const animateHead = useStore(useShallow((state) => state.animateHead));
-  const animateDrive = useStore(useShallow((state) => state.animateDrive));
-  const mistyAudioList = useStore(useShallow((state) => state.mistyAudioList));
-  const mistyImageList = useStore(useShallow((state) => state.mistyImageList));
-  const ip = useStore(useShallow((state) => state.ip));
+
+function getBase64(file) {
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    return (reader.result);
+  };
+  reader.onerror = function (error) {
+    return ('Error: ', error);
+  };
+}
+
+self.onmessage = function (e) {
+  const {blocks, mistyAudioList, mistyImageList, ip} = e.data;
+
+  const getBlocksByType = (type) => {
+    return Object.values(blocks).filter((block) => block.type === type)[0];
+  };
+  const getBlock = (id) => blocks[id];
 
   // Fixed case-sensitive function call
   const ifDo = (IF0, DO0) => {
@@ -426,7 +421,7 @@ const useCompile = (props) => {
         }
         var alpha = 1;
         var exprBlock = getBlock(params.inputs.FIELD_DisplayImage_Filename);
-        var filename = JointLookup(exprBlock.type);
+        var filename = FaceFilenameLookup(exprBlock.type);
 
         var endpoint = "images/display";
         var payload = {
@@ -434,11 +429,13 @@ const useCompile = (props) => {
           Alpha: alpha,
         };
 
-        if (ip && !mistyImageList.includes(filename)) {
+        // TODO: Uploading fails right now...
+        if (!mistyImageList.some(e => e.name === filename)) {
+          var temp = getBase64(FaceLookup(filename));
           endpoint = "images";
           payload = {
             FileName: filename,
-            File: FaceLookup(filename),
+            File: temp,
             ImmediatelyApply: true,
             Overwrite: true,
           };
@@ -456,7 +453,7 @@ const useCompile = (props) => {
         }
         var endpoint = "audio/play";
         var exprBlock = getBlock(params.inputs.FIELD_PlayAudio_Filename);
-        var filename = JointLookup(exprBlock.type);
+        var filename = AudioLookup(exprBlock.type);
         var payload = {
           FileName: filename,
         };
@@ -470,7 +467,7 @@ const useCompile = (props) => {
           return;
         }
         var exprBlock = getBlock(params.inputs.FIELD_DisplayAnimation_Filename);
-        var filename = JointLookup(exprBlock.type);
+        var filename = AudioLookup(exprBlock.type);
         var payload = {
           FileName: filename,
         };
@@ -521,7 +518,6 @@ const useCompile = (props) => {
           Velocity: velocity,
           Units: "Degrees",
         };
-        animateArm(arm, position, velocity);
         sendPostRequestToRobot(endpoint, payload);
         delayJS(1000);
         return;
@@ -537,7 +533,6 @@ const useCompile = (props) => {
           Units: "Degrees",
         };
 
-        animateBothArms(position, velocity, position, velocity);
         sendPostRequestToRobot(endpoint, payload);
         delayJS(1000);
         return;
@@ -564,12 +559,6 @@ const useCompile = (props) => {
         };
         var endpoint = "arms/set";
         //console.log(payload)
-        animateBothArms(
-          left_position,
-          left_velocity,
-          right_position,
-          right_velocity
-        );
         sendPostRequestToRobot(endpoint, payload);
         delayJS(1000);
         return;
@@ -585,8 +574,6 @@ const useCompile = (props) => {
           Duration: 2,
           Units: "degrees",
         };
-
-        animateHead(0, pitch, 0, 2);
         sendPostRequestToRobot(endpoint, payload);
         delayJS(500);
 
@@ -606,7 +593,6 @@ const useCompile = (props) => {
           Duration: time,
           Units: "degrees",
         };
-        animateHead(roll, pitch, yaw, time);
         sendPostRequestToRobot(endpoint, payload);
         delayJS(500);
         return;
@@ -622,7 +608,6 @@ const useCompile = (props) => {
           AngularVelocity: 0,
           TimeMs: time,
         };
-        animateDrive(linearVelocity, 0, 0, time);
         sendPostRequestToRobot(endpoint, payload);
         delayJS(time + 500);
         return;
@@ -641,7 +626,6 @@ const useCompile = (props) => {
           AngularVelocity: angularVelocity,
           TimeMs: time,
         };
-        animateDrive(linearVelocity, angularVelocity, 0, time);
         sendPostRequestToRobot(endpoint, payload);
         delayJS(time + 500);
         return;
@@ -659,7 +643,6 @@ const useCompile = (props) => {
           TimeMs: time,
           Degree: degree,
         };
-        animateDrive(linearVelocity, angularVelocity, degree, time);
         sendPostRequestToRobot(endpoint, payload);
         delayJS(time + 500);
         return;
@@ -679,7 +662,6 @@ const useCompile = (props) => {
           Degree: degree,
         };
         var endpoint = "drive/time";
-        animateDrive(linearVelocity, angularVelocity, degree, time);
         sendPostRequestToRobot(endpoint, payload);
         delayJS(time + 500);
         return;
@@ -709,8 +691,18 @@ const useCompile = (props) => {
     }
   };
 
-  return { compile };
-};
+  // return { compile };
+  const start = getBlocksByType("Start");
+  let currParam = start;
+  let num = 1;
+  
+  while (currParam && currParam.next) {
+    num += 1;
+    currParam = getBlock(currParam.next);
+    compile(currParam, currParam.type);
+  }
+  var result = `${num} blocks compiled`;
 
-// Exporting as a custom hook or incorporate within a React component
-export default useCompile;
+  // Send data back to the main thread
+  self.postMessage(result);
+};

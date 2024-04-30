@@ -7,52 +7,26 @@ import React from "react";
 import { Box, Button, TextField, Container, Typography } from "@mui/material";
 // import useCompile, { delayJS } from "../compile/useCompile";
 import { styled } from '@mui/material/styles';
-import CompileWorker from "../compile/compile-worker?worker";
-import * as Comlink from "comlink";
-import useCompile from "../compile/useCompile";
+
+import workerUrl from './worker.js?worker&url'
 
 export default function TopBar(props) {
-  const [worker, setWorker] = useState(null);
-  const [data, setData] = useState([]);
-  const [result, setResult] = useState([]);
   const [inputVal, setInputVal] = useState("");
   const setIp = useStore(useShallow((state) => state.setIp));
+  const ip = useStore(useShallow((state) => state.ip));
   const getBlocks = useStore(useShallow((state) => state.getBlocks));
-  const getBlock = useStore(useShallow((state) => state.getBlock));
   const getBlocksByType = useStore(
     useShallow((state) => state.getBlocksByType)
   );
   const start = getBlocksByType("Start");
-  let currParam = start;
   const clock = useStore(useShallow((state) => state.clock));
   const setImageList = useStore(useShallow((state) => state.setImageList));
   const setAudioList = useStore(useShallow((state) => state.setAudioList));
+  const mistyImageList = useStore(useShallow((state) => state.mistyImageList));
+  const mistyAudioList = useStore(useShallow((state) => state.mistyAudioList));
   const lightMode = useStore(useShallow((state) => state.lightMode));
   const toggleTheme = useStore(useShallow((state) => state.toggleTheme));
-  const { compile } = useCompile();
   const workerRef = useRef(null);
-
-  // useEffect(() => {
-  //   const newWorker = new Worker(`worker.js`);
-    
-  //   newWorker.onmessage = (e) => {
-  //     console.log("Message received from worker:", e.data);
-  //     setResult(e.data);
-  //   };
-
-  //   newWorker.onerror = (error) => {
-  //     console.error("Worker error:", error);
-  //   };
-
-  //   setWorker(newWorker);
-
-  //   workerRef.current = newWorker;
-
-  //   // Cleanup on component unmount
-  //   return () => {
-  //     newWorker.terminate();
-  //   };
-  // }, []);
 
   const confirmIpAddress = () => {
     setIp(inputVal);
@@ -113,40 +87,36 @@ export default function TopBar(props) {
     width: "100%",
   };
 
-  const runCode = () => {
-    // get start block, then iteratively check for children as well as inputs
-    const start = getBlocksByType('Start');
+
+  const runCode = async () => {
     clock.reset_elapsed();
 
-    let currParam = start
-    console.log('runcode')
-    console.log(`starting from the first block: `)
-    console.log(start)
-    let num = 1
-    while(currParam && currParam.next){
-      num += 1
-      currParam = getBlock(currParam.next)
-      console.log(`compiling block number ${num}`)
-      compile(currParam, currParam.type)
-      
+    if (workerRef.current) {
+      workerRef.current.terminate();
+      workerRef.current = null;
     }
-    
-      //const code = javascriptGenerator.workspaceToCode(ws);
-      //eval(code);
-     appendActivity("Click Run Code button")
-  }
+    const js = `import ${JSON.stringify(new URL(workerUrl, import.meta.url))}`
+    const blob = new Blob([js], { type: "application/javascript" })
+    const workerURL = URL.createObjectURL(blob)
+    let myWorker = new Worker(workerURL,  {type:"module"});
+    myWorker.onmessage = function(e) {
+      console.log('Message received from worker ' + e.data);
+    }
+    myWorker.onerror = function(e) {
+      URL.revokeObjectURL(workerURL);
+    }
+    myWorker.postMessage({blocks: getBlocks(), mistyAudioList: mistyAudioList, mistyImageList: mistyImageList, ip: ip});
+    workerRef.current = myWorker;
+
+    appendActivity("Click Run Code button");
+  };
 
   const stopCode = () => {
-    // if (workerRef.current) {
-    //   workerRef.current.terminate();
-    //   workerRef.current = null; // Clear the ref post termination
-    //   setWorker(null);
-    // }
-
-    // delayJS(10000);
-    // currParam.next = "";
-    // appendActivity("Click Stop Code button");
-    // console.log(activityLog);
+    if (workerRef.current) {
+      workerRef.current.terminate();
+      workerRef.current = null; // Clear the ref post termination
+    }
+    appendActivity("Click Stop Code button");
   };
 
   return (

@@ -37,7 +37,7 @@
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.1",
     "vite": "^5.2.6",
-    "vite-plugin-comlink": "^3.0.5"
+    "vite-plugin-comlink": "^4.0.3"
   },
   "scripts": {
     "tauri": "tauri",

@@ -69,7 +69,44 @@ export default function BlocklyInterface(props) {
       var blocklyDiv = document.getElementById("blocklyDiv");
       let startId = "";
 
-      const ws = Blockly.inject(blocklyDiv, { toolbox: toolbox });
+      
+      const ws = Blockly.inject(blocklyDiv, { toolbox:toolbox, theme: Blockly.Theme.defineTheme('gpuTheme', {
+        'categoryStyles': {
+          'logic_category': {
+            "colour": "#CC2F00"
+          },
+          'loop_category': {
+            "colour": "#DB6600"
+          },
+          'math_category': {
+            "colour": "#E39E00"
+          },
+          'colour_category': {
+            "colour": "#76B80D"
+          },
+          'procedure_category': {
+            "colour": "#007668"
+          },
+          'misty_category': {
+            "colour": "#EEEEEE"
+          },
+          'movement_category': {
+            "colour": "#006486"
+          },
+          'speech_category': {
+            "colour": "#007CB5"
+          },
+          'face_category': {
+            "colour": "#465AB2"
+          },
+          'audio_category': {
+            "colour": "#6D47B1"
+          },
+          'misc_category': {
+            "colour": "#873B9C"
+          },
+        }
+      })});
       const initialBlock = ws.newBlock("Start");
       initialBlock.moveBy(50, 50);
       save(ws);
