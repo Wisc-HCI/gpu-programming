@@ -253,18 +253,21 @@ export default function BlocklyInterface(props) {
           if (e.reason && e.reason.includes("connect")) {
             let id = e.newParentId;
             let params = getBlock(e.newParentId);
-
+            const prevBlockType = params.type;
+            const currParams = getBlock(e.blockId);
             // case 1: if newInputName is undefined, then it is sequencial relationship
             // newParenName exist, newInputname don't, handle the case that it is connect to parent
             if (!e.newInputName) {
               params["next"] = e.blockId;
               updateBlock(id, params);
-              params = getBlock(e.blockId);
-              params["prev"] = id;
-              updateBlock(e.blockId, params);
+              currParams["prev"] = id;
+              updateBlock(e.blockId, currParams);
+              appendActivity(
+                `${currParams.type} is placed after ${prevBlockType}`
+              );
             }
 
-            // case2: new input is the children, newInputname and newParenName both exist
+            // case2: new input, newInputname and newParenName both exist
             else {
               if (!("inputs" in params)) {
                 params.inputs = {};
@@ -274,6 +277,9 @@ export default function BlocklyInterface(props) {
               }
 
               updateBlock(id, params);
+              appendActivity(
+                `connect ${currParams.type}  as input of ${prevBlockType}`
+              );
             }
           }
 
