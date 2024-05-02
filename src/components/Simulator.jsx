@@ -1,15 +1,12 @@
 import useStore from "../Store";
 import { MeshLookupTable } from "../Misty-Robot/MeshLookup.js";
 import { Scene } from "robot-scene";
-import IconButton from "@mui/material/IconButton";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { useShallow } from "zustand/react/shallow";
 
 import React from "react";
 import { Box } from "@mui/material";
+import SimulationControls from "./SimulationControls.jsx";
 
 export default function Simulator(props) {
-  const resetSim = useStore(useShallow((state) => state.resetSim));
 
   const otherArgs = {
     displayTfs: false,
@@ -32,21 +29,7 @@ export default function Simulator(props) {
         meshLookup={MeshLookupTable}
         {...otherArgs}
       />
-      <IconButton
-        variant="contained"
-        aria-label="restart"
-        style={{
-          position: "absolute",
-          right: "0px",
-          top: "0px",
-          backgroundColor: "white",
-          marginRight: "5px",
-          marginTop: "5px",
-        }}
-        onClick={resetSim}
-      >
-        <RestartAltIcon />
-      </IconButton>
+      <SimulationControls />
     </Box>
   );
 }

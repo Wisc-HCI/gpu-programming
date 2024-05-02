@@ -1,31 +1,29 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import useStore from "../Store";
 import { activityLog, appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
 
 import React from "react";
-import { Box, Button, TextField, Container, Typography } from "@mui/material";
-// import useCompile, { delayJS } from "../compile/useCompile";
-import { styled } from "@mui/material/styles";
+import { Box, Button, TextField, Container, Typography, Grid } from "@mui/material";
 
-import workerUrl from "./worker.js?worker&url";
+import { default as MistyLogo } from './misty.svg';
+
+import workerUrl from '../compile/compile-worker.js?worker&url';
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
   const setIp = useStore(useShallow((state) => state.setIp));
   const ip = useStore(useShallow((state) => state.ip));
   const getBlocks = useStore(useShallow((state) => state.getBlocks));
-  const getBlocksByType = useStore(
-    useShallow((state) => state.getBlocksByType)
-  );
-  const start = getBlocksByType("Start");
   const clock = useStore(useShallow((state) => state.clock));
   const setImageList = useStore(useShallow((state) => state.setImageList));
   const setAudioList = useStore(useShallow((state) => state.setAudioList));
   const mistyImageList = useStore(useShallow((state) => state.mistyImageList));
   const mistyAudioList = useStore(useShallow((state) => state.mistyAudioList));
-  const lightMode = useStore(useShallow((state) => state.lightMode));
-  const toggleTheme = useStore(useShallow((state) => state.toggleTheme));
+  const setIsConnected = useStore(useShallow((state) => state.setIsConnected));
+  const isConnected = useStore(useShallow((state) => state.isConnected));
+  const runOnRobot = useStore(useShallow((state) => state.runOnRobot));
+  const disconnect = useStore(useShallow((state) => state.disconnect));
   const workerRef = useRef(null);
 
   const confirmIpAddress = () => {
@@ -45,6 +43,7 @@ export default function TopBar(props) {
           `Successfully sent a GET request, the response is: ${json}`
         );
         alert("Confirmed IP Address: " + inputVal);
+        setIsConnected(true);
 
         return fetch(`http://${inputVal}/api/audio/list`);
       })
@@ -79,12 +78,15 @@ export default function TopBar(props) {
   };
 
   const topbarStyle = {
-    backgroundColor: "#333", // Change the background color as needed
+    backgroundColor: "#585D92", // Change the background color as needed
     color: "#FFFFFF", // Change the text color as needed
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
+    filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+    zIndex: 101,
+    position: "relative"
   };
 
   const runCode = async () => {
@@ -109,6 +111,7 @@ export default function TopBar(props) {
       mistyAudioList: mistyAudioList,
       mistyImageList: mistyImageList,
       ip: ip,
+      runOnRobot: runOnRobot
     });
     workerRef.current = myWorker;
 
@@ -126,11 +129,18 @@ export default function TopBar(props) {
 
   return (
     <Box style={topbarStyle}>
-      <Container>
-        <Typography variant="h5">
-          University of Wisconsin - Grandparents University Programming
+      <Grid
+        container
+        direction="row"
+        justifyContent={"left"}
+        alignItems={"center"}
+        style={{paddingLeft: "20px"}}
+      >
+        <img style={{height:"35px", paddingRight: "10px"}} src={MistyLogo} />
+        <Typography display={"inline"} variant="h5">
+          Robo-Blocks
         </Typography>
-      </Container>
+      </Grid>
 
       <Container
         style={{
@@ -155,9 +165,16 @@ export default function TopBar(props) {
           defaultValue=""
           onChange={(e) => setInputVal(e.target.value)}
         />
-        <Button style={{ color: "#FFFFFF" }} onClick={confirmIpAddress}>
-          Confirm
-        </Button>
+        {!isConnected && 
+          <Button style={{ color: "#FFFFFF" }} onClick={confirmIpAddress}>
+            Connect
+          </Button>
+        }
+        {isConnected && 
+          <Button style={{ color: "#FFFFFF" }} onClick={disconnect}>
+            Disconnect
+          </Button>
+        }
         <Button style={{ color: "#FFFFFF" }} onClick={runCode} id="runButton">
           Run
         </Button>

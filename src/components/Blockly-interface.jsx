@@ -3,12 +3,10 @@ import * as Blockly from "blockly";
 import { appendActivity } from "./ActivityTracker";
 
 // Import custom blocks and generators
-import { blocks } from "../blocks/text";
 import { forBlock } from "../generators/javascript";
 import { javascriptGenerator } from "blockly/javascript";
 import { save, load } from "../serialization";
 import { toolbox } from "../toolbox";
-import useCompile from "../compile/useCompile";
 import "../index.css";
 import useStore from "../Store";
 
@@ -79,46 +77,57 @@ export default function BlocklyInterface(props) {
       var blocklyDiv = document.getElementById("blocklyDiv");
       let startId = "";
 
-      const ws = Blockly.inject(blocklyDiv, {
-        toolbox: toolbox,
-        theme: Blockly.Theme.defineTheme("gpuTheme", {
-          categoryStyles: {
-            logic_category: {
-              colour: "#CC2F00",
-            },
-            loop_category: {
-              colour: "#DB6600",
-            },
-            math_category: {
-              colour: "#E39E00",
-            },
-            colour_category: {
-              colour: "#76B80D",
-            },
-            procedure_category: {
-              colour: "#007668",
-            },
-            misty_category: {
-              colour: "#EEEEEE",
-            },
-            movement_category: {
-              colour: "#006486",
-            },
-            speech_category: {
-              colour: "#007CB5",
-            },
-            face_category: {
-              colour: "#465AB2",
-            },
-            audio_category: {
-              colour: "#6D47B1",
-            },
-            misc_category: {
-              colour: "#873B9C",
-            },
+      
+      const ws = Blockly.inject(blocklyDiv, { 
+        toolbox:toolbox, 
+        grid:
+        {
+          spacing: 20,
+         length: 3,
+         colour: '#ccc',
+         snap: true
+        },
+        theme: Blockly.Theme.defineTheme('gpuTheme', {
+        "componentStyles": {
+          "toolboxBackgroundColour": "#E4E5F1",
+          "flyoutBackgroundColour": "#d2d3db"
+        },
+        'categoryStyles': {
+          'logic_category': {
+            "colour": "#CC2F00"
           },
-        }),
-      });
+          'loop_category': {
+            "colour": "#DB6600"
+          },
+          'math_category': {
+            "colour": "#E39E00"
+          },
+          'colour_category': {
+            "colour": "#76B80D"
+          },
+          'procedure_category': {
+            "colour": "#007668"
+          },
+          'misty_category': {
+            "colour": "#EEEEEE"
+          },
+          'movement_category': {
+            "colour": "#006486"
+          },
+          'speech_category': {
+            "colour": "#007CB5"
+          },
+          'face_category': {
+            "colour": "#465AB2"
+          },
+          'audio_category': {
+            "colour": "#6D47B1"
+          },
+          'misc_category': {
+            "colour": "#873B9C"
+          },
+        }
+      })});
       const initialBlock = ws.newBlock("Start");
       initialBlock.moveBy(50, 50);
       save(ws);

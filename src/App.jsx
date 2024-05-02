@@ -22,6 +22,7 @@ import {
 import 'react-reflex/styles.css';
 import { Box } from '@mui/material';
 import Simulator from './components/Simulator.jsx';
+import ProgramLogos from './components/ProgramLogos.jsx';
 
 const Item = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -36,6 +37,7 @@ function App() {
   return (
     <Box height={"94vh"} padding={0}>
       <TopBar/>
+      <ProgramLogos />
       <ReflexContainer orientation='vertical' 
           style={{
             // backgroundColor: "red",
@@ -44,7 +46,7 @@ function App() {
             // position: "fixed",
           }}>
         
-        <ReflexElement flex={0.7}>
+        <ReflexElement flex={0.55}>
           <Item style={{width: "100%", height:"100%", paddingLeft: "2px"}}>
             <BlocklyInterface/>
           </Item>
@@ -52,7 +54,7 @@ function App() {
         
         <ReflexSplitter propagate={true} />
         
-        <ReflexElement flex={0.3}>
+        <ReflexElement flex={0.45}>
           <ReflexContainer orientation='horizontal'>
             <ReflexElement>
               <Item>
