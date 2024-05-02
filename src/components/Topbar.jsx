@@ -6,9 +6,9 @@ import { useShallow } from "zustand/react/shallow";
 import React from "react";
 import { Box, Button, TextField, Container, Typography } from "@mui/material";
 // import useCompile, { delayJS } from "../compile/useCompile";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
-import workerUrl from './worker.js?worker&url'
+import workerUrl from "./worker.js?worker&url";
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
@@ -87,7 +87,6 @@ export default function TopBar(props) {
     width: "100%",
   };
 
-
   const runCode = async () => {
     clock.reset_elapsed();
 
@@ -95,17 +94,22 @@ export default function TopBar(props) {
       workerRef.current.terminate();
       workerRef.current = null;
     }
-    const js = `import ${JSON.stringify(new URL(workerUrl, import.meta.url))}`
-    const blob = new Blob([js], { type: "application/javascript" })
-    const workerURL = URL.createObjectURL(blob)
-    let myWorker = new Worker(workerURL,  {type:"module"});
-    myWorker.onmessage = function(e) {
-      console.log('Message received from worker ' + e.data);
-    }
-    myWorker.onerror = function(e) {
+    const js = `import ${JSON.stringify(new URL(workerUrl, import.meta.url))}`;
+    const blob = new Blob([js], { type: "application/javascript" });
+    const workerURL = URL.createObjectURL(blob);
+    let myWorker = new Worker(workerURL, { type: "module" });
+    myWorker.onmessage = function (e) {
+      console.log("Message received from worker " + e.data);
+    };
+    myWorker.onerror = function (e) {
       URL.revokeObjectURL(workerURL);
-    }
-    myWorker.postMessage({blocks: getBlocks(), mistyAudioList: mistyAudioList, mistyImageList: mistyImageList, ip: ip});
+    };
+    myWorker.postMessage({
+      blocks: getBlocks(),
+      mistyAudioList: mistyAudioList,
+      mistyImageList: mistyImageList,
+      ip: ip,
+    });
     workerRef.current = myWorker;
 
     appendActivity("Click Run Code button");
@@ -117,6 +121,7 @@ export default function TopBar(props) {
       workerRef.current = null; // Clear the ref post termination
     }
     appendActivity("Click Stop Code button");
+    console.log(activityLog);
   };
 
   return (

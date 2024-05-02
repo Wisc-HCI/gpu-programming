@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import * as Blockly from "blockly";
+import { appendActivity } from "./ActivityTracker";
 
 // Import custom blocks and generators
 import { blocks } from "../blocks/text";
@@ -54,6 +55,15 @@ export default function BlocklyInterface(props) {
         );
       });
   };
+  const handleSelectToolbox = (newItem, oldItem) => {
+    if (!oldItem) {
+      appendActivity(`select toolbox category: ${newItem}`);
+    } else if (!newItem) {
+      appendActivity(`unselect toolbox category: ${oldItem}`);
+    } else {
+      appendActivity(`switch toolbox category from ${oldItem} to ${newItem}`);
+    }
+  };
 
   useEffect(() => {
     console.log(blocks);
@@ -69,44 +79,46 @@ export default function BlocklyInterface(props) {
       var blocklyDiv = document.getElementById("blocklyDiv");
       let startId = "";
 
-      
-      const ws = Blockly.inject(blocklyDiv, { toolbox:toolbox, theme: Blockly.Theme.defineTheme('gpuTheme', {
-        'categoryStyles': {
-          'logic_category': {
-            "colour": "#CC2F00"
+      const ws = Blockly.inject(blocklyDiv, {
+        toolbox: toolbox,
+        theme: Blockly.Theme.defineTheme("gpuTheme", {
+          categoryStyles: {
+            logic_category: {
+              colour: "#CC2F00",
+            },
+            loop_category: {
+              colour: "#DB6600",
+            },
+            math_category: {
+              colour: "#E39E00",
+            },
+            colour_category: {
+              colour: "#76B80D",
+            },
+            procedure_category: {
+              colour: "#007668",
+            },
+            misty_category: {
+              colour: "#EEEEEE",
+            },
+            movement_category: {
+              colour: "#006486",
+            },
+            speech_category: {
+              colour: "#007CB5",
+            },
+            face_category: {
+              colour: "#465AB2",
+            },
+            audio_category: {
+              colour: "#6D47B1",
+            },
+            misc_category: {
+              colour: "#873B9C",
+            },
           },
-          'loop_category': {
-            "colour": "#DB6600"
-          },
-          'math_category': {
-            "colour": "#E39E00"
-          },
-          'colour_category': {
-            "colour": "#76B80D"
-          },
-          'procedure_category': {
-            "colour": "#007668"
-          },
-          'misty_category': {
-            "colour": "#EEEEEE"
-          },
-          'movement_category': {
-            "colour": "#006486"
-          },
-          'speech_category': {
-            "colour": "#007CB5"
-          },
-          'face_category': {
-            "colour": "#465AB2"
-          },
-          'audio_category': {
-            "colour": "#6D47B1"
-          },
-          'misc_category': {
-            "colour": "#873B9C"
-          },
-        }
-      })});
+        }),
+      });
       const initialBlock = ws.newBlock("Start");
       initialBlock.moveBy(50, 50);
       save(ws);
@@ -143,7 +155,13 @@ export default function BlocklyInterface(props) {
         // UI events are things like scrolling, zooming, etc.
         // No need to save after one of these.
         console.log(e);
-        if (e.isUiEvent) return;
+        if (e.isUiEvent) {
+          // record user activity
+          if (e.type === "toolbox_item_select") {
+            handleSelectToolbox(e.newItem, e.oldItem);
+          }
+          return;
+        }
 
         // Block has been deleted, remove it from store, as well as anything connect to it
         if (e.type === Blockly.Events.BLOCK_DELETE) {
