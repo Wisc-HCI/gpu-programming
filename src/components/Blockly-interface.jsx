@@ -226,7 +226,7 @@ export default function BlocklyInterface(props) {
           const delBlockTypes = delArray.map(id => getBlockType(id));
           removeBlock(delArray);
 
-          appendActivity(`delete blocks: ${delBlockTypes}`)
+          appendActivity(`block ${currID} is deleted, total delete blocks: ${delBlockTypes}`)
         }
 
         if (e.type === Blockly.Events.BLOCK_CHANGE) {
@@ -235,7 +235,7 @@ export default function BlocklyInterface(props) {
           let params = getBlock(id);
           params["fields"][e.name] = e.newValue;
           updateBlock(id, params);
-          appendActivity(`${blockType} field change from  to `)
+          appendActivity(`field ${e.name} of ${blockType} change from ${e.oldValue} to ${e.newValue} `)
         }
 
         //check for create blocks
@@ -319,10 +319,8 @@ export default function BlocklyInterface(props) {
             // newParenName exist, newInputname don't, handle the case that it is connect to parent
             if (!e.newInputName) {
               params["next"] = e.blockId;
-              console.log(params)
               updateBlock(id, params);
               currParams["prev"] = id;
-              console.log(currParams)
               updateBlock(e.blockId, currParams);
               appendActivity(
                 `Placed ${currParams.type} after ${prevBlockType}`
