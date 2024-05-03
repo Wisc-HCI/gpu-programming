@@ -78,12 +78,12 @@ export default function BlocklyInterface(props) {
       let startId = "";
 
       
-      const ws = Blockly.inject(blocklyDiv, { 
+      const ws = Blockly.inject(blocklyDiv, {
         toolbox:toolbox, 
         grid:
         {
           spacing: 20,
-         length: 3,
+          length: 3,
          colour: '#ccc',
          snap: true
         },
@@ -91,41 +91,41 @@ export default function BlocklyInterface(props) {
         "componentStyles": {
           "toolboxBackgroundColour": "#E4E5F1",
           "flyoutBackgroundColour": "#d2d3db"
-        },
+          },
         'categoryStyles': {
           'logic_category': {
             "colour": "#CC2F00"
-          },
+            },
           'loop_category': {
             "colour": "#DB6600"
-          },
+            },
           'math_category': {
             "colour": "#E39E00"
-          },
+            },
           'colour_category': {
             "colour": "#76B80D"
-          },
+            },
           'procedure_category': {
             "colour": "#007668"
-          },
+            },
           'misty_category': {
             "colour": "#EEEEEE"
-          },
+            },
           'movement_category': {
             "colour": "#006486"
-          },
+            },
           'speech_category': {
             "colour": "#007CB5"
-          },
+            },
           'face_category': {
             "colour": "#465AB2"
-          },
+            },
           'audio_category': {
             "colour": "#6D47B1"
-          },
+            },
           'misc_category': {
             "colour": "#873B9C"
-          },
+            },
         }
       })});
       const initialBlock = ws.newBlock("Start");
@@ -170,6 +170,22 @@ export default function BlocklyInterface(props) {
             handleSelectToolbox(e.newItem, e.oldItem);
           }
           return;
+        }
+
+        //record movement event
+        if (e.type === "move") {
+          const blockType = getBlock(e.blockId).type;
+          const moveReason = e.reason;
+          if (moveReason[1] === "drag" || moveReason[0] === "drag") {
+            //identify drag event
+            appendActivity(
+              `drag ${blockType} from coordinate: {x: ${e.oldCoordinate.x}, y: ${e.oldCoordinate.y}} to {x: ${e.newCoordinate.x},y: ${e.newCoordinate.y}}`
+            );
+          }
+          //snap event
+          else {
+            appendActivity(`release ${blockType}`);
+          }
         }
 
         // Block has been deleted, remove it from store, as well as anything connect to it
@@ -248,10 +264,14 @@ export default function BlocklyInterface(props) {
                   params.shadows[key] = value.shadow.id;
                 }
                 addBlock(value.shadow.id, shadowParams);
+                appendActivity(
+                  `create a instance of type ${shadowParams.type}`
+                );
               }
             }
           }
           addBlock(e.json.id, params);
+          appendActivity(`create a instance of type ${params.type}`);
         }
 
         //check for move blocks
@@ -272,7 +292,7 @@ export default function BlocklyInterface(props) {
               currParams["prev"] = id;
               updateBlock(e.blockId, currParams);
               appendActivity(
-                `${currParams.type} is placed after ${prevBlockType}`
+                `Placed ${currParams.type} after ${prevBlockType}`
               );
             }
 
@@ -296,13 +316,15 @@ export default function BlocklyInterface(props) {
           if (e.reason && e.reason.includes("disconnect")) {
             let id = e.oldParentId;
             let params = getBlock(e.oldParentId);
+            const nextBlockType = params.type;
+            const currParams = getBlock(e.blockId);
 
             if (!e.oldInputName) {
               params["next"] = "";
               updateBlock(id, params);
-              params = getBlock(e.blockId);
-              params["prev"] = "";
-              updateBlock(e.blockId, params);
+              currParams["prev"] = "";
+              updateBlock(e.blockId, currParams);
+              appendActivity(`disconnect ${nextBlockType} from ${params.type}`);
             } else {
               // there is an old input name
               params.inputs[e.oldInputName] = "";
@@ -311,6 +333,10 @@ export default function BlocklyInterface(props) {
                 let shadowId = params.shadows[e.oldInputName];
                 params.inputs[e.oldInputName] = shadowId;
               }
+              updateBlock(id, params);
+              appendActivity(
+                `remove ${nextBlockType} from input of ${params.type}`
+              );
             }
 
             //TODO: when a block is removed, check if there is a shadow block which has corresponding inputname and parent id
