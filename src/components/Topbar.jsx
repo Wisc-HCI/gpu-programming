@@ -1,14 +1,11 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import useStore from "../Store";
 import { activityLog, appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
-
-import React from "react";
 import { Box, Button, TextField, Container, Typography, Grid } from "@mui/material";
-
 import { default as MistyLogo } from './misty.svg';
-
 import workerUrl from '../compile/compile-worker.js?worker&url';
+import FileSaver from 'file-saver';
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
@@ -127,6 +124,13 @@ export default function TopBar(props) {
     console.log(activityLog);
   };
 
+  const handleDownload = () =>{
+    
+    var blob = new Blob([activityLog], {type: "text/plain;charset=utf-8"});
+    FileSaver.saveAs(blob, "activity log.txt");
+  }
+
+
   return (
     <Box style={topbarStyle}>
       <Grid
@@ -154,6 +158,10 @@ export default function TopBar(props) {
           paddingRight: "0px",
         }}
       >
+        <Button style={{ color: "#FFFFFF" }} onClick={handleDownload}>
+          Download     
+        </Button>
+
         <Button style={{ color: "#FFFFFF" }} onClick={stopCode}>
           Stop
         </Button>

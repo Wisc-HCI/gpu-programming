@@ -1,10 +1,11 @@
+import React, { useState } from "react";
 import useStore from "../Store";
 import IconButton from "@mui/material/IconButton";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useShallow } from "zustand/react/shallow";
 
-import React, { useState } from "react";
+
 import { Checkbox, Container, FormControlLabel, FormGroup, Stack, Typography } from "@mui/material";
 import { Check, CheckBox } from "@mui/icons-material";
 
