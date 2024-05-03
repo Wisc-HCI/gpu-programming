@@ -89,6 +89,7 @@ const useStore = create((set,get) => ({
     const blocks = get().blocks;
     return Object.values(blocks).filter(block => block.type === type)[0];
   },
+  getBlockType:(id)=>{get().blocks[id].type},
   onPointerMissed: () => console.log("Missed Click"),
   onPointerOver: () => {},
   onPointerOut: () => {},

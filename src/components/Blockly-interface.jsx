@@ -27,7 +27,7 @@ export default function BlocklyInterface(props) {
   const removeBlock = useStore((state) => state.removeBlock);
   const getBlock = useStore((state) => state.getBlock);
   const updateBlock = useStore((state) => state.updateBlock);
-  const getBlocksByType = useStore((state) => state.getBlocksByType);
+  const getBlockType = useStore((state) => state.getBlockType);
   const ip = useStore((state) => state.ip);
   const findNext = (arr, blockId) => {
     arr.push(blockId);
@@ -169,7 +169,7 @@ export default function BlocklyInterface(props) {
           if (e.type === "toolbox_item_select") {
             handleSelectToolbox(e.newItem, e.oldItem);
           }
-          if (e.type === "click") {
+          else if (e.type === "click") {
             if(e.targetType === "block"){
               const blockType = getBlock(e.blockId).type
               appendActivity(`click on ${blockType} block`)
@@ -178,18 +178,25 @@ export default function BlocklyInterface(props) {
               appendActivity(`click on workspace`)
             }
           }
-          if (e.type === "selected"){
+          else if (e.type === "selected"){
             if(e.oldElementId){
-              const blockType = getBlock(e.oldElementId).type
+              const blockType = getBlockType(e.oldElementId)
               appendActivity(`unselect and un-highlight ${blockType} `)
             }
             if(e.newElementId){
-              const blockType = getBlock(e.newElementId).type
+              const blockType = getBlockType(e.newElementId)
               appendActivity(`select and highlight ${blockType} `)
             }
             
           }
-
+          else if(e.type === "drag"){
+            const blockType = getBlockType(e.newElementId)
+            if(e.isStart){
+              appendActivity(`drag block ${blockType} start `)
+            }else{
+              appendActivity(`drag block ${blockType} end `)
+            }
+          }
           return;
         }
 
