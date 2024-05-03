@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import useStore from "../Store";
 import { activityLog, appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
@@ -8,24 +8,17 @@ import { default as MistyLogo } from '../svgs/misty.svg';
 import { default as PluggedIcon } from '../svgs/plugged.svg';
 import { default as UnpluggedIcon } from '../svgs/unplugged.svg';
 
-import workerUrl from '../compile/compile-worker.js?worker&url';
 import FileSaver from 'file-saver';
+import DropShadowButton from "./DropShadowButton";
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
   const setIp = useStore(useShallow((state) => state.setIp));
-  const ip = useStore(useShallow((state) => state.ip));
-  const getBlocks = useStore(useShallow((state) => state.getBlocks));
-  const clock = useStore(useShallow((state) => state.clock));
   const setImageList = useStore(useShallow((state) => state.setImageList));
   const setAudioList = useStore(useShallow((state) => state.setAudioList));
-  const mistyImageList = useStore(useShallow((state) => state.mistyImageList));
-  const mistyAudioList = useStore(useShallow((state) => state.mistyAudioList));
   const setIsConnected = useStore(useShallow((state) => state.setIsConnected));
   const isConnected = useStore(useShallow((state) => state.isConnected));
-  const runOnRobot = useStore(useShallow((state) => state.runOnRobot));
   const disconnect = useStore(useShallow((state) => state.disconnect));
-  const workerRef = useRef(null);
 
   const confirmIpAddress = () => {
     setIp(inputVal);
@@ -87,44 +80,6 @@ export default function TopBar(props) {
     filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
     zIndex: 101,
     position: "relative"
-  };
-
-  const runCode = async () => {
-    clock.reset_elapsed();
-
-    if (workerRef.current) {
-      workerRef.current.terminate();
-      workerRef.current = null;
-    }
-    const js = `import ${JSON.stringify(new URL(workerUrl, import.meta.url))}`;
-    const blob = new Blob([js], { type: "application/javascript" });
-    const workerURL = URL.createObjectURL(blob);
-    let myWorker = new Worker(workerURL, { type: "module" });
-    myWorker.onmessage = function (e) {
-      console.log("Message received from worker " + e.data);
-    };
-    myWorker.onerror = function (e) {
-      URL.revokeObjectURL(workerURL);
-    };
-    myWorker.postMessage({
-      blocks: getBlocks(),
-      mistyAudioList: mistyAudioList,
-      mistyImageList: mistyImageList,
-      ip: ip,
-      runOnRobot: runOnRobot
-    });
-    workerRef.current = myWorker;
-
-    appendActivity("Click Run Code button");
-  };
-
-  const stopCode = () => {
-    if (workerRef.current) {
-      workerRef.current.terminate();
-      workerRef.current = null; // Clear the ref post termination
-    }
-    appendActivity("Click Stop Code button");
-    console.log(activityLog);
   };
 
   const handleDownload = () =>{
@@ -200,9 +155,6 @@ export default function TopBar(props) {
         <Button style={{ color: "#FFFFFF" }} onClick={handleDownload}>
           Download     
         </Button>
-        <Button style={{ color: "#FFFFFF" }} onClick={stopCode}>
-          Stop
-        </Button>
         <TextField
           id="robotIpAddress"
           label="IP"
@@ -212,18 +164,11 @@ export default function TopBar(props) {
           onChange={(e) => setInputVal(e.target.value)}
         />
         {!isConnected && 
-          <Button style={{ color: "#FFFFFF" }} onClick={confirmIpAddress}>
-            Connect
-          </Button>
+          <DropShadowButton text={"Connect"} clickFunction={confirmIpAddress}/>
         }
-        {isConnected && 
-          <Button style={{ color: "#FFFFFF" }} onClick={disconnect}>
-            Disconnect
-          </Button>
+        {isConnected &&
+          <DropShadowButton text={"Disconnect"} clickFunction={disconnect}/>
         }
-        <Button style={{ color: "#FFFFFF" }} onClick={runCode} id="runButton">
-          Run
-        </Button>
       </Container>
     </Box>
   );

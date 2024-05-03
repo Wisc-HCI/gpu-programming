@@ -106,7 +106,7 @@ self.onmessage = function (e) {
 
       case type === "controls_if":
         if (!params.inputs || !params.inputs.IF0 || !params.inputs.DO0) {
-          alert("err: controls_if not complete!");
+          throw new Error("err: controls_if not complete!");
           //appendActivity("Try running with incomplete controls_if");
           return;
         } else {
@@ -119,7 +119,7 @@ self.onmessage = function (e) {
 
       case type === "logic_compare":
         if (!params.inputs || !params.inputs.A || !params.inputs.B) {
-          alert("err: logic_compare is not complete!");
+          throw new Error("err: logic_compare is not complete!");
           //appendActivity("Try running with incomplete logic_compare");
           return;
         }
@@ -164,7 +164,7 @@ self.onmessage = function (e) {
       /* eslint-disable-next-line no-fallthrough */
       case type === "logic_operation":
         if (!params.inputs || !params.inputs.A || !params.inputs.B) {
-          alert("err: logic_operation is not complete!");
+          throw new Error("err: logic_operation is not complete!");
           //appendActivity("Try running with incomplete logic_operation");
           return;
         }
@@ -189,7 +189,7 @@ self.onmessage = function (e) {
 
       case type === "logic_negate":
         if (!params.inputs) {
-          alert("err: logic_negate is not complete!");
+          throw new Error("err: logic_negate is not complete!");
           //appendActivity("Try running with incomplete logic_negate");
           return;
         }
@@ -213,7 +213,7 @@ self.onmessage = function (e) {
           !params.inputs.THEN ||
           !params.inputs.ELSE
         ) {
-          alert("err: logic_ternary is not complete!");
+          throw new Error("err: logic_ternary is not complete!");
           //appendActivity("Try running with incomplete logic_ternary");
           return;
         }
@@ -245,7 +245,7 @@ self.onmessage = function (e) {
       case type === "controls_repeat_ext":
         const controls_repeat_ext_TIMES = checkShadowinput(params.inputs.TIMES);
         if (!params.inputs.DO) {
-          alert("err: controls_repeat_ext is not complete!");
+          throw new Error("err: controls_repeat_ext is not complete!");
           //appendActivity("Try running with incomplete controls_repeat_ext");
           return;
         }
@@ -292,13 +292,13 @@ self.onmessage = function (e) {
           return math_number_property_NUMBER_TO_CHECK < 0;
         } else if (math_number_property_PROPERTY === "DIVISIBLE_BY") {
           if (!params.inputs || !params.inputs.DIVISOR) {
-            alert("err: DIVISOR is not filled!");
+            throw new Error("err: DIVISOR is not filled!");
             // appendActivity(
             //   "Try running with incomplete math_number_property, DIVISOR is not filled"
             // );
             return;
           } else if (params.inputs.DIVISOR === 0) {
-            alert("Note that divisor cannot be 0!");
+            throw new Error("Note that divisor cannot be 0!");
             // appendActivity(
             //   "Try running with incomplete math_number_property, divisor cannot be 0"
             // );
@@ -371,7 +371,7 @@ self.onmessage = function (e) {
       /////////////////////////////////////////////Color///////////////////////////////////////////////////////////////
       case type === "ChangeLED":
         if (!params.inputs || !params.inputs.FIELD_ChangeLED) {
-          alert("err: ChangeLED is not complete!");
+          throw new Error("err: ChangeLED is not complete!");
           //appendActivity("Try running with incomplete ChangeLED");
           return;
         }
@@ -389,7 +389,7 @@ self.onmessage = function (e) {
 
       case type === "TransitionLED":
         if (!params.inputs || !params.inputs.COLOR1 || !params.inputs.COLOR2) {
-          alert("err: TransitionLED is not complete!");
+          throw new Error("err: TransitionLED is not complete!");
           //appendActivity("Try running with incomplete TransitionLED");
           return;
         }
@@ -416,7 +416,7 @@ self.onmessage = function (e) {
 
       case type === "DisplayImage":
         if (!params.inputs || !params.inputs.FIELD_DisplayImage_Filename) {
-          alert("err: DisplayImage is not complete!");
+          throw new Error("err: DisplayImage is not complete!");
           //appendActivity("Try running with incomplete DisplayImage");
           return;
         }
@@ -448,7 +448,7 @@ self.onmessage = function (e) {
 
       case type === "PlayAudio":
         if (!params.inputs || !params.inputs.FIELD_PlayAudio_Filename) {
-          alert("err: PlayAudio is not complete!");
+          throw new Error("err: PlayAudio is not complete!");
           //appendActivity("Try running with incomplete PlayAudio");
           return;
         }
@@ -463,7 +463,7 @@ self.onmessage = function (e) {
 
       case type === "DisplayAnimation":
         if (!params.inputs || !params.inputs.FIELD_DisplayAnimation_Filename) {
-          alert("err: DisplayAnimation is not complete!");
+          throw new Error("err: DisplayAnimation is not complete!");
           //appendActivity("Try running with incomplete DisplayAnimation");
           return;
         }

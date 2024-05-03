@@ -35,7 +35,7 @@ const addText = {
 // Set up the format of the block in the Blocky IDE
 Blockly.Blocks["ChangeLED"] = {
   init: function () {
-    this.setColour('260'); // set color 
+    this.setColour("#873B9C"); // set color 
     this.appendValueInput("FIELD_ChangeLED")
       .setCheck("Colour")
       .appendField("Change the LED color to");
@@ -48,7 +48,7 @@ Blockly.Blocks["ChangeLED"] = {
 
 Blockly.Blocks["TransitionLED"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour("#873B9C");
     this.appendValueInput("COLOR1")
       .setCheck("Colour")
       .appendField("Transition LED from");
@@ -73,34 +73,9 @@ Blockly.Blocks["TransitionLED"] = {
   }
 };
 
-// Blockly.Blocks["TransitionLED"] = {
-//   init: function () {
-//     this.setColour('260');
-//     this.appendValueInput("COLOR1")
-//       .setCheck("Colour")
-//       .appendField("Transition LED from");
-//     this.appendValueInput("COLOR2")
-//       .setCheck("Colour")
-//       .appendField("to");
-//     this.appendDummyInput()
-//       .appendField("using the")
-//       .appendField(new Blockly.FieldDropdown([
-//         ["Breathe", "BREATHE"],
-//         ["Blink", "BLINK"],
-//         ["Transition Once", "TRANSITION_ONCE"]
-//       ]), "TRANSITION_TYPE")
-//       .appendField("transition for a duration of")
-//       .appendField(new Blockly.FieldNumber(100), "FIELD_TransitionTime_TimeMs")
-//       .appendField("ms");
-//     this.setPreviousStatement(true, null);
-//     this.setNextStatement(true, null);
-//     this.setTooltip("Transition LED between two colors with the specified transition type and time.");
-//   }
-// };
-
 Blockly.Blocks["DisplayImage"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour("#873B9C");
     this.appendValueInput("FIELD_DisplayImage_Filename")
       .setCheck("Face")
       .appendField("Change face expression to: ");
@@ -112,7 +87,7 @@ Blockly.Blocks["DisplayImage"] = {
 
 Blockly.Blocks["DisplayAnimation"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour("#873B9C");
     this.appendValueInput("FIELD_DisplayAnimation_Filename")
       .setCheck("Animation")
       .appendField("Show this animation on Misty: ");
@@ -124,7 +99,7 @@ Blockly.Blocks["DisplayAnimation"] = {
 
 Blockly.Blocks["MoveHead"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour('#006486');
     this.appendDummyInput()
       .appendField("Move head")
       .appendField(new Blockly.FieldDropdown([["Up", "U"], ["Down", "D"]]), "FIELD_MoveHead_Pitch")
@@ -137,7 +112,7 @@ Blockly.Blocks["MoveHead"] = {
 
 Blockly.Blocks["MoveHead2"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour('#006486');
     this.appendDummyInput()
       .appendField("Move head")
       .appendField("Pitch (-40 to 25):")
@@ -153,13 +128,9 @@ Blockly.Blocks["MoveHead2"] = {
   }
 };
 
-
-
-
-
 Blockly.Blocks["MoveArm"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour('#006486');
     this.appendDummyInput()
       .appendField("Move ")
       .appendField(new Blockly.FieldDropdown([["Right", "Right"], ["Left", "Left"]]), "FIELD_MoveArm_Arm")
@@ -176,7 +147,7 @@ Blockly.Blocks["MoveArm"] = {
 
 Blockly.Blocks["MoveArm2"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour('#006486');
     this.appendDummyInput()
       .appendField("Move both arms to position")
       .appendField(new Blockly.FieldNumber(0), "FIELD_MoveArm2_Position")
@@ -192,7 +163,7 @@ Blockly.Blocks["MoveArm2"] = {
 
 Blockly.Blocks["MoveArms"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour('#006486');
     this.appendDummyInput()
       .appendField("Move left arm to position")
       .appendField(new Blockly.FieldNumber(0, -29, 90, 1), "FIELD_MoveArm_LeftPosition")
@@ -208,6 +179,7 @@ Blockly.Blocks["MoveArms"] = {
     this.setHelpUrl("MoveArms");
   }
 };
+
 Blockly.Blocks["MoveArms2"] = {
   init: function () {
     var shadowBlock_1 = this.workspace.newBlock('math_number');
@@ -234,7 +206,7 @@ Blockly.Blocks["MoveArms2"] = {
     shadowBlock_4.render();
     var rVelBlock = shadowBlock_4.outputConnection;
 
-    this.setColour('260');
+    this.setColour('#006486');
     this.appendValueInput("FIELD_MoveArm_LeftPosition").setCheck('Number')
       .appendField("Move left arm to position");
     var shadowBlockConnectionLPosition = this.getInput("FIELD_MoveArm_LeftPosition").connection;
@@ -261,7 +233,7 @@ Blockly.Blocks["MoveArms2"] = {
 
 Blockly.Blocks["DriveTime"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour('#006486');
     this.appendDummyInput()
       .appendField("Move ")
       .appendField(new Blockly.FieldDropdown([["Forward", "F"], ["Backward", "B"]]), "FIELD_DriveTime_Direction")
@@ -304,7 +276,7 @@ Blockly.Blocks["MoveHead3"] = {
     shadowBlock_4.render();
     var timeBlock = shadowBlock_4.outputConnection;
 
-    this.setColour('260');
+    this.setColour('#006486');
 
     this.appendValueInput("FIELD_MoveHead_Pitch").setCheck('Number')
       .appendField("Move head")
@@ -335,7 +307,6 @@ Blockly.Blocks["MoveHead3"] = {
   }
 };
 
-
 Blockly.Blocks["DriveTime2"] = {
 					
   init: function () {
@@ -357,7 +328,7 @@ Blockly.Blocks["DriveTime2"] = {
     shadowBlock_3.render();
     var timeBlock = shadowBlock_3.outputConnection;
 
-    this.setColour('260');
+    this.setColour('#006486');
     this.appendValueInput("FIELD_DriveTime_Velocity").setCheck('Number')
       .appendField("Move at a speed of (-100 to 100)");
     var shadowBlockConnectionVelocity = this.getInput("FIELD_DriveTime_Velocity").connection;
@@ -380,7 +351,7 @@ Blockly.Blocks["DriveTime2"] = {
 
 Blockly.Blocks["Turn"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour('#006486');
     this.appendDummyInput()
       .appendField("Turn")
       .appendField(new Blockly.FieldDropdown([["Left", "L"], ["Right", "R"]]), "FIELD_Turn_Direction")
@@ -403,7 +374,7 @@ Blockly.Blocks["Turn2"] = {
     shadowBlock_1.render();
     var timeBlock = shadowBlock_1.outputConnection;
 
-    this.setColour('260');
+    this.setColour('#006486');
     this.appendDummyInput()
       .appendField("Turn")
       .appendField(new Blockly.FieldDropdown([["Left", "L"], ["Right", "R"]]), "FIELD_Turn_Direction");
@@ -433,7 +404,7 @@ Blockly.Blocks['Test'] = {
 
 Blockly.Blocks["Speak"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour('#007CB5');
     this.appendValueInput("FIELD_Speak_Text")
       .setCheck("String")
       .appendField("Speak: ");
@@ -446,7 +417,7 @@ Blockly.Blocks["Speak"] = {
 // TODO: Add another Speak block with a dropdown with defaults: “Hi”, “Hello”, etc.
 Blockly.Blocks["SpeakDefault"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour('#007CB5');
     this.appendDummyInput()
       .appendField("Speak: ")
       .appendField(new Blockly.FieldDropdown([
@@ -463,7 +434,7 @@ Blockly.Blocks["SpeakDefault"] = {
 
 Blockly.Blocks["TurnOnFlashlight"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour("#873B9C");
     this.appendDummyInput()
       .appendField("Turn on flashlight ")
     this.setPreviousStatement(true, null);
@@ -474,7 +445,7 @@ Blockly.Blocks["TurnOnFlashlight"] = {
 
 Blockly.Blocks["TurnOffFlashlight"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour("#873B9C");
     this.appendDummyInput()
       .appendField("Turn off flashlight ")
     this.setPreviousStatement(true, null);
@@ -495,16 +466,15 @@ Blockly.Blocks["WaitForSeconds"] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(260);
+    this.setColour("#873B9C");
  this.setTooltip("");
  this.setHelpUrl("");
   }
 };
 
-
 Blockly.Blocks["PlayAudio"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour("#873B9C");
     this.appendValueInput("FIELD_PlayAudio_Filename")
       .setCheck("Audio")
       .appendField("Play audio: ");
@@ -516,7 +486,7 @@ Blockly.Blocks["PlayAudio"] = {
 
 Blockly.Blocks["DisplayText"] = {
   init: function () {
-    this.setColour('260');
+    this.setColour("#873B9C");
     this.appendDummyInput()
       .appendField("Display Text: ")
       .appendField(new Blockly.FieldTextInput("default"), "FIELD_DisplayText_Text");
@@ -532,7 +502,7 @@ Blockly.Blocks['eyes_acceptance'] = {
     this.appendDummyInput()
         .appendField("Expression: acceptance");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'acceptance'");
   }
 };
@@ -542,7 +512,7 @@ Blockly.Blocks['eyes_admiration'] = {
     this.appendDummyInput()
         .appendField("Expression: admiration");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'admiration'");
   }
 };
@@ -552,7 +522,7 @@ Blockly.Blocks['eyes_amazement'] = {
     this.appendDummyInput()
         .appendField("Expression: amazement");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'amazement'");
   }
 };
@@ -562,7 +532,7 @@ Blockly.Blocks['eyes_anger'] = {
     this.appendDummyInput()
         .appendField("Expression: anger");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'anger'");
   }
 };
@@ -572,7 +542,7 @@ Blockly.Blocks['eyes_annoyed'] = {
     this.appendDummyInput()
         .appendField("Expression: annoyed");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'annoyed'");
   }
 };
@@ -582,7 +552,7 @@ Blockly.Blocks['eyes_anticipation'] = {
     this.appendDummyInput()
         .appendField("Expression: anticipation");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'anticipation'");
   }
 };
@@ -592,7 +562,7 @@ Blockly.Blocks['eyes_apprehension'] = {
     this.appendDummyInput()
         .appendField("Expression: apprehension");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'apprehension'");
   }
 };
@@ -602,7 +572,7 @@ Blockly.Blocks['eyes_boredom'] = {
     this.appendDummyInput()
         .appendField("Expression: boredom");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'boredom'");
   }
 };
@@ -612,7 +582,7 @@ Blockly.Blocks['eyes_default'] = {
     this.appendDummyInput()
         .appendField("Expression: default");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'default'");
   }
 };
@@ -622,7 +592,7 @@ Blockly.Blocks['eyes_disgust'] = {
     this.appendDummyInput()
         .appendField("Expression: disgust");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'disgust'");
   }
 };
@@ -632,7 +602,7 @@ Blockly.Blocks['eyes_distraction'] = {
     this.appendDummyInput()
         .appendField("Expression: distraction");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'distraction'");
   }
 };
@@ -642,7 +612,7 @@ Blockly.Blocks['eyes_ecstasy_frame_1'] = {
     this.appendDummyInput()
         .appendField("Expression: ecstasy 1");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'ecstasy 1'");
   }
 };
@@ -652,7 +622,7 @@ Blockly.Blocks['eyes_ecstasy_frame_2'] = {
     this.appendDummyInput()
         .appendField("Expression: ecstasy 2");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'ecstasy 2'");
   }
 };
@@ -662,7 +632,7 @@ Blockly.Blocks['eyes_fear'] = {
     this.appendDummyInput()
         .appendField("Expression: fear");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'fear'");
   }
 };
@@ -672,7 +642,7 @@ Blockly.Blocks['eyes_grief'] = {
     this.appendDummyInput()
         .appendField("Expression: grief");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'grief'");
   }
 };
@@ -682,7 +652,7 @@ Blockly.Blocks['eyes_interest'] = {
     this.appendDummyInput()
         .appendField("Expression: interest");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'interest'");
   }
 };
@@ -692,7 +662,7 @@ Blockly.Blocks['eyes_joy'] = {
     this.appendDummyInput()
         .appendField("Expression: joy");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'joy'");
   }
 };
@@ -702,7 +672,7 @@ Blockly.Blocks['eyes_loathing'] = {
     this.appendDummyInput()
         .appendField("Expression: loathing");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'loathing'");
   }
 };
@@ -712,7 +682,7 @@ Blockly.Blocks['eyes_pensiveness'] = {
     this.appendDummyInput()
         .appendField("Expression: pensiveness");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'pensiveness'");
   }
 };
@@ -722,7 +692,7 @@ Blockly.Blocks['eyes_rage'] = {
     this.appendDummyInput()
         .appendField("Expression: rage eyes");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'rage eyes'");
   }
 };
@@ -732,7 +702,7 @@ Blockly.Blocks['eyes_sad'] = {
     this.appendDummyInput()
         .appendField("Expression: sad");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'sad'");
   }
 };
@@ -742,7 +712,7 @@ Blockly.Blocks['eyes_serenity'] = {
     this.appendDummyInput()
         .appendField("Expression: serenity");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'serenity'");
   }
 };
@@ -752,7 +722,7 @@ Blockly.Blocks['eyes_surprise'] = {
     this.appendDummyInput()
         .appendField("Expression: surprise");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'surprise'");
   }
 };
@@ -762,7 +732,7 @@ Blockly.Blocks['eyes_terror'] = {
     this.appendDummyInput()
         .appendField("Expression: terror");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'terror'");
   }
 };
@@ -772,7 +742,7 @@ Blockly.Blocks['eyes_trust'] = {
     this.appendDummyInput()
         .appendField("Expression: trust");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'trust'");
   }
 };
@@ -782,7 +752,7 @@ Blockly.Blocks['eyes_vigilance'] = {
     this.appendDummyInput()
         .appendField("Expression: vigilance");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'vigilance'");
   }
 };
@@ -792,7 +762,7 @@ Blockly.Blocks['e_Sleeping'] = {
     this.appendDummyInput()
         .appendField("Expression: sleeping");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'sleeping'");
   }
 };
@@ -802,7 +772,7 @@ Blockly.Blocks['e_SleepingZZZ'] = {
     this.appendDummyInput()
         .appendField("Expression: sleeping ZZZ");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'sleeping ZZZ'");
   }
 };
@@ -812,7 +782,7 @@ Blockly.Blocks['e_Contempt'] = {
     this.appendDummyInput()
         .appendField("Expression: contempt");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'contempt'");
   }
 };
@@ -822,7 +792,7 @@ Blockly.Blocks['e_ContentLeft'] = {
     this.appendDummyInput()
         .appendField("Expression: content (left)");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'content (left)'");
   }
 };
@@ -832,7 +802,7 @@ Blockly.Blocks['e_ContentRight'] = {
     this.appendDummyInput()
         .appendField("Expression: content (right)");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'content (right)'");
   }
 };
@@ -842,7 +812,7 @@ Blockly.Blocks['e_Disoriented'] = {
     this.appendDummyInput()
         .appendField("Expression: disoriented");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'disoriented'");
   }
 };
@@ -852,7 +822,7 @@ Blockly.Blocks['e_EcstacyHilarious'] = {
     this.appendDummyInput()
         .appendField("Expression: ecstacy hilarious");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'ecstacy hilarious'");
   }
 };
@@ -862,7 +832,7 @@ Blockly.Blocks['e_EcstacyStarryEyed'] = {
     this.appendDummyInput()
         .appendField("Expression: ecstacy starry eyed");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'ecstacy starry eyed'");
   }
 };
@@ -872,7 +842,7 @@ Blockly.Blocks['e_JoyGoofy'] = {
     this.appendDummyInput()
         .appendField("Expression: joy goofy");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'joy goofy'");
   }
 };
@@ -882,7 +852,7 @@ Blockly.Blocks['e_JoyGoofy2'] = {
     this.appendDummyInput()
         .appendField("Expression: joy goofy 2");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'joy goofy 2'");
   }
 };
@@ -892,7 +862,7 @@ Blockly.Blocks['e_JoyGoofy3'] = {
     this.appendDummyInput()
         .appendField("Expression: joy goofy 3");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'joy goofy 3'");
   }
 };
@@ -902,7 +872,7 @@ Blockly.Blocks['e_Love'] = {
     this.appendDummyInput()
         .appendField("Expression: love");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'love'");
   }
 };
@@ -912,7 +882,7 @@ Blockly.Blocks['e_Rage'] = {
     this.appendDummyInput()
         .appendField("Expression: rage");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'rage'");
   }
 };
@@ -922,7 +892,7 @@ Blockly.Blocks['e_Rage2'] = {
     this.appendDummyInput()
         .appendField("Expression: rage 2");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'rage 2'");
   }
 };
@@ -932,7 +902,7 @@ Blockly.Blocks['e_Rage3'] = {
     this.appendDummyInput()
         .appendField("Expression: rage 3");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'rage 3'");
   }
 };
@@ -942,7 +912,7 @@ Blockly.Blocks['e_Rage4'] = {
     this.appendDummyInput()
         .appendField("Expression: rage 4");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'rage 4'");
   }
 };
@@ -952,7 +922,7 @@ Blockly.Blocks['e_RemorseShame'] = {
     this.appendDummyInput()
         .appendField("Expression: remorse shame");
     this.setOutput(true, 'Face');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Represents the facial expression 'remorse shame'");
   }
 };
@@ -963,7 +933,7 @@ Blockly.Blocks['animation_sleepy.bv'] = {
     this.appendDummyInput()
         .appendField("Animation: Sleeping");
     this.setOutput(true, 'Animation');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Run the animation 'sleepy'");
   }
 };
@@ -973,7 +943,7 @@ Blockly.Blocks['animation_dancing.bv'] = {
     this.appendDummyInput()
         .appendField("Animation: Dancing");
     this.setOutput(true, 'Animation');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Run the animation 'dancing'");
   }
 };
@@ -983,7 +953,7 @@ Blockly.Blocks['animation_spooked.bv'] = {
     this.appendDummyInput()
         .appendField("Animation: Spooked");
     this.setOutput(true, 'Animation');
-    this.setColour(240);
+    this.setColour("#465AB2");
     this.setTooltip("Run the animation 'spooked'");
   }
 };
@@ -994,7 +964,7 @@ Blockly.Blocks['s_Acceptance'] = {
     this.appendDummyInput()
         .appendField("Sound: acceptance");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'acceptance'");
   }
 };
@@ -1004,7 +974,7 @@ Blockly.Blocks['s_Amazement'] = {
     this.appendDummyInput()
         .appendField("Sound: amazement");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'amazement'");
   }
 };
@@ -1014,7 +984,7 @@ Blockly.Blocks['s_Amazement2'] = {
     this.appendDummyInput()
         .appendField("Sound: amazement 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'amazement 2'");
   }
 };
@@ -1024,7 +994,7 @@ Blockly.Blocks['s_Anger'] = {
     this.appendDummyInput()
         .appendField("Sound: anger");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'anger'");
   }
 };
@@ -1034,7 +1004,7 @@ Blockly.Blocks['s_Anger2'] = {
     this.appendDummyInput()
         .appendField("Sound: anger 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'anger 2'");
   }
 };
@@ -1044,7 +1014,7 @@ Blockly.Blocks['s_Anger3'] = {
     this.appendDummyInput()
         .appendField("Sound: anger 3");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'anger 3'");
   }
 };
@@ -1054,7 +1024,7 @@ Blockly.Blocks['s_Anger4'] = {
     this.appendDummyInput()
         .appendField("Sound: anger 4");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'anger 4'");
   }
 };
@@ -1064,7 +1034,7 @@ Blockly.Blocks['s_Annoyance'] = {
     this.appendDummyInput()
         .appendField("Sound: annoyance");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'annoyance'");
   }
 };
@@ -1074,7 +1044,7 @@ Blockly.Blocks['s_Annoyance2'] = {
     this.appendDummyInput()
         .appendField("Sound: annoyance 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'annoyance 2'");
   }
 };
@@ -1084,7 +1054,7 @@ Blockly.Blocks['s_Annoyance3'] = {
     this.appendDummyInput()
         .appendField("Sound: annoyance 3");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'annoyance 3'");
   }
 };
@@ -1094,7 +1064,7 @@ Blockly.Blocks['s_Annoyance4'] = {
     this.appendDummyInput()
         .appendField("Sound: annoyance 4");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'annoyance 4'");
   }
 };
@@ -1104,7 +1074,7 @@ Blockly.Blocks['s_Awe'] = {
     this.appendDummyInput()
         .appendField("Sound: awe");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'awe'");
   }
 };
@@ -1114,7 +1084,7 @@ Blockly.Blocks['s_Awe2'] = {
     this.appendDummyInput()
         .appendField("Sound: awe 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'awe 2'");
   }
 };
@@ -1124,7 +1094,7 @@ Blockly.Blocks['s_Awe3'] = {
     this.appendDummyInput()
         .appendField("Sound: awe 3");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'awe 3'");
   }
 };
@@ -1134,7 +1104,7 @@ Blockly.Blocks['s_Boredom'] = {
     this.appendDummyInput()
         .appendField("Sound: boredom");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'boredom'");
   }
 };
@@ -1144,7 +1114,7 @@ Blockly.Blocks['s_Disapproval'] = {
     this.appendDummyInput()
         .appendField("Sound: disapproval");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'disapproval'");
   }
 };
@@ -1154,7 +1124,7 @@ Blockly.Blocks['s_Disgust'] = {
     this.appendDummyInput()
         .appendField("Sound: disgust");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'disgust'");
   }
 };
@@ -1164,7 +1134,7 @@ Blockly.Blocks['s_Disgust2'] = {
     this.appendDummyInput()
         .appendField("Sound: disgust 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'disgust 2'");
   }
 };
@@ -1174,7 +1144,7 @@ Blockly.Blocks['s_Disgust3'] = {
     this.appendDummyInput()
         .appendField("Sound: disgust 3");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'disgust 3'");
   }
 };
@@ -1184,7 +1154,7 @@ Blockly.Blocks['s_DisorientedConfused'] = {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'disoriented confused'");
   }
 };
@@ -1194,7 +1164,7 @@ Blockly.Blocks['s_DisorientedConfused2'] = {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'disoriented confused 2'");
   }
 };
@@ -1204,7 +1174,7 @@ Blockly.Blocks['s_DisorientedConfused3'] = {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused 3");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'disoriented confused 3'");
   }
 };
@@ -1214,7 +1184,7 @@ Blockly.Blocks['s_DisorientedConfused4'] = {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused 4");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'disoriented confused 4'");
   }
 };
@@ -1224,7 +1194,7 @@ Blockly.Blocks['s_DisorientedConfused5'] = {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused 5");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'disoriented confused 5'");
   }
 };
@@ -1234,7 +1204,7 @@ Blockly.Blocks['s_DisorientedConfused6'] = {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused 6");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'disoriented confused 6'");
   }
 };
@@ -1244,7 +1214,7 @@ Blockly.Blocks['s_Distraction'] = {
     this.appendDummyInput()
         .appendField("Sound: distraction");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'distraction'");
   }
 };
@@ -1254,7 +1224,7 @@ Blockly.Blocks['s_Ecstacy'] = {
     this.appendDummyInput()
         .appendField("Sound: ecstacy");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'ecstacy'");
   }
 };
@@ -1264,7 +1234,7 @@ Blockly.Blocks['s_Ecstacy2'] = {
     this.appendDummyInput()
         .appendField("Sound: ecstacy 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'ecstacy 2'");
   }
 };
@@ -1274,7 +1244,7 @@ Blockly.Blocks['s_Fear'] = {
     this.appendDummyInput()
         .appendField("Sound: fear");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'fear'");
   }
 };
@@ -1284,7 +1254,7 @@ Blockly.Blocks['s_Grief'] = {
     this.appendDummyInput()
         .appendField("Sound: grief");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'grief'");
   }
 };
@@ -1294,7 +1264,7 @@ Blockly.Blocks['s_Grief2'] = {
     this.appendDummyInput()
         .appendField("Sound: grief 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'grief 2'");
   }
 };
@@ -1304,7 +1274,7 @@ Blockly.Blocks['s_Grief3'] = {
     this.appendDummyInput()
         .appendField("Sound: grief 3");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'grief 3'");
   }
 };
@@ -1314,7 +1284,7 @@ Blockly.Blocks['s_Grief4'] = {
     this.appendDummyInput()
         .appendField("Sound: grief 4");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'grief 4'");
   }
 };
@@ -1324,7 +1294,7 @@ Blockly.Blocks['s_Joy'] = {
     this.appendDummyInput()
         .appendField("Sound: joy");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'joy'");
   }
 };
@@ -1334,7 +1304,7 @@ Blockly.Blocks['s_Joy2'] = {
     this.appendDummyInput()
         .appendField("Sound: joy 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'joy 2'");
   }
 };
@@ -1344,7 +1314,7 @@ Blockly.Blocks['s_Joy3'] = {
     this.appendDummyInput()
         .appendField("Sound: joy 3");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'joy 3'");
   }
 };
@@ -1354,7 +1324,7 @@ Blockly.Blocks['s_Joy4'] = {
     this.appendDummyInput()
         .appendField("Sound: joy 4");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'joy 4'");
   }
 };
@@ -1364,7 +1334,7 @@ Blockly.Blocks['s_Loathing'] = {
     this.appendDummyInput()
         .appendField("Sound: loathing");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'loathing'");
   }
 };
@@ -1374,7 +1344,7 @@ Blockly.Blocks['s_Love'] = {
     this.appendDummyInput()
         .appendField("Sound: love");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'love'");
   }
 };
@@ -1384,7 +1354,7 @@ Blockly.Blocks['s_PhraseByeBye'] = {
     this.appendDummyInput()
         .appendField("Sound: Bye Bye");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'phrase: Bye Bye'");
   }
 };
@@ -1394,7 +1364,7 @@ Blockly.Blocks['s_PhraseEvilAhHa'] = {
     this.appendDummyInput()
         .appendField("Sound: Evil Ah Ha");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'phrase: Evil Ah Ha'");
   }
 };
@@ -1404,7 +1374,7 @@ Blockly.Blocks['s_PhraseHello'] = {
     this.appendDummyInput()
         .appendField("Sound: Hello");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'phrase: Hello'");
   }
 };
@@ -1414,7 +1384,7 @@ Blockly.Blocks['s_PhraseNoNoNo'] = {
     this.appendDummyInput()
         .appendField("Sound: No No No");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'phrase: No No No'");
   }
 };
@@ -1424,7 +1394,7 @@ Blockly.Blocks['s_PhraseOopsy'] = {
     this.appendDummyInput()
         .appendField("Sound: Oopsy");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'phrase: Oopsy'");
   }
 };
@@ -1434,7 +1404,7 @@ Blockly.Blocks['s_PhraseOwOwOw'] = {
     this.appendDummyInput()
         .appendField("Sound: Ow Ow Ow");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'phrase: Ow Ow Ow'");
   }
 };
@@ -1444,7 +1414,7 @@ Blockly.Blocks['s_PhraseOwwww'] = {
     this.appendDummyInput()
         .appendField("Sound: Owwww");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'phrase: Owwww'");
   }
 };
@@ -1454,7 +1424,7 @@ Blockly.Blocks['s_PhraseUhOh'] = {
     this.appendDummyInput()
         .appendField("Sound: Uh Oh");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'phrase: Uh Oh'");
   }
 };
@@ -1464,7 +1434,7 @@ Blockly.Blocks['s_Rage'] = {
     this.appendDummyInput()
         .appendField("Sound: rage");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'rage'");
   }
 };
@@ -1474,7 +1444,7 @@ Blockly.Blocks['s_Sadness'] = {
     this.appendDummyInput()
         .appendField("Sound: sadness");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sadness'");
   }
 };
@@ -1484,7 +1454,7 @@ Blockly.Blocks['s_Sadness2'] = {
     this.appendDummyInput()
         .appendField("Sound: sadness 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sadness 2'");
   }
 };
@@ -1494,7 +1464,7 @@ Blockly.Blocks['s_Sadness3'] = {
     this.appendDummyInput()
         .appendField("Sound: sadness 3");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sadness 3'");
   }
 };
@@ -1504,7 +1474,7 @@ Blockly.Blocks['s_Sadness4'] = {
     this.appendDummyInput()
         .appendField("Sound: sadness 4");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sadness 4'");
   }
 };
@@ -1514,7 +1484,7 @@ Blockly.Blocks['s_Sadness5'] = {
     this.appendDummyInput()
         .appendField("Sound: sadness 5");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sadness 5'");
   }
 };
@@ -1524,7 +1494,7 @@ Blockly.Blocks['s_Sadness6'] = {
     this.appendDummyInput()
         .appendField("Sound: sadness 6");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sadness 6'");
   }
 };
@@ -1534,7 +1504,7 @@ Blockly.Blocks['s_Sadness7'] = {
     this.appendDummyInput()
         .appendField("Sound: sadness 7");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sadness 7'");
   }
 };
@@ -1544,7 +1514,7 @@ Blockly.Blocks['s_Sleepy'] = {
     this.appendDummyInput()
         .appendField("Sound: sleepy");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sleepy'");
   }
 };
@@ -1554,7 +1524,7 @@ Blockly.Blocks['s_Sleepy2'] = {
     this.appendDummyInput()
         .appendField("Sound: sleepy 2");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sleepy 2'");
   }
 };
@@ -1564,7 +1534,7 @@ Blockly.Blocks['s_Sleepy3'] = {
     this.appendDummyInput()
         .appendField("Sound: sleepy 3");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sleepy 3'");
   }
 };
@@ -1574,7 +1544,7 @@ Blockly.Blocks['s_Sleepy4'] = {
     this.appendDummyInput()
         .appendField("Sound: sleepy 4");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sleepy 4'");
   }
 };
@@ -1584,7 +1554,7 @@ Blockly.Blocks['s_SleepySnore'] = {
     this.appendDummyInput()
         .appendField("Sound: sleepy snore");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'sleepy snore'");
   }
 };
@@ -1594,7 +1564,7 @@ Blockly.Blocks['s_SystemCameraShutter'] = {
     this.appendDummyInput()
         .appendField("Sound: system camera shutter");
     this.setOutput(true, 'Audio');
-    this.setColour(240);
+    this.setColour("#6D47B1");
     this.setTooltip("Represents the audio 'system camera shutter'");
   }
 };

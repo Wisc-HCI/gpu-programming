@@ -9,7 +9,7 @@ export default function ProgramLogos(props) {
     return (
         <Stack style={{
             position: "absolute",
-            left: "15px",
+            left: "20px",
             bottom: "20px",
             // padding: "10px",
             zIndex: "101",

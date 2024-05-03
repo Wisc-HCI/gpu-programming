@@ -38,21 +38,6 @@ export default function BlocklyInterface(props) {
     }
   };
 
-  const sendPostRequestToRobot = (endpoint, payload) => {
-    fetch(`http://${ip}/api/${endpoint}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        console.log(
-          `successfully send a post request, the response is: ${json}`
-        );
-      });
-  };
   const handleSelectToolbox = (newItem, oldItem) => {
     if (!oldItem) {
       appendActivity(`select toolbox category: ${newItem}`);
@@ -62,10 +47,6 @@ export default function BlocklyInterface(props) {
       appendActivity(`switch toolbox category from ${oldItem} to ${newItem}`);
     }
   };
-
-  useEffect(() => {
-    console.log(blocks);
-  }, [blocks]);
 
   // Register the blocks and generator with Blockly
   Blockly.common.defineBlocks(blocks);
@@ -77,7 +58,7 @@ export default function BlocklyInterface(props) {
       var blocklyDiv = document.getElementById("blocklyDiv");
       let startId = "";
 
-      
+      // Blockly.Blocks.variables.HUE = 330; 
       const ws = Blockly.inject(blocklyDiv, {
         toolbox:toolbox, 
         grid:
@@ -88,45 +69,66 @@ export default function BlocklyInterface(props) {
          snap: true
         },
         theme: Blockly.Theme.defineTheme('gpuTheme', {
-        "componentStyles": {
-          "toolboxBackgroundColour": "#E4E5F1",
-          "flyoutBackgroundColour": "#d2d3db"
+          "componentStyles": {
+            "toolboxBackgroundColour": "#E4E5F1",
+            "flyoutBackgroundColour": "#d2d3db"
           },
-        'categoryStyles': {
-          'logic_category': {
-            "colour": "#CC2F00"
+          'categoryStyles': {
+            'logic_category': {
+              "colour": "#CC2F00"
             },
-          'loop_category': {
-            "colour": "#DB6600"
+            'loop_category': {
+              "colour": "#DB6600"
             },
-          'math_category': {
-            "colour": "#E39E00"
+            'math_category': {
+              "colour": "#E39E00"
             },
-          'colour_category': {
-            "colour": "#76B80D"
+            'colour_category': {
+              "colour": "#76B80D"
             },
-          'procedure_category': {
-            "colour": "#007668"
+            'procedure_category': {
+              "colour": "#007668"
             },
-          'misty_category': {
-            "colour": "#EEEEEE"
+            'movement_category': {
+              "colour": "#006486"
             },
-          'movement_category': {
-            "colour": "#006486"
+            'speech_category': {
+              "colour": "#007CB5"
             },
-          'speech_category': {
-            "colour": "#007CB5"
+            'face_category': {
+              "colour": "#465AB2"
             },
-          'face_category': {
-            "colour": "#465AB2"
+            'audio_category': {
+              "colour": "#6D47B1"
             },
-          'audio_category': {
-            "colour": "#6D47B1"
+            'misc_category': {
+              "colour": "#873B9C"
             },
-          'misc_category': {
-            "colour": "#873B9C"
+          },
+          "blockStyles": {
+            'logic_blocks': {
+              'colourPrimary': '#CC2F00'
             },
-        }
+            'loop_blocks': {
+              "colour": "#DB6600"
+            },
+            'loops_blocks': {
+              "colour": "#DB6600"
+            },
+            'math_blocks': {
+              'colourPrimary': '#E39E00'
+            },
+            'colour_blocks': {
+              'colourPrimary': '#76B80D'
+            },
+            'procedure_blocks': {
+              "colour": "#007668"
+            },
+            'text_blocks': {
+              'colourPrimary': '#007CB5'
+            },
+        
+          }
       })});
       const initialBlock = ws.newBlock("Start");
       initialBlock.moveBy(50, 50);
@@ -297,7 +299,7 @@ export default function BlocklyInterface(props) {
           // If block is moved but still in the workspace
           const blockType = getBlockType(e.blockId);
           const moveReason = e.reason;
-          if (typeof moveReason !== "string" &&moveReason[1] === "drag" || moveReason[0] === "drag") {
+          if (moveReason && (typeof moveReason !== "string" && moveReason[1] === "drag" || moveReason[0] === "drag")) {
             //identify drag event
             if(!e.newCoordinate){
               // it means dragged as input of other blocks, handles elsewhere
