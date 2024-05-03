@@ -171,7 +171,7 @@ export default function BlocklyInterface(props) {
           }
           else if (e.type === "click") {
             if(e.targetType === "block"){
-              const blockType = getBlock(e.blockId).type
+              const blockType = getBlockType(e.blockId)
               appendActivity(`click on ${blockType} block`)
             }
             if(e.targetType === "workspace"){
@@ -187,10 +187,10 @@ export default function BlocklyInterface(props) {
               const blockType = getBlockType(e.newElementId)
               appendActivity(`select and highlight ${blockType} `)
             }
-            
+           
           }
           else if(e.type === "drag"){
-            const blockType = getBlockType(e.newElementId)
+            const blockType = getBlockType(e.blockId)
             if(e.isStart){
               appendActivity(`drag block ${blockType} start `)
             }else{
@@ -200,21 +200,7 @@ export default function BlocklyInterface(props) {
           return;
         }
 
-        //record movement event
-        if (e.type === "move") {
-          const blockType = getBlock(e.blockId).type;
-          const moveReason = e.reason;
-          if (moveReason[1] === "drag" || moveReason[0] === "drag") {
-            //identify drag event
-            appendActivity(
-              `drag ${blockType} from coordinate: {x: ${e.oldCoordinate.x}, y: ${e.oldCoordinate.y}} to {x: ${e.newCoordinate.x},y: ${e.newCoordinate.y}}`
-            );
-          }
-          //snap event
-          else {
-            appendActivity(`release ${blockType}`);
-          }
-        }
+      
 
         // Block has been deleted, remove it from store, as well as anything connect to it
         if (e.type === Blockly.Events.BLOCK_DELETE) {
@@ -237,15 +223,19 @@ export default function BlocklyInterface(props) {
             findNext(delArray, currNext);
           }
 
+          const delBlockTypes = delArray.map(id => getBlockType(id));
           removeBlock(delArray);
+
+          appendActivity(`delete blocks: ${delBlockTypes}`)
         }
 
         if (e.type === Blockly.Events.BLOCK_CHANGE) {
-          //console.log(e)
+          const blockType = getBlockType(e.blockId)
           let id = e.blockId;
           let params = getBlock(id);
           params["fields"][e.name] = e.newValue;
           updateBlock(id, params);
+          appendActivity(`${blockType} field change from  to `)
         }
 
         //check for create blocks
@@ -305,6 +295,18 @@ export default function BlocklyInterface(props) {
         //check for move blocks
         if (e.type === "move") {
           // If block is moved but still in the workspace
+          const blockType = getBlockType(e.blockId);
+          const moveReason = e.reason;
+          if (typeof moveReason !== "string" &&moveReason[1] === "drag" || moveReason[0] === "drag") {
+            //identify drag event
+            if(!e.newCoordinate){
+              // it means dragged as input of other blocks, handles elsewhere
+            }
+            else{
+              appendActivity(`drag ${blockType} from coordinate: {x: ${e.oldCoordinate.x}, y: ${e.oldCoordinate.y}} to {x: ${e.newCoordinate.x},y: ${e.newCoordinate.y}}`
+              );
+            }
+          }
 
           //if it is connected as input for other block
           if (e.reason && e.reason.includes("connect")) {
@@ -312,12 +314,15 @@ export default function BlocklyInterface(props) {
             let params = getBlock(e.newParentId);
             const prevBlockType = params.type;
             const currParams = getBlock(e.blockId);
+            
             // case 1: if newInputName is undefined, then it is sequencial relationship
             // newParenName exist, newInputname don't, handle the case that it is connect to parent
             if (!e.newInputName) {
               params["next"] = e.blockId;
+              console.log(params)
               updateBlock(id, params);
               currParams["prev"] = id;
+              console.log(currParams)
               updateBlock(e.blockId, currParams);
               appendActivity(
                 `Placed ${currParams.type} after ${prevBlockType}`
