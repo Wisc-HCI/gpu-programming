@@ -169,6 +169,27 @@ export default function BlocklyInterface(props) {
           if (e.type === "toolbox_item_select") {
             handleSelectToolbox(e.newItem, e.oldItem);
           }
+          if (e.type === "click") {
+            if(e.targetType === "block"){
+              const blockType = getBlock(e.blockId).type
+              appendActivity(`click on ${blockType} block`)
+            }
+            if(e.targetType === "workspace"){
+              appendActivity(`click on workspace`)
+            }
+          }
+          if (e.type === "selected"){
+            if(e.oldElementId){
+              const blockType = getBlock(e.oldElementId).type
+              appendActivity(`unselect and un-highlight ${blockType} `)
+            }
+            if(e.newElementId){
+              const blockType = getBlock(e.newElementId).type
+              appendActivity(`select and highlight ${blockType} `)
+            }
+            
+          }
+
           return;
         }
 
