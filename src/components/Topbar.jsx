@@ -3,7 +3,11 @@ import useStore from "../Store";
 import { activityLog, appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
 import { Box, Button, TextField, Container, Typography, Grid } from "@mui/material";
-import { default as MistyLogo } from './misty.svg';
+
+import { default as MistyLogo } from '../svgs/misty.svg';
+import { default as PluggedIcon } from '../svgs/plugged.svg';
+import { default as UnpluggedIcon } from '../svgs/unplugged.svg';
+
 import workerUrl from '../compile/compile-worker.js?worker&url';
 import FileSaver from 'file-saver';
 
@@ -39,7 +43,6 @@ export default function TopBar(props) {
         console.log(
           `Successfully sent a GET request, the response is: ${json}`
         );
-        alert("Confirmed IP Address: " + inputVal);
         setIsConnected(true);
 
         return fetch(`http://${inputVal}/api/audio/list`);
@@ -158,10 +161,45 @@ export default function TopBar(props) {
           paddingRight: "0px",
         }}
       >
+        {!isConnected && 
+          <div style={{
+            backgroundColor: "#FF7E7E", 
+            width: "45px",
+            height: "45px",
+            borderRadius: "25px",
+            filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+            }}>
+            <img
+              style={{
+                height:"34px",
+                position: "absolute",
+                top: "5px",
+                left: "5px"
+              }}
+              src={UnpluggedIcon} />
+          </div>
+        }
+        {isConnected && 
+          <div style={{
+            backgroundColor: "#A0FF7E", 
+            width: "45px",
+            height: "45px",
+            borderRadius: "25px",
+            filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+          }}>
+            <img 
+              style={{
+                height:"34px",
+                position: "absolute",
+                top: "5px",
+                left: "5px"
+              }}
+              src={PluggedIcon} />
+          </div>
+        }
         <Button style={{ color: "#FFFFFF" }} onClick={handleDownload}>
           Download     
         </Button>
-
         <Button style={{ color: "#FFFFFF" }} onClick={stopCode}>
           Stop
         </Button>

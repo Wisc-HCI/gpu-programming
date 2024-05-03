@@ -6,8 +6,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useShallow } from "zustand/react/shallow";
 
 
-import { Checkbox, Container, FormControlLabel, FormGroup, Stack, Typography } from "@mui/material";
-import { Check, CheckBox } from "@mui/icons-material";
+import { Checkbox, Container, FormControlLabel, FormGroup, Stack } from "@mui/material";
 
 export default function SimulationControls(props) {
     const resetSim = useStore(useShallow((state) => state.resetSim));

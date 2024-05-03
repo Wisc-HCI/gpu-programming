@@ -1,8 +1,8 @@
 import React from "react";
 import { Stack} from "@mui/material";
 
-import { default as UWLogo } from './uw-crest-color-web-digital.svg';
-import { default as PRLLogo } from './people_and_robots_lab.svg';
+import { default as UWLogo } from '../svgs/uw-crest-color-web-digital.svg';
+import { default as PRLLogo } from '../svgs/people_and_robots_lab.svg';
 
 export default function ProgramLogos(props) {
 
