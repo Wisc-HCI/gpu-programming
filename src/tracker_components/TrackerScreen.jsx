@@ -5,15 +5,15 @@ import './TrackerScreen.css';
 
 const TrackerScreen = () => {
 
-  const [allTaskList, setAllTaskList] = useState([]);
+  const [allTaskList, setAllTaskList] = useState(dummyData);
   const [mainTaskList, setMainTaskList] = useState([]);
   const [mainTaskKeys, setMainTaskKeys] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   
-  useEffect(() => {
+  // useEffect(() => {
 
     // object containing all tasks
-    setAllTaskList(dummyData);
+    // setAllTaskList(dummyData);
 
     // filter out just the main tasks
     const mainTasks = Object.keys(allTaskList)
@@ -26,12 +26,19 @@ const TrackerScreen = () => {
       
     setMainTaskList(mainTasks);
     setMainTaskKeys(Object.keys(mainTasks));
+    setActiveTab(0);
 
-  }, [allTaskList]);
+    console.log(mainTasks);
+    // console.log(mainTaskKeys);
+    console.log(mainTaskList[mainTaskKeys[activeTab]].subtasks.map(subtaskName => allTaskList[subtaskName]));
+
+  // }, [allTaskList]);
   
   const handleTabChange = (idx) => {
     setActiveTab(idx);
   };
+
+
 
   return (
     <div>
@@ -50,13 +57,13 @@ const TrackerScreen = () => {
         {(
           <TaskTab
             key={mainTaskKeys[activeTab]}
-            subtaskList={mainTaskList[mainTaskKeys[activeTab]].subtasks.map(subtaskName => allTaskList[subtaskName])}
+            subtaskList={mainTaskList[mainTaskKeys[activeTab]]?.subtasks.map(subtaskName => allTaskList[subtaskName])}
           />
         )}
       </div>
     </div>
   );
 };
-// .subtasks.map(subtaskName => allTaskList[subtaskName])
+
 export default TrackerScreen;
 

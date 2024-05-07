@@ -1,25 +1,33 @@
 .tabs-container {
     display: flex;
-    background-color: black;
+    background-color: #585D92;
     height: 20px;
     align-content: center;
 }
 
 .tab {
-    padding: 3px 20px;
+    padding: 3px 15px;
     cursor: pointer;
-    border-radius: 15px;
-    margin-right: 10px;
+    margin-right: 5px;
     font-size: 10px;
     color: gray;
-    background-color: lightgray;
-    justify-content: center;
-    align-self: center;
+    background-color: #E4E5F1;
+    align-self: flex-end;
+    margin-top: 10px;
+    position: relative;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; 
 }
 
 .tab.active {
     background-color: white;
     color: black;
+}
+
+.tab:first-child {
+    margin-left: 10px;
 }
 
 .task-tab-container {
