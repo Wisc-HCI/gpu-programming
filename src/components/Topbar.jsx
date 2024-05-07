@@ -1,32 +1,24 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import useStore from "../Store";
 import { activityLog, appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
+import { Box, Button, TextField, Container, Typography, Grid } from "@mui/material";
 
-import React from "react";
-import { Box, Button, TextField, Container, Typography } from "@mui/material";
-// import useCompile, { delayJS } from "../compile/useCompile";
-import { styled } from '@mui/material/styles';
+import { default as MistyLogo } from '../svgs/misty.svg';
+import { default as PluggedIcon } from '../svgs/plugged.svg';
+import { default as UnpluggedIcon } from '../svgs/unplugged.svg';
 
-import workerUrl from './worker.js?worker&url'
+import FileSaver from 'file-saver';
+import DropShadowButton from "./DropShadowButton";
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
   const setIp = useStore(useShallow((state) => state.setIp));
-  const ip = useStore(useShallow((state) => state.ip));
-  const getBlocks = useStore(useShallow((state) => state.getBlocks));
-  const getBlocksByType = useStore(
-    useShallow((state) => state.getBlocksByType)
-  );
-  const start = getBlocksByType("Start");
-  const clock = useStore(useShallow((state) => state.clock));
   const setImageList = useStore(useShallow((state) => state.setImageList));
   const setAudioList = useStore(useShallow((state) => state.setAudioList));
-  const mistyImageList = useStore(useShallow((state) => state.mistyImageList));
-  const mistyAudioList = useStore(useShallow((state) => state.mistyAudioList));
-  const lightMode = useStore(useShallow((state) => state.lightMode));
-  const toggleTheme = useStore(useShallow((state) => state.toggleTheme));
-  const workerRef = useRef(null);
+  const setIsConnected = useStore(useShallow((state) => state.setIsConnected));
+  const isConnected = useStore(useShallow((state) => state.isConnected));
+  const disconnect = useStore(useShallow((state) => state.disconnect));
 
   const confirmIpAddress = () => {
     setIp(inputVal);
@@ -44,7 +36,7 @@ export default function TopBar(props) {
         console.log(
           `Successfully sent a GET request, the response is: ${json}`
         );
-        alert("Confirmed IP Address: " + inputVal);
+        setIsConnected(true);
 
         return fetch(`http://${inputVal}/api/audio/list`);
       })
@@ -79,53 +71,38 @@ export default function TopBar(props) {
   };
 
   const topbarStyle = {
-    backgroundColor: "#333", // Change the background color as needed
+    backgroundColor: "#585D92", // Change the background color as needed
     color: "#FFFFFF", // Change the text color as needed
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
+    filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+    zIndex: 101,
+    position: "relative"
   };
 
+  const handleDownload = () =>{
+    
+    var blob = new Blob([activityLog], {type: "text/plain;charset=utf-8"});
+    FileSaver.saveAs(blob, "activity log.txt");
+  }
 
-  const runCode = async () => {
-    clock.reset_elapsed();
-
-    if (workerRef.current) {
-      workerRef.current.terminate();
-      workerRef.current = null;
-    }
-    const js = `import ${JSON.stringify(new URL(workerUrl, import.meta.url))}`
-    const blob = new Blob([js], { type: "application/javascript" })
-    const workerURL = URL.createObjectURL(blob)
-    let myWorker = new Worker(workerURL,  {type:"module"});
-    myWorker.onmessage = function(e) {
-      console.log('Message received from worker ' + e.data);
-    }
-    myWorker.onerror = function(e) {
-      URL.revokeObjectURL(workerURL);
-    }
-    myWorker.postMessage({blocks: getBlocks(), mistyAudioList: mistyAudioList, mistyImageList: mistyImageList, ip: ip});
-    workerRef.current = myWorker;
-
-    appendActivity("Click Run Code button");
-  };
-
-  const stopCode = () => {
-    if (workerRef.current) {
-      workerRef.current.terminate();
-      workerRef.current = null; // Clear the ref post termination
-    }
-    appendActivity("Click Stop Code button");
-  };
 
   return (
     <Box style={topbarStyle}>
-      <Container>
-        <Typography variant="h5">
-          University of Wisconsin - Grandparents University Programming
+      <Grid
+        container
+        direction="row"
+        justifyContent={"left"}
+        alignItems={"center"}
+        style={{paddingLeft: "20px"}}
+      >
+        <img style={{height:"35px", paddingRight: "10px"}} src={MistyLogo} />
+        <Typography display={"inline"} variant="h5">
+          Robo-Blocks
         </Typography>
-      </Container>
+      </Grid>
 
       <Container
         style={{
@@ -139,8 +116,44 @@ export default function TopBar(props) {
           paddingRight: "0px",
         }}
       >
-        <Button style={{ color: "#FFFFFF" }} onClick={stopCode}>
-          Stop
+        {!isConnected && 
+          <div style={{
+            backgroundColor: "#FF7E7E", 
+            width: "45px",
+            height: "45px",
+            borderRadius: "25px",
+            filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+            }}>
+            <img
+              style={{
+                height:"34px",
+                position: "absolute",
+                top: "5px",
+                left: "5px"
+              }}
+              src={UnpluggedIcon} />
+          </div>
+        }
+        {isConnected && 
+          <div style={{
+            backgroundColor: "#A0FF7E", 
+            width: "45px",
+            height: "45px",
+            borderRadius: "25px",
+            filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+          }}>
+            <img 
+              style={{
+                height:"34px",
+                position: "absolute",
+                top: "5px",
+                left: "5px"
+              }}
+              src={PluggedIcon} />
+          </div>
+        }
+        <Button style={{ color: "#FFFFFF" }} onClick={handleDownload}>
+          Download     
         </Button>
         <TextField
           id="robotIpAddress"
@@ -150,12 +163,12 @@ export default function TopBar(props) {
           defaultValue=""
           onChange={(e) => setInputVal(e.target.value)}
         />
-        <Button style={{ color: "#FFFFFF" }} onClick={confirmIpAddress}>
-          Confirm
-        </Button>
-        <Button style={{ color: "#FFFFFF" }} onClick={runCode} id="runButton">
-          Run
-        </Button>
+        {!isConnected && 
+          <DropShadowButton text={"Connect"} clickFunction={confirmIpAddress}/>
+        }
+        {isConnected &&
+          <DropShadowButton text={"Disconnect"} clickFunction={disconnect}/>
+        }
       </Container>
     </Box>
   );

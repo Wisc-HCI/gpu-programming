@@ -18,6 +18,8 @@ const useStore = create((set,get) => ({
   widgets:{},
   counter: 0,
   lightMode: true,
+  runOnRobot: false,
+  isConnected: false,
   mistyAudioList: [],
   mistyImageList: [],
   clock: new Timer(),
@@ -34,11 +36,19 @@ const useStore = create((set,get) => ({
   setAudioList: (list) => set({
     mistyAudioList: list
   }),
+  setIsConnected: (isConnected) => set({ isConnected: isConnected}),
   loadFromURDF: (urdfFile) => set({
     tfs: {...parseUrdfForJoints(urdfFile)},
     items: {...parseUrdfForLinks(urdfFile)}
   }),
   setIp: (ip) => set({ ip }),
+  disconnect: () => set({
+    ip: '',
+    runOnRobot: false,
+    isConnected: false,
+    mistyAudioList: [],
+    mistyImageList: []
+  }),
   addBlock: (id, json) => set((state) => ({ 
     blocks: { ...state.blocks, [id]: json}
   })),
@@ -79,6 +89,9 @@ const useStore = create((set,get) => ({
     const blocks = get().blocks;
     return Object.values(blocks).filter(block => block.type === type)[0];
   },
+  getBlockType:(id)=>{
+    const blocks = get().blocks;
+        return blocks[id]?.type || "Unknown block type"; },
   onPointerMissed: () => console.log("Missed Click"),
   onPointerOver: () => {},
   onPointerOut: () => {},
@@ -91,6 +104,11 @@ const useStore = create((set,get) => ({
       endingTfs: {
         ...allTfs,
       }
+    })
+  },
+  toggleRunRobot: (value) => {
+    set({
+      runOnRobot: value
     })
   },
   animateHead: (roll, pitch, yaw, time) => {

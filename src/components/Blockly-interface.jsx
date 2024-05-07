@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import * as Blockly from "blockly";
+import { appendActivity } from "./ActivityTracker";
 
 // Import custom blocks and generators
-import { blocks } from "../blocks/text";
 import { forBlock } from "../generators/javascript";
 import { javascriptGenerator } from "blockly/javascript";
 import { save, load } from "../serialization";
 import { toolbox } from "../toolbox";
-import useCompile from "../compile/useCompile";
 import "../index.css";
 import useStore from "../Store";
 
@@ -28,7 +27,7 @@ export default function BlocklyInterface(props) {
   const removeBlock = useStore((state) => state.removeBlock);
   const getBlock = useStore((state) => state.getBlock);
   const updateBlock = useStore((state) => state.updateBlock);
-  const getBlocksByType = useStore((state) => state.getBlocksByType);
+  const getBlockType = useStore((state) => state.getBlockType);
   const ip = useStore((state) => state.ip);
   const findNext = (arr, blockId) => {
     arr.push(blockId);
@@ -39,25 +38,15 @@ export default function BlocklyInterface(props) {
     }
   };
 
-  const sendPostRequestToRobot = (endpoint, payload) => {
-    fetch(`http://${ip}/api/${endpoint}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        console.log(
-          `successfully send a post request, the response is: ${json}`
-        );
-      });
+  const handleSelectToolbox = (newItem, oldItem) => {
+    if (!oldItem) {
+      appendActivity(`select toolbox category: ${newItem}`);
+    } else if (!newItem) {
+      appendActivity(`unselect toolbox category: ${oldItem}`);
+    } else {
+      appendActivity(`switch toolbox category from ${oldItem} to ${newItem}`);
+    }
   };
-
-  useEffect(() => {
-    console.log(blocks);
-  }, [blocks]);
 
   // Register the blocks and generator with Blockly
   Blockly.common.defineBlocks(blocks);
@@ -69,43 +58,77 @@ export default function BlocklyInterface(props) {
       var blocklyDiv = document.getElementById("blocklyDiv");
       let startId = "";
 
-      
-      const ws = Blockly.inject(blocklyDiv, { toolbox:toolbox, theme: Blockly.Theme.defineTheme('gpuTheme', {
-        'categoryStyles': {
-          'logic_category': {
-            "colour": "#CC2F00"
+      // Blockly.Blocks.variables.HUE = 330; 
+      const ws = Blockly.inject(blocklyDiv, {
+        toolbox:toolbox, 
+        grid:
+        {
+          spacing: 20,
+          length: 3,
+         colour: '#ccc',
+         snap: true
+        },
+        theme: Blockly.Theme.defineTheme('gpuTheme', {
+          "componentStyles": {
+            "toolboxBackgroundColour": "#E4E5F1",
+            "flyoutBackgroundColour": "#d2d3db"
           },
-          'loop_category': {
-            "colour": "#DB6600"
+          'categoryStyles': {
+            'logic_category': {
+              "colour": "#CC2F00"
+            },
+            'loop_category': {
+              "colour": "#DB6600"
+            },
+            'math_category': {
+              "colour": "#E39E00"
+            },
+            'colour_category': {
+              "colour": "#76B80D"
+            },
+            'procedure_category': {
+              "colour": "#007668"
+            },
+            'movement_category': {
+              "colour": "#006486"
+            },
+            'speech_category': {
+              "colour": "#007CB5"
+            },
+            'face_category': {
+              "colour": "#465AB2"
+            },
+            'audio_category': {
+              "colour": "#6D47B1"
+            },
+            'misc_category': {
+              "colour": "#873B9C"
+            },
           },
-          'math_category': {
-            "colour": "#E39E00"
-          },
-          'colour_category': {
-            "colour": "#76B80D"
-          },
-          'procedure_category': {
-            "colour": "#007668"
-          },
-          'misty_category': {
-            "colour": "#EEEEEE"
-          },
-          'movement_category': {
-            "colour": "#006486"
-          },
-          'speech_category': {
-            "colour": "#007CB5"
-          },
-          'face_category': {
-            "colour": "#465AB2"
-          },
-          'audio_category': {
-            "colour": "#6D47B1"
-          },
-          'misc_category': {
-            "colour": "#873B9C"
-          },
-        }
+          "blockStyles": {
+            'logic_blocks': {
+              'colourPrimary': '#CC2F00'
+            },
+            'loop_blocks': {
+              "colour": "#DB6600"
+            },
+            'loops_blocks': {
+              "colour": "#DB6600"
+            },
+            'math_blocks': {
+              'colourPrimary': '#E39E00'
+            },
+            'colour_blocks': {
+              'colourPrimary': '#76B80D'
+            },
+            'procedure_blocks': {
+              "colour": "#007668"
+            },
+            'text_blocks': {
+              'colourPrimary': '#007CB5'
+            },
+        
+          }
       })});
       const initialBlock = ws.newBlock("Start");
       initialBlock.moveBy(50, 50);
@@ -143,7 +166,43 @@ export default function BlocklyInterface(props) {
         // UI events are things like scrolling, zooming, etc.
         // No need to save after one of these.
         console.log(e);
-        if (e.isUiEvent) return;
+        if (e.isUiEvent) {
+          // record user activity
+          if (e.type === "toolbox_item_select") {
+            handleSelectToolbox(e.newItem, e.oldItem);
+          }
+          else if (e.type === "click") {
+            if(e.targetType === "block"){
+              const blockType = getBlockType(e.blockId)
+              appendActivity(`click on ${blockType} block`)
+            }
+            if(e.targetType === "workspace"){
+              appendActivity(`click on workspace`)
+            }
+          }
+          else if (e.type === "selected"){
+            if(e.oldElementId){
+              const blockType = getBlockType(e.oldElementId)
+              appendActivity(`unselect and un-highlight ${blockType} `)
+            }
+            if(e.newElementId){
+              const blockType = getBlockType(e.newElementId)
+              appendActivity(`select and highlight ${blockType} `)
+            }
+           
+          }
+          else if(e.type === "drag"){
+            const blockType = getBlockType(e.blockId)
+            if(e.isStart){
+              appendActivity(`drag block ${blockType} start `)
+            }else{
+              appendActivity(`drag block ${blockType} end `)
+            }
+          }
+          return;
+        }
+
+      
 
         // Block has been deleted, remove it from store, as well as anything connect to it
         if (e.type === Blockly.Events.BLOCK_DELETE) {
@@ -166,15 +225,19 @@ export default function BlocklyInterface(props) {
             findNext(delArray, currNext);
           }
 
+          const delBlockTypes = delArray.map(id => getBlockType(id));
           removeBlock(delArray);
+
+          appendActivity(`block ${currID} is deleted, total delete blocks: ${delBlockTypes}`)
         }
 
         if (e.type === Blockly.Events.BLOCK_CHANGE) {
-          //console.log(e)
+          const blockType = getBlockType(e.blockId)
           let id = e.blockId;
           let params = getBlock(id);
           params["fields"][e.name] = e.newValue;
           updateBlock(id, params);
+          appendActivity(`field ${e.name} of ${blockType} change from ${e.oldValue} to ${e.newValue} `)
         }
 
         //check for create blocks
@@ -221,32 +284,52 @@ export default function BlocklyInterface(props) {
                   params.shadows[key] = value.shadow.id;
                 }
                 addBlock(value.shadow.id, shadowParams);
+                appendActivity(
+                  `create a instance of type ${shadowParams.type}`
+                );
               }
             }
           }
           addBlock(e.json.id, params);
+          appendActivity(`create a instance of type ${params.type}`);
         }
 
         //check for move blocks
         if (e.type === "move") {
           // If block is moved but still in the workspace
+          const blockType = getBlockType(e.blockId);
+          const moveReason = e.reason;
+          if (moveReason && (typeof moveReason !== "string" && moveReason[1] === "drag" || moveReason[0] === "drag")) {
+            //identify drag event
+            if(!e.newCoordinate){
+              // it means dragged as input of other blocks, handles elsewhere
+            }
+            else{
+              appendActivity(`drag ${blockType} from coordinate: {x: ${e.oldCoordinate.x}, y: ${e.oldCoordinate.y}} to {x: ${e.newCoordinate.x},y: ${e.newCoordinate.y}}`
+              );
+            }
+          }
 
           //if it is connected as input for other block
           if (e.reason && e.reason.includes("connect")) {
             let id = e.newParentId;
             let params = getBlock(e.newParentId);
-
+            const prevBlockType = params.type;
+            const currParams = getBlock(e.blockId);
+            
             // case 1: if newInputName is undefined, then it is sequencial relationship
             // newParenName exist, newInputname don't, handle the case that it is connect to parent
             if (!e.newInputName) {
               params["next"] = e.blockId;
               updateBlock(id, params);
-              params = getBlock(e.blockId);
-              params["prev"] = id;
-              updateBlock(e.blockId, params);
+              currParams["prev"] = id;
+              updateBlock(e.blockId, currParams);
+              appendActivity(
+                `Placed ${currParams.type} after ${prevBlockType}`
+              );
             }
 
-            // case2: new input is the children, newInputname and newParenName both exist
+            // case2: new input, newInputname and newParenName both exist
             else {
               if (!("inputs" in params)) {
                 params.inputs = {};
@@ -256,6 +339,9 @@ export default function BlocklyInterface(props) {
               }
 
               updateBlock(id, params);
+              appendActivity(
+                `connect ${currParams.type}  as input of ${prevBlockType}`
+              );
             }
           }
 
@@ -263,13 +349,15 @@ export default function BlocklyInterface(props) {
           if (e.reason && e.reason.includes("disconnect")) {
             let id = e.oldParentId;
             let params = getBlock(e.oldParentId);
+            const nextBlockType = params.type;
+            const currParams = getBlock(e.blockId);
 
             if (!e.oldInputName) {
               params["next"] = "";
               updateBlock(id, params);
-              params = getBlock(e.blockId);
-              params["prev"] = "";
-              updateBlock(e.blockId, params);
+              currParams["prev"] = "";
+              updateBlock(e.blockId, currParams);
+              appendActivity(`disconnect ${nextBlockType} from ${params.type}`);
             } else {
               // there is an old input name
               params.inputs[e.oldInputName] = "";
@@ -278,6 +366,10 @@ export default function BlocklyInterface(props) {
                 let shadowId = params.shadows[e.oldInputName];
                 params.inputs[e.oldInputName] = shadowId;
               }
+              updateBlock(id, params);
+              appendActivity(
+                `remove ${nextBlockType} from input of ${params.type}`
+              );
             }
 
             //TODO: when a block is removed, check if there is a shadow block which has corresponding inputname and parent id
