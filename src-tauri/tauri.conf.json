@@ -3,7 +3,7 @@
   "build": {
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:5173",
+    "devPath": "http://localhost:5173/gpu-programming/",
     "distDir": "../dist"
   },
   "package": {
@@ -12,7 +12,7 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": true
     },
     "bundle": {
       "active": true,
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.wisc.hci.gpu",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -48,7 +48,8 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": null,
+      "dangerousUseHttpScheme": true
     },
     "updater": {
       "active": false
@@ -56,10 +57,11 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 720,
         "resizable": true,
-        "title": "GPU - Misty Programming",
-        "width": 800
+        "title": "Robo-Block - Misty Programming",
+        "width": 1280,
+        "fileDropEnabled":false
       }
     ]
   }

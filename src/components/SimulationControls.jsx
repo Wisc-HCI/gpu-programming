@@ -124,7 +124,7 @@ export default function SimulationControls(props) {
                 paddingRight: "0px"
             }}>
                 <FormGroup>
-                    <FormControlLabel control={<Checkbox onChange={(e) => toggleRunRobot(e.target.checked)}/>} label="Robot" />
+                    <FormControlLabel control={<Checkbox defaultChecked={runOnRobot} onChange={(e) => toggleRunRobot(e.target.checked)}/>} label="Robot" />
                 </FormGroup>
             </Container>}
         </Stack>

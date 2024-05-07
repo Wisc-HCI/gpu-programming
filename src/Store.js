@@ -18,7 +18,7 @@ const useStore = create((set,get) => ({
   widgets:{},
   counter: 0,
   lightMode: true,
-  runOnRobot: false,
+  runOnRobot: true,
   isConnected: false,
   mistyAudioList: [],
   mistyImageList: [],
@@ -27,6 +27,9 @@ const useStore = create((set,get) => ({
   startingTfs: JSON.parse(JSON.stringify(starting_tfs)), // Used to start the animation from the center everytime
   endingTfs: JSON.parse(JSON.stringify(starting_tfs)), 
   items:{...starting_items},
+  activeModal: null,
+  setActiveModal: (modal) => set(_ => ({ activeModal: modal })),
+  closeModal: () => set(_ => ({ activeModal: null })),
   toggleTheme: (toggle) => set({
     lightMode: toggle
   }),
@@ -44,7 +47,6 @@ const useStore = create((set,get) => ({
   setIp: (ip) => set({ ip }),
   disconnect: () => set({
     ip: '',
-    runOnRobot: false,
     isConnected: false,
     mistyAudioList: [],
     mistyImageList: []

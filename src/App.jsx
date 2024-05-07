@@ -24,6 +24,7 @@ import 'react-reflex/styles.css';
 import { Box } from '@mui/material';
 import Simulator from './components/Simulator.jsx';
 import ProgramLogos from './components/ProgramLogos.jsx';
+import { SettingsModal } from './components/Settings.jsx';
 
 const Item = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -36,7 +37,7 @@ Object.assign(javascriptGenerator.forBlock, forBlock);
 function App() {
 
   return (
-    <Box height={"94vh"} padding={0}>
+    <Box width={"100vw"} height={"94vh"} padding={0}>
       <TopBar/>
       <ProgramLogos />
       <ReflexContainer orientation='vertical' 
@@ -67,13 +68,14 @@ function App() {
             
             <ReflexElement>
               <Item>
-                <TrackerScreen/>
+                {/* <TrackerScreen/> */}
               </Item>
             </ReflexElement>
           
           </ReflexContainer>
         </ReflexElement>
       </ReflexContainer>
+      <SettingsModal />
     </Box>
   );
 }

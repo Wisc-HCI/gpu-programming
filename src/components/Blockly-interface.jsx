@@ -12,6 +12,7 @@ import useStore from "../Store";
 
 Blockly.Blocks["Start"] = {
   init: function () {
+    this.setStyle('hat_blocks')
     this.appendDummyInput().appendField("Program starts here");
     this.setColour(345);
     this.setTooltip("This is the starting block");
@@ -127,7 +128,9 @@ export default function BlocklyInterface(props) {
             'text_blocks': {
               'colourPrimary': '#007CB5'
             },
-        
+            'hat_blocks': {
+              'hat': 'cap',
+            }
           }
       })});
       const initialBlock = ws.newBlock("Start");

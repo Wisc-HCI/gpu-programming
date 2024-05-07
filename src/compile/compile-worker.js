@@ -411,7 +411,7 @@ self.onmessage = function (e) {
           TimeMS: time,
         };
         sendPostRequestToRobot(endpoint, payload);
-        delayJS(time + 500);
+        delayJS(time);
         return;
 
       case type === "DisplayImage":
@@ -450,7 +450,6 @@ self.onmessage = function (e) {
         if (!params.inputs || !params.inputs.FIELD_PlayAudio_Filename) {
           throw new Error("err: PlayAudio is not complete!");
           //appendActivity("Try running with incomplete PlayAudio");
-          return;
         }
         var endpoint = "audio/play";
         var exprBlock = getBlock(params.inputs.FIELD_PlayAudio_Filename);
@@ -459,6 +458,7 @@ self.onmessage = function (e) {
           FileName: filename,
         };
         sendPostRequestToRobot(endpoint, payload);
+        delayJS(500);
         return;
 
       case type === "DisplayAnimation":
@@ -484,6 +484,7 @@ self.onmessage = function (e) {
         };
         console.log(payload);
         sendPostRequestToRobot(endpoint, payload);
+        delayJS(500);
         return;
 
       case type === "TurnOnFlashlight":
@@ -492,6 +493,7 @@ self.onmessage = function (e) {
           On: true,
         };
         sendPostRequestToRobot(endpoint, payload);
+        delayJS(500);
         return;
 
       case type === "TurnOffFlashlight":
@@ -500,6 +502,7 @@ self.onmessage = function (e) {
           On: false,
         };
         sendPostRequestToRobot(endpoint, payload);
+        delayJS(500);
         return;
 
       case type === "WaitForSeconds":
@@ -520,6 +523,7 @@ self.onmessage = function (e) {
           Units: "Degrees",
         };
         sendPostRequestToRobot(endpoint, payload);
+        // TODO adjust delay based on return from animation
         delayJS(1000);
         return;
 
@@ -535,6 +539,7 @@ self.onmessage = function (e) {
         };
 
         sendPostRequestToRobot(endpoint, payload);
+        // TODO adjust delay based on return from animation
         delayJS(1000);
         return;
 
@@ -559,8 +564,8 @@ self.onmessage = function (e) {
           Units: "Degrees",
         };
         var endpoint = "arms/set";
-        //console.log(payload)
         sendPostRequestToRobot(endpoint, payload);
+        // TODO adjust delay based on return from animation
         delayJS(1000);
         return;
 
@@ -576,6 +581,7 @@ self.onmessage = function (e) {
           Units: "degrees",
         };
         sendPostRequestToRobot(endpoint, payload);
+        // TODO adjust delay based on return from animation
         delayJS(500);
 
         return;
@@ -595,7 +601,7 @@ self.onmessage = function (e) {
           Units: "degrees",
         };
         sendPostRequestToRobot(endpoint, payload);
-        delayJS(500);
+        delayJS(time);
         return;
 
       case type === "DriveTime":
@@ -610,7 +616,7 @@ self.onmessage = function (e) {
           TimeMs: time,
         };
         sendPostRequestToRobot(endpoint, payload);
-        delayJS(time + 500);
+        delayJS(time);
         return;
 
       case type === "DriveTime2":
@@ -628,7 +634,7 @@ self.onmessage = function (e) {
           TimeMs: time,
         };
         sendPostRequestToRobot(endpoint, payload);
-        delayJS(time + 500);
+        delayJS(time);
         return;
 
       case type === "Turn":
@@ -645,7 +651,7 @@ self.onmessage = function (e) {
           Degree: degree,
         };
         sendPostRequestToRobot(endpoint, payload);
-        delayJS(time + 500);
+        delayJS(time);
         return;
 
       case type === "Turn2":
@@ -664,7 +670,7 @@ self.onmessage = function (e) {
         };
         var endpoint = "drive/time";
         sendPostRequestToRobot(endpoint, payload);
-        delayJS(time + 500);
+        delayJS(time);
         return;
 
       case type == "Speak":

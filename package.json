@@ -43,7 +43,7 @@
     "vite-plugin-comlink": "^4.0.3"
   },
   "scripts": {
-    "tauri": "tauri dev",
+    "tauri": "tauri",
     "dev": "vite",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",

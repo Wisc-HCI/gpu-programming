@@ -7,7 +7,7 @@ export default function DropShadowButton({text, clickFunction}) {
         <Button
             onClick={clickFunction}
             style={{
-                margin: "10px",
+                margin: "5px",
                 color: "black",
                 backgroundColor: "#FAFAFA",
                 borderRadius: "10px",

@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import useStore from "../Store";
 import { activityLog, appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
-import { Box, Button, TextField, Container, Typography, Grid } from "@mui/material";
+import { Box, Button, TextField, Container, Typography, Grid, IconButton } from "@mui/material";
 
 import { default as MistyLogo } from '../svgs/misty.svg';
 import { default as PluggedIcon } from '../svgs/plugged.svg';
 import { default as UnpluggedIcon } from '../svgs/unplugged.svg';
 
-import FileSaver from 'file-saver';
 import DropShadowButton from "./DropShadowButton";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
@@ -19,6 +19,7 @@ export default function TopBar(props) {
   const setIsConnected = useStore(useShallow((state) => state.setIsConnected));
   const isConnected = useStore(useShallow((state) => state.isConnected));
   const disconnect = useStore(useShallow((state) => state.disconnect));
+  const setActiveModal = useStore(state => state.setActiveModal);
 
   const confirmIpAddress = () => {
     setIp(inputVal);
@@ -82,11 +83,6 @@ export default function TopBar(props) {
     position: "relative"
   };
 
-  const handleDownload = () =>{
-    
-    var blob = new Blob([activityLog], {type: "text/plain;charset=utf-8"});
-    FileSaver.saveAs(blob, "activity log.txt");
-  }
 
 
   return (
@@ -122,6 +118,7 @@ export default function TopBar(props) {
             width: "45px",
             height: "45px",
             borderRadius: "25px",
+            marginRight: "10px",
             filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
             }}>
             <img
@@ -140,6 +137,7 @@ export default function TopBar(props) {
             width: "45px",
             height: "45px",
             borderRadius: "25px",
+            marginRight: "10px",
             filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
           }}>
             <img 
@@ -152,14 +150,17 @@ export default function TopBar(props) {
               src={PluggedIcon} />
           </div>
         }
-        <Button style={{ color: "#FFFFFF" }} onClick={handleDownload}>
-          Download     
-        </Button>
         <TextField
           id="robotIpAddress"
+          disabled={isConnected}
           label="IP"
           variant="filled"
-          style={{ backgroundColor: "#FFFFFF50", borderRadius: "5px" }}
+          style={{ 
+            backgroundColor: "#FFFFFF50", 
+            borderRadius: "5px",
+            filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+            marginRight: "5px",
+          }}
           defaultValue=""
           onChange={(e) => setInputVal(e.target.value)}
         />
@@ -169,6 +170,18 @@ export default function TopBar(props) {
         {isConnected &&
           <DropShadowButton text={"Disconnect"} clickFunction={disconnect}/>
         }
+        <IconButton 
+            style={{
+                margin: "5px",
+                marginRight: "10px",
+                color: "black",
+                backgroundColor: "#FAFAFA",
+                borderRadius: "10px",
+                filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+            }}
+            onClick={() => {setActiveModal(true) } }>
+          <SettingsIcon/>
+        </IconButton>
       </Container>
     </Box>
   );
