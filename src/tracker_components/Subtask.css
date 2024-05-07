@@ -1,0 +1,17 @@
+.subtask-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .subtask-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .subtask-subtext {
+    font-size: 14px;
+    color: #666;
+  }

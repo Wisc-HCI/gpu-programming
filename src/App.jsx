@@ -10,6 +10,7 @@ import './index.css';
 import TopBar from './components/Topbar';
 import BlocklyInterface from './components/Blockly-interface';
 import urdf from "./Misty-Robot/misty.xacro?raw";
+import TrackerScreen from './tracker_components/TrackerScreen.jsx';
 
 import { styled } from '@mui/material/styles';
 
@@ -64,7 +65,7 @@ function App() {
             
             <ReflexElement>
               <Item>
-                <p>All the data goes here</p>
+                <TrackerScreen/>
               </Item>
             </ReflexElement>
           

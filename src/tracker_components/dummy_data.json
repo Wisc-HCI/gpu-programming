@@ -1,0 +1,34 @@
+{
+    "task1": {
+        "name": "Hello World!",
+        "order": 1,
+        "type": "task",
+        "subtasks": ["subtask1a", "subtask1b"]
+    },
+    "subtask1a": {
+        "type": "subtask",
+        "title": "Find the custom speak block",
+        "subtext": "Locate the custom speak block under the 'Speech' section"
+    },
+    "subtask1b": {
+        "type": "subtask",
+        "title": "Find the text variable block",
+        "subtext": "Locate the text variable block under the 'Speech' section"
+    },
+    "task2": {
+        "name": "Flying Colors",
+        "order": 2,
+        "type": "task",
+        "subtasks": ["subtask2a", "subtask2b"]
+    },
+    "subtask2a": {
+        "type": "subtask",
+        "title": "Find the changeLED block",
+        "subtext": "Locate the changeLED block under the 'Misc' section"
+    },
+    "subtask2b": {
+        "type": "subtask",
+        "title": "Find the color block",
+        "subtext": "Locate the custom color block under the 'Color' section and choose any color"
+    }
+}

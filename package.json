@@ -23,6 +23,7 @@
     "react-dom": "^18.2.0",
     "react-reflex": "^4.2.5",
     "react-scripts": "^5.0.1",
+    "react-tabs": "^6.0.2",
     "react-xml-parser": "^1.1.8",
     "robot-scene": "github:Wisc-HCI/robot-scene#v0.9.10",
     "vite": "^5.2.6",

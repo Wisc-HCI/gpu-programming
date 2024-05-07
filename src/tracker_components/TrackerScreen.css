@@ -1,0 +1,28 @@
+.tabs-container {
+    display: flex;
+    background-color: black;
+    height: 20px;
+    align-content: center;
+}
+
+.tab {
+    padding: 3px 20px;
+    cursor: pointer;
+    border-radius: 15px;
+    margin-right: 10px;
+    font-size: 10px;
+    color: gray;
+    background-color: lightgray;
+    justify-content: center;
+    align-self: center;
+}
+
+.tab.active {
+    background-color: white;
+    color: black;
+}
+
+.task-tab-container {
+    margin-top: 20px;
+    background-color: white;
+}
