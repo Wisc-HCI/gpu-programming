@@ -111,10 +111,7 @@ export default function BlocklyInterface(props) {
               'colourPrimary': '#CC2F00'
             },
             'loop_blocks': {
-              "colour": "#DB6600"
-            },
-            'loops_blocks': {
-              "colour": "#DB6600"
+              "colourPrimary": "#DB6600"
             },
             'math_blocks': {
               'colourPrimary': '#E39E00'
@@ -123,7 +120,7 @@ export default function BlocklyInterface(props) {
               'colourPrimary': '#76B80D'
             },
             'procedure_blocks': {
-              "colour": "#007668"
+              "colourPrimary": "#007668"
             },
             'text_blocks': {
               'colourPrimary': '#007CB5'

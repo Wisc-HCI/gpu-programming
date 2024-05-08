@@ -70,10 +70,6 @@ export const toolbox = {
               },
             },
           },
-          {
-            'kind': 'block',
-            'type': 'Test',
-          },
           
         ],
       },
@@ -135,9 +131,71 @@ export const toolbox = {
       },
       {
         'kind': 'category',
-        'name': 'Color',
-        'categorystyle': 'colour_category',
-        'contents': [
+        'name': 'Functions',
+        'categorystyle': 'procedure_category',
+        'custom': 'PROCEDURE',
+      },
+      {
+        'kind': 'sep',
+        'gap': '8'
+      },
+      {
+        "kind": "category",
+        "name": "Movement",
+        'categorystyle': 'movement_category',
+        "contents": [
+          {
+            'kind': 'block',
+            'type': 'DriveTime',
+          },
+          {
+            'kind': 'block',
+            'type': 'DriveTime2',
+          },
+          {
+            'kind': 'block',
+            'type': 'Turn', 
+          },   
+          {
+            'kind': 'block',
+            'type': 'Turn2',
+          },
+          {
+            'kind': 'block',
+            'type': 'MoveHead',
+          },
+          {
+            'kind': 'block',
+            'type': 'MoveHead3',
+          },
+          {
+            'kind': 'block',
+            'type': 'MoveArm',
+          },
+          {
+            'kind': 'block',
+            'type': 'MoveArm2',
+          },
+          {
+            'kind': 'block',
+            'type': 'MoveArms2',
+          },
+          
+        ]
+      },
+      {
+        "kind": "category",
+        "name": "Light",
+        'categorystyle': 'light_category',
+        "contents": [
+          {
+            'kind': 'block',
+            'type': 'ChangeLED',
+          },
+          {
+            'kind': 'block',
+            'type': 'TransitionLED',
+          },
           {
             'kind': 'block',
             'type': 'colour_picker',
@@ -206,64 +264,14 @@ export const toolbox = {
               },
             },
           },
-        ],
-      },
-      {
-        'kind': 'category',
-        'name': 'Functions',
-        'categorystyle': 'procedure_category',
-        'custom': 'PROCEDURE',
-      },
-      {
-        'kind': 'sep',
-        'gap': '8'
-      },
-      {
-        "kind": "label",
-        "text": "Misty Functions"
-      },
-      {
-        "kind": "category",
-        "name": "Movement",
-        'categorystyle': 'movement_category',
-        "contents": [
           {
             'kind': 'block',
-            'type': 'DriveTime',
+            'type': 'TurnOnFlashlight',
           },
           {
             'kind': 'block',
-            'type': 'DriveTime2',
+            'type': 'TurnOffFlashlight',
           },
-          {
-            'kind': 'block',
-            'type': 'Turn', 
-          },   
-          {
-            'kind': 'block',
-            'type': 'Turn2',
-          },
-          {
-            'kind': 'block',
-            'type': 'MoveHead',
-          },
-          {
-            'kind': 'block',
-            'type': 'MoveHead3',
-          },
-          {
-            'kind': 'block',
-            'type': 'MoveArm',
-          },
-          {
-            'kind': 'block',
-            'type': 'MoveArm2',
-          },
-          {
-            'kind': 'block',
-            'type': 'MoveArms2',
-          },
-          
         ]
       },
       {
@@ -290,6 +298,10 @@ export const toolbox = {
         "name": "Face",
         'categorystyle': 'face_category',
         "contents": [
+          {
+            'kind': 'block',
+            'type': 'DisplayImage',
+          },
           {
             'kind': 'block',
             'type': 'eyes_acceptance',
@@ -469,6 +481,10 @@ export const toolbox = {
         "name": "Audio",
         'categorystyle': 'audio_category',
         "contents": [
+          {
+            'kind': 'block',
+            'type': 'PlayAudio',
+          },
           {
             'kind': 'block',
             'type': 's_Acceptance',
@@ -721,36 +737,12 @@ export const toolbox = {
         "categorystyle": "misc_category",
         "contents": [
           {
-            'kind': 'block',
-            'type': 'ChangeLED',
-          },
-          {
-            'kind': 'block',
-            'type': 'TransitionLED',
-          },
-          {
-            'kind': 'block',
-            'type': 'DisplayImage',
-          },
-          {
             'kind': 'block', 
             'type': 'DisplayAnimation',
           },
           {
             'kind': 'block',
-            'type': 'PlayAudio',
-          },
-          {
-            'kind': 'block',
             'type': 'DisplayText',
-          },
-          {
-            'kind': 'block',
-            'type': 'TurnOnFlashlight',
-          },
-          {
-            'kind': 'block',
-            'type': 'TurnOffFlashlight',
           },
           
           {

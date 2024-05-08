@@ -22,6 +22,7 @@ export default function SimulationControls(props) {
     const mistyImageList = useStore(useShallow((state) => state.mistyImageList));
     const mistyAudioList = useStore(useShallow((state) => state.mistyAudioList));
     const runOnRobot = useStore(useShallow((state) => state.runOnRobot));
+    const endingTfs = useStore(useShallow((state) => state.endingTfs));
     
   const runCode = async () => {
     clock.reset_elapsed();
@@ -46,6 +47,7 @@ export default function SimulationControls(props) {
         blocks: getBlocks(),
         mistyAudioList: mistyAudioList,
         mistyImageList: mistyImageList,
+        tfs: endingTfs,
         ip: ip,
         runOnRobot: runOnRobot
     });

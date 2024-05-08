@@ -1,7 +1,9 @@
+import { ARM_OFFSET_ANGLE, MAX_ARM_SPEED, MISTY_ARM_LENGTH, PI } from "../Constants.js";
+import { JointLookup } from "../Misty-Robot/JointLookup.js";
 import { AudioLookup } from "../Misty-Robot/audio/audiolookup.js";
 import { FaceFilenameLookup } from "../Misty-Robot/faces/facefilename.js";
 import { FaceLookup } from "../Misty-Robot/faces/facemap.js";
-import { hexToRgb } from "../utils.js";
+import { eulerToQuaternion, hexToRgb, quaternionToEuler } from "../utils.js";
 
 const delayJS = (timeMS) => {
   // Temporarily Commenting this out
@@ -24,7 +26,7 @@ function getBase64(file) {
 }
 
 self.onmessage = function (e) {
-  const {blocks, mistyAudioList, mistyImageList, ip, runOnRobot} = e.data;
+  const {blocks, mistyAudioList, mistyImageList, tfs, ip, runOnRobot} = e.data;
 
   const getBlocksByType = (type) => {
     return Object.values(blocks).filter((block) => block.type === type)[0];
@@ -100,10 +102,6 @@ self.onmessage = function (e) {
 
   const compile = (params, type) => {
     switch (true) {
-      case type === "Test":
-        console.log("test block runs");
-        return;
-
       case type === "controls_if":
         if (!params.inputs || !params.inputs.IF0 || !params.inputs.DO0) {
           throw new Error("err: controls_if not complete!");
@@ -523,8 +521,17 @@ self.onmessage = function (e) {
           Units: "Degrees",
         };
         sendPostRequestToRobot(endpoint, payload);
-        // TODO adjust delay based on return from animation
-        delayJS(1000);
+        var armTf = tfs[JointLookup(arm)];
+        var euler = quaternionToEuler(armTf.rotation);
+        var distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(euler.y - position);
+        var time = distance / ((velocity / 100) * MAX_ARM_SPEED);
+        var temp = {x: 0, y: position-ARM_OFFSET_ANGLE, z: 0};
+        var newQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
+        tfs[JointLookup(arm)].rotation.w = newQuat._w;
+        tfs[JointLookup(arm)].rotation.x = newQuat._x;
+        tfs[JointLookup(arm)].rotation.y = newQuat._y;
+        tfs[JointLookup(arm)].rotation.z = newQuat._z;
+        delayJS(time);
         return;
 
       case type === "MoveArm2":
@@ -539,8 +546,36 @@ self.onmessage = function (e) {
         };
 
         sendPostRequestToRobot(endpoint, payload);
-        // TODO adjust delay based on return from animation
-        delayJS(1000);
+
+        var lArmTf = tfs[JointLookup("Left")];
+        var rArmTf = tfs[JointLookup("Right")];
+
+        var lEuler = quaternionToEuler(lArmTf.rotation);
+        var distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(lEuler.y - position);
+        var lTime = distance / ((velocity / 100) * MAX_ARM_SPEED);
+
+        var rEuler = quaternionToEuler(rArmTf.rotation);
+        distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(rEuler.y - position);
+        var rTime = distance / ((velocity / 100) * MAX_ARM_SPEED);
+
+        
+        var temp = {x: 0, y: position-ARM_OFFSET_ANGLE, z: 0};
+        var lNewQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
+
+        temp = {x: 0, y: position-ARM_OFFSET_ANGLE, z: 0};
+        var rNewQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
+
+        tfs[JointLookup("Left")].rotation.w = lNewQuat._w;
+        tfs[JointLookup("Left")].rotation.x = lNewQuat._x;
+        tfs[JointLookup("Left")].rotation.y = lNewQuat._y;
+        tfs[JointLookup("Left")].rotation.z = lNewQuat._z;
+
+        tfs[JointLookup("Right")].rotation.w = rNewQuat._w;
+        tfs[JointLookup("Right")].rotation.x = rNewQuat._x;
+        tfs[JointLookup("Right")].rotation.y = rNewQuat._y;
+        tfs[JointLookup("Right")].rotation.z = rNewQuat._z;
+
+        delayJS(Math.max(lTime, rTime));
         return;
 
       case type === "MoveArms2":
@@ -565,8 +600,35 @@ self.onmessage = function (e) {
         };
         var endpoint = "arms/set";
         sendPostRequestToRobot(endpoint, payload);
-        // TODO adjust delay based on return from animation
-        delayJS(1000);
+        var lArmTf = tfs[JointLookup("Left")];
+        var rArmTf = tfs[JointLookup("Right")];
+
+        var lEuler = quaternionToEuler(lArmTf.rotation);
+        var distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(lEuler.y - left_position);
+        var lTime = distance / ((left_velocity / 100) * MAX_ARM_SPEED);
+
+        var rEuler = quaternionToEuler(rArmTf.rotation);
+        distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(rEuler.y - right_position);
+        var rTime = distance / ((right_velocity / 100) * MAX_ARM_SPEED);
+
+        
+        var temp = {x: 0, y: left_position-ARM_OFFSET_ANGLE, z: 0};
+        var lNewQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
+
+        temp = {x: 0, y: right_position-ARM_OFFSET_ANGLE, z: 0};
+        var rNewQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
+
+        tfs[JointLookup("Left")].rotation.w = lNewQuat._w;
+        tfs[JointLookup("Left")].rotation.x = lNewQuat._x;
+        tfs[JointLookup("Left")].rotation.y = lNewQuat._y;
+        tfs[JointLookup("Left")].rotation.z = lNewQuat._z;
+
+        tfs[JointLookup("Right")].rotation.w = rNewQuat._w;
+        tfs[JointLookup("Right")].rotation.x = rNewQuat._x;
+        tfs[JointLookup("Right")].rotation.y = rNewQuat._y;
+        tfs[JointLookup("Right")].rotation.z = rNewQuat._z;
+
+        delayJS(Math.max(lTime, rTime));
         return;
 
       case type === "MoveHead":
@@ -581,8 +643,7 @@ self.onmessage = function (e) {
           Units: "degrees",
         };
         sendPostRequestToRobot(endpoint, payload);
-        // TODO adjust delay based on return from animation
-        delayJS(500);
+        delayJS(2000);
 
         return;
 

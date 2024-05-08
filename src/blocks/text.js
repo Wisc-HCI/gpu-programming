@@ -392,16 +392,6 @@ Blockly.Blocks["Turn2"] = {
   }
 };
 
-Blockly.Blocks['Test'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField('Test');
-    this.setColour(230);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-  }
-};
-
 Blockly.Blocks["Speak"] = {
   init: function () {
     this.setColour('#007CB5');
