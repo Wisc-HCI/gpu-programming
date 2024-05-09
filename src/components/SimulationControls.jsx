@@ -8,6 +8,7 @@ import { useShallow } from "zustand/react/shallow";
 import { activityLog, appendActivity } from "./ActivityTracker";
 
 import workerUrl from '../compile/compile-worker.js?worker&url';
+import useAnimation from '../compile/useAnimation';
 
 import { Checkbox, Container, FormControlLabel, FormGroup, Stack } from "@mui/material";
 
@@ -23,6 +24,7 @@ export default function SimulationControls(props) {
     const mistyAudioList = useStore(useShallow((state) => state.mistyAudioList));
     const runOnRobot = useStore(useShallow((state) => state.runOnRobot));
     const endingTfs = useStore(useShallow((state) => state.endingTfs));
+    const setAnimationFrames = useStore(useShallow((state) => state.setAnimationFrames));
     
   const runCode = async () => {
     clock.reset_elapsed();
@@ -53,6 +55,25 @@ export default function SimulationControls(props) {
     });
     workerRef.current = myWorker;
 
+
+    // const js2 = `import ${JSON.stringify(new URL(animationUrl, import.meta.url))}`;
+    // const blob2 = new Blob([js2], { type: "application/javascript" });
+    // const workerURL2 = URL.createObjectURL(blob2);
+    // let myWorker2 = new Worker(workerURL2, { type: "module" });
+    // myWorker2.onmessage = function (e) {
+    //     console.log(e);
+    //     console.log(e.data);
+    //     console.log(e.data["LEFT_ARM_CONNECTOR_1"])
+    //     console.log("Message received from worker2 " + e.data);
+    // };
+    // myWorker2.postMessage({
+    //     blocks: getBlocks(),
+    //     tfs: endingTfs,
+    // });
+    let {newTfs, newEndingTfs} = useAnimation({blocks: getBlocks(), tfs: endingTfs});
+    console.log(newTfs);
+    setAnimationFrames(newTfs, newEndingTfs);
+
     appendActivity("Click Run Code button");
   };
 
@@ -76,7 +97,7 @@ export default function SimulationControls(props) {
                 paddingLeft: "0px",
                 paddingRight: "0px"
             }}>
-                {!workerRef.current &&
+                {/* {!workerRef.current && */}
                     <IconButton
                         variant="contained"
                         aria-label="play"
@@ -89,8 +110,8 @@ export default function SimulationControls(props) {
                     >
                         <PlayArrowIcon />
                     </IconButton>
-                }
-                {workerRef.current &&
+                {/* } */}
+                {/* {workerRef.current &&
                     <IconButton
                         variant="contained"
                         aria-label="play"
@@ -103,7 +124,7 @@ export default function SimulationControls(props) {
                     >
                         <StopIcon />
                     </IconButton>
-                }
+                } */}
                 <IconButton
                     variant="contained"
                     aria-label="restart"

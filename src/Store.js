@@ -3,7 +3,7 @@ import { parseUrdfForJoints, parseUrdfForLinks } from './urdfParser.js';
 import { Timer } from './Timer.js';
 import { determineZAngleFromQuaternion, eulerToQuaternion, interpolateScalar, quaternionToEuler } from './utils.js';
 import { JointLookup } from './Misty-Robot/JointLookup.js';
-import { MISTY_ARM_LENGTH, PI, MAX_ARM_SPEED, ARM_OFFSET_ANGLE, MAX_DIST_PER_SEC, MAX_ANGLE_PER_SEC } from './Constants.js';
+import { MISTY_ARM_LENGTH, PI, MAX_ARM_SPEED, ARM_OFFSET_ANGLE, MAX_DIST_PER_SEC, MAX_ANGLE_PER_SEC, SIM_TIME } from './Constants.js';
 import { starting_tfs, starting_items } from './Misty_Load_File.js';
 import { Quaternion, Vector3 } from "three";
  
@@ -113,6 +113,12 @@ const useStore = create((set,get) => ({
       runOnRobot: value
     })
   },
+  setAnimationFrames: (newTfs, newEndingTfs) => {
+    set({
+      tfs: {...newTfs},
+      endingTfs: {...newEndingTfs}
+    })
+  },
   animateHead: (roll, pitch, yaw, time) => {
     const allTfs = JSON.parse(JSON.stringify(get().endingTfs));
     let headTf = JSON.parse(JSON.stringify(allTfs[JointLookup("Head")]));
@@ -126,7 +132,7 @@ const useStore = create((set,get) => ({
     let yVector = [headTf.rotation.y];
     let zVector = [headTf.rotation.z];
 
-    const maxTime = 600;
+    const maxTime = SIM_TIME;
     for (let i = 10; i <= maxTime; i+= 10) {
       timeVector.push(time*i);
       let q = new Quaternion(xVector[0], yVector[0], zVector[0], wVector[0]);
@@ -182,7 +188,7 @@ const useStore = create((set,get) => ({
     let distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(lEuler.y - lPosition);
     const lTime = distance / ((lVelocity / 100) * MAX_ARM_SPEED);
 
-    let rEuler = quaternionToEuler(lArmTf.rotation);
+    let rEuler = quaternionToEuler(rArmTf.rotation);
     distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(rEuler.y - rPosition);
     const rTime = distance / ((rVelocity / 100) * MAX_ARM_SPEED);
     
@@ -230,7 +236,7 @@ const useStore = create((set,get) => ({
       rzVector.push(tempRot.rotation.z);
     }
 
-    const maxTime = 600;
+    const maxTime = SIM_TIME;
     for (let i=10; i <= maxTime; i+=10) {
       lTimeVector.push(lTime*i);
       rTimeVector.push(rTime*i);
@@ -295,8 +301,6 @@ const useStore = create((set,get) => ({
         ...endResult
       }
     })
-
-    return time;
   },
   animateArm: (arm, position, velocity) => {
     const allTfs = JSON.parse(JSON.stringify(get().endingTfs));
@@ -329,7 +333,7 @@ const useStore = create((set,get) => ({
       zVector.push(tempRot.rotation.z);
     }
 
-    const maxTime = 600;
+    const maxTime = SIM_TIME;
     for (let i=10; i <= maxTime; i+=10) {
       timeVector.push(time*i);
       let q = new Quaternion(xVector[0], yVector[0], zVector[0], wVector[0]);
@@ -372,8 +376,6 @@ const useStore = create((set,get) => ({
         ...endResult
       }
     })
-
-    return time;
   },
   animateDrive: (linearVelocity, angularVelocity, degree, time) => {
     // todo, rotate by time, should be able to slerp.
@@ -404,7 +406,7 @@ const useStore = create((set,get) => ({
     let qYVector = [baseTf.rotation.y];
     let qZVector = [baseTf.rotation.z];
 
-    const maxTime = 600;
+    const maxTime = SIM_TIME;
     
     // offset to circle center
     let aX = baseTf.position.x;

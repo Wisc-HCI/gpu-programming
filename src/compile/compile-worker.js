@@ -633,7 +633,6 @@ self.onmessage = function (e) {
 
       case type === "MoveHead":
         var pitch = params.fields.FIELD_MoveHead_Pitch === "D" ? 25 : -40;
-        var velocity = parseInt(params.fields.FIELD_MoveHead_Velocity);
         var endpoint = "head";
         var payload = {
           Pitch: pitch, //-5 - 5
