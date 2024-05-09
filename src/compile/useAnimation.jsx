@@ -218,6 +218,7 @@ const useAnimation = ({blocks, tfs}) => {
         jointAnimationArrays["Left"]["x"].push(jointAnimationArrays["Left"]["x"][jointAnimationArrays["Left"]["x"].length-1]);
         jointAnimationArrays["Left"]["y"].push(jointAnimationArrays["Left"]["y"][jointAnimationArrays["Left"]["y"].length-1]);
         jointAnimationArrays["Left"]["z"].push(jointAnimationArrays["Left"]["z"][jointAnimationArrays["Left"]["z"].length-1]);
+        
         jointAnimationArrays["Right"]["w"].push(jointAnimationArrays["Right"]["w"][jointAnimationArrays["Right"]["w"].length-1]);
         jointAnimationArrays["Right"]["x"].push(jointAnimationArrays["Right"]["x"][jointAnimationArrays["Right"]["x"].length-1]);
         jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][jointAnimationArrays["Right"]["y"].length-1]);
@@ -238,21 +239,31 @@ const useAnimation = ({blocks, tfs}) => {
     let leftArmXVector = [];
     let leftArmYVector = [];
     let leftArmZVector = [];
+
     let rightArmWVector = [];
     let rightArmXVector = [];
     let rightArmYVector = [];
     let rightArmZVector = [];
+
+    let headWVector = [];
+    let headXVector = [];
+    let headYVector = [];
+    let headZVector = [];
     for (let i = 1; i < totalLength; i++) {
       let time = jointAnimationArrays["Time"][i];
       
       let newLeftArmQuat = new Quaternion(jointAnimationArrays["Left"]["x"][i], jointAnimationArrays["Left"]["y"][i], jointAnimationArrays["Left"]["z"][i], jointAnimationArrays["Left"]["w"][i]);
       let newRightArmQuat = new Quaternion(jointAnimationArrays["Right"]["x"][i], jointAnimationArrays["Right"]["y"][i], jointAnimationArrays["Right"]["z"][i], jointAnimationArrays["Right"]["w"][i]);
+      let newHeadQuat = new Quaternion(jointAnimationArrays["Head"]["x"][i], jointAnimationArrays["Head"]["y"][i], jointAnimationArrays["Head"]["z"][i], jointAnimationArrays["Head"]["w"][i]);
       for (let j = 10; j < SIM_TIME; j += 10) {
         timeVector.push((time/MS_TO_SEC * j) + runningTimeSum);
         let oldLeftArmQuat = new Quaternion(jointAnimationArrays["Left"]["x"][i-1], jointAnimationArrays["Left"]["y"][i-1], jointAnimationArrays["Left"]["z"][i-1], jointAnimationArrays["Left"]["w"][i-1]);
         let oldRightArmQuat = new Quaternion(jointAnimationArrays["Right"]["x"][i-1], jointAnimationArrays["Right"]["y"][i-1], jointAnimationArrays["Right"]["z"][i-1], jointAnimationArrays["Right"]["w"][i-1]);
+        let oldHeadQuat = new Quaternion(jointAnimationArrays["Head"]["x"][i-1], jointAnimationArrays["Head"]["y"][i-1], jointAnimationArrays["Head"]["z"][i-1], jointAnimationArrays["Head"]["w"][i-1]);
         oldLeftArmQuat.slerp(newLeftArmQuat, j/SIM_TIME);
         oldRightArmQuat.slerp(newRightArmQuat, j/SIM_TIME);
+        oldHeadQuat.slerp(newHeadQuat, j/SIM_TIME);
+
         leftArmWVector.push(oldLeftArmQuat._w);
         leftArmXVector.push(oldLeftArmQuat._x);
         leftArmYVector.push(oldLeftArmQuat._y);
@@ -262,12 +273,18 @@ const useAnimation = ({blocks, tfs}) => {
         rightArmXVector.push(oldRightArmQuat._x);
         rightArmYVector.push(oldRightArmQuat._y);
         rightArmZVector.push(oldRightArmQuat._z);
+
+        headWVector.push(oldHeadQuat._w);
+        headXVector.push(oldHeadQuat._x);
+        headYVector.push(oldHeadQuat._y);
+        headZVector.push(oldHeadQuat._z);
       }
       runningTimeSum += time;
     }
 
     let finalLeftArmQuat = new Quaternion(jointAnimationArrays["Left"]["x"][totalLength-1], jointAnimationArrays["Left"]["y"][totalLength-1], jointAnimationArrays["Left"]["z"][totalLength-1], jointAnimationArrays["Left"]["w"][totalLength-1]);
     let finalRightArmQuat = new Quaternion(jointAnimationArrays["Right"]["x"][totalLength-1], jointAnimationArrays["Right"]["y"][totalLength-1], jointAnimationArrays["Right"]["z"][totalLength-1], jointAnimationArrays["Right"]["w"][totalLength-1]);
+    let finalHeadQuat = new Quaternion(jointAnimationArrays["Head"]["x"][totalLength-1], jointAnimationArrays["Head"]["y"][totalLength-1], jointAnimationArrays["Head"]["z"][totalLength-1], jointAnimationArrays["Head"]["w"][totalLength-1]);
     timeVector.push(Infinity);
     leftArmWVector.push(finalLeftArmQuat._w);
     leftArmXVector.push(finalLeftArmQuat._x);
@@ -278,6 +295,11 @@ const useAnimation = ({blocks, tfs}) => {
     rightArmXVector.push(finalRightArmQuat._x);
     rightArmYVector.push(finalRightArmQuat._y);
     rightArmZVector.push(finalRightArmQuat._z);
+    
+    headWVector.push(finalHeadQuat._w);
+    headXVector.push(finalHeadQuat._x);
+    headYVector.push(finalHeadQuat._y);
+    headZVector.push(finalHeadQuat._z);
 
     newTfs[JointLookup("Left")].rotation.w = interpolateScalar(timeVector, leftArmWVector);
     newTfs[JointLookup("Left")].rotation.x = interpolateScalar(timeVector, leftArmXVector);
@@ -296,7 +318,15 @@ const useAnimation = ({blocks, tfs}) => {
     newEndingTfs[JointLookup("Right")].rotation.x = finalRightArmQuat._x;
     newEndingTfs[JointLookup("Right")].rotation.y = finalRightArmQuat._y;
     newEndingTfs[JointLookup("Right")].rotation.z = finalRightArmQuat._z;
-    
+
+    newTfs[JointLookup("Head")].rotation.w = interpolateScalar(timeVector, headWVector);
+    newTfs[JointLookup("Head")].rotation.x = interpolateScalar(timeVector, headXVector);
+    newTfs[JointLookup("Head")].rotation.y = interpolateScalar(timeVector, headYVector);
+    newTfs[JointLookup("Head")].rotation.z = interpolateScalar(timeVector, headZVector);
+    newEndingTfs[JointLookup("Head")].rotation.w = finalHeadQuat._w;
+    newEndingTfs[JointLookup("Head")].rotation.x = finalHeadQuat._x;
+    newEndingTfs[JointLookup("Head")].rotation.y = finalHeadQuat._y;
+    newEndingTfs[JointLookup("Head")].rotation.z = finalHeadQuat._z;
 
     return {newTfs, newEndingTfs};
   }
