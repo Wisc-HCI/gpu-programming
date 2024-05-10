@@ -66,8 +66,8 @@ Blockly.Blocks["TransitionLED"] = {
       .appendField("transition");
     this.appendDummyInput()
       .appendField("for a duration of")
-      .appendField(new Blockly.FieldNumber(1000), "FIELD_TransitionTime_TimeMs")
-      .appendField("ms");
+      .appendField(new Blockly.FieldNumber(1, 0, 60, 1), "FIELD_TransitionTime_TimeMs")
+      .appendField("secs");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Transition LED between two colors with the specified transition type and time.");
@@ -107,25 +107,6 @@ Blockly.Blocks["MoveHead"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Moves Misty's head Up or Down");
-    this.setHelpUrl("MoveHead");
-  }
-};
-
-Blockly.Blocks["MoveHead2"] = {
-  init: function () {
-    this.setColour(blockColors["movement_category"]["colour"]);
-    this.appendDummyInput()
-      .appendField("Move head")
-      .appendField("Pitch (-40 to 25):")
-      .appendField(new Blockly.FieldNumber(0, -40, 25, 1), "FIELD_MoveHead_Pitch")
-      .appendField("Roll (-42 to 42):")
-      .appendField(new Blockly.FieldNumber(0, -42, 42, 1), "FIELD_MoveHead_Roll")
-      .appendField("Yaw (-90 to 90):")
-      .appendField(new Blockly.FieldNumber(0, -90, 90, 1), "FIELD_MoveHead_Yaw")
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setTooltip("Moves Misty's head a specified amount of degrees with roll, pitch, and/or yaw");
-    this.setHelpUrl("MoveHead");
   }
 };
 
@@ -136,13 +117,12 @@ Blockly.Blocks["MoveArm"] = {
       .appendField("Move ")
       .appendField(new Blockly.FieldDropdown([["Right", "Right"], ["Left", "Left"]]), "FIELD_MoveArm_Arm")
       .appendField("arm to position")
-      .appendField(new Blockly.FieldNumber(0, -90, 90, 1), "FIELD_MoveArm_Position")
+      .appendField(new Blockly.FieldNumber(0, -29, 90, 1), "FIELD_MoveArm_Position")
       .appendField("at a speed of (0 to 100)")
       .appendField(new Blockly.FieldNumber(50, 0, 100, 1), "FIELD_MoveArm_Velocity");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Moves one of Misty's arms to a specified position (expects a value from 0-10, 5 points the arm straight forward) at a specified speed (between 0 and 100)");
-    this.setHelpUrl("MoveArm");
   }
 };
 
@@ -158,7 +138,6 @@ Blockly.Blocks["MoveArm2"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Moves both of Misty's arms to a specified position (expects a value from 0-10, 5 points the arm straight forward) at a specified speed (between 0 and 100)");
-    this.setHelpUrl("MoveArm2");
   }
 };
 
@@ -166,18 +145,20 @@ Blockly.Blocks["MoveArms"] = {
   init: function () {
     this.setColour(blockColors["movement_category"]["colour"]);
     this.appendDummyInput()
-      .appendField("Move left arm to position")
-      .appendField(new Blockly.FieldNumber(0, -29, 90, 1), "FIELD_MoveArm_LeftPosition")
-      .appendField("at a speed of (0 to 100)")
-      .appendField(new Blockly.FieldNumber(50, 0, 100, 1), "FIELD_MoveArm_LeftVelocity")
-      .appendField("and move right arm to position")
-      .appendField(new Blockly.FieldNumber(0, -29, 90, 1), "FIELD_MoveArm_RightPosition")
-      .appendField("at a speed of (0 to 100)")
+      .appendField("Move Left Arm (-29 to 90)")
+      .appendField(new Blockly.FieldNumber(0, -29, 90, 1), "FIELD_MoveArm_LeftPosition");
+    this.appendDummyInput()
+      .appendField("Left Arm Speed (0 to 100)")
+      .appendField(new Blockly.FieldNumber(50, 0, 100, 1), "FIELD_MoveArm_LeftVelocity");
+    this.appendDummyInput()
+      .appendField("Move Right Arm (-29 to 90)")
+      .appendField(new Blockly.FieldNumber(0, -29, 90, 1), "FIELD_MoveArm_RightPosition");
+    this.appendDummyInput()
+      .appendField("Right Arm Speed (0 to 100)")
       .appendField(new Blockly.FieldNumber(50, 0, 100, 1), "FIELD_MoveArm_RightVelocity");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Moves both of Misty's arms to a specified position (expects a value from 0-10, 5 points the arm straight forward) at a specified speed (between 0 and 100)");
-    this.setHelpUrl("MoveArms");
   }
 };
 
@@ -209,7 +190,7 @@ Blockly.Blocks["MoveArms2"] = {
 
     this.setColour(blockColors["movement_category"]["colour"]);
     this.appendValueInput("FIELD_MoveArm_LeftPosition").setCheck('Number')
-      .appendField("Move left arm to position");
+      .appendField("Move left arm to position (-29 to 90)");
     var shadowBlockConnectionLPosition = this.getInput("FIELD_MoveArm_LeftPosition").connection;
     shadowBlockConnectionLPosition.connect(lPosBlock);
     this.appendValueInput("FIELD_MoveArm_LeftVelocity").setCheck('Number')
@@ -217,7 +198,7 @@ Blockly.Blocks["MoveArms2"] = {
     var shadowBlockConnectionLVelocity = this.getInput("FIELD_MoveArm_LeftVelocity").connection;
     shadowBlockConnectionLVelocity.connect(lVelBlock);
     this.appendValueInput("FIELD_MoveArm_RightPosition").setCheck('Number')
-      .appendField("and move right arm to position");
+      .appendField("and move right arm to position (-29 to 90)");
     var shadowBlockConnectionRPosition = this.getInput("FIELD_MoveArm_RightPosition").connection;
     shadowBlockConnectionRPosition.connect(rPosBlock);
     this.appendValueInput("FIELD_MoveArm_RightVelocity").setCheck('Number')
@@ -228,7 +209,6 @@ Blockly.Blocks["MoveArms2"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Moves both of Misty's arms to a specified position (expects a value from 0-10, 5 points the arm straight forward) at a specified speed");
-    this.setHelpUrl("MoveArms");
   }
 };
 
@@ -241,12 +221,11 @@ Blockly.Blocks["DriveTime"] = {
       .appendField("at a speed of (0 to 100)")
       .appendField(new Blockly.FieldNumber(25, 0, 100, 1), "FIELD_DriveTime_Velocity")
       .appendField("for a duration of")
-      .appendField(new Blockly.FieldNumber(1500, 100, 10000, 100), "FIELD_DriveTime_TimeMs")
-      .appendField("ms");
+      .appendField(new Blockly.FieldNumber(1, 0, 60, 1), "FIELD_DriveTime_TimeMs")
+      .appendField("secs");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Drives Misty straight in a specified direction at a specified speed for a specified amount of time (1000ms = 1 second)");
-    this.setHelpUrl("DriveTime");
   }
 };
 
@@ -279,19 +258,20 @@ Blockly.Blocks["MoveHead3"] = {
 
     this.setColour(blockColors["movement_category"]["colour"]);
 
+    this.appendDummyInput("FIELD_TEXT_IGNORE")
+      .appendField("Move head");
     this.appendValueInput("FIELD_MoveHead_Pitch").setCheck('Number')
-      .appendField("Move head")
-      .appendField("Pitch (-40 to 25):");
+      .appendField("Look up (-40) / down (25):");
     var shadowBlockConnectionPitch = this.getInput("FIELD_MoveHead_Pitch").connection;
     shadowBlockConnectionPitch.connect(pitchBlock);
 
     this.appendValueInput("FIELD_MoveHead_Roll").setCheck('Number')
-      .appendField("Roll (-42 to 42):");
+      .appendField("Tilt left (-42) / right (42):");
     var shadowBlockConnectionRoll = this.getInput("FIELD_MoveHead_Roll").connection;
     shadowBlockConnectionRoll.connect(rollBlock);
 
     this.appendValueInput("FIELD_MoveHead_Yaw").setCheck('Number')
-      .appendField("Yaw (-90 to 90):");
+      .appendField("Look right (-81) / left (81):");
     var shadowBlockConnectionYaw = this.getInput("FIELD_MoveHead_Yaw").connection;
     shadowBlockConnectionYaw.connect(yawBlock);
 
@@ -304,7 +284,6 @@ Blockly.Blocks["MoveHead3"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Moves Misty's head a specified amount of degrees with roll, pitch, and/or yaw");
-    this.setHelpUrl("MoveHead");
   }
 };
 
@@ -339,14 +318,13 @@ Blockly.Blocks["DriveTime2"] = {
     var shadowBlockConnectionAngular = this.getInput("FIELD_DriveTime_Angular").connection;
     shadowBlockConnectionAngular.connect(angularBlock);
     this.appendValueInput("FIELD_DriveTime_TimeMs").setCheck('Number')
-      .appendField("for a duration of (ms)");
+      .appendField("for a duration of secs");
     var shadowBlockConnectionTime = this.getInput("FIELD_DriveTime_TimeMs").connection;
     shadowBlockConnectionTime.connect(timeBlock);
     this.setInputsInline(false);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Drives Misty forward (positive speed) or backward (negative speed) with possible turning using angular velocity (0 for straight) for the specified duration (1000 ms = 1 second)");
-    this.setHelpUrl("DriveTime");
   }
 };
 
@@ -363,7 +341,6 @@ Blockly.Blocks["Turn"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Turns Misty in the specified direction (1000ms = 1 second and 4500ms is approximately 90 degrees)");
-    this.setHelpUrl("Turn");
   }
 };
 
@@ -389,7 +366,6 @@ Blockly.Blocks["Turn2"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Turns Misty in the specified direction (1000ms = 1 second and 4500ms is approximately 90 degrees)");
-    this.setHelpUrl("Turn");
   }
 };
 
@@ -458,8 +434,7 @@ Blockly.Blocks["WaitForSeconds"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(blockColors["misc_category"]["colour"]);
- this.setTooltip("");
- this.setHelpUrl("");
+    this.setTooltip("Delay the execution of the next block by some number of seconds");
   }
 };
 
@@ -496,8 +471,6 @@ Blockly.Blocks["SetVolume"] = {
     this.setNextStatement(true, null);
 
     this.setTooltip("Adjusts Misty's volume level for audio playback");
-
-    this.setHelpUrl("");
   }
 };
 
@@ -507,6 +480,18 @@ Blockly.Blocks["DisplayText"] = {
     this.appendDummyInput()
       .appendField("Display Text: ")
       .appendField(new Blockly.FieldTextInput("default"), "FIELD_DisplayText_Text");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("");
+  }
+};
+
+
+Blockly.Blocks["ClearText"] = {
+  init: function () {
+    this.setColour(blockColors["misc_category"]["colour"]);
+    this.appendDummyInput()
+      .appendField("Clear Text")
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("");

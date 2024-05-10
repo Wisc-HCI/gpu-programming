@@ -1,4 +1,4 @@
-import { ARM_OFFSET_ANGLE, MAX_ARM_SPEED, MISTY_ARM_LENGTH, PI } from "../Constants.js";
+import { ARM_OFFSET_ANGLE, MAX_ARM_SPEED, MISTY_ARM_LENGTH, MS_TO_SEC, PI } from "../Constants.js";
 import { JointLookup } from "../Misty-Robot/JointLookup.js";
 import { AudioLookup } from "../Misty-Robot/audio/audiolookup.js";
 import { FaceFilenameLookup } from "../Misty-Robot/faces/facefilename.js";
@@ -74,12 +74,6 @@ self.onmessage = function (e) {
         },
         body: JSON.stringify(payload),
       })
-        .then((res) => res.json())
-        .then((json) => {
-          console.log(
-            `successfully send a post request, the response is: ${json}`
-          );
-        });
     }
   }
 
@@ -96,7 +90,8 @@ self.onmessage = function (e) {
     if (typeof input !== "string") {
       return input.shadow.fields.NUM;
     } else {
-      return compile(getBlock(input));
+      let block = getBlock(input);
+      return compile(block, block.type);
     }
   }
 
@@ -249,7 +244,6 @@ self.onmessage = function (e) {
         }
         let controls_repeat_ext_DO_params = getBlock(params.inputs.DO);
         for (let i = 0; i < controls_repeat_ext_TIMES; i++) {
-          console.log(i);
           compile(
             controls_repeat_ext_DO_params,
             controls_repeat_ext_DO_params.type
@@ -323,16 +317,16 @@ self.onmessage = function (e) {
         let r = getRandomInt(0, 255);
         let g = getRandomInt(0, 255);
         let b = getRandomInt(0, 255);
-        return { red: r, green: g, blue: b };
+        return { r: r, g: g, b: b };
 
       case type === "colour_rgb":
         const colour_rgb_RED = checkShadowinput(params.inputs.RED);
         const colour_rgb_GREEN = checkShadowinput(params.inputs.GREEN);
         const colour_rgb_BLUE = checkShadowinput(params.inputs.BLUE);
         return {
-          red: colour_rgb_RED,
-          green: colour_rgb_GREEN,
-          blue: colour_rgb_BLUE,
+          r: colour_rgb_RED,
+          g: colour_rgb_GREEN,
+          b: colour_rgb_BLUE,
         };
 
       case type === "colour_blend":
@@ -364,7 +358,7 @@ self.onmessage = function (e) {
           (colour_blend_COLOR2_b + colour_blend_COLOR1_b) /
           (colour_blend_RATIO + 1);
 
-        return { red: new_r, green: new_g, blue: new_b };
+        return { r: new_r, g: new_g, b: new_b };
 
       /////////////////////////////////////////////Color///////////////////////////////////////////////////////////////
       case type === "ChangeLED":
@@ -375,7 +369,13 @@ self.onmessage = function (e) {
         }
         var endpoint = "led";
         var colorBlock = getBlock(params.inputs.FIELD_ChangeLED);
-        var COLOR = hexToRgb(colorBlock.fields.COLOUR);
+        var COLOR = null;
+        if (colorBlock?.fields?.COLOUR) {
+          COLOR = hexToRgb(colorBlock.fields.COLOUR);
+        } else {
+          COLOR = compile(colorBlock, colorBlock.type);
+        }
+        
         var payload = {
           Red: COLOR.r,
           Green: COLOR.g,
@@ -394,9 +394,20 @@ self.onmessage = function (e) {
         var endpoint = "led/transition";
         var colorBlock1 = getBlock(params.inputs.COLOR1);
         var colorBlock2 = getBlock(params.inputs.COLOR2);
-        var COLOR1 = hexToRgb(colorBlock1.fields.COLOUR);
-        var COLOR2 = hexToRgb(colorBlock2.fields.COLOUR);
-        var time = params.fields.FIELD_TransitionTime_TimeMs;
+        var COLOR1 = null;
+        if (colorBlock1?.fields?.COLOUR) {
+          COLOR1 = hexToRgb(colorBlock1.fields.COLOUR);
+        } else {
+          COLOR1 = compile(colorBlock1, colorBlock1.type);
+        }
+        
+        var COLOR2 = null;
+        if (colorBlock2?.fields?.COLOUR) {
+          COLOR2 = hexToRgb(colorBlock2.fields.COLOUR);
+        } else {
+          COLOR2 = compile(colorBlock2, colorBlock2.type);
+        }
+        var time = params.fields.FIELD_TransitionTime_TimeMs * MS_TO_SEC;
         var transition = params.fields.TRANSITION_TYPE;
         var payload = {
           Red: COLOR1.r,
@@ -489,11 +500,18 @@ self.onmessage = function (e) {
       case type === "DisplayText":
         var endpoint = "text/display";
         var text = params.fields.FIELD_DisplayText_Text;
-        console.log(text);
         var payload = {
           Text: text,
         };
-        console.log(payload);
+        sendPostRequestToRobot(endpoint, payload);
+        delayJS(500);
+        return;
+
+      case type === "ClearText":
+        var endpoint = "text/display";
+        var payload = {
+          Text: "",
+        };
         sendPostRequestToRobot(endpoint, payload);
         delayJS(500);
         return;
@@ -518,7 +536,7 @@ self.onmessage = function (e) {
 
       case type === "WaitForSeconds":
         var time = parseFloat(params.fields.NumSeconds);
-        delayJS(time * 1000);
+        delayJS(time * MS_TO_SEC);
         return;
 
       case type === "MoveArm":
@@ -680,7 +698,7 @@ self.onmessage = function (e) {
       case type === "DriveTime":
         var direction = params.fields.FIELD_DriveTime_Direction;
         var velocity = parseInt(params.fields.FIELD_DriveTime_Velocity);
-        var time = parseInt(params.fields.FIELD_DriveTime_TimeMs);
+        var time = parseInt(params.fields.FIELD_DriveTime_TimeMs) * MS_TO_SEC;
         var endpoint = "drive/time";
         var linearVelocity = direction === "F" ? velocity : -velocity;
         var payload = {
@@ -700,7 +718,7 @@ self.onmessage = function (e) {
         var angularVelocity = checkShadowinput(
           params.inputs.FIELD_DriveTime_Angular
         );
-        var time = checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs);
+        var time = checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs) * MS_TO_SEC;
         var payload = {
           LinearVelocity: linearVelocity,
           AngularVelocity: angularVelocity,
@@ -712,7 +730,7 @@ self.onmessage = function (e) {
 
       case type === "Turn":
         var direction = params.fields.FIELD_Turn_Direction;
-        var time = parseInt(params.fields.FIELD_Turn_Duration);
+        var time = parseInt(params.fields.FIELD_Turn_Duration) * MS_TO_SEC;
         var angularVelocity = 100;
         var linearVelocity = 0;
         var degree = direction === "L" ? 90 : -90;
@@ -729,9 +747,7 @@ self.onmessage = function (e) {
 
       case type === "Turn2":
         var direction = params.fields.FIELD_Turn_Direction;
-        var time = parseInt(
-          checkShadowinput(params.inputs.FIELD_Turn_Duration)
-        );
+        var time = parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration)) * MS_TO_SEC;
         var angularVelocity = 100;
         var linearVelocity = 0;
         var degree = direction === "L" ? 90 : -90;

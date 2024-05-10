@@ -101,9 +101,19 @@ export default function SimulationControls(props) {
             Units: "Degrees",
         });
         
-        sendPostRequestToRobot("images/dispaly", {
+        sendPostRequestToRobot("images/display", {
             FileName: "e_DefaultContent.jpg",
             Alpha: 1
+        });
+
+        sendPostRequestToRobot("text/display", {
+          Text: "",
+        });
+
+        sendPostRequestToRobot("led", {
+            Red: 100,
+            Green: 70,
+            Blue: 160
         });
 
         resetSim();

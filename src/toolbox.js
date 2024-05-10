@@ -750,6 +750,10 @@ export const toolbox = {
           },
           {
             'kind': 'block',
+            'type': 'ClearText',
+          },
+          {
+            'kind': 'block',
             'type': 'WaitForSeconds',
           },
         ]

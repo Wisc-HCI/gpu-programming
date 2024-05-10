@@ -52,7 +52,7 @@ const useAnimation = ({blocks, tfs}) => {
               jointAnimationArrays[armKey]["y"].push(midQuat._y);
               jointAnimationArrays[armKey]["z"].push(midQuat._z);
               
-              jointAnimationArrays["Time"].push(time/2.0 * SIM_TIME);
+              jointAnimationArrays["Time"].push(time/2.0);
               appends += 1;
             }
 
@@ -83,9 +83,9 @@ const useAnimation = ({blocks, tfs}) => {
               jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][jointAnimationArrays["Base"]["rotation"]["z"].length-1]);
             }
             if (appends > 1) {
-              jointAnimationArrays["Time"].push(time/2.0 * SIM_TIME);
+              jointAnimationArrays["Time"].push(time/2.0);
             } else {
-              jointAnimationArrays["Time"].push(time * SIM_TIME);
+              jointAnimationArrays["Time"].push(time);
             }
             
         }
@@ -162,7 +162,7 @@ const useAnimation = ({blocks, tfs}) => {
             jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][jointAnimationArrays["Right"]["z"].length-1]);
           }
           
-          jointAnimationArrays["Time"].push(execTime/2.0 * SIM_TIME);
+          jointAnimationArrays["Time"].push(execTime/2.0);
           appends += 1;
         }
 
@@ -207,9 +207,9 @@ const useAnimation = ({blocks, tfs}) => {
         }
 
         if (appends > 1) {
-          jointAnimationArrays["Time"].push(execTime/2 * SIM_TIME);
+          jointAnimationArrays["Time"].push(execTime/2);
         } else {
-          jointAnimationArrays["Time"].push(execTime * SIM_TIME);
+          jointAnimationArrays["Time"].push(execTime);
         }
         
     }
@@ -242,7 +242,7 @@ const useAnimation = ({blocks, tfs}) => {
         jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][jointAnimationArrays["Base"]["rotation"]["y"].length-1]);
         jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][jointAnimationArrays["Base"]["rotation"]["z"].length-1]);
         
-        jointAnimationArrays["Time"].push(time * SIM_TIME);
+        jointAnimationArrays["Time"].push(time);
     }
   }
 
@@ -262,8 +262,8 @@ const useAnimation = ({blocks, tfs}) => {
                 w: jointAnimationArrays["Base"]["rotation"]["w"][jointAnimationArrays["Base"]["rotation"]["w"].length-1]
             }
         };
-        var angle = (angularVelocity/100 * MAX_ANGLE_PER_SEC) * time/1000;
-        var distance = linearVelocity/100 * MAX_DIST_PER_SEC * time/1000;
+        var angle = (angularVelocity/100 * MAX_ANGLE_PER_SEC) * time/MS_TO_SEC;
+        var distance = linearVelocity/100 * MAX_DIST_PER_SEC * time/MS_TO_SEC;
         var r = angle !== 0 ? distance/angle : distance;
         
         var newQuat = new Quaternion(baseTf.rotation.x, baseTf.rotation.y, baseTf.rotation.z, baseTf.rotation.w);
@@ -555,7 +555,8 @@ const useAnimation = ({blocks, tfs}) => {
     if (typeof input !== "string") {
       return input.shadow.fields.NUM;
     } else {
-      return animate(getBlock(input));
+      let block = getBlock(input);
+      return animate(block, block.type);
     }
   }
 
@@ -772,16 +773,16 @@ const useAnimation = ({blocks, tfs}) => {
         let r = getRandomInt(0, 255);
         let g = getRandomInt(0, 255);
         let b = getRandomInt(0, 255);
-        return { red: r, green: g, blue: b };
+        return { r: r, g: g, b: b };
 
       case type === "colour_rgb":
         const colour_rgb_RED = checkShadowinput(params.inputs.RED);
         const colour_rgb_GREEN = checkShadowinput(params.inputs.GREEN);
         const colour_rgb_BLUE = checkShadowinput(params.inputs.BLUE);
         return {
-          red: colour_rgb_RED,
-          green: colour_rgb_GREEN,
-          blue: colour_rgb_BLUE,
+          r: colour_rgb_RED,
+          g: colour_rgb_GREEN,
+          b: colour_rgb_BLUE,
         };
 
       case type === "colour_blend":
@@ -813,7 +814,7 @@ const useAnimation = ({blocks, tfs}) => {
           (colour_blend_COLOR2_b + colour_blend_COLOR1_b) /
           (colour_blend_RATIO + 1);
 
-        return { red: new_r, green: new_g, blue: new_b };
+        return { r: new_r, g: new_g, b: new_b };
 
       /////////////////////////////////////////////Color///////////////////////////////////////////////////////////////
       case type === "ChangeLED":
@@ -823,7 +824,13 @@ const useAnimation = ({blocks, tfs}) => {
           throw new Error("err: ChangeLED is not complete!");
         }
         var colorBlock = getBlock(params.inputs.FIELD_ChangeLED);
-        var COLOR = hexToRgb(colorBlock.fields.COLOUR);
+        var COLOR = null;
+        if (colorBlock?.fields?.COLOUR) {
+          COLOR = hexToRgb(colorBlock.fields.COLOUR);
+        } else {
+          COLOR = compile(colorBlock, colorBlock.type);
+        }
+
         var payload = {
           Red: COLOR.r,
           Green: COLOR.g,
@@ -839,9 +846,20 @@ const useAnimation = ({blocks, tfs}) => {
         }
         var colorBlock1 = getBlock(params.inputs.COLOR1);
         var colorBlock2 = getBlock(params.inputs.COLOR2);
-        var COLOR1 = hexToRgb(colorBlock1.fields.COLOUR);
-        var COLOR2 = hexToRgb(colorBlock2.fields.COLOUR);
-        var time = params.fields.FIELD_TransitionTime_TimeMs;
+        var COLOR1 = null;
+        if (colorBlock1?.fields?.COLOUR) {
+          COLOR1 = hexToRgb(colorBlock1.fields.COLOUR);
+        } else {
+          COLOR1 = animate(colorBlock1, colorBlock1.type);
+        }
+        
+        var COLOR2 = null;
+        if (colorBlock2?.fields?.COLOUR) {
+          COLOR2 = hexToRgb(colorBlock2.fields.COLOUR);
+        } else {
+          COLOR2 = animate(colorBlock2, colorBlock2.type);
+        }
+        var time = params.fields.FIELD_TransitionTime_TimeMs * MS_TO_SEC;
         var transition = params.fields.TRANSITION_TYPE;
         var payload = {
           Red: COLOR1.r,
@@ -905,7 +923,7 @@ const useAnimation = ({blocks, tfs}) => {
         return;
 
       case type === "WaitForSeconds":
-        var time = parseFloat(params.fields.NumSeconds)*1000;
+        var time = parseFloat(params.fields.NumSeconds) * MS_TO_SEC;
         bufferAnimation(time);
         return;
 
@@ -942,7 +960,7 @@ const useAnimation = ({blocks, tfs}) => {
 
       case type === "MoveHead":
         var pitch = params.fields.FIELD_MoveHead_Pitch === "D" ? 25 : -40;
-        var time = 2;
+        var time = 2000;
         addHeadAnimationKeyFrame(pitch, 0, 0, time);
         return;
 
@@ -951,14 +969,14 @@ const useAnimation = ({blocks, tfs}) => {
         pitch = checkShadowinput(params.inputs.FIELD_MoveHead_Pitch);
         roll = checkShadowinput(params.inputs.FIELD_MoveHead_Roll);
         yaw = checkShadowinput(params.inputs.FIELD_MoveHead_Yaw);
-        time = checkShadowinput(params.inputs.FIELD_MoveHead_Time);
+        time = checkShadowinput(params.inputs.FIELD_MoveHead_Time) * MS_TO_SEC;
         addHeadAnimationKeyFrame(pitch, roll, yaw, time);
         return;
 
       case type === "DriveTime":
         var direction = params.fields.FIELD_DriveTime_Direction;
         var velocity = parseInt(params.fields.FIELD_DriveTime_Velocity);
-        var time = parseInt(params.fields.FIELD_DriveTime_TimeMs);
+        var time = parseInt(params.fields.FIELD_DriveTime_TimeMs) * MS_TO_SEC;
         var linearVelocity = direction === "F" ? velocity : -velocity;
         addDriveAnimationKeyFrame(linearVelocity, 0, time);
         return;
@@ -970,22 +988,20 @@ const useAnimation = ({blocks, tfs}) => {
         var angularVelocity = checkShadowinput(
           params.inputs.FIELD_DriveTime_Angular
         );
-        var time = checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs);
+        var time = checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs) * MS_TO_SEC;
         addDriveAnimationKeyFrame(linearVelocity, angularVelocity, time);
         return;
 
       case type === "Turn":
         var direction = params.fields.FIELD_Turn_Direction;
-        var time = parseInt(params.fields.FIELD_Turn_Duration);
+        var time = parseInt(params.fields.FIELD_Turn_Duration) * MS_TO_SEC;
         var angularVelocity = direction === "L" ? 100 : -100;
         addDriveAnimationKeyFrame(0, angularVelocity, time);
         return;
 
       case type === "Turn2":
         var direction = params.fields.FIELD_Turn_Direction;
-        var time = parseInt(
-          checkShadowinput(params.inputs.FIELD_Turn_Duration)
-        );
+        var time = parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration)) * MS_TO_SEC;
         var angularVelocity = direction === "L" ? 100 : -100;
         addDriveAnimationKeyFrame(0, angularVelocity, time);
         return;
