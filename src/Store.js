@@ -18,7 +18,7 @@ const useStore = create((set,get) => ({
   widgets:{},
   counter: 0,
   lightMode: true,
-  runOnRobot: true,
+  simOnly: false,
   isConnected: false,
   mistyAudioList: [],
   mistyImageList: [],
@@ -108,9 +108,9 @@ const useStore = create((set,get) => ({
       }
     })
   },
-  toggleRunRobot: (value) => {
+  toggleSimOnly: (value) => {
     set({
-      runOnRobot: value
+      simOnly: value
     })
   },
   setAnimationFrames: (newTfs, newEndingTfs) => {

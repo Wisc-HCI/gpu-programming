@@ -459,6 +459,19 @@ self.onmessage = function (e) {
         delayJS(500);
         return;
 
+      case type === "SetVolume":
+        if (!params.inputs || !params.inputs.FIELD_Volume) {
+          throw new Error("err: SetVolume is not complete!");
+        }
+        var endpoint = "audio/volume";
+        var volumeLevel = getBlock(params.inputs.FIELD_Volume);
+        var payload = {
+          Volume: volumeLevel,
+        };
+        sendPostRequestToRobot(endpoint, payload);
+        delayJS(500);
+        return;
+
       case type === "DisplayAnimation":
         if (!params.inputs || !params.inputs.FIELD_DisplayAnimation_Filename) {
           throw new Error("err: DisplayAnimation is not complete!");

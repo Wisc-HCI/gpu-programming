@@ -14,7 +14,7 @@ import { Checkbox, Container, FormControlLabel, FormGroup, Stack } from "@mui/ma
 
 export default function SimulationControls(props) {
     const resetSim = useStore(useShallow((state) => state.resetSim));
-    const toggleRunRobot = useStore(useShallow((state) => state.toggleRunRobot));
+    const toggleSimOnly = useStore(useShallow((state) => state.toggleSimOnly));
     const isConnected  = useStore(useShallow((state) => state.isConnected ));
     const workerRef = useRef(null);
     const ip = useStore(useShallow((state) => state.ip));
@@ -22,7 +22,7 @@ export default function SimulationControls(props) {
     const clock = useStore(useShallow((state) => state.clock));
     const mistyImageList = useStore(useShallow((state) => state.mistyImageList));
     const mistyAudioList = useStore(useShallow((state) => state.mistyAudioList));
-    const runOnRobot = useStore(useShallow((state) => state.runOnRobot));
+    const simOnly = useStore(useShallow((state) => state.simOnly));
     const endingTfs = useStore(useShallow((state) => state.endingTfs));
     const setAnimationFrames = useStore(useShallow((state) => state.setAnimationFrames));
     
@@ -51,7 +51,7 @@ export default function SimulationControls(props) {
         mistyImageList: mistyImageList,
         tfs: endingTfs,
         ip: ip,
-        runOnRobot: runOnRobot
+        runOnRobot: !simOnly
     });
     workerRef.current = myWorker;
 
@@ -71,7 +71,6 @@ export default function SimulationControls(props) {
     //     tfs: endingTfs,
     // });
     let {newTfs, newEndingTfs} = useAnimation({blocks: getBlocks(), tfs: endingTfs});
-    console.log(newTfs);
     setAnimationFrames(newTfs, newEndingTfs);
 
     appendActivity("Click Run Code button");
@@ -83,7 +82,6 @@ export default function SimulationControls(props) {
       workerRef.current = null; // Clear the ref post termination
     }
     appendActivity("Click Stop Code button");
-    console.log(activityLog);
   };
 
     return (
@@ -147,7 +145,7 @@ export default function SimulationControls(props) {
                 paddingRight: "0px"
             }}>
                 <FormGroup>
-                    <FormControlLabel control={<Checkbox defaultChecked={runOnRobot} onChange={(e) => toggleRunRobot(e.target.checked)}/>} label="Robot" />
+                    <FormControlLabel control={<Checkbox onChange={(e) => toggleSimOnly(e.target.checked)}/>} label="Sim only" />
                 </FormGroup>
             </Container>}
         </Stack>

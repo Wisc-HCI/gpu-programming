@@ -37,7 +37,7 @@ Object.assign(javascriptGenerator.forBlock, forBlock);
 function App() {
 
   return (
-    <Box width={"100vw"} height={"94vh"} padding={0}>
+    <Box width={"100vw"} height={`calc(100vh - 65px)`} padding={0}>
       <TopBar/>
       <ProgramLogos />
       <ReflexContainer orientation='vertical' 

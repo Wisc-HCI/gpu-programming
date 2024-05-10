@@ -483,6 +483,10 @@ export const toolbox = {
         "contents": [
           {
             'kind': 'block',
+            'type': 'SetVolume',
+          },
+          {
+            'kind': 'block',
             'type': 'PlayAudio',
           },
           {
@@ -744,7 +748,6 @@ export const toolbox = {
             'kind': 'block',
             'type': 'DisplayText',
           },
-          
           {
             'kind': 'block',
             'type': 'WaitForSeconds',

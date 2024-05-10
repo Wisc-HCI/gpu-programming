@@ -474,6 +474,32 @@ Blockly.Blocks["PlayAudio"] = {
   }
 };
 
+
+Blockly.Blocks["SetVolume"] = {
+					
+  init: function () {
+    this.setColour("#873B9C");
+    var shadowBlock_1 = this.workspace.newBlock('math_number');
+    shadowBlock_1.setShadow(true);
+    shadowBlock_1.initSvg();
+    shadowBlock_1.render();
+    var audioLevel = shadowBlock_1.outputConnection;
+
+    this.appendValueInput("FIELD_Volume").setCheck('Number')
+      .appendField("Set volume to (0-100): ");
+    var shadowBlockConnectionAudioLevel = this.getInput("FIELD_Volume").connection;
+    shadowBlockConnectionAudioLevel.connect(audioLevel);
+
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setTooltip("Adjusts Misty's volume level for audio playback");
+
+    this.setHelpUrl("");
+  }
+};
+
 Blockly.Blocks["DisplayText"] = {
   init: function () {
     this.setColour("#873B9C");
