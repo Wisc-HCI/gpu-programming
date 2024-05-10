@@ -17,6 +17,7 @@ const useStore = create((set,get) => ({
   points:{},
   widgets:{},
   counter: 0,
+  xml:{},
   lightMode: true,
   simOnly: false,
   isConnected: false,
@@ -98,6 +99,8 @@ const useStore = create((set,get) => ({
   getBlockType:(id)=>{
     const blocks = get().blocks;
         return blocks[id]?.type || "Unknown block type"; },
+  setWorkspaceXml:(xml)=>set({ xml }),
+  getWorkspaceXml:()=>get().xml,
   onPointerMissed: () => console.log("Missed Click"),
   onPointerOver: () => {},
   onPointerOut: () => {},

@@ -31,6 +31,7 @@ export default function BlocklyInterface(props) {
   const getBlock = useStore((state) => state.getBlock);
   const updateBlock = useStore((state) => state.updateBlock);
   const getBlockType = useStore((state) => state.getBlockType);
+  const setWorkspaceXml = useStore((state) => state.setWorkspaceXml);
   const ip = useStore((state) => state.ip);
   const findNext = (arr, blockId) => {
     arr.push(blockId);
@@ -58,7 +59,7 @@ export default function BlocklyInterface(props) {
   useEffect(() => {
     if (!document.querySelector(".blocklySvg")) {
       var blocklyArea = document.getElementById("pageContainer");
-      var blocklyDiv = document.getElementById("blocklyDiv");
+      const blocklyDiv = document.getElementById("blocklyDiv");
       let startId = "";
 
       // Blockly.Blocks.variables.HUE = 330; 
@@ -134,6 +135,8 @@ export default function BlocklyInterface(props) {
 
       // Every time the workspace changes state, save the changes to storage.
       ws.addChangeListener((e) => {
+        const xml = Blockly.Xml.workspaceToDom(ws);
+        setWorkspaceXml(xml)
         // UI events are things like scrolling, zooming, etc.
         // No need to save after one of these.
         console.log(e);

@@ -17,6 +17,7 @@ export default function TopBar(props) {
   const setImageList = useStore(useShallow((state) => state.setImageList));
   const setAudioList = useStore(useShallow((state) => state.setAudioList));
   const setIsConnected = useStore(useShallow((state) => state.setIsConnected));
+  const getWorkspaceXml = useStore(useShallow((state) => state.getWorkspaceXml));
   const isConnected = useStore(useShallow((state) => state.isConnected));
   const disconnect = useStore(useShallow((state) => state.disconnect));
   const setActiveModal = useStore(state => state.setActiveModal);
@@ -71,6 +72,17 @@ export default function TopBar(props) {
     appendActivity("Hit Confirm IP Address Button");
   };
 
+  const downloadWorkspace = () => {
+    const xml = getWorkspaceXml()
+    console.log(xml)
+    // const xmlText = Blockly.Xml.domToPrettyText(xml);
+    // const blob = new Blob([xmlText], { type: 'text/xml' });
+    // const url = URL.createObjectURL(blob);
+    // const a = document.createElement('a');
+    // a.href = url;
+    // a.download = 'myBlocks.xml';
+    // a.click();
+};
   const topbarStyle = {
     backgroundColor: "#585D92", // Change the background color as needed
     color: "#FFFFFF", // Change the text color as needed
@@ -183,6 +195,19 @@ export default function TopBar(props) {
             onClick={() => {setActiveModal(true) } }>
           <SettingsIcon/>
         </IconButton>
+        <IconButton 
+            style={{
+                margin: "5px",
+                marginRight: "10px",
+                color: "black",
+                backgroundColor: "#FAFAFA",
+                borderRadius: "10px",
+                filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+            }}
+            onClick={() => {downloadWorkspace()} }>
+          <SettingsIcon/>
+        </IconButton>
+        
       </Container>
     </Box>
   );
