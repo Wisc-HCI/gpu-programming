@@ -10,11 +10,13 @@ import { toolbox } from "../toolbox";
 import "../index.css";
 import useStore from "../Store";
 
+import blockColors from '../blockPallete.json';
+
 Blockly.Blocks["Start"] = {
   init: function () {
     this.setStyle('hat_blocks')
     this.appendDummyInput().appendField("Program starts here");
-    this.setColour(345);
+    this.setColour(blockColors["procedure_category"]["colour"]);
     this.setTooltip("This is the starting block");
     this.setNextStatement(true, null);
     this.setHelpUrl("");
@@ -74,56 +76,25 @@ export default function BlocklyInterface(props) {
             "toolboxBackgroundColour": "#E4E5F1",
             "flyoutBackgroundColour": "#d2d3db"
           },
-          'categoryStyles': {
-            'logic_category': {
-              "colour": "#CC2F00"
-            },
-            'loop_category': {
-              "colour": "#DB6600"
-            },
-            'math_category': {
-              "colour": "#E39E00"
-            },
-            'colour_category': {
-              "colour": "#76B80D"
-            },
-            'procedure_category': {
-              "colour": "#007668"
-            },
-            'movement_category': {
-              "colour": "#006486"
-            },
-            'speech_category': {
-              "colour": "#007CB5"
-            },
-            'face_category': {
-              "colour": "#465AB2"
-            },
-            'audio_category': {
-              "colour": "#6D47B1"
-            },
-            'misc_category': {
-              "colour": "#873B9C"
-            },
-          },
+          'categoryStyles': {...blockColors},
           "blockStyles": {
             'logic_blocks': {
-              'colourPrimary': '#CC2F00'
+              'colourPrimary': blockColors["logic_category"]["colour"]
             },
             'loop_blocks': {
-              "colourPrimary": "#DB6600"
+              "colourPrimary": blockColors["loop_category"]["colour"]
             },
             'math_blocks': {
-              'colourPrimary': '#E39E00'
-            },
-            'colour_blocks': {
-              'colourPrimary': '#76B80D'
+              'colourPrimary': blockColors["math_category"]["colour"]
             },
             'procedure_blocks': {
-              "colourPrimary": "#007668"
+              "colourPrimary": blockColors["procedure_category"]["colour"]
             },
             'text_blocks': {
-              'colourPrimary': '#007CB5'
+              'colourPrimary': blockColors["speech_category"]["colour"]
+            },
+            'colour_blocks': {
+              'colourPrimary': blockColors["light_category"]["colour"]
             },
             'hat_blocks': {
               'hat': 'cap',

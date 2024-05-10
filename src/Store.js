@@ -20,6 +20,7 @@ const useStore = create((set,get) => ({
   lightMode: true,
   simOnly: false,
   isConnected: false,
+  workerThread: null,
   mistyAudioList: [],
   mistyImageList: [],
   clock: new Timer(),
@@ -32,6 +33,9 @@ const useStore = create((set,get) => ({
   closeModal: () => set(_ => ({ activeModal: null })),
   toggleTheme: (toggle) => set({
     lightMode: toggle
+  }),
+  setWorkerThread: (worker) => set({
+    workerThread: worker
   }),
   setImageList: (list) => set({
     mistyImageList: list

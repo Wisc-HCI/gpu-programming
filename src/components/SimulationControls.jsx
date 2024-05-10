@@ -16,7 +16,6 @@ export default function SimulationControls(props) {
     const resetSim = useStore(useShallow((state) => state.resetSim));
     const toggleSimOnly = useStore(useShallow((state) => state.toggleSimOnly));
     const isConnected  = useStore(useShallow((state) => state.isConnected ));
-    const workerRef = useRef(null);
     const ip = useStore(useShallow((state) => state.ip));
     const getBlocks = useStore(useShallow((state) => state.getBlocks));
     const clock = useStore(useShallow((state) => state.clock));
@@ -25,64 +24,90 @@ export default function SimulationControls(props) {
     const simOnly = useStore(useShallow((state) => state.simOnly));
     const endingTfs = useStore(useShallow((state) => state.endingTfs));
     const setAnimationFrames = useStore(useShallow((state) => state.setAnimationFrames));
-    
-  const runCode = async () => {
-    clock.reset_elapsed();
+    const workerThread = useStore(useShallow((state) => state.workerThread));
+    const setWorkerThread = useStore(useShallow((state) => state.setWorkerThread));
 
-    if (workerRef.current) {
-      workerRef.current.terminate();
-      workerRef.current = null;
-    }
-    const js = `import ${JSON.stringify(new URL(workerUrl, import.meta.url))}`;
-    const blob = new Blob([js], { type: "application/javascript" });
-    const workerURL = URL.createObjectURL(blob);
-    let myWorker = new Worker(workerURL, { type: "module" });
-    myWorker.onmessage = function (e) {
-        console.log("Message received from worker " + e.data);
-        workerRef.current = null;
+    function sendPostRequestToRobot(endpoint, payload) {
+        if (ip && !simOnly && isConnected) {
+          fetch(`http://${ip}/api/${endpoint}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+        }
+      }
+
+    const runCode = async () => {
+        clock.reset_elapsed();
+
+        if (workerThread) {
+            workerThread.terminate();
+            setWorkerThread(null);
+        }
+        const js = `import ${JSON.stringify(new URL(workerUrl, import.meta.url))}`;
+        const blob = new Blob([js], { type: "application/javascript" });
+        const workerURL = URL.createObjectURL(blob);
+        let myWorker = new Worker(workerURL, { type: "module" });
+        myWorker.onmessage = function (e) {
+            console.log("Message received from worker " + e.data);
+            setWorkerThread(null);
+        };
+        myWorker.onerror = function (e) {
+            // Todo, if worker errors, something isn't parameterized. Can do something with this data
+            console.log(e);
+            URL.revokeObjectURL(workerURL);
+        };
+        myWorker.postMessage({
+            blocks: getBlocks(),
+            mistyAudioList: mistyAudioList,
+            mistyImageList: mistyImageList,
+            tfs: endingTfs,
+            ip: ip,
+            runOnRobot: !simOnly
+        });
+        setWorkerThread(myWorker);
+
+        let {newTfs, newEndingTfs} = useAnimation({blocks: getBlocks(), tfs: endingTfs});
+        setAnimationFrames(newTfs, newEndingTfs);
+
+        appendActivity("Click Run Code button");
     };
-    myWorker.onerror = function (e) {
-        console.log(e);
-        URL.revokeObjectURL(workerURL);
+
+    const stopCode = () => {
+        if (workerThread) {
+            workerThread.terminate();
+            setWorkerThread(null);
+            sendPostRequestToRobot("halt", {});
+        }
+        appendActivity("Click Stop Code button");
     };
-    myWorker.postMessage({
-        blocks: getBlocks(),
-        mistyAudioList: mistyAudioList,
-        mistyImageList: mistyImageList,
-        tfs: endingTfs,
-        ip: ip,
-        runOnRobot: !simOnly
-    });
-    workerRef.current = myWorker;
 
+    const resetRobot = () => {
+        sendPostRequestToRobot("arms/set", {
+            LeftArmPosition: 90,
+            RightArmPosition: 90,
+            LeftArmVelocity: 100,
+            RightArmVelocity: 100,
+            Units: "Degrees",
+        });
+        
+        sendPostRequestToRobot("head", {
+            Pitch: 0,
+            Yaw: 0,
+            Roll: 0,
+            Duration: 1,
+            Units: "Degrees",
+        });
+        
+        sendPostRequestToRobot("images/dispaly", {
+            FileName: "e_DefaultContent.jpg",
+            Alpha: 1
+        });
 
-    // const js2 = `import ${JSON.stringify(new URL(animationUrl, import.meta.url))}`;
-    // const blob2 = new Blob([js2], { type: "application/javascript" });
-    // const workerURL2 = URL.createObjectURL(blob2);
-    // let myWorker2 = new Worker(workerURL2, { type: "module" });
-    // myWorker2.onmessage = function (e) {
-    //     console.log(e);
-    //     console.log(e.data);
-    //     console.log(e.data["LEFT_ARM_CONNECTOR_1"])
-    //     console.log("Message received from worker2 " + e.data);
-    // };
-    // myWorker2.postMessage({
-    //     blocks: getBlocks(),
-    //     tfs: endingTfs,
-    // });
-    let {newTfs, newEndingTfs} = useAnimation({blocks: getBlocks(), tfs: endingTfs});
-    setAnimationFrames(newTfs, newEndingTfs);
-
-    appendActivity("Click Run Code button");
-  };
-
-  const stopCode = () => {
-    if (workerRef.current) {
-      workerRef.current.terminate();
-      workerRef.current = null; // Clear the ref post termination
+        resetSim();
     }
-    appendActivity("Click Stop Code button");
-  };
 
     return (
         <Stack style={{
@@ -95,7 +120,7 @@ export default function SimulationControls(props) {
                 paddingLeft: "0px",
                 paddingRight: "0px"
             }}>
-                {/* {!workerRef.current && */}
+                {!workerThread &&
                     <IconButton
                         variant="contained"
                         aria-label="play"
@@ -108,8 +133,8 @@ export default function SimulationControls(props) {
                     >
                         <PlayArrowIcon />
                     </IconButton>
-                {/* } */}
-                {/* {workerRef.current &&
+                }
+                {workerThread &&
                     <IconButton
                         variant="contained"
                         aria-label="play"
@@ -122,7 +147,7 @@ export default function SimulationControls(props) {
                     >
                         <StopIcon />
                     </IconButton>
-                } */}
+                }
                 <IconButton
                     variant="contained"
                     aria-label="restart"
@@ -131,7 +156,7 @@ export default function SimulationControls(props) {
                         marginLeft: "5px",
                         marginBottom: "5px",
                     }}
-                    onClick={resetSim}
+                    onClick={resetRobot}
                 >
                     <RestartAltIcon />
                 </IconButton>

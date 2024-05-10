@@ -318,6 +318,35 @@ const useAnimation = ({blocks, tfs}) => {
     }
   }
 
+  const bufferAnimation = (time) => {
+    let lastElement = jointAnimationArrays["Head"]["x"].length-1;
+    jointAnimationArrays["Base"]["position"]["x"].push(jointAnimationArrays["Base"]["position"]["x"][lastElement]);
+    jointAnimationArrays["Base"]["position"]["y"].push(jointAnimationArrays["Base"]["position"]["y"][lastElement]);
+    jointAnimationArrays["Base"]["position"]["z"].push(jointAnimationArrays["Base"]["position"]["z"][lastElement]);
+
+    jointAnimationArrays["Base"]["rotation"]["w"].push(jointAnimationArrays["Base"]["rotation"]["w"][lastElement]);
+    jointAnimationArrays["Base"]["rotation"]["x"].push(jointAnimationArrays["Base"]["rotation"]["x"][lastElement]);
+    jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][lastElement]);
+    jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][lastElement]);
+    
+    jointAnimationArrays["Head"]["x"].push(jointAnimationArrays["Head"]["x"][lastElement]);
+    jointAnimationArrays["Head"]["y"].push(jointAnimationArrays["Head"]["y"][lastElement]);
+    jointAnimationArrays["Head"]["z"].push(jointAnimationArrays["Head"]["z"][lastElement]);
+    jointAnimationArrays["Head"]["w"].push(jointAnimationArrays["Head"]["w"][lastElement]);
+
+    jointAnimationArrays["Left"]["w"].push(jointAnimationArrays["Left"]["w"][lastElement]);
+    jointAnimationArrays["Left"]["x"].push(jointAnimationArrays["Left"]["x"][lastElement]);
+    jointAnimationArrays["Left"]["y"].push(jointAnimationArrays["Left"]["y"][lastElement]);
+    jointAnimationArrays["Left"]["z"].push(jointAnimationArrays["Left"]["z"][lastElement]);
+    
+    jointAnimationArrays["Right"]["w"].push(jointAnimationArrays["Right"]["w"][lastElement]);
+    jointAnimationArrays["Right"]["x"].push(jointAnimationArrays["Right"]["x"][lastElement]);
+    jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][lastElement]);
+    jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][lastElement]);
+    
+    jointAnimationArrays["Time"].push(time);
+  }
+
   const interpolateAnimationArray = () => {
     let newTfs = JSON.parse(JSON.stringify(tfs));
     let newEndingTfs = JSON.parse(JSON.stringify(tfs));
@@ -876,7 +905,8 @@ const useAnimation = ({blocks, tfs}) => {
         return;
 
       case type === "WaitForSeconds":
-        var time = parseFloat(params.fields.NumSeconds);
+        var time = parseFloat(params.fields.NumSeconds)*1000;
+        bufferAnimation(time);
         return;
 
       case type === "MoveArm":

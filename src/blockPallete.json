@@ -1,0 +1,32 @@
+{
+    "logic_category": {
+        "colour": "#D92626"
+    },
+    "loop_category": {
+        "colour": "#7F7F7F"
+    },
+    "math_category": {
+        "colour": "#8C564B"
+    },
+    "procedure_category": {
+        "colour": "#212121"
+    },
+    "movement_category": {
+        "colour": "#CC6633"
+    },
+    "light_category": {
+        "colour": "#25B14B"
+    },
+    "speech_category": {
+        "colour": "#33CCB3"
+    },
+    "face_category": {
+        "colour": "#3366CC"
+    },
+    "audio_category": {
+        "colour": "#7F33CC"
+    },
+    "misc_category": {
+        "colour": "#CC3399"
+    }
+}
