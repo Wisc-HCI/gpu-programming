@@ -6,6 +6,7 @@
 
 import * as Blockly from 'blockly/core';
 import blockColors from '../blockPallete.json';
+import { MathNumSlider } from './MathNumSlider';
 
 // Create a custom block called 'add_text' that adds
 // text to the output div on the sample app.
@@ -117,9 +118,9 @@ Blockly.Blocks["MoveArm"] = {
       .appendField("Move ")
       .appendField(new Blockly.FieldDropdown([["Right", "Right"], ["Left", "Left"]]), "FIELD_MoveArm_Arm")
       .appendField("arm to position")
-      .appendField(new Blockly.FieldNumber(0, -29, 90, 1), "FIELD_MoveArm_Position")
+      .appendField(new MathNumSlider(45, -29, 90, 1, "Up", "Down"), "FIELD_MoveArm_Position")
       .appendField("at a speed of (0 to 100)")
-      .appendField(new Blockly.FieldNumber(50, 0, 100, 1), "FIELD_MoveArm_Velocity");
+      .appendField(new MathNumSlider(50, 0, 100, 1, "Slow", "Fast"), "FIELD_MoveArm_Velocity");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Moves one of Misty's arms to a specified position (expects a value from 0-10, 5 points the arm straight forward) at a specified speed (between 0 and 100)");
@@ -131,9 +132,9 @@ Blockly.Blocks["MoveArm2"] = {
     this.setColour(blockColors["movement_category"]["colour"]);
     this.appendDummyInput()
       .appendField("Move both arms to position")
-      .appendField(new Blockly.FieldNumber(0), "FIELD_MoveArm2_Position")
+      .appendField(new MathNumSlider(45, -29, 90, 1, "Up", "Down"), "FIELD_MoveArm2_Position")
       .appendField("at a speed of (0 to 100)")
-      .appendField(new Blockly.FieldNumber(50, 0, 100, 1), "FIELD_MoveArm2_Velocity");
+      .appendField(new MathNumSlider(50, 0, 100, 1, "Slow", "Fast"), "FIELD_MoveArm2_Velocity");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -141,48 +142,110 @@ Blockly.Blocks["MoveArm2"] = {
   }
 };
 
-Blockly.Blocks["MoveArms"] = {
+Blockly.Blocks["BasicSlider"] = {
   init: function () {
-    this.setColour(blockColors["movement_category"]["colour"]);
+    this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
-      .appendField("Move Left Arm (-29 to 90)")
-      .appendField(new Blockly.FieldNumber(0, -29, 90, 1), "FIELD_MoveArm_LeftPosition");
+      .appendField("Slider Value: ")
+      .appendField(new MathNumSlider(0, 0, 100, 1, "Min", "Max"), "FIELD_slider_value");
+    this.setInputsInline(false);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, null);
+  }
+};
+
+Blockly.Blocks["ArmPositionSlider"] = {
+  init: function () {
+    this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
-      .appendField("Left Arm Speed (0 to 100)")
-      .appendField(new Blockly.FieldNumber(50, 0, 100, 1), "FIELD_MoveArm_LeftVelocity");
+      .appendField(new MathNumSlider(45, -29, 90, 1, "Up", "Down"), "FIELD_slider_value");
+    this.setInputsInline(false);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, null);
+  }
+};
+
+Blockly.Blocks["SpeedSlider"] = {
+  init: function () {
+    this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
-      .appendField("Move Right Arm (-29 to 90)")
-      .appendField(new Blockly.FieldNumber(0, -29, 90, 1), "FIELD_MoveArm_RightPosition");
+      .appendField(new MathNumSlider(1, 1, 100, 1, "Slow", "Fast"), "FIELD_slider_value");
+    this.setInputsInline(false);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, null);
+  }
+};
+
+Blockly.Blocks["TimeSlider"] = {
+  init: function () {
+    this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
-      .appendField("Right Arm Speed (0 to 100)")
-      .appendField(new Blockly.FieldNumber(50, 0, 100, 1), "FIELD_MoveArm_RightVelocity");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setTooltip("Moves both of Misty's arms to a specified position (expects a value from 0-10, 5 points the arm straight forward) at a specified speed (between 0 and 100)");
+      .appendField(new MathNumSlider(1, 1, 60, 1, "Short", "Long"), "FIELD_slider_value");
+    this.setInputsInline(false);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, null);
+  }
+};
+
+Blockly.Blocks["HeadPitchSlider"] = {
+  init: function () {
+    this.setColour(blockColors["math_category"]["colour"]);
+    this.appendDummyInput()
+      .appendField(new MathNumSlider(0, -40, 25, 1, "Up", "Down"), "FIELD_slider_value");
+    this.setInputsInline(false);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, null);
+  }
+};
+
+Blockly.Blocks["HeadRollSlider"] = {
+  init: function () {
+    this.setColour(blockColors["math_category"]["colour"]);
+    this.appendDummyInput()
+      .appendField(new MathNumSlider(0, -40, 40, 1, "Right", "Left"), "FIELD_slider_value");
+    this.setInputsInline(false);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, null);
+  }
+};
+
+Blockly.Blocks["HeadYawSlider"] = {
+  init: function () {
+    this.setColour(blockColors["math_category"]["colour"]);
+    this.appendDummyInput()
+      .appendField(new MathNumSlider(0, -81, 81, 1, "Right", "Left"), "FIELD_slider_value");
+    this.setInputsInline(false);
+    this.setOutput(true, null);
   }
 };
 
 Blockly.Blocks["MoveArms2"] = {
   init: function () {
-    var shadowBlock_1 = this.workspace.newBlock('math_number');
+    var shadowBlock_1 = this.workspace.newBlock('ArmPositionSlider');
     shadowBlock_1.setShadow(true);
     shadowBlock_1.initSvg();
     shadowBlock_1.render();
     var lPosBlock = shadowBlock_1.outputConnection;
 
-    var shadowBlock_2 = this.workspace.newBlock('math_number');
+    var shadowBlock_2 = this.workspace.newBlock('SpeedSlider');
     shadowBlock_2.setShadow(true);
     shadowBlock_2.initSvg();
     shadowBlock_2.render();
     var lVelBlock = shadowBlock_2.outputConnection;
 
-    var shadowBlock_3 = this.workspace.newBlock('math_number');
+    var shadowBlock_3 = this.workspace.newBlock('ArmPositionSlider');
     shadowBlock_3.setShadow(true);
     shadowBlock_3.initSvg();
     shadowBlock_3.render();
     var rPosBlock = shadowBlock_3.outputConnection;
 
-    var shadowBlock_4 = this.workspace.newBlock('math_number');
+    var shadowBlock_4 = this.workspace.newBlock('SpeedSlider');
     shadowBlock_4.setShadow(true);
     shadowBlock_4.initSvg();
     shadowBlock_4.render();
@@ -190,21 +253,55 @@ Blockly.Blocks["MoveArms2"] = {
 
     this.setColour(blockColors["movement_category"]["colour"]);
     this.appendValueInput("FIELD_MoveArm_LeftPosition").setCheck('Number')
-      .appendField("Move left arm to position (-29 to 90)");
+      .appendField("Left Arm Position");
     var shadowBlockConnectionLPosition = this.getInput("FIELD_MoveArm_LeftPosition").connection;
     shadowBlockConnectionLPosition.connect(lPosBlock);
     this.appendValueInput("FIELD_MoveArm_LeftVelocity").setCheck('Number')
-      .appendField("at a speed of (0 to 100)");
+      .appendField("Left Arm Speed");
     var shadowBlockConnectionLVelocity = this.getInput("FIELD_MoveArm_LeftVelocity").connection;
     shadowBlockConnectionLVelocity.connect(lVelBlock);
     this.appendValueInput("FIELD_MoveArm_RightPosition").setCheck('Number')
-      .appendField("and move right arm to position (-29 to 90)");
+      .appendField("Right Arm Position");
     var shadowBlockConnectionRPosition = this.getInput("FIELD_MoveArm_RightPosition").connection;
     shadowBlockConnectionRPosition.connect(rPosBlock);
     this.appendValueInput("FIELD_MoveArm_RightVelocity").setCheck('Number')
-      .appendField("at a speed of (0 to 100)");
+      .appendField("Right Arm Speed");
     var shadowBlockConnectionLVelocity = this.getInput("FIELD_MoveArm_RightVelocity").connection;
     shadowBlockConnectionLVelocity.connect(rVelBlock);
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Moves both of Misty's arms to a specified position (expects a value from 0-10, 5 points the arm straight forward) at a specified speed");
+  }
+};
+
+
+Blockly.Blocks["MoveArm3"] = {
+  init: function () {
+    var shadowBlock_1 = this.workspace.newBlock('ArmPositionSlider');
+    shadowBlock_1.setShadow(true);
+    shadowBlock_1.initSvg();
+    shadowBlock_1.render();
+    var lPosBlock = shadowBlock_1.outputConnection;
+
+    var shadowBlock_2 = this.workspace.newBlock('SpeedSlider');
+    shadowBlock_2.setShadow(true);
+    shadowBlock_2.initSvg();
+    shadowBlock_2.render();
+    var lVelBlock = shadowBlock_2.outputConnection;
+
+    this.appendDummyInput()
+      .appendField("Move Arm: ")
+      .appendField(new Blockly.FieldDropdown([["Right", "Right"], ["Left", "Left"]]), "FIELD_MoveArm_Arm")
+    this.setColour(blockColors["movement_category"]["colour"]);
+    this.appendValueInput("FIELD_MoveArm_Position").setCheck('Number')
+      .appendField("Left Arm Position");
+    var shadowBlockConnectionLPosition = this.getInput("FIELD_MoveArm_Position").connection;
+    shadowBlockConnectionLPosition.connect(lPosBlock);
+    this.appendValueInput("FIELD_MoveArm_Velocity").setCheck('Number')
+      .appendField("Left Arm Speed");
+    var shadowBlockConnectionLVelocity = this.getInput("FIELD_MoveArm_Velocity").connection;
+    shadowBlockConnectionLVelocity.connect(lVelBlock);
     this.setInputsInline(false);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -232,25 +329,25 @@ Blockly.Blocks["DriveTime"] = {
 Blockly.Blocks["MoveHead3"] = {
 
   init: function () {
-    var shadowBlock_1 = this.workspace.newBlock('math_number');
+    var shadowBlock_1 = this.workspace.newBlock('HeadPitchSlider');
     shadowBlock_1.setShadow(true);
     shadowBlock_1.initSvg();
     shadowBlock_1.render();
     var pitchBlock = shadowBlock_1.outputConnection;
 
-    var shadowBlock_2 = this.workspace.newBlock('math_number');
+    var shadowBlock_2 = this.workspace.newBlock('HeadRollSlider');
     shadowBlock_2.setShadow(true);
     shadowBlock_2.initSvg();
     shadowBlock_2.render();
     var rollBlock = shadowBlock_2.outputConnection;
 
-    var shadowBlock_3 = this.workspace.newBlock('math_number');
+    var shadowBlock_3 = this.workspace.newBlock('HeadYawSlider');
     shadowBlock_3.setShadow(true);
     shadowBlock_3.initSvg();
     shadowBlock_3.render();
     var yawBlock = shadowBlock_3.outputConnection;
 
-    var shadowBlock_4 = this.workspace.newBlock('math_number');
+    var shadowBlock_4 = this.workspace.newBlock('TimeSlider');
     shadowBlock_4.setShadow(true);
     shadowBlock_4.initSvg();
     shadowBlock_4.render();
@@ -261,22 +358,22 @@ Blockly.Blocks["MoveHead3"] = {
     this.appendDummyInput("FIELD_TEXT_IGNORE")
       .appendField("Move head");
     this.appendValueInput("FIELD_MoveHead_Pitch").setCheck('Number')
-      .appendField("Look up (-40) / down (25):");
+      .appendField("Look Up/Down:");
     var shadowBlockConnectionPitch = this.getInput("FIELD_MoveHead_Pitch").connection;
     shadowBlockConnectionPitch.connect(pitchBlock);
 
     this.appendValueInput("FIELD_MoveHead_Roll").setCheck('Number')
-      .appendField("Tilt left (-42) / right (42):");
+      .appendField("Tilt Left/Right:");
     var shadowBlockConnectionRoll = this.getInput("FIELD_MoveHead_Roll").connection;
     shadowBlockConnectionRoll.connect(rollBlock);
 
     this.appendValueInput("FIELD_MoveHead_Yaw").setCheck('Number')
-      .appendField("Look right (-81) / left (81):");
+      .appendField("Look Right/Left:");
     var shadowBlockConnectionYaw = this.getInput("FIELD_MoveHead_Yaw").connection;
     shadowBlockConnectionYaw.connect(yawBlock);
 
     this.appendValueInput("FIELD_MoveHead_Time").setCheck('Number')
-      .appendField("Time (0 to 60 seconds):");
+      .appendField("Time (seconds):");
     var shadowBlockConnectionTime = this.getInput("FIELD_MoveHead_Time").connection;
     shadowBlockConnectionTime.connect(timeBlock);
 

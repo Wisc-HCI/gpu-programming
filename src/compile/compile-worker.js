@@ -87,15 +87,16 @@ self.onmessage = function (e) {
   }
 
   function checkShadowinput(input) {
-    if (typeof input !== "string") {
+    if (typeof input !== "string" && typeof input !== "object") {
       return input.shadow.fields.NUM;
     } else {
-      let block = getBlock(input);
+      let block = input?.shadow?.id ? getBlock(input.shadow.id) : getBlock(input);
       return compile(block, block.type);
     }
   }
 
   const compile = (params, type) => {
+    console.log(params);
     switch (true) {
       case type === "controls_if":
         if (!params.inputs || !params.inputs.IF0 || !params.inputs.DO0) {
@@ -260,6 +261,15 @@ self.onmessage = function (e) {
 
       case type === "math_number":
         return params.fields.NUM;
+
+      case type == "BasicSlider":
+      case type == "ArmPositionSlider":
+      case type == "SpeedSlider":
+      case type == "TimeSlider":
+      case type == "HeadPitchSlider":
+      case type == "HeadRollSlider":
+      case type == "HeadYawSlider":
+        return params.fields["FIELD_slider_value"];
 
       case type === "math_number_property":
         const math_number_property_PROPERTY = params.fields.PROPERTY;
@@ -542,8 +552,8 @@ self.onmessage = function (e) {
       case type === "MoveArm":
         var arm =
           params.fields.FIELD_MoveArm_Arm === "Right" ? "Right" : "Left";
-        var position = parseInt(params.fields.FIELD_MoveArm_Position);
-        var velocity = parseInt(params.fields.FIELD_MoveArm_Velocity);
+        var position = checkShadowinput(params.fields.FIELD_MoveArm_Position);
+        var velocity = checkShadowinput(params.fields.FIELD_MoveArm_Velocity);
         var endpoint = "arms";
         var payload = {
           Arm: arm,
@@ -566,8 +576,8 @@ self.onmessage = function (e) {
         return;
 
       case type === "MoveArm2":
-        var position = parseInt(params.fields.FIELD_MoveArm2_Position);
-        var velocity = parseInt(params.fields.FIELD_MoveArm2_Velocity);
+        var position = checkShadowinput(params.fields.FIELD_MoveArm2_Position);
+        var velocity = checkShadowinput(params.fields.FIELD_MoveArm2_Velocity);
         var endpoint = "arms";
         var payload = {
           Arm: "both",
@@ -607,6 +617,35 @@ self.onmessage = function (e) {
         tfs[JointLookup("Right")].rotation.z = rNewQuat._z;
 
         delayJS(Math.max(lTime, rTime));
+        return;
+
+      case type === "MoveArm3":
+        var arm = params.fields.FIELD_MoveArm_Arm === "Right" ? "Right" : "Left";
+        var position = checkShadowinput(params.fields.FIELD_MoveArm_Position);
+        var velocity = checkShadowinput(params.fields.FIELD_MoveArm_Velocity);
+        var endpoint = "arms";
+        var payload = {
+          Arm: arm,
+          Position: position,
+          Velocity: velocity,
+          Units: "Degrees",
+        };
+
+        sendPostRequestToRobot(endpoint, payload);
+
+        var armTf = tfs[JointLookup(arm)];
+        var euler = quaternionToEuler(armTf.rotation);
+        var distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(euler.y - position);
+        var time = distance / ((velocity / 100) * MAX_ARM_SPEED);
+        
+        var temp = {x: 0, y: position-ARM_OFFSET_ANGLE, z: 0};
+        var lNewQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
+        tfs[JointLookup(arm)].rotation.w = lNewQuat._w;
+        tfs[JointLookup(arm)].rotation.x = lNewQuat._x;
+        tfs[JointLookup(arm)].rotation.y = lNewQuat._y;
+        tfs[JointLookup(arm)].rotation.z = lNewQuat._z;
+
+        delayJS(time);
         return;
 
       case type === "MoveArms2":

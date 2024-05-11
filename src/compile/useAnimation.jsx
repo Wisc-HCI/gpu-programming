@@ -552,10 +552,10 @@ const useAnimation = ({blocks, tfs}) => {
   }
 
   function checkShadowinput(input) {
-    if (typeof input !== "string") {
+    if (typeof input !== "string" && typeof input !== "object") {
       return input.shadow.fields.NUM;
     } else {
-      let block = getBlock(input);
+      let block = input?.shadow?.id ? getBlock(input.shadow.id) : getBlock(input);
       return animate(block, block.type);
     }
   }
@@ -717,6 +717,15 @@ const useAnimation = ({blocks, tfs}) => {
       case type === "math_number":
         return params.fields.NUM;
 
+      case type == "BasicSlider":
+      case type == "ArmPositionSlider":
+      case type == "SpeedSlider":
+      case type == "TimeSlider":
+      case type == "HeadPitchSlider":
+      case type == "HeadRollSlider":
+      case type == "HeadYawSlider":
+        return params.fields["FIELD_slider_value"];
+
       case type === "math_number_property":
         const math_number_property_PROPERTY = params.fields.PROPERTY;
         const math_number_property_NUMBER_TO_CHECK = checkShadowinput(
@@ -828,7 +837,7 @@ const useAnimation = ({blocks, tfs}) => {
         if (colorBlock?.fields?.COLOUR) {
           COLOR = hexToRgb(colorBlock.fields.COLOUR);
         } else {
-          COLOR = compile(colorBlock, colorBlock.type);
+          COLOR = animate(colorBlock, colorBlock.type);
         }
 
         var payload = {
@@ -930,15 +939,22 @@ const useAnimation = ({blocks, tfs}) => {
       case type === "MoveArm":
         var arm =
           params.fields.FIELD_MoveArm_Arm === "Right" ? "Right" : "Left";
-        var position = parseInt(params.fields.FIELD_MoveArm_Position);
-        var velocity = parseInt(params.fields.FIELD_MoveArm_Velocity);
+        var position = checkShadowinput(params.fields.FIELD_MoveArm_Position);
+        var velocity = checkShadowinput(params.fields.FIELD_MoveArm_Velocity);
         addArmAnimationKeyFrame(arm, position, velocity);
         return;
 
       case type === "MoveArm2":
-        var position = parseInt(params.fields.FIELD_MoveArm2_Position);
-        var velocity = parseInt(params.fields.FIELD_MoveArm2_Velocity);
+        var position = checkShadowinput(params.fields.FIELD_MoveArm2_Position);
+        var velocity = checkShadowinput(params.fields.FIELD_MoveArm2_Velocity);
         var arm = "both";
+        addArmAnimationKeyFrame(arm, position, velocity);
+        return;
+
+      case type === "MoveArm3":
+        var arm = params.fields.FIELD_MoveArm_Arm === "Right" ? "Right" : "Left";
+        var position = checkShadowinput(params.fields.FIELD_MoveArm_Position);
+        var velocity = checkShadowinput(params.fields.FIELD_MoveArm_Velocity);
         addArmAnimationKeyFrame(arm, position, velocity);
         return;
 
@@ -1032,8 +1048,6 @@ const useAnimation = ({blocks, tfs}) => {
     currParam = getBlock(currParam.next);
     animate(currParam, currParam.type);
   }
-
-  console.log(jointAnimationArrays);
 
   // Send data back to the main thread
   return interpolateAnimationArray()

@@ -85,8 +85,10 @@ export const toolbox = {
               'NUM': 123,
             },
           },
-          
-        
+          {
+            'kind': 'block',
+            'type': 'BasicSlider'
+          },
           {
             'kind': 'block',
             'type': 'math_number_property',
@@ -180,7 +182,10 @@ export const toolbox = {
             'kind': 'block',
             'type': 'MoveArms2',
           },
-          
+          {
+            'kind': 'block',
+            'type': 'MoveArm3',
+          },
         ]
       },
       {
