@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import * as Blockly from "blockly";
 import useStore from "../Store";
 import { activityLog, appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
@@ -74,15 +75,16 @@ export default function TopBar(props) {
 
   const downloadWorkspace = () => {
     const xml = getWorkspaceXml()
-    console.log(xml)
-    // const xmlText = Blockly.Xml.domToPrettyText(xml);
-    // const blob = new Blob([xmlText], { type: 'text/xml' });
-    // const url = URL.createObjectURL(blob);
-    // const a = document.createElement('a');
-    // a.href = url;
-    // a.download = 'myBlocks.xml';
-    // a.click();
-};
+    const xmlText = Blockly.Xml.domToPrettyText(xml);
+    const blob = new Blob([xmlText], { type: 'text/xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'myBlocks.xml';
+    a.click();
+    console.log(Blockly.Xml);
+  };
+  
   const topbarStyle = {
     backgroundColor: "#585D92", // Change the background color as needed
     color: "#FFFFFF", // Change the text color as needed
@@ -206,8 +208,7 @@ export default function TopBar(props) {
             }}
             onClick={() => {downloadWorkspace()} }>
           <SettingsIcon/>
-        </IconButton>
-        
+        </IconButton>      
       </Container>
     </Box>
   );
