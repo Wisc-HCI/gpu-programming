@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import * as Blockly from "blockly";
 import { appendActivity } from "./ActivityTracker";
 
@@ -32,6 +32,7 @@ export default function BlocklyInterface(props) {
   const updateBlock = useStore((state) => state.updateBlock);
   const getBlockType = useStore((state) => state.getBlockType);
   const setWorkspaceXml = useStore((state) => state.setWorkspaceXml);
+  const workspaceRef = useRef(null);
   const ip = useStore((state) => state.ip);
   const findNext = (arr, blockId) => {
     arr.push(blockId);
@@ -52,60 +53,89 @@ export default function BlocklyInterface(props) {
     }
   };
 
+  
+  const uploadBlocks = (event) => {
+    const fileReader = new FileReader();
+    fileReader.onload = function() {
+        const text = fileReader.result;
+        if (workspaceRef.current) {
+            try {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, "text/xml");
+                Blockly.Xml.domToWorkspace(doc.firstChild, workspaceRef.current);
+            } catch (error) {
+                console.error("Error parsing XML:", error);
+            }
+        } else {
+            console.error("Blockly workspace not initialized");
+        }
+    };
+    fileReader.readAsText(event.target.files[0]);
+  };
+
+
   // Register the blocks and generator with Blockly
   Blockly.common.defineBlocks(blocks);
   Object.assign(javascriptGenerator.forBlock, forBlock);
 
   useEffect(() => {
+
     if (!document.querySelector(".blocklySvg")) {
-      var blocklyArea = document.getElementById("pageContainer");
+      const blocklyArea = document.getElementById("pageContainer");
       const blocklyDiv = document.getElementById("blocklyDiv");
+      if (!blocklyArea || !blocklyDiv) {
+        return; // Exit if blocklyDiv or blocklyArea isn't rendered yet
+      }
       let startId = "";
 
-      // Blockly.Blocks.variables.HUE = 330; 
-      const ws = Blockly.inject(blocklyDiv, {
-        toolbox:toolbox, 
-        grid:
-        {
-          spacing: 20,
-          length: 3,
-         colour: '#ccc',
-         snap: true
-        },
-        theme: Blockly.Theme.defineTheme('gpuTheme', {
-          "componentStyles": {
-            "toolboxBackgroundColour": "#E4E5F1",
-            "flyoutBackgroundColour": "#d2d3db"
+      if (!workspaceRef.current) {
+
+        // Blockly.Blocks.variables.HUE = 330; 
+        workspaceRef.current = Blockly.inject(blocklyDiv, {
+          toolbox:toolbox, 
+          grid:
+          {
+            spacing: 20,
+            length: 3,
+          colour: '#ccc',
+          snap: true
           },
-          'categoryStyles': {...blockColors},
-          "blockStyles": {
-            'logic_blocks': {
-              'colourPrimary': blockColors["logic_category"]["colour"]
+          theme: Blockly.Theme.defineTheme('gpuTheme', {
+            "componentStyles": {
+              "toolboxBackgroundColour": "#E4E5F1",
+              "flyoutBackgroundColour": "#d2d3db"
             },
-            'loop_blocks': {
-              "colourPrimary": blockColors["loop_category"]["colour"]
-            },
-            'math_blocks': {
-              'colourPrimary': blockColors["math_category"]["colour"]
-            },
-            'procedure_blocks': {
-              "colourPrimary": blockColors["procedure_category"]["colour"]
-            },
-            'text_blocks': {
-              'colourPrimary': blockColors["speech_category"]["colour"]
-            },
-            'colour_blocks': {
-              'colourPrimary': blockColors["light_category"]["colour"]
-            },
-            'hat_blocks': {
-              'hat': 'cap',
+            'categoryStyles': {...blockColors},
+            "blockStyles": {
+              'logic_blocks': {
+                'colourPrimary': blockColors["logic_category"]["colour"]
+              },
+              'loop_blocks': {
+                "colourPrimary": blockColors["loop_category"]["colour"]
+              },
+              'math_blocks': {
+                'colourPrimary': blockColors["math_category"]["colour"]
+              },
+              'procedure_blocks': {
+                "colourPrimary": blockColors["procedure_category"]["colour"]
+              },
+              'text_blocks': {
+                'colourPrimary': blockColors["speech_category"]["colour"]
+              },
+              'colour_blocks': {
+                'colourPrimary': blockColors["light_category"]["colour"]
+              },
+              'hat_blocks': {
+                'hat': 'cap',
+              }
             }
-          }
-      })});
-      const initialBlock = ws.newBlock("Start");
+          })
+        })
+      };
+
+      
+      const initialBlock = workspaceRef.current.newBlock("Start");
       initialBlock.moveBy(50, 50);
-      save(ws);
-      load(ws);
       javascriptGenerator.addReservedWords("code");
 
       //add click event listener to run button
@@ -128,15 +158,17 @@ export default function BlocklyInterface(props) {
           blocklyDiv.style.top = y + "px";
           blocklyDiv.style.width = blocklyArea.offsetWidth + "px";
           blocklyDiv.style.height = blocklyArea.offsetHeight + "px";
-          Blockly.svgResize(ws);
+          Blockly.svgResize(workspaceRef.current);
         }
       });
       observer.observe(blocklyArea);
 
+      
       // Every time the workspace changes state, save the changes to storage.
-      ws.addChangeListener((e) => {
-        const xml = Blockly.Xml.workspaceToDom(ws);
-        setWorkspaceXml(xml)
+      workspaceRef.current.addChangeListener((e) => {
+        //const xml = Blockly.Xml.workspaceToDom(ws);
+        //setWorkspaceXml(xml)
+
         // UI events are things like scrolling, zooming, etc.
         // No need to save after one of these.
         console.log(e);
@@ -350,12 +382,18 @@ export default function BlocklyInterface(props) {
             //if yes, resore refrence to shadow box
           }
         }
-        save(ws);
       });
     }
+  
+  
   }, []);
 
+  
+
+
   return (
+    <div>
+      <input type="file" onChange={uploadBlocks} accept=".xml" />
     <div id="pageContainer" style={{ width: "100%", height: "100%" }}>
       <div
         id="blocklyDiv"
@@ -369,9 +407,13 @@ export default function BlocklyInterface(props) {
       <xml id="toolbox" style={{ display: "none" }}>
         {/* Toolbox XML goes here */}
       </xml>
+      
       {/* <div id="outputPane">
 <pre id="generatedCode"><code></code></pre>
 </div> */}
-    </div>
+  </div>
+  
+  </div>
+  
   );
 }
