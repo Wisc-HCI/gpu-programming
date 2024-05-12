@@ -136,7 +136,12 @@ export default function BlocklyInterface(props) {
       
       const initialBlock = workspaceRef.current.newBlock("Start");
       initialBlock.moveBy(50, 50);
+    initialBlock.setDeletable(false);
+    initialBlock.moveBy(50, 50);
+    initialBlock.initSvg();
+    initialBlock.render();
       javascriptGenerator.addReservedWords("code");
+
 
       //add click event listener to run button
       // document.getElementById('runButton').addEventListener('click', runCode);
@@ -166,9 +171,9 @@ export default function BlocklyInterface(props) {
       
       // Every time the workspace changes state, save the changes to storage.
       workspaceRef.current.addChangeListener((e) => {
-        //const xml = Blockly.Xml.workspaceToDom(ws);
-        //setWorkspaceXml(xml)
 
+      const xml = Blockly.Xml.workspaceToDom(workspaceRef.current);
+      setWorkspaceXml(xml)
         // UI events are things like scrolling, zooming, etc.
         // No need to save after one of these.
         console.log(e);
