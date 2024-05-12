@@ -1,16 +1,22 @@
 import React, { useState } from "react";
-import * as Blockly from "blockly";
 import useStore from "../Store";
-import { activityLog, appendActivity } from "./ActivityTracker";
+import { appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
-import { Box, Button, TextField, Container, Typography, Grid, IconButton } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Container,
+  Typography,
+  Grid,
+  IconButton,
+} from "@mui/material";
 
-import { default as MistyLogo } from '../svgs/misty.svg';
-import { default as PluggedIcon } from '../svgs/plugged.svg';
-import { default as UnpluggedIcon } from '../svgs/unplugged.svg';
+import { default as MistyLogo } from "../svgs/misty.svg";
+import { default as PluggedIcon } from "../svgs/plugged.svg";
+import { default as UnpluggedIcon } from "../svgs/unplugged.svg";
 
 import DropShadowButton from "./DropShadowButton";
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
@@ -18,10 +24,9 @@ export default function TopBar(props) {
   const setImageList = useStore(useShallow((state) => state.setImageList));
   const setAudioList = useStore(useShallow((state) => state.setAudioList));
   const setIsConnected = useStore(useShallow((state) => state.setIsConnected));
-  const getWorkspaceXml = useStore(useShallow((state) => state.getWorkspaceXml));
   const isConnected = useStore(useShallow((state) => state.isConnected));
   const disconnect = useStore(useShallow((state) => state.disconnect));
-  const setActiveModal = useStore(state => state.setActiveModal);
+  const setActiveModal = useStore((state) => state.setActiveModal);
 
   const confirmIpAddress = () => {
     setIp(inputVal);
@@ -73,18 +78,6 @@ export default function TopBar(props) {
     appendActivity("Hit Confirm IP Address Button");
   };
 
-  const downloadWorkspace = () => {
-    const xml = getWorkspaceXml()
-    const xmlText = Blockly.Xml.domToPrettyText(xml);
-    const blob = new Blob([xmlText], { type: 'text/xml' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'myBlocks.xml';
-    a.click();
-    console.log(Blockly.Xml);
-  };
-  
   const topbarStyle = {
     backgroundColor: "#585D92", // Change the background color as needed
     color: "#FFFFFF", // Change the text color as needed
@@ -95,10 +88,8 @@ export default function TopBar(props) {
     filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
     zIndex: 101,
     position: "relative",
-    height: "65px"
+    height: "65px",
   };
-
-
 
   return (
     <Box style={topbarStyle}>
@@ -107,9 +98,9 @@ export default function TopBar(props) {
         direction="row"
         justifyContent={"left"}
         alignItems={"center"}
-        style={{paddingLeft: "20px"}}
+        style={{ paddingLeft: "20px" }}
       >
-        <img style={{height:"35px", paddingRight: "10px"}} src={MistyLogo} />
+        <img style={{ height: "35px", paddingRight: "10px" }} src={MistyLogo} />
         <Typography display={"inline"} variant="h5">
           Robo-Blocks
         </Typography>
@@ -127,51 +118,57 @@ export default function TopBar(props) {
           paddingRight: "0px",
         }}
       >
-        {!isConnected && 
-          <div style={{
-            backgroundColor: "#FF7E7E", 
-            width: "45px",
-            height: "45px",
-            borderRadius: "25px",
-            marginRight: "10px",
-            filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
-            }}>
+        {!isConnected && (
+          <div
+            style={{
+              backgroundColor: "#FF7E7E",
+              width: "45px",
+              height: "45px",
+              borderRadius: "25px",
+              marginRight: "10px",
+              filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+            }}
+          >
             <img
               style={{
-                height:"34px",
+                height: "34px",
                 position: "absolute",
                 top: "5px",
-                left: "5px"
+                left: "5px",
               }}
-              src={UnpluggedIcon} />
+              src={UnpluggedIcon}
+            />
           </div>
-        }
-        {isConnected && 
-          <div style={{
-            backgroundColor: "#A0FF7E", 
-            width: "45px",
-            height: "45px",
-            borderRadius: "25px",
-            marginRight: "10px",
-            filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
-          }}>
-            <img 
+        )}
+        {isConnected && (
+          <div
+            style={{
+              backgroundColor: "#A0FF7E",
+              width: "45px",
+              height: "45px",
+              borderRadius: "25px",
+              marginRight: "10px",
+              filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+            }}
+          >
+            <img
               style={{
-                height:"34px",
+                height: "34px",
                 position: "absolute",
                 top: "5px",
-                left: "5px"
+                left: "5px",
               }}
-              src={PluggedIcon} />
+              src={PluggedIcon}
+            />
           </div>
-        }
+        )}
         <TextField
           id="robotIpAddress"
           disabled={isConnected}
           label="IP"
           variant="filled"
-          style={{ 
-            backgroundColor: "#FFFFFF50", 
+          style={{
+            backgroundColor: "#FFFFFF50",
             borderRadius: "5px",
             filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
             marginRight: "5px",
@@ -179,36 +176,27 @@ export default function TopBar(props) {
           defaultValue=""
           onChange={(e) => setInputVal(e.target.value)}
         />
-        {!isConnected && 
-          <DropShadowButton text={"Connect"} clickFunction={confirmIpAddress}/>
-        }
-        {isConnected &&
-          <DropShadowButton text={"Disconnect"} clickFunction={disconnect}/>
-        }
-        <IconButton 
-            style={{
-                margin: "5px",
-                marginRight: "10px",
-                color: "black",
-                backgroundColor: "#FAFAFA",
-                borderRadius: "10px",
-                filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
-            }}
-            onClick={() => {setActiveModal(true) } }>
-          <SettingsIcon/>
+        {!isConnected && (
+          <DropShadowButton text={"Connect"} clickFunction={confirmIpAddress} />
+        )}
+        {isConnected && (
+          <DropShadowButton text={"Disconnect"} clickFunction={disconnect} />
+        )}
+        <IconButton
+          style={{
+            margin: "5px",
+            marginRight: "10px",
+            color: "black",
+            backgroundColor: "#FAFAFA",
+            borderRadius: "10px",
+            filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+          }}
+          onClick={() => {
+            setActiveModal(true);
+          }}
+        >
+          <SettingsIcon />
         </IconButton>
-        <IconButton 
-            style={{
-                margin: "5px",
-                marginRight: "10px",
-                color: "black",
-                backgroundColor: "#FAFAFA",
-                borderRadius: "10px",
-                filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
-            }}
-            onClick={() => {downloadWorkspace()} }>
-          <SettingsIcon/>
-        </IconButton>      
       </Container>
     </Box>
   );

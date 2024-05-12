@@ -17,11 +17,14 @@ const useStore = create((set,get) => ({
   points:{},
   widgets:{},
   counter: 0,
-  xml:{},
+  blocklyWorkspaceXML:{},
   lightMode: true,
   simOnly: false,
   isConnected: false,
   workerThread: null,
+  blocklyWorkspace: null,
+  llmEndpoint: "",
+  llmAPIKey: "",
   mistyAudioList: [],
   mistyImageList: [],
   clock: new Timer(),
@@ -37,6 +40,15 @@ const useStore = create((set,get) => ({
   }),
   setWorkerThread: (worker) => set({
     workerThread: worker
+  }),
+  setBlocklyWorkspace: (ws) => set({
+    blocklyWorkspace: ws
+  }),
+  setAPIKey: (key) => set({
+    llmAPIKey: key
+  }),
+  setEndpoint: (endpoint) => set({
+    llmEndpoint: endpoint
   }),
   setImageList: (list) => set({
     mistyImageList: list
@@ -99,8 +111,8 @@ const useStore = create((set,get) => ({
   getBlockType:(id)=>{
     const blocks = get().blocks;
         return blocks[id]?.type || "Unknown block type"; },
-  setWorkspaceXml:(xml)=>set({ xml }),
-  getWorkspaceXml:()=>get().xml,
+  setWorkspaceXml:(xml)=>set({ blocklyWorkspaceXML: xml }),
+  getWorkspaceXml:()=>get().blocklyWorkspaceXML,
   onPointerMissed: () => console.log("Missed Click"),
   onPointerOver: () => {},
   onPointerOut: () => {},
