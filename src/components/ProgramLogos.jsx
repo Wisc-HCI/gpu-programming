@@ -13,9 +13,10 @@ export default function ProgramLogos(props) {
             bottom: "20px",
             // padding: "10px",
             zIndex: "101",
+            width: "70px"
         }}>
-            <img style={{width:"70px", paddingBottom: "20px"}} src={PRLLogo} />
-            <img width="70px" src={UWLogo} />
+            <img style={{paddingBottom: "20px"}} src={PRLLogo} />
+            <img src={UWLogo} />
         </Stack>
     );
 }

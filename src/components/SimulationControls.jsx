@@ -26,6 +26,7 @@ export default function SimulationControls(props) {
     const setAnimationFrames = useStore(useShallow((state) => state.setAnimationFrames));
     const workerThread = useStore(useShallow((state) => state.workerThread));
     const setWorkerThread = useStore(useShallow((state) => state.setWorkerThread));
+    const llmMode = useStore(useShallow(state => state.llmMode));
 
     function sendPostRequestToRobot(endpoint, payload) {
         if (ip && !simOnly && isConnected) {
@@ -119,12 +120,14 @@ export default function SimulationControls(props) {
         resetSim();
     }
 
+    let styleLocation = llmMode ? {top: "10px"} : {bottom: "0px"}
+
     return (
         <Stack style={{
             position: "absolute",
+            padding: "0px",
             left: "10px",
-            bottom: "0px",
-            padding: "0px"
+            ...styleLocation
         }}>
             <Container style={{
                 paddingLeft: "0px",

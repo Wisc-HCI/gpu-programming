@@ -23,8 +23,10 @@ import {
 import 'react-reflex/styles.css';
 import { Box } from '@mui/material';
 import Simulator from './components/Simulator.jsx';
-import ProgramLogos from './components/ProgramLogos.jsx';
 import { SettingsModal } from './components/Settings.jsx';
+import useStore from './Store.js';
+import { useShallow } from 'zustand/react/shallow';
+import GPTPanel from './components/GPTPanel.jsx';
 
 const Item = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -35,11 +37,11 @@ const Item = styled('div')(({ theme }) => ({
 Blockly.common.defineBlocks(blocks);
 Object.assign(javascriptGenerator.forBlock, forBlock);
 function App() {
+  const llmMode = useStore(useShallow(state => state.llmMode));
 
   return (
     <Box width={"100vw"} height={`calc(100vh - 65px)`} padding={0}>
       <TopBar/>
-      <ProgramLogos />
       <ReflexContainer orientation='vertical' 
           style={{
             // backgroundColor: "red",
@@ -49,8 +51,9 @@ function App() {
           }}>
         
         <ReflexElement flex={0.55}>
-          <Item style={{width: "100%", height:"100%", paddingLeft: "2px"}}>
-            <BlocklyInterface/>
+          <Item style={{width: "100%", height:"100%"}}>
+            {!llmMode && <BlocklyInterface/>}
+            {llmMode && <GPTPanel />}
           </Item>
         </ReflexElement>
         
@@ -60,7 +63,8 @@ function App() {
           <ReflexContainer orientation='horizontal'>
             <ReflexElement>
               <Item>
-                <Simulator />
+                {!llmMode && <Simulator />}
+                {llmMode && <BlocklyInterface />}
               </Item>
             </ReflexElement>
             
@@ -69,6 +73,7 @@ function App() {
             <ReflexElement>
               <Item>
                 {/* <TrackerScreen/> */}
+                {llmMode && <Simulator />}
               </Item>
             </ReflexElement>
           

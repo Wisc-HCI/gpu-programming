@@ -9,6 +9,7 @@ import {
   Typography,
   Grid,
   IconButton,
+  Button,
 } from "@mui/material";
 
 import { default as MistyLogo } from "../svgs/misty.svg";
@@ -17,6 +18,7 @@ import { default as UnpluggedIcon } from "../svgs/unplugged.svg";
 
 import DropShadowButton from "./DropShadowButton";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { EditNote } from "@mui/icons-material";
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
@@ -27,6 +29,8 @@ export default function TopBar(props) {
   const isConnected = useStore(useShallow((state) => state.isConnected));
   const disconnect = useStore(useShallow((state) => state.disconnect));
   const setActiveModal = useStore((state) => state.setActiveModal);
+  const toggleLLMMode = useStore(state => state.toggleLLMMode);
+  const llmMode = useStore(useShallow(state => state.llmMode));
 
   const confirmIpAddress = () => {
     setIp(inputVal);
@@ -105,6 +109,22 @@ export default function TopBar(props) {
           Robo-Blocks
         </Typography>
       </Grid>
+
+      <Container
+        style={{
+          textAlign: "center",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          marginTop: "5px",
+          marginBottom: "5px",
+          paddingRight: "0px",
+        }}
+      >
+        <DropShadowButton icon={<EditNote />} text={llmMode ? "Program Manually" : "Program with ChatGPT"} clickFunction={() => toggleLLMMode(!llmMode)}/>
+      </Container>
+      
 
       <Container
         style={{

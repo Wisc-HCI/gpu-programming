@@ -6,6 +6,7 @@ import { JointLookup } from './Misty-Robot/JointLookup.js';
 import { MISTY_ARM_LENGTH, PI, MAX_ARM_SPEED, ARM_OFFSET_ANGLE, MAX_DIST_PER_SEC, MAX_ANGLE_PER_SEC, SIM_TIME } from './Constants.js';
 import { starting_tfs, starting_items } from './Misty_Load_File.js';
 import { Quaternion, Vector3 } from "three";
+import * as Blockly from "blockly";
  
 const useStore = create((set,get) => ({
   ip: '',
@@ -25,6 +26,8 @@ const useStore = create((set,get) => ({
   blocklyWorkspace: null,
   llmEndpoint: "",
   llmAPIKey: "",
+  userPrompt: "",
+  llmMode: false,
   mistyAudioList: [],
   mistyImageList: [],
   clock: new Timer(),
@@ -35,6 +38,9 @@ const useStore = create((set,get) => ({
   activeModal: null,
   setActiveModal: (modal) => set(_ => ({ activeModal: modal })),
   closeModal: () => set(_ => ({ activeModal: null })),
+  toggleLLMMode: (toggle) => set({
+    llmMode: toggle
+  }),
   toggleTheme: (toggle) => set({
     lightMode: toggle
   }),
@@ -56,6 +62,75 @@ const useStore = create((set,get) => ({
   setAudioList: (list) => set({
     mistyAudioList: list
   }),
+  setUserPrompt: (userPrompt) => set({
+    userPrompt
+  }),
+  generateProgramOutline: () => {
+    console.log(get().userPrompt);
+  },
+  clearProgram: () => set({
+    blocks: {}
+  }),
+  loadBlocks: (data, ws) => {
+    // Create blocks
+    get().clearProgram();
+    let initialBlock = null;
+    let blockIds = [];
+    let blocklyBlockIds = [];
+    let nextList = [data["data"][0].id];
+    for(let i = 0; i < data["data"].length; i++) {
+      let t = Blockly.serialization.blocks.append({
+        "type": data["data"][i]["type"],
+      }, ws);
+      if (t.type === "Start") {
+        initialBlock = t;
+      }
+
+      if (data["data"][i]["type"] === "math_number") {
+        t.getField("NUM").setValue(data["data"][i]["value"])
+      }
+      if (data["data"][i]["type"] === "colour_picker") {
+        t.getField("COLOUR").setValue(data["data"][i]["value"])
+      }
+      if (data["data"][i]["type"] === "text") {
+        t.getField("TEXT").setValue(data["data"][i]["value"])
+      }
+      if (["BasicSlider", "ArmPositionSlider", "SpeedSlider", "TimeSlider", "HeadPitchSlider", "HeadRollSlider", "HeadYawSlider"].includes(data["data"][i]["type"])) {
+        t.getField("FIELD_slider_value").setValue(data["data"][i]["value"]);
+      }
+      
+      blockIds.push(data["data"][i]["id"]);
+      blocklyBlockIds.push(t.id);
+      if (data["data"][i]?.["nextStatement"]) {
+        nextList.push(data["data"][i]?.["nextStatement"]);
+      }
+    }
+    
+    // Connect blocks to parameters
+    for(let i = 0; i < data["data"].length; i++) {
+      let currentBlock = ws.getBlockById(blocklyBlockIds[blockIds.indexOf(data["data"][i]["id"])])
+      if (currentBlock) {
+        Object.keys(data["data"][i]).forEach(key => {
+          if (!(key == "id" || key == "value" || key == "type" || key == "nextStatement")) {
+            const paramBlock = ws.getBlockById(blocklyBlockIds[blockIds.indexOf(data["data"][i][key])]);
+            currentBlock.getInput(key).connection.connect(paramBlock.outputConnection);
+          }
+        });
+      }
+    }
+    
+    // Connect blocks to parents
+    for(let i = 1; i < nextList.length; i++) {
+      let currentBlock = ws.getBlockById(blocklyBlockIds[blockIds.indexOf(nextList[i])]);
+      let parentBlock = ws.getBlockById(blocklyBlockIds[blockIds.indexOf(nextList[i-1])]);
+      if (currentBlock) {
+        parentBlock.nextConnection.connect(currentBlock.previousConnection);
+      }
+    }
+
+    let currentBlock = ws.getBlockById(blocklyBlockIds[blockIds.indexOf(nextList[0])]);
+    initialBlock.nextConnection.connect(currentBlock.previousConnection);
+  },
   setIsConnected: (isConnected) => set({ isConnected: isConnected}),
   loadFromURDF: (urdfFile) => set({
     tfs: {...parseUrdfForJoints(urdfFile)},
@@ -173,21 +248,21 @@ const useStore = create((set,get) => ({
     let aX = baseTf.position.x;
     let aY = baseTf.position.y;
     if (angle > 0) {
-      aX += r;
+      aX = r;
     } else if (angle < 0) {
       aX -= r;
     }
 
     console.log(angle);
     let newPosition = null;
-    for (let i=10; i <= maxTime; i+=10) {
+    for (let i=10; i <= maxTime; i=10) {
       timeVector.push(time/1000*i);
       let tAngle = angle * i/maxTime;
       let tDist = distance * i/maxTime;
       if (angle !== 0) {
-        newPosition = new Vector3(aX + (Math.cos(currentEulerZ) * tDist / tAngle * Math.cos(tDist)), aY + (Math.sin(currentEulerZ) * tDist / tAngle * Math.sin(tDist)), zVector[0]);
+        newPosition = new Vector3(aX  (Math.cos(currentEulerZ) * tDist / tAngle * Math.cos(tDist)), aY  (Math.sin(currentEulerZ) * tDist / tAngle * Math.sin(tDist)), zVector[0]);
       } else {
-        newPosition = new Vector3(aX + (Math.cos(currentEulerZ) * tDist), aY + (Math.sin(currentEulerZ) * tDist), zVector[0]);
+        newPosition = new Vector3(aX  (Math.cos(currentEulerZ) * tDist), aY  (Math.sin(currentEulerZ) * tDist), zVector[0]);
       }
       
       xVector.push(newPosition.x);

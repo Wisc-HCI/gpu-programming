@@ -11,6 +11,7 @@ import "../index.css";
 import useStore from "../Store";
 
 import blockColors from "../blockPallete.json";
+import ProgramLogos from './ProgramLogos.jsx';
 
 Blockly.Blocks["Start"] = {
   init: function () {
@@ -32,6 +33,7 @@ export default function BlocklyInterface(props) {
   const updateBlock = useStore((state) => state.updateBlock);
   const getBlockType = useStore((state) => state.getBlockType);
   const setBlocklyWorkspace = useStore((state) => state.setBlocklyWorkspace);
+  const loadBlocks = useStore((state) => state.loadBlocks);
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
   const ip = useStore((state) => state.ip);
 
@@ -65,58 +67,93 @@ export default function BlocklyInterface(props) {
       let startId = "";
 
       let ws = null;
-      if (!blocklyWorkspace) {
-        // Blockly.Blocks.variables.HUE = 330;
-        ws = Blockly.inject(blocklyDiv, {
-          toolbox: toolbox,
-          grid: {
-            spacing: 20,
-            length: 3,
-            colour: "#ccc",
-            snap: true,
+      ws = Blockly.inject(blocklyDiv, {
+        toolbox: toolbox,
+        grid: {
+          spacing: 20,
+          length: 3,
+          colour: "#ccc",
+          snap: true,
+        },
+        theme: Blockly.Theme.defineTheme("gpuTheme", {
+          componentStyles: {
+            toolboxBackgroundColour: "#E4E5F1",
+            flyoutBackgroundColour: "#d2d3db",
           },
-          theme: Blockly.Theme.defineTheme("gpuTheme", {
-            componentStyles: {
-              toolboxBackgroundColour: "#E4E5F1",
-              flyoutBackgroundColour: "#d2d3db",
+          categoryStyles: { ...blockColors },
+          blockStyles: {
+            logic_blocks: {
+              colourPrimary: blockColors["logic_category"]["colour"],
             },
-            categoryStyles: { ...blockColors },
-            blockStyles: {
-              logic_blocks: {
-                colourPrimary: blockColors["logic_category"]["colour"],
-              },
-              loop_blocks: {
-                colourPrimary: blockColors["loop_category"]["colour"],
-              },
-              math_blocks: {
-                colourPrimary: blockColors["math_category"]["colour"],
-              },
-              procedure_blocks: {
-                colourPrimary: blockColors["procedure_category"]["colour"],
-              },
-              text_blocks: {
-                colourPrimary: blockColors["speech_category"]["colour"],
-              },
-              colour_blocks: {
-                colourPrimary: blockColors["light_category"]["colour"],
-              },
-              hat_blocks: {
-                hat: "cap",
-              },
+            loop_blocks: {
+              colourPrimary: blockColors["loop_category"]["colour"],
             },
-          }),
-        });
-      }
+            math_blocks: {
+              colourPrimary: blockColors["math_category"]["colour"],
+            },
+            procedure_blocks: {
+              colourPrimary: blockColors["procedure_category"]["colour"],
+            },
+            text_blocks: {
+              colourPrimary: blockColors["speech_category"]["colour"],
+            },
+            colour_blocks: {
+              colourPrimary: blockColors["light_category"]["colour"],
+            },
+            hat_blocks: {
+              hat: "cap",
+            },
+          },
+        }),
+      });
 
-      const existingStartBlocks = ws
+      if (!blocklyWorkspace) {
+        const existingStartBlocks = ws
         .getAllBlocks()
         .filter((block) => block.type === "Start");
-      if (existingStartBlocks.length === 0) {
-        const initialBlock = ws.newBlock("Start");
-        initialBlock.setDeletable(false);
-        initialBlock.moveBy(50, 50);
-        initialBlock.initSvg();
-        initialBlock.render();
+        if (existingStartBlocks.length === 0) {
+          const initialBlock = ws.newBlock("Start");
+          initialBlock.setDeletable(false);
+          initialBlock.moveBy(50, 50);
+          initialBlock.initSvg();
+          initialBlock.render();
+        } 
+      }
+
+      if (blocklyWorkspace) {
+        let data = {"data": []};
+        let blockKeys = Object.keys(blocks);
+        let numBlocks = blockKeys.length;
+        for (let i = 0; i < numBlocks; i++) {
+          let blockData = {
+            id: blocks[blockKeys[i]].id,
+            type: blocks[blockKeys[i]].type,
+          }
+          if (blocks[blockKeys[i]].next && blocks[blockKeys[i]].next !== "") {
+            blockData["nextStatement"] = blocks[blockKeys[i]].next
+          }
+
+          let fieldKeys = blocks[blockKeys[i]]?.inputs ? Object.keys(blocks[blockKeys[i]]?.inputs) : []
+          for (let j = 0; j < fieldKeys.length; j++) {
+            blockData[fieldKeys[j]] = blocks[blockKeys[i]]["inputs"][fieldKeys[j]]?.["shadow"] ? blocks[blockKeys[i]]["inputs"][fieldKeys[j]]["shadow"].id : blocks[blockKeys[i]]["inputs"][fieldKeys[j]];
+          }
+
+          // Will need to do this for each input type (colors, numbers)
+          if (blockData.type === "math_number") {
+            blockData["value"] = blocks[blockKeys[i]].fields.NUM;
+          }
+          if (blockData.type === "colour_picker") {
+            blockData["value"] = blocks[blockKeys[i]].fields.COLOUR;
+          }
+          if (blockData.type === "text") {
+            blockData["value"] = blocks[blockKeys[i]].fields.TEXT;
+          }
+          if (["BasicSlider", "ArmPositionSlider", "SpeedSlider", "TimeSlider", "HeadPitchSlider", "HeadRollSlider", "HeadYawSlider"].includes(blockData.type)) {
+            blockData["value"] = blocks[blockKeys[i]].fields["FIELD_slider_value"];
+          }
+          data["data"].push({...blockData});
+        }
+        loadBlocks(data, ws);
       }
       setBlocklyWorkspace(ws);
 
@@ -367,17 +404,20 @@ export default function BlocklyInterface(props) {
   }, []);
 
   return (
-    <div id="pageContainer" style={{ width: "100%", height: "100%" }}>
-      <div
-        id="blocklyDiv"
-        style={{
-          width: "100%",
-          height: "100%",
-          minHeight: "480px",
-          minWidth: "480px",
-        }}
-      ></div>
-      <xml id="toolbox" style={{ display: "none" }}></xml>
+    <div style={{ width: "100%", height: "100%" }}>
+      <ProgramLogos />
+      <div id="pageContainer" style={{ width: "100%", height: "100%" }}>
+        <div
+          id="blocklyDiv"
+          style={{
+            width: "100%",
+            height: "100%",
+            minHeight: "480px",
+            minWidth: "480px",
+          }}
+        ></div>
+        <xml id="toolbox" style={{ display: "none" }}></xml>
+      </div>
     </div>
   );
 }
