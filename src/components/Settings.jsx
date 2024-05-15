@@ -69,11 +69,13 @@ const DialogContent = () => {
         <LabeledTextField
           onChangeFunction={(e) => setEndpoint(e.target.value)}
           label={"Server Endpoint"}
+          fieldType={"password"}
           textFieldInput={llmEndpoint}
         />
         <LabeledTextField
           onChangeFunction={(e) => setAPIKey(e.target.value)}
           label={"API Key"}
+          fieldType={"password"}
           textFieldInput={llmAPIKey}
         />
       </SettingsDiv>

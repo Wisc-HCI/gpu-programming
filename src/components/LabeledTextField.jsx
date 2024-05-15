@@ -5,6 +5,7 @@ import DropShadowButton from "./DropShadowButton";
 export default function LabeledTextField({
   label,
   onChangeFunction,
+  fieldType,
   textFieldInput,
   style,
 }) {
@@ -21,7 +22,7 @@ export default function LabeledTextField({
       >
         {label}
       </Typography>
-      <TextField value={textFieldInput} onChange={onChangeFunction} />
+      <TextField value={textFieldInput} type={fieldType} onChange={onChangeFunction} />
     </Grid>
   );
 }
