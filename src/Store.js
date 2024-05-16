@@ -7,7 +7,8 @@ import { MISTY_ARM_LENGTH, PI, MAX_ARM_SPEED, ARM_OFFSET_ANGLE, MAX_DIST_PER_SEC
 import { starting_tfs, starting_items } from './Misty_Load_File.js';
 import { Quaternion, Vector3 } from "three";
 import * as Blockly from "blockly";
- 
+import goalPrompt from './prompts/goal_prompt.js';
+
 const useStore = create((set,get) => ({
   ip: '',
   blocks: {}, 
@@ -26,7 +27,10 @@ const useStore = create((set,get) => ({
   blocklyWorkspace: null,
   llmEndpoint: "",
   llmAPIKey: "",
+  llmDeployment: "",
   userPrompt: "",
+  programGoals: {},
+  llmProcessing: false,
   llmMode: false,
   mistyAudioList: [],
   mistyImageList: [],
@@ -56,6 +60,9 @@ const useStore = create((set,get) => ({
   setEndpoint: (endpoint) => set({
     llmEndpoint: endpoint
   }),
+  setDeployment: (deployment) => set({
+    llmDeployment: deployment
+  }),
   setImageList: (list) => set({
     mistyImageList: list
   }),
@@ -66,7 +73,45 @@ const useStore = create((set,get) => ({
     userPrompt
   }),
   generateProgramOutline: () => {
-    console.log(get().userPrompt);
+    set({
+      llmProcessing: true
+    });
+    let storeData = get();
+    let userPrompt = storeData.userPrompt;
+    let llmEndpoint = storeData.llmEndpoint;
+    let llmDeployment = storeData.llmDeployment;
+    let llmAPIKey = storeData.llmAPIKey;
+    fetch(llmEndpoint + "/openai/deployments/" + llmDeployment + "/chat/completions?api-version=2024-02-01", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": llmAPIKey
+      },
+      body: JSON.stringify({
+        messages: [
+          {role: "system", content: goalPrompt},
+          {role: "user", content: "Give me the output for the following user prompt: \"" + userPrompt + "\""}]
+      })
+    })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`LLM Request failed with status ${res.status}`);
+      }
+      return res.json();
+    })
+    .then(json => {
+      console.log(json);
+      set({
+        programGoals: json["choices"][0].message.content,
+        llmProcessing: false
+      })
+    })
+    .catch((error) => {
+      set({
+        llmProcessing: false
+      })
+      alert(`Failed to connect to ChatGPT: ${error.message}`);
+    });
   },
   clearProgram: () => set({
     blocks: {}

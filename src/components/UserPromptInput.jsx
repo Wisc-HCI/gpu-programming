@@ -1,5 +1,5 @@
-import { TextField, TextareaAutosize } from "@mui/material";
-import React, { useState } from "react";
+import { TextField } from "@mui/material";
+import React from "react";
 import DropShadowButton from "./DropShadowButton";
 import useWindowDimensions from "../useWindowDimensions";
 import useStore from "../Store";
@@ -9,6 +9,7 @@ export default function UserPromptInput(props) {
   const userPrompt = useStore(useShallow(state => state.userPrompt));
   const setUserPrompt = useStore(state => state.setUserPrompt);
   const generateProgramOutline = useStore(state => state.generateProgramOutline);
+  const isLLMProcessing = useStore(useShallow((state => state.llmProcessing)));
   
   const {height, _} = useWindowDimensions();
 
@@ -21,12 +22,14 @@ export default function UserPromptInput(props) {
       <TextField 
           label="What do you want the robot to do?"
           multiline
+          disabled={isLLMProcessing}
           fullWidth
           minRows={(height-180)/23}
           maxRows={(height-180)/23}
           onChange={updatePrompt}
+          value={userPrompt}
       />
-      <DropShadowButton text={"Generate Program Goals"} clickFunction={generateProgramOutline} style={{float: "right", backgroundColor: "#A0FF7E"}}/>
+      <DropShadowButton text={"Generate Program Goals"} clickFunction={generateProgramOutline} disabled={isLLMProcessing} style={{float: "right", backgroundColor: "#A0FF7E"}}/>
     </div>
   )
 }

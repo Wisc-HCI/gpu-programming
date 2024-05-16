@@ -13,6 +13,8 @@ const DialogContent = () => {
   const closeModal = useStore((store) => store.closeModal);
   const setEndpoint = useStore((store) => store.setEndpoint);
   const setAPIKey = useStore((store) => store.setAPIKey);
+  const setDeployment = useStore((store) => store.setDeployment);
+  const llmDeployment = useStore(useShallow((state) => state.llmDeployment));
   const llmAPIKey = useStore(useShallow((state) => state.llmAPIKey));
   const llmEndpoint = useStore(useShallow((state) => state.llmEndpoint));
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
@@ -61,8 +63,8 @@ const DialogContent = () => {
         margin: "0",
         borderRadius: "10px",
         maxHeight: "70vh",
-        width: "30vw",
-        overflowX: "scroll",
+        width: "20vw",
+        overflowY: "scroll",
       }}
     >
       <SettingsDiv title={"LLM Settings"}>
@@ -78,8 +80,13 @@ const DialogContent = () => {
           fieldType={"password"}
           textFieldInput={llmAPIKey}
         />
+        <LabeledTextField
+          onChangeFunction={(e) => setDeployment(e.target.value)}
+          label={"Deployment Model"}
+          fieldType={"password"}
+          textFieldInput={llmDeployment}
+        />
       </SettingsDiv>
-
       <SettingsDiv title={"Downloads"}>
         <LabeledButton
           clickFunction={handleDownload}

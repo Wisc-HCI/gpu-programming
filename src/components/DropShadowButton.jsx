@@ -1,11 +1,13 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-export default function DropShadowButton({ icon, text, clickFunction, style }) {
+export default function DropShadowButton({ icon, text, clickFunction, disabled, style }) {
   return (
     <Button
       onClick={clickFunction}
       startIcon={icon}
+      disabled={disabled}
+      classes={{disabled: "disabledDropShadowButton"}}
       style={{
         margin: "5px",
         color: "black",
