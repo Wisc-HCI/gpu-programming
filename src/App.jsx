@@ -21,12 +21,13 @@ import {
 } from 'react-reflex';
 
 import 'react-reflex/styles.css';
-import { Box } from '@mui/material';
+import { Backdrop, Box, CircularProgress } from '@mui/material';
 import Simulator from './components/Simulator.jsx';
 import { SettingsModal } from './components/Settings.jsx';
 import useStore from './Store.js';
 import { useShallow } from 'zustand/react/shallow';
 import GPTPanel from './components/GPTPanel.jsx';
+import { PromptModal } from './components/PromptModal.jsx';
 
 const Item = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -38,9 +39,11 @@ Blockly.common.defineBlocks(blocks);
 Object.assign(javascriptGenerator.forBlock, forBlock);
 function App() {
   const llmMode = useStore(useShallow(state => state.llmMode));
+  const isLLMProcessing = useStore(useShallow((state => state.llmProcessing)));
+  const headerHeight = useStore(useShallow((state => state.headerHeight)));
 
   return (
-    <Box width={"100vw"} height={`calc(100vh - 65px)`} padding={0}>
+    <Box width={"100vw"} height={`calc(100vh - ${headerHeight}px)`} padding={0}>
       <TopBar/>
       <ReflexContainer orientation='vertical' 
           style={{
@@ -80,7 +83,11 @@ function App() {
           </ReflexContainer>
         </ReflexElement>
       </ReflexContainer>
+      <Backdrop style={{color: "#fff", zIndex:1500}} open={isLLMProcessing}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <SettingsModal />
+      <PromptModal />
     </Box>
   );
 }

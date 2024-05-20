@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useStore from "../Store";
 import { appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
 import {
-  Box,
   TextField,
-  Container,
   Typography,
   Grid,
   IconButton,
-  Button,
+  Stack,
 } from "@mui/material";
 
 import { default as MistyLogo } from "../svgs/misty.svg";
@@ -19,6 +17,7 @@ import { default as UnpluggedIcon } from "../svgs/unplugged.svg";
 import DropShadowButton from "./DropShadowButton";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { EditNote } from "@mui/icons-material";
+import { PROMPT_MODAL, SETTINGS_MODAL } from "../Constants";
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
@@ -31,6 +30,17 @@ export default function TopBar(props) {
   const setActiveModal = useStore((state) => state.setActiveModal);
   const toggleLLMMode = useStore(state => state.toggleLLMMode);
   const llmMode = useStore(useShallow(state => state.llmMode));
+  const setHeaderDimensions = useStore(state => state.setHeaderDimensions);
+
+  useEffect(() => {
+    const header = document.getElementById("website-header");
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setHeaderDimensions(header.offsetHeight, header.offsetWidth);
+      }
+    });
+    observer.observe(header);
+  }, []);
 
   const confirmIpAddress = () => {
     setIp(inputVal);
@@ -85,139 +95,148 @@ export default function TopBar(props) {
   const topbarStyle = {
     backgroundColor: "#585D92", // Change the background color as needed
     color: "#FFFFFF", // Change the text color as needed
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
     filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
     zIndex: 101,
     position: "relative",
-    height: "65px",
+    paddingLeft: "20px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
   };
 
   return (
-    <Box style={topbarStyle}>
-      <Grid
-        container
-        direction="row"
-        justifyContent={"left"}
-        alignItems={"center"}
-        style={{ paddingLeft: "20px" }}
-      >
-        <img style={{ height: "35px", paddingRight: "10px" }} src={MistyLogo} />
-        <Typography display={"inline"} variant="h5">
-          Robo-Blocks
-        </Typography>
+    <Grid
+      id={"website-header"}
+      container 
+      direction={"row"}
+      justifyContent={"space-between"}
+      alignItems={"center"}
+      style={topbarStyle}
+    >
+      <Grid item xs={12} sm={3} md={2} lg={3} xl={3}>
+        <Stack direction={"row"} alignItems={"center"}>
+          <img style={{maxHeight: "35px", paddingRight: "5px"}} src={MistyLogo} />
+          <Typography display={"inline"} variant="h5">
+            Robo-Blocks
+          </Typography>
+        </Stack>
       </Grid>
 
-      <Container
-        style={{
-          textAlign: "center",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          marginTop: "5px",
-          marginBottom: "5px",
-          paddingRight: "0px",
-        }}
-      >
-        <DropShadowButton icon={<EditNote />} text={llmMode ? "Program Manually" : "Program with ChatGPT"} clickFunction={() => toggleLLMMode(!llmMode)}/>
-      </Container>
-      
-
-      <Container
-        style={{
-          textAlign: "center",
-          display: "flex",
-          justifyContent: "right",
-          alignItems: "center",
-          width: "100%",
-          marginTop: "5px",
-          marginBottom: "5px",
-          paddingRight: "0px",
-        }}
-      >
-        {!isConnected && (
-          <div
-            style={{
-              backgroundColor: "#FF7E7E",
-              width: "45px",
-              height: "45px",
-              borderRadius: "25px",
-              marginRight: "10px",
-              filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
-            }}
-          >
-            <img
-              style={{
-                height: "34px",
-                position: "absolute",
-                top: "5px",
-                left: "5px",
-              }}
-              src={UnpluggedIcon}
-            />
-          </div>
-        )}
-        {isConnected && (
-          <div
-            style={{
-              backgroundColor: "#A0FF7E",
-              width: "45px",
-              height: "45px",
-              borderRadius: "25px",
-              marginRight: "10px",
-              filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
-            }}
-          >
-            <img
-              style={{
-                height: "34px",
-                position: "absolute",
-                top: "5px",
-                left: "5px",
-              }}
-              src={PluggedIcon}
-            />
-          </div>
-        )}
-        <TextField
-          id="robotIpAddress"
-          disabled={isConnected}
-          label="IP"
-          variant="filled"
-          style={{
-            backgroundColor: "#FFFFFF50",
-            borderRadius: "5px",
-            filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
-            marginRight: "5px",
-          }}
-          defaultValue=""
-          onChange={(e) => setInputVal(e.target.value)}
-        />
-        {!isConnected && (
-          <DropShadowButton text={"Connect"} clickFunction={confirmIpAddress} />
-        )}
-        {isConnected && (
-          <DropShadowButton text={"Disconnect"} clickFunction={disconnect} />
-        )}
-        <IconButton
-          style={{
-            margin: "5px",
-            marginRight: "10px",
-            color: "black",
-            backgroundColor: "#FAFAFA",
-            borderRadius: "10px",
-            filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
-          }}
-          onClick={() => {
-            setActiveModal(true);
-          }}
+      <Grid item xs={12} sm={9} md={10} lg={9} xl={9}>
+        <Grid 
+          container
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
         >
-          <SettingsIcon />
-        </IconButton>
-      </Container>
-    </Box>
+          <Grid item xs={12} sm={12} md={4} lg={4} xl={3} style={{justifyContent: "right", display: "flex"}}>
+            {/* <DropShadowButton icon={<EditNote />} text={llmMode ? "Program Manually" : "Program with ChatGPT"} clickFunction={() => toggleLLMMode(!llmMode)}/> */}
+            <DropShadowButton icon={<EditNote />} text={llmMode ? "Program Manually" : "Program with ChatGPT"} clickFunction={() => setActiveModal(PROMPT_MODAL)}/>
+          </Grid>
+          <Grid item xs={12} sm={12} md={8} lg={5} xl={4} style={{justifyContent: "right", display: "flex"}}>
+            <Stack direction={"row"}>
+                {!isConnected && (
+                  <div
+                    style={{
+                      backgroundColor: "#FF7E7E",
+                      width: "45px",
+                      height: "45px",
+                      borderRadius: "25px",
+                      marginRight: "10px",
+                      filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+                    }}
+                  >
+                    <img
+                      style={{
+                        height: "34px",
+                        position: "absolute",
+                        top: "5px",
+                        left: "5px",
+                      }}
+                      src={UnpluggedIcon}
+                    />
+                  </div>
+                )}
+                {isConnected && (
+                  <div
+                    style={{
+                      backgroundColor: "#A0FF7E",
+                      width: "45px",
+                      height: "45px",
+                      borderRadius: "25px",
+                      marginRight: "10px",
+                      filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+                    }}
+                  >
+                    <img
+                      style={{
+                        height: "34px",
+                        position: "absolute",
+                        top: "5px",
+                        left: "5px",
+                      }}
+                      src={PluggedIcon}
+                    />
+                  </div>
+                )}
+                <TextField
+                  id="robotIpAddress"
+                  disabled={isConnected}
+                  label="IP"
+                  variant="filled"
+                  style={{
+                    backgroundColor: "#FFFFFF50",
+                    borderRadius: "5px",
+                    filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+                    marginRight: "5px",
+                  }}
+                  defaultValue=""
+                  onChange={(e) => setInputVal(e.target.value)}
+                />
+                {!isConnected && (
+                  <DropShadowButton text={"Connect"} clickFunction={confirmIpAddress} />
+                )}
+                {isConnected && (
+                  <DropShadowButton text={"Disconnect"} clickFunction={disconnect} />
+                )}
+                <IconButton
+                  style={{
+                    margin: "5px",
+                    marginRight: "10px",
+                    color: "black",
+                    backgroundColor: "#FAFAFA",
+                    borderRadius: "10px",
+                    filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+                  }}
+                  onClick={() => {
+                    setActiveModal(SETTINGS_MODAL);
+                  }}
+                >
+                  <SettingsIcon />
+                </IconButton>
+            </Stack>
+            {/* <Grid
+              container
+              direction="row"
+              justifyContent={"right"}
+              alignItems={"center"}
+            >
+              <Grid item lg={2} xl={2}>
+                
+              </Grid>
+              <Grid item lg={5} xl={5}>
+                
+              </Grid>
+              <Grid item lg={3} xl={3}>
+                
+              </Grid>
+              <Grid item lg={2} xl={2}>
+                
+              </Grid>
+            </Grid> */}
+          </Grid>
+        </Grid>
+      </Grid>
+      
+    </Grid>
   );
 }
