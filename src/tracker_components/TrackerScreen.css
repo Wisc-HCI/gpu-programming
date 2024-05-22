@@ -1,7 +1,7 @@
 .tabs-container {
     display: flex;
     background-color: #585D92;
-    height: 20px;
+    height: 30px;
     align-content: center;
 }
 
@@ -9,7 +9,7 @@
     padding: 3px 15px;
     cursor: pointer;
     margin-right: 5px;
-    font-size: 10px;
+    font-size: 14px;
     color: gray;
     background-color: #E4E5F1;
     align-self: flex-end;

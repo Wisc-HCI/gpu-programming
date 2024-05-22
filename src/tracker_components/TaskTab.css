@@ -1,0 +1,36 @@
+.task-tab-container {
+    padding-bottom: 6px;
+}
+
+.completion-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #E4E5F1;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0px 6px 4px lightgrey;
+}
+
+.completion-card p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.next-task-button {
+    margin: 4px 0;
+    padding: 5px 8px;
+    font-size: 12px;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+.next-task-button:hover {
+    background-color: lightgray;
+}

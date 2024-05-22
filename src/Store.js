@@ -8,6 +8,7 @@ import { starting_tfs, starting_items } from './Misty_Load_File.js';
 import { Quaternion, Vector3 } from "three";
 import * as Blockly from "blockly";
 import goalPrompt from './prompts/goal_prompt.js';
+import dummyData from './tracker_components/dummy_data.json';
 
 const useStore = create((set,get) => ({
   ip: '',
@@ -48,6 +49,18 @@ const useStore = create((set,get) => ({
   toggleTheme: (toggle) => set({
     lightMode: toggle
   }),
+  getAllTasks: () => {
+    return dummyData;
+  },
+  getMainTasks: () => {
+    return Object.keys(dummyData)
+      .filter(key => dummyData[key].type === "task")
+      .sort((keyA, keyB) => dummyData[keyA].order - dummyData[keyB].order)
+      .reduce((acc, key) => {
+        acc[key] = dummyData[key];
+        return acc;
+      }, {});
+  },
   setWorkerThread: (worker) => set({
     workerThread: worker
   }),

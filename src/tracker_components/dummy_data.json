@@ -8,12 +8,46 @@
     "subtask1a": {
         "type": "subtask",
         "title": "Find the custom speak block",
-        "subtext": "Locate the custom speak block under the 'Speech' section"
+        "subtext": "Locate the custom speak block under the 'Speech' section",
+        "hints": ["hint1a-1", "hint1a-2", "hint1a-3", "answer1a"]
+    },
+    "hint1a-1": {
+        "title": "Hint 1",
+        "subtext": "hint1a-1 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "hint1a-2": {
+        "title": "Hint 2",
+        "subtext": "hint1a-2 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "hint1a-3": {
+        "title": "Hint 3",
+        "subtext": "hint1a-3 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "answer1a": {
+        "title": "Answer",
+        "subtext": "answer1a text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
     },
     "subtask1b": {
         "type": "subtask",
         "title": "Find the text variable block",
-        "subtext": "Locate the text variable block under the 'Speech' section"
+        "subtext": "Locate the text variable block under the 'Speech' section",
+        "hints": ["hint1b-1", "hint1b-2", "hint1b-3", "answer1b"]
+    },
+    "hint1b-1": {
+        "title": "Hint 1",
+        "subtext": "hint1b-1 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "hint1b-2": {
+        "title": "Hint 2",
+        "subtext": "hint1b-2 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "hint1b-3": {
+        "title": "Hint 3",
+        "subtext": "hint1b-3 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "answer1b": {
+        "title": "Answer",
+        "subtext": "answer1b text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
     },
     "task2": {
         "name": "Flying Colors",
@@ -24,11 +58,45 @@
     "subtask2a": {
         "type": "subtask",
         "title": "Find the changeLED block",
-        "subtext": "Locate the changeLED block under the 'Misc' section"
+        "subtext": "Locate the changeLED block under the 'Misc' section",
+        "hints": ["hint2a-1", "hint2a-2", "hint2a-3", "answer2a"]
+    },
+    "hint2a-1": {
+        "title": "Hint 1",
+        "subtext": "hint2a-1 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "hint2a-2": {
+        "title": "Hint 2",
+        "subtext": "hint2a-2 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "hint2a-3": {
+        "title": "Hint 3",
+        "subtext": "hint2a-3 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "answer2a": {
+        "title": "Answer",
+        "subtext": "answer2a text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
     },
     "subtask2b": {
         "type": "subtask",
         "title": "Find the color block",
-        "subtext": "Locate the custom color block under the 'Color' section and choose any color"
+        "subtext": "Locate the custom color block under the 'Color' section and choose any color",
+        "hints": ["hint2b-1", "hint2b-2", "hint2b-3", "answer2b"]
+    },
+    "hint2b-1": {
+        "title": "Hint 1",
+        "subtext": "hint2b-1 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "hint2b-2": {
+        "title": "Hint 2",
+        "subtext": "hint2b-2 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "hint2b-3": {
+        "title": "Hint 3",
+        "subtext": "hint2b-3 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    },
+    "answer2b": {
+        "title": "Answer",
+        "subtext": "answer2b text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
     }
 }
