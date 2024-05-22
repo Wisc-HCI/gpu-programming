@@ -8,6 +8,7 @@ import DropShadowButton from "./DropShadowButton";
 import * as Blockly from "blockly";
 import { useShallow } from "zustand/react/shallow";
 import LabeledTextField from "./LabeledTextField";
+import { SETTINGS_MODAL } from "../Constants";
 
 const DialogContent = () => {
   const closeModal = useStore((store) => store.closeModal);
@@ -115,10 +116,11 @@ const DialogContent = () => {
 };
 
 export const SettingsModal = () => {
+  const setActiveModal = useStore((store) => store.setActiveModal);
   const activeModal = useStore((store) => store.activeModal);
 
   return (
-    <Dialog open={Boolean(activeModal)}>
+    <Dialog open={activeModal === SETTINGS_MODAL} onClose={(_, reason) => { if (reason === "backdropClick") { setActiveModal("") }}} >
       {activeModal && <DialogContent />}
     </Dialog>
   );

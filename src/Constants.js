@@ -8,3 +8,6 @@ export const MAX_DIST_PER_SEC = 0.3725; // in meters (calculated to be about 14.
 export const MAX_ANGLE_PER_SEC = 50 * PI/180; // I am estimating on a linear trend, where slope = 50 degrees / sec // this is the max rotation, but an exponential trend seems to work better. So will probs have to update
 export const SIM_TIME = 1000;
 export const MS_TO_SEC = 1000;
+
+export const SETTINGS_MODAL = "settings"
+export const PROMPT_MODAL = "prompt"

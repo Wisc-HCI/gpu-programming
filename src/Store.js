@@ -35,6 +35,8 @@ const useStore = create((set,get) => ({
   llmMode: false,
   mistyAudioList: [],
   mistyImageList: [],
+  headerHeight: 0,
+  headerWidth: 0,
   clock: new Timer(),
   tfs:{...starting_tfs},
   startingTfs: JSON.parse(JSON.stringify(starting_tfs)), // Used to start the animation from the center everytime
@@ -85,6 +87,10 @@ const useStore = create((set,get) => ({
   setUserPrompt: (userPrompt) => set({
     userPrompt
   }),
+  setHeaderDimensions: (height, width) => set({
+    headerHeight: height,
+    headerWidth: width
+  }),
   generateProgramOutline: () => {
     set({
       llmProcessing: true
@@ -94,6 +100,7 @@ const useStore = create((set,get) => ({
     let llmEndpoint = storeData.llmEndpoint;
     let llmDeployment = storeData.llmDeployment;
     let llmAPIKey = storeData.llmAPIKey;
+    // fetch("https://httpbin.org/delay/10")
     fetch(llmEndpoint + "/openai/deployments/" + llmDeployment + "/chat/completions?api-version=2024-02-01", {
       method: "POST",
       headers: {
@@ -116,7 +123,8 @@ const useStore = create((set,get) => ({
       console.log(json);
       set({
         programGoals: json["choices"][0].message.content,
-        llmProcessing: false
+        llmProcessing: false,
+        activeModal: null
       })
     })
     .catch((error) => {
