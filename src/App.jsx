@@ -75,7 +75,7 @@ function App() {
             
             <ReflexElement>
               <Item>
-                <TrackerScreen/>
+                {!llmMode && <TrackerScreen/> }
                 {llmMode && <Simulator />}
               </Item>
             </ReflexElement>
