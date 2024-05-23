@@ -122,8 +122,10 @@ const useStore = create((set,get) => ({
     })
     .then(json => {
       console.log(json);
+      let tempGoalString = json["choices"][0].message.content;
+      tempGoalString = tempGoalString.length > 0 ? tempGoalString.slice(1, tempGoalString.length - 1) : {};
       set({
-        programGoals: json["choices"][0].message.content,
+        programGoals: JSON.parse(tempGoalString),
         llmProcessing: false,
         activeModal: null
       })

@@ -43,7 +43,7 @@ const TrackerScreen = () => {
         {(
           <TaskTab
             key={allKeys[activeTab]}
-            subtasks={mainTasks[allKeys[activeTab]].subtasks.map(subtaskName => allTasks[subtaskName])}
+            subtasks={mainTasks[allKeys[activeTab]]?.subtasks?.map(subtaskName => allTasks[subtaskName])}
             allTasks={allTasks}
             onNextTask={handleNextTask}
             hasNextTask={activeTab + 1 < allKeys.length}
