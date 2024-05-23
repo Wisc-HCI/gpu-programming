@@ -14,10 +14,10 @@ const TaskTab = (props) => {
           hints={subtask.hints.map(hintName => props.allTasks[hintName])}
         />
       ))}
-      <div className="completion-card">
+      {props.hasNextTask && <div className="completion-card">
         <p>All steps are complete.</p>
         <button className="next-task-button" onClick={props.onNextTask}>Go To Next Task</button>
-      </div>
+      </div>}
     </div>
   );
 };

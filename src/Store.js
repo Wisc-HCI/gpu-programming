@@ -30,7 +30,7 @@ const useStore = create((set,get) => ({
   llmAPIKey: "",
   llmDeployment: "",
   userPrompt: "",
-  programGoals: {},
+  programGoals: {...dummyData},
   llmProcessing: false,
   llmMode: false,
   mistyAudioList: [],
@@ -52,14 +52,15 @@ const useStore = create((set,get) => ({
     lightMode: toggle
   }),
   getAllTasks: () => {
-    return dummyData;
+    return get().programGoals;
   },
   getMainTasks: () => {
-    return Object.keys(dummyData)
-      .filter(key => dummyData[key].type === "task")
-      .sort((keyA, keyB) => dummyData[keyA].order - dummyData[keyB].order)
+    let data = get().programGoals;
+    return Object.keys(data)
+      .filter(key => data[key].type === "task")
+      .sort((keyA, keyB) => data[keyA].order - data[keyB].order)
       .reduce((acc, key) => {
-        acc[key] = dummyData[key];
+        acc[key] = data[key];
         return acc;
       }, {});
   },
