@@ -9,6 +9,9 @@ import { Quaternion, Vector3 } from "three";
 import * as Blockly from "blockly";
 import goalPrompt from './prompts/goal_prompt.js';
 import dummyData from './tracker_components/dummy_data.json';
+import blockPrompt from './prompts/block_prompt.js';
+import { pickBy } from 'lodash';
+import { blockTypes } from './blocks/text.js';
 
 const useStore = create((set,get) => ({
   ip: '',
@@ -33,6 +36,7 @@ const useStore = create((set,get) => ({
   programGoals: {...dummyData},
   llmProcessing: false,
   llmMode: false,
+  displayLLMBlockPrompt: false,
   mistyAudioList: [],
   mistyImageList: [],
   headerHeight: 0,
@@ -47,6 +51,9 @@ const useStore = create((set,get) => ({
   closeModal: () => set(_ => ({ activeModal: null })),
   toggleLLMMode: (toggle) => set({
     llmMode: toggle
+  }),
+  toggleLLMBlockPrompt: (toggle) => set({
+    displayLLMBlockPrompt: toggle
   }),
   toggleTheme: (toggle) => set({
     lightMode: toggle
@@ -137,34 +144,99 @@ const useStore = create((set,get) => ({
       alert(`Failed to connect to ChatGPT: ${error.message}`);
     });
   },
+  generateProgram: () => {
+    set({
+      llmProcessing: true
+    });
+    let storeData = get();
+    let userPrompt = storeData.userPrompt;
+    let llmEndpoint = storeData.llmEndpoint;
+    let llmDeployment = storeData.llmDeployment;
+    let llmAPIKey = storeData.llmAPIKey;
+    // fetch("https://httpbin.org/delay/2")
+    fetch(llmEndpoint + "/openai/deployments/" + llmDeployment + "/chat/completions?api-version=2024-02-01", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": llmAPIKey
+      },
+      body: JSON.stringify({
+        messages: [
+          {role: "system", content: blockPrompt},
+          {role: "user", content: "Give me the output for the following user prompt: \"" + userPrompt + "\""}]
+      })
+    })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`LLM Request failed with status ${res.status}`);
+      }
+      return res.json();
+    })
+    .then(json => {
+      console.log(json);
+      let tempGoalString = json["choices"][0].message.content;
+      console.log(tempGoalString);
+      set({
+        llmProcessing: false,
+        activeModal: null
+      });
+      get().loadBlocks(JSON.parse(tempGoalString), get().blocklyWorkspace);
+    })
+    .catch((error) => {
+      set({
+        llmProcessing: false
+      })
+      alert(`Failed to connect to ChatGPT: ${error.message}`);
+    });
+  },
   clearProgram: () => set({
     blocks: {}
   }),
+  clearProgramExceptStart: () => set({
+    blocks: pickBy(get().blocks, block => block.type === "Start")
+  }),
   loadBlocks: (data, ws) => {
     // Create blocks
-    get().clearProgram();
-    let initialBlock = null;
+    let startBlocks = ws.getBlocksByType("Start");
+    if (startBlocks.length > 0) {
+      get().clearProgramExceptStart();
+    } else {
+      get().clearProgram();
+    }
+    let initialBlock = startBlocks.length > 0 ? startBlocks[0] : null;
     let blockIds = [];
     let blocklyBlockIds = [];
     let nextList = [data["data"][0].id];
+    let ignoredBlocks = [];
     for(let i = 0; i < data["data"].length; i++) {
+      let type = data["data"][i]["type"];
+      if (["face", "audio"].includes(type)) {
+        type = data["data"][i]["value"];
+      }
+
+      // Ignore non-correct blocks
+      if (!["math_number", "colour_picker", "text"].includes(type) && !blockTypes.includes(type)) {
+        ignoredBlocks.push(data["data"][i]["id"]);
+        continue;
+      }
+
       let t = Blockly.serialization.blocks.append({
-        "type": data["data"][i]["type"],
+        "type": type,
       }, ws);
       if (t.type === "Start") {
         initialBlock = t;
       }
 
-      if (data["data"][i]["type"] === "math_number") {
+      if (type === "math_number") {
         t.getField("NUM").setValue(data["data"][i]["value"])
       }
-      if (data["data"][i]["type"] === "colour_picker") {
+      if (type === "colour_picker") {
         t.getField("COLOUR").setValue(data["data"][i]["value"])
       }
-      if (data["data"][i]["type"] === "text") {
+      if (type === "text") {
         t.getField("TEXT").setValue(data["data"][i]["value"])
       }
-      if (["BasicSlider", "ArmPositionSlider", "SpeedSlider", "TimeSlider", "HeadPitchSlider", "HeadRollSlider", "HeadYawSlider"].includes(data["data"][i]["type"])) {
+      if (["BasicSlider", "ArmPositionSlider", "SpeedSlider", "TimeSlider", "HeadPitchSlider", "HeadRollSlider", "HeadYawSlider"].includes(type)) {
         t.getField("FIELD_slider_value").setValue(data["data"][i]["value"]);
       }
       
@@ -177,12 +249,19 @@ const useStore = create((set,get) => ({
     
     // Connect blocks to parameters
     for(let i = 0; i < data["data"].length; i++) {
+      // Ignore non-correct blocks
+      if (ignoredBlocks.includes(data["data"][i]["id"])) {
+        continue;
+      }
       let currentBlock = ws.getBlockById(blocklyBlockIds[blockIds.indexOf(data["data"][i]["id"])])
       if (currentBlock) {
         Object.keys(data["data"][i]).forEach(key => {
           if (!(key == "id" || key == "value" || key == "type" || key == "nextStatement")) {
+            // Don't add parameters if the parameter block was invalid
             const paramBlock = ws.getBlockById(blocklyBlockIds[blockIds.indexOf(data["data"][i][key])]);
-            currentBlock.getInput(key).connection.connect(paramBlock.outputConnection);
+            if (paramBlock) {
+              currentBlock.getInput(key).connection.connect(paramBlock.outputConnection);
+            }
           }
         });
       }
@@ -190,10 +269,15 @@ const useStore = create((set,get) => ({
     
     // Connect blocks to parents
     for(let i = 1; i < nextList.length; i++) {
+      // Ignore non-correct blocks
+      // Will cause a break in code
+      if (ignoredBlocks.includes(nextList[i])) {
+        continue;
+      }
       let currentBlock = ws.getBlockById(blocklyBlockIds[blockIds.indexOf(nextList[i])]);
       let parentBlock = ws.getBlockById(blocklyBlockIds[blockIds.indexOf(nextList[i-1])]);
       if (currentBlock) {
-        parentBlock.nextConnection.connect(currentBlock.previousConnection);
+        parentBlock?.nextConnection.connect(currentBlock.previousConnection);
       }
     }
 

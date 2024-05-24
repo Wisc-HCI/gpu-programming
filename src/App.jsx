@@ -23,11 +23,11 @@ import {
 import 'react-reflex/styles.css';
 import { Backdrop, Box, CircularProgress } from '@mui/material';
 import Simulator from './components/Simulator.jsx';
-import { SettingsModal } from './components/Settings.jsx';
+import { SettingsModal } from './modals/Settings.jsx';
 import useStore from './Store.js';
 import { useShallow } from 'zustand/react/shallow';
 import GPTPanel from './components/GPTPanel.jsx';
-import { PromptModal } from './components/PromptModal.jsx';
+import { PromptModal } from './modals/PromptModal.jsx';
 
 const Item = styled('div')(({ theme }) => ({
   textAlign: 'center',
