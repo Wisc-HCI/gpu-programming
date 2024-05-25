@@ -35,7 +35,7 @@ const useStore = create((set,get) => ({
   userPrompt: "",
   programGoals: {...dummyData},
   llmProcessing: false,
-  llmMode: false,
+  llmMode: true,
   displayLLMBlockPrompt: false,
   mistyAudioList: [],
   mistyImageList: [],
