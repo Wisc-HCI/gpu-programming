@@ -13,6 +13,7 @@ import useStore from "../Store";
 import blockColors from "../blockPallete.json";
 import ProgramLogos from './ProgramLogos.jsx';
 import useWindowDimensions from "../useWindowDimensions.jsx";
+import GPTConsole from "./GPTConsole.jsx";
 
 Blockly.Blocks["Start"] = {
   init: function () {
@@ -416,7 +417,40 @@ export default function BlocklyInterface(props) {
             width: "100%",
             height: "100%",
           }}
+         
         ></div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '10px',
+            left: '35%',
+            transform: 'translateX(-50%)', // Center the button horizontally
+            zIndex: 10,
+            backgroundColor: 'rgba(51, 51, 51, 0.8)', // Dark grey background color with 80% opacity
+            color: '#fff', 
+            padding: '10px 20px',
+            borderRadius: '10px',
+            border: 'none', // Remove default button border
+            cursor: 'pointer',
+          }}
+          onClick={() => alert('Button clicked!')}
+        >
+          Goals
+        </div>
+        
+        {/* <div
+          style={{
+            position: 'absolute',
+            bottom: '0',
+            left: '0',
+            width: '100%',
+            zIndex: 10,
+            backgroundColor: '#222',
+            color: '#fff',
+          }}
+        >
+          <GPTConsole />
+        </div> */}
         <xml id="toolbox" style={{ display: "none" }}></xml>
       </div>
     </div>
