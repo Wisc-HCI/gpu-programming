@@ -18,6 +18,7 @@ export default function SimulationControls(props) {
     const isConnected  = useStore(useShallow((state) => state.isConnected ));
     const ip = useStore(useShallow((state) => state.ip));
     const getBlocks = useStore(useShallow((state) => state.getBlocks));
+    const getEndingItems = useStore(useShallow((state) => state.getEndingItems));
     const clock = useStore(useShallow((state) => state.clock));
     const mistyImageList = useStore(useShallow((state) => state.mistyImageList));
     const mistyAudioList = useStore(useShallow((state) => state.mistyAudioList));
@@ -70,8 +71,9 @@ export default function SimulationControls(props) {
         });
         setWorkerThread(myWorker);
 
-        let {newTfs, newEndingTfs} = useAnimation({blocks: getBlocks(), tfs: endingTfs});
-        setAnimationFrames(newTfs, newEndingTfs);
+        let {newTfs, newEndingTfs, newItems, newEndingItems} = useAnimation({blocks: getBlocks(), tfs: endingTfs, items: getEndingItems()});
+        console.log(newEndingItems);
+        setAnimationFrames(newTfs, newEndingTfs, newItems, newEndingItems);
 
         appendActivity("Click Run Code button");
     };

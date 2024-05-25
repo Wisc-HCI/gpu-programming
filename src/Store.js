@@ -46,6 +46,7 @@ const useStore = create((set,get) => ({
   startingTfs: JSON.parse(JSON.stringify(starting_tfs)), // Used to start the animation from the center everytime
   endingTfs: JSON.parse(JSON.stringify(starting_tfs)), 
   items:{...starting_items},
+  endingItems: JSON.parse(JSON.stringify(starting_items)),
   activeModal: null,
   setActiveModal: (modal) => set(_ => ({ activeModal: modal })),
   closeModal: () => set(_ => ({ activeModal: null })),
@@ -317,7 +318,8 @@ const useStore = create((set,get) => ({
   })),
   getBlock: (id) => get().blocks[id],
   getBlocks:()=>get().blocks,
-
+  getItems: ()=>get().items,
+  getEndingItems: ()=>get().endingItems,
   addBlocktoStart: (id, json) => set((state) => ({ 
     Start: { ...state.Start, [id]: json}
   })),
@@ -360,10 +362,12 @@ const useStore = create((set,get) => ({
       simOnly: value
     })
   },
-  setAnimationFrames: (newTfs, newEndingTfs) => {
+  setAnimationFrames: (newTfs, newEndingTfs, newItems, newEndingItems) => {
     set({
       tfs: {...newTfs},
-      endingTfs: {...newEndingTfs}
+      endingTfs: {...newEndingTfs},
+      items: {...newItems},
+      endingItems: {...newEndingItems}
     })
   },
   animateDrive: (linearVelocity, angularVelocity, degree, time) => {
