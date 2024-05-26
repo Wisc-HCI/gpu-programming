@@ -4,6 +4,7 @@ import './Subtask.css';
 const Subtask = (props) => {
 
   const [expandedHint, setExpandedHint] = useState(null);
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleOpenHint = (hint) => {
     setExpandedHint(hint);
@@ -13,9 +14,16 @@ const Subtask = (props) => {
     setExpandedHint(null);
   };
 
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
+
   return (
-    <div>
-      <div className="subtask-card">
+    <div className="subtask-card">
+      <div className="subtask-checkbox-container">
+        <input type="checkbox" className={`subtask-checkbox ${isChecked ? 'checked' : ''}`} onChange={handleCheckboxChange}/>
+      </div>
+      <div className="subtask-content">
         <h3 className="subtask-title">{props.title}</h3>
         <p className="subtask-subtext">{props.subtext}</p>
         <div className="hints-container">
