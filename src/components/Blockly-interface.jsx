@@ -180,6 +180,7 @@ export default function BlocklyInterface(props) {
           blocklyDiv.style.width = blocklyArea.offsetWidth + "px";
           blocklyDiv.style.height = blocklyArea.offsetHeight + "px";
           Blockly.svgResize(ws);
+          ws.scrollbar.setVisible(false);
         }
       });
       observer.observe(blocklyArea);
@@ -417,7 +418,6 @@ export default function BlocklyInterface(props) {
             height: "100%",
           }}
         ></div>
-        <xml id="toolbox" style={{ display: "none" }}></xml>
       </div>
     </div>
   );
