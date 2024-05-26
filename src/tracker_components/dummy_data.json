@@ -1,102 +1,150 @@
 {
     "task1": {
-        "name": "Hello World!",
-        "order": 1,
-        "type": "task",
-        "subtasks": ["subtask1a", "subtask1b"]
+      "id": "task1",
+      "name": "Find and Grab Object",
+      "order": 1,
+      "type": "task",
+      "subtasks": ["subtask1a", "subtask1b", "subtask1c", "subtask1d", "subtask1e", "subtask1f", "subtask1g", "subtask1h"]
     },
     "subtask1a": {
-        "type": "subtask",
-        "title": "Find the custom speak block",
-        "subtext": "Locate the custom speak block under the 'Speech' section",
-        "hints": ["hint1a-1", "hint1a-2", "hint1a-3", "answer1a"]
+      "id": "subtask1a",
+      "type": "subtask",
+      "title": "Move the robot",
+      "subtext": "Move the robot around, looking confused and searching for the object.",
+      "hints": ["hint1a", "hint1b", "hint1c", "hint1d"]
     },
-    "hint1a-1": {
-        "title": "Hint 1",
-        "subtext": "hint1a-1 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint1a": {
+      "id": "hint1a",
+      "type": "hint",
+      "text": "To make the robot move around, add a 'Drive' block from the 'Movement' category to your program. You can add it after the 'Start' block."
     },
-    "hint1a-2": {
-        "title": "Hint 2",
-        "subtext": "hint1a-2 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint1b": {
+      "id": "hint1b",
+      "type": "hint",
+      "text": "Add an angular velocity of -100 for 2 seconds to make the robot turn left."
     },
-    "hint1a-3": {
-        "title": "Hint 3",
-        "subtext": "hint1a-3 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint1c": {
+      "id": "hint1c",
+      "type": "hint",
+      "text": "Add an angular velocity of 100 for 2 seconds to make the robot turn right."
     },
-    "answer1a": {
-        "title": "Answer",
-        "subtext": "answer1a text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint1d": {
+      "id": "hint1d",
+      "type": "hint",
+      "text": "Add a 'Wait' block from the 'Misc' category to your program to create pauses in the robot's movement."
     },
     "subtask1b": {
-        "type": "subtask",
-        "title": "Find the text variable block",
-        "subtext": "Locate the text variable block under the 'Speech' section",
-        "hints": ["hint1b-1", "hint1b-2", "hint1b-3", "answer1b"]
+      "id": "subtask1b",
+      "type": "subtask",
+      "title": "Make the robot look confused",
+      "subtext": "Change the robot's facial expression to look confused while it searches for the object.",
+      "hints": ["hint2a", "hint2b"]
     },
-    "hint1b-1": {
-        "title": "Hint 1",
-        "subtext": "hint1b-1 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint2a": {
+      "id": "hint2a",
+      "type": "hint",
+      "text": "Add a 'Change Face' block from the 'Face' category to your program."
     },
-    "hint1b-2": {
-        "title": "Hint 2",
-        "subtext": "hint1b-2 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint2b": {
+      "id": "hint2b",
+      "type": "hint",
+      "text": "Select 'Disoriented' from the list of faces to make the robot look confused."
     },
-    "hint1b-3": {
-        "title": "Hint 3",
-        "subtext": "hint1b-3 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "subtask1c": {
+      "id": "subtask1c",
+      "type": "subtask",
+      "title": "Find the object",
+      "subtext": "Make the robot find the object it is searching for.",
+      "hints": []
     },
-    "answer1b": {
-        "title": "Answer",
-        "subtext": "answer1b text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "subtask1d": {
+      "id": "subtask1d",
+      "type": "subtask",
+      "title": "Make the robot look surprised",
+      "subtext": "Change the robot's facial expression to look surprised when it finds the object.",
+      "hints": ["hint3a", "hint3b"]
     },
-    "task2": {
-        "name": "Flying Colors",
-        "order": 2,
-        "type": "task",
-        "subtasks": ["subtask2a", "subtask2b"]
+    "hint3a": {
+      "id": "hint3a",
+      "type": "hint",
+      "text": "Add a 'Change Face' block from the 'Face' category to your program."
     },
-    "subtask2a": {
-        "type": "subtask",
-        "title": "Find the changeLED block",
-        "subtext": "Locate the changeLED block under the 'Misc' section",
-        "hints": ["hint2a-1", "hint2a-2", "hint2a-3", "answer2a"]
+    "hint3b": {
+      "id": "hint3b",
+      "type": "hint",
+      "text": "Select 'Surprise' from the list of faces to make the robot look surprised."
     },
-    "hint2a-1": {
-        "title": "Hint 1",
-        "subtext": "hint2a-1 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "subtask1e": {
+      "id": "subtask1e",
+      "type": "subtask",
+      "title": "Make the robot look happy",
+      "subtext": "Change the robot's facial expression to look happy and point to the object it found.",
+      "hints": ["hint4a", "hint4b", "hint4c"]
     },
-    "hint2a-2": {
-        "title": "Hint 2",
-        "subtext": "hint2a-2 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint4a": {
+      "id": "hint4a",
+      "type": "hint",
+      "text": "Add a 'Change Face' block from the 'Face' category to your program."
     },
-    "hint2a-3": {
-        "title": "Hint 3",
-        "subtext": "hint2a-3 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint4b": {
+      "id": "hint4b",
+      "type": "hint",
+      "text": "Select 'Joy4' from the list of faces to make the robot look happy."
     },
-    "answer2a": {
-        "title": "Answer",
-        "subtext": "answer2a text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint4c": {
+      "id": "hint4c",
+      "type": "hint",
+      "text": "Add a 'Drive' block from the 'Movement' category to your program and set the angular velocity to 50. Follow it up with a 'Wait' block from the 'Misc' category to create a pause, then add another 'Drive' block with an angular velocity of -50."
     },
-    "subtask2b": {
-        "type": "subtask",
-        "title": "Find the color block",
-        "subtext": "Locate the custom color block under the 'Color' section and choose any color",
-        "hints": ["hint2b-1", "hint2b-2", "hint2b-3", "answer2b"]
+    "subtask1f": {
+      "id": "subtask1f",
+      "type": "subtask",
+      "title": "Make the robot speak",
+      "subtext": "Make the robot say 'Aha, there you are!'",
+      "hints": ["hint5a", "hint5b"]
     },
-    "hint2b-1": {
-        "title": "Hint 1",
-        "subtext": "hint2b-1 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint5a": {
+      "id": "hint5a",
+      "type": "hint",
+      "text": "Add a 'Speak' block from the 'Speech' category to your program."
     },
-    "hint2b-2": {
-        "title": "Hint 2",
-        "subtext": "hint2b-2 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint5b": {
+      "id": "hint5b",
+      "type": "hint",
+      "text": "Add a 'Text' block inside the 'Speak' block and type: 'Aha, there you are!'"
     },
-    "hint2b-3": {
-        "title": "Hint 3",
-        "subtext": "hint2b-3 text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "subtask1g": {
+      "id": "subtask1g",
+      "type": "subtask",
+      "title": "Move the robot to the object",
+      "subtext": "Drive the robot to the object it found.",
+      "hints": ["hint6a", "hint6b"]
     },
-    "answer2b": {
-        "title": "Answer",
-        "subtext": "answer2b text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus, lectus ac pellentesque venenatis, velit ligula fermentum neque, id bibendum tellus tortor ac quam. Quisque venenatis ante vitae venenatis rutrum. Vestibulum tincidunt metus magna. Pellentesque vitae eros ac odio fringilla pellentesque tempor vitae felis. Etiam posuere leo nulla, sit amet sagittis felis sodales quis. Nulla finibus, justo et eleifend egestas, justo diam maximus mi, et iaculis mauris risus eu lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent sed dolor quis lorem dapibus sollicitudin. Nulla tempor magna tellus."
+    "hint6a": {
+      "id": "hint6a",
+      "type": "hint",
+      "text": "Add a 'Drive' block from the 'Movement' category to your program."
+    },
+    "hint6b": {
+      "id": "hint6b",
+      "type": "hint",
+      "text": "Choose a velocity that will get you to the object quickly but safely. Start with a linear velocity of 50 and adjust as necessary."
+    },
+    "subtask1h": {
+      "id": "subtask1h",
+      "type": "subtask",
+      "title": "Grab the object",
+      "subtext": "Make the robot grab the object it found.",
+      "hints": ["hint7a", "hint7b"]
+    },
+    "hint7a": {
+      "id": "hint7a",
+      "type": "hint",
+      "text": "Add a 'Grab' block from the 'Misc' category to your program."
+    },
+    "hint7b": {
+      "id": "hint7b",
+      "type": "hint",
+      "text": "The 'Grab' block is a toggle. Clicking the block once will make the robot open its grip. Click it again to make the robot close its grip."
     }
-}
+  }

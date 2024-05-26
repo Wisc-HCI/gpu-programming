@@ -12,6 +12,7 @@ import useStore from "../Store";
 
 import blockColors from "../blockPallete.json";
 import ProgramLogos from './ProgramLogos.jsx';
+import useWindowDimensions from "../useWindowDimensions.jsx";
 
 Blockly.Blocks["Start"] = {
   init: function () {
@@ -36,6 +37,8 @@ export default function BlocklyInterface(props) {
   const loadBlocks = useStore((state) => state.loadBlocks);
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
   const ip = useStore((state) => state.ip);
+
+  const {height, _} = useWindowDimensions();
 
   const findNext = (arr, blockId) => {
     arr.push(blockId);
@@ -177,6 +180,7 @@ export default function BlocklyInterface(props) {
           blocklyDiv.style.width = blocklyArea.offsetWidth + "px";
           blocklyDiv.style.height = blocklyArea.offsetHeight + "px";
           Blockly.svgResize(ws);
+          ws.scrollbar.setVisible(false);
         }
       });
       observer.observe(blocklyArea);
@@ -405,18 +409,15 @@ export default function BlocklyInterface(props) {
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      <ProgramLogos />
+      {height >= 460 && <ProgramLogos />}
       <div id="pageContainer" style={{ width: "100%", height: "100%" }}>
         <div
           id="blocklyDiv"
           style={{
             width: "100%",
             height: "100%",
-            minHeight: "480px",
-            minWidth: "480px",
           }}
         ></div>
-        <xml id="toolbox" style={{ display: "none" }}></xml>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Dialog } from "@mui/material";
 import useStore from "../Store";
 import { PROMPT_MODAL } from "../Constants";
-import UserPromptInput from "./UserPromptInput";
+import UserPromptInput from "../components/UserPromptInput";
 
 const DialogContent = () => {
   return (

@@ -24,10 +24,12 @@ const TrackerScreen = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' }); // NOT WORKING: scroll back to top when user moves to next tab
   };
 
+  let allKeys = Object.keys(mainTasks);
+
   return (
     <div>
       <div className="tabs-container">
-        {Object.keys(mainTasks).map((key, idx) => (
+        {allKeys.map((key, idx) => (
           <div
             key={key}
             className={`tab ${idx === activeTab ? 'active' : ''}`}
@@ -40,10 +42,11 @@ const TrackerScreen = () => {
       <div className="task-tab-container">
         {(
           <TaskTab
-            key={Object.keys(mainTasks)[activeTab]}
-            subtasks={mainTasks[Object.keys(mainTasks)[activeTab]].subtasks.map(subtaskName => allTasks[subtaskName])}
+            key={allKeys[activeTab]}
+            subtasks={mainTasks[allKeys[activeTab]]?.subtasks?.map(subtaskName => allTasks[subtaskName])}
             allTasks={allTasks}
             onNextTask={handleNextTask}
+            hasNextTask={activeTab + 1 < allKeys.length}
           />
         )}
       </div>

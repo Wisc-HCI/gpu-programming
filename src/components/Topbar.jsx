@@ -133,7 +133,7 @@ export default function TopBar(props) {
             <DropShadowButton icon={<EditNote />} text={llmMode ? "Program Manually" : "Program with ChatGPT"} clickFunction={() => setActiveModal(PROMPT_MODAL)}/>
           </Grid>
           <Grid item xs={12} sm={12} md={8} lg={5} xl={4} style={{justifyContent: "right", display: "flex"}}>
-            <Stack direction={"row"}>
+            <Stack direction={"row"} alignItems={"center"}>
                 {!isConnected && (
                   <div
                     style={{

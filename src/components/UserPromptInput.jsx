@@ -9,7 +9,9 @@ export default function UserPromptInput({ style, maxVH=0 }) {
   const userPrompt = useStore(useShallow(state => state.userPrompt));
   const setUserPrompt = useStore(state => state.setUserPrompt);
   const generateProgramOutline = useStore(state => state.generateProgramOutline);
+  const generateProgram = useStore(state => state.generateProgram);
   const isLLMProcessing = useStore(useShallow((state => state.llmProcessing)));
+  const displayLLMBlockPrompt = useStore(useShallow((state => state.displayLLMBlockPrompt)));
   
   const {height, _} = useWindowDimensions();
 
@@ -36,7 +38,8 @@ export default function UserPromptInput({ style, maxVH=0 }) {
           onChange={updatePrompt}
           value={userPrompt}
       />
-          <DropShadowButton text={"Generate Program Goals"} clickFunction={generateProgramOutline} disabled={isLLMProcessing} style={{float: "right", backgroundColor: "#A0FF7E"}}/>
+      <DropShadowButton text={"Generate Program Goals"} clickFunction={generateProgramOutline} disabled={isLLMProcessing} style={{float: "right"}}/>
+      {displayLLMBlockPrompt && <DropShadowButton text={"Generate Block Program"} clickFunction={generateProgram} disabled={isLLMProcessing} style={{float: "right"}}/>}
     </div>
   )
 }

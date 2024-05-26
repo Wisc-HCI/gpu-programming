@@ -8,6 +8,8 @@ import * as Blockly from 'blockly/core';
 import blockColors from '../blockPallete.json';
 import { MathNumSlider } from './MathNumSlider';
 
+let allBlockTypes = []
+
 // Create a custom block called 'add_text' that adds
 // text to the output div on the sample app.
 // This is just an example and you should replace this with your
@@ -35,7 +37,9 @@ const addText = {
 };
 
 // Set up the format of the block in the Blocky IDE
-Blockly.Blocks["ChangeLED"] = {
+let changeLEDType = "ChangeLED";
+allBlockTypes.push(changeLEDType);
+Blockly.Blocks[changeLEDType] = {
   init: function () {
     this.setColour(blockColors["light_category"]["colour"]); // set color 
     this.appendValueInput("FIELD_ChangeLED")
@@ -48,7 +52,9 @@ Blockly.Blocks["ChangeLED"] = {
   }
 };
 
-Blockly.Blocks["TransitionLED"] = {
+let transitionLEDType = "TransitionLED";
+allBlockTypes.push(transitionLEDType);
+Blockly.Blocks[transitionLEDType] = {
   init: function () {
     this.setColour(blockColors["light_category"]["colour"]);
     this.appendValueInput("COLOR1")
@@ -75,7 +81,9 @@ Blockly.Blocks["TransitionLED"] = {
   }
 };
 
-Blockly.Blocks["DisplayImage"] = {
+let displayImageType = "DisplayImage";
+allBlockTypes.push(displayImageType);
+Blockly.Blocks[displayImageType] = {
   init: function () {
     this.setColour(blockColors["face_category"]["colour"]);
     this.appendValueInput("FIELD_DisplayImage_Filename")
@@ -87,7 +95,10 @@ Blockly.Blocks["DisplayImage"] = {
   }
 };
 
-Blockly.Blocks["DisplayAnimation"] = {
+
+let displayAnimationType = "DisplayAnimation";
+allBlockTypes.push(displayAnimationType);
+Blockly.Blocks[displayAnimationType] = {
   init: function () {
     this.setColour(blockColors["misc_category"]["colour"]);
     this.appendValueInput("FIELD_DisplayAnimation_Filename")
@@ -99,7 +110,9 @@ Blockly.Blocks["DisplayAnimation"] = {
   }
 };
 
-Blockly.Blocks["MoveHead"] = {
+let moveHeadType = "MoveHead";
+allBlockTypes.push(moveHeadType);
+Blockly.Blocks[moveHeadType] = {
   init: function () {
     this.setColour(blockColors["movement_category"]["colour"]);
     this.appendDummyInput()
@@ -111,7 +124,9 @@ Blockly.Blocks["MoveHead"] = {
   }
 };
 
-Blockly.Blocks["MoveArm"] = {
+let moveArmType = "MoveArm";
+allBlockTypes.push(moveArmType);
+Blockly.Blocks[moveArmType] = {
   init: function () {
     this.setColour(blockColors["movement_category"]["colour"]);
     this.appendDummyInput()
@@ -127,7 +142,9 @@ Blockly.Blocks["MoveArm"] = {
   }
 };
 
-Blockly.Blocks["MoveArm2"] = {
+let moveArm2Type = "MoveArm2";
+allBlockTypes.push(moveArm2Type);
+Blockly.Blocks[moveArm2Type] = {
   init: function () {
     this.setColour(blockColors["movement_category"]["colour"]);
     this.appendDummyInput()
@@ -142,7 +159,9 @@ Blockly.Blocks["MoveArm2"] = {
   }
 };
 
-Blockly.Blocks["BasicSlider"] = {
+let basicSliderType = "BasicSlider";
+allBlockTypes.push(basicSliderType);
+Blockly.Blocks[basicSliderType] = {
   init: function () {
     this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
@@ -155,7 +174,9 @@ Blockly.Blocks["BasicSlider"] = {
   }
 };
 
-Blockly.Blocks["ArmPositionSlider"] = {
+let armPositionSliderType = "ArmPositionSlider";
+allBlockTypes.push(armPositionSliderType);
+Blockly.Blocks[armPositionSliderType] = {
   init: function () {
     this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
@@ -167,7 +188,9 @@ Blockly.Blocks["ArmPositionSlider"] = {
   }
 };
 
-Blockly.Blocks["SpeedSlider"] = {
+let speedSliderType = "SpeedSlider";
+allBlockTypes.push(speedSliderType);
+Blockly.Blocks[speedSliderType] = {
   init: function () {
     this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
@@ -179,7 +202,9 @@ Blockly.Blocks["SpeedSlider"] = {
   }
 };
 
-Blockly.Blocks["TimeSlider"] = {
+let timeSliderType = "TimeSlider";
+allBlockTypes.push(timeSliderType);
+Blockly.Blocks[timeSliderType] = {
   init: function () {
     this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
@@ -191,7 +216,9 @@ Blockly.Blocks["TimeSlider"] = {
   }
 };
 
-Blockly.Blocks["HeadPitchSlider"] = {
+let headPitchSliderType = "HeadPitchSlider";
+allBlockTypes.push(headPitchSliderType);
+Blockly.Blocks[headPitchSliderType] = {
   init: function () {
     this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
@@ -203,7 +230,9 @@ Blockly.Blocks["HeadPitchSlider"] = {
   }
 };
 
-Blockly.Blocks["HeadRollSlider"] = {
+let headRollSliderType = "HeadRollSlider";
+allBlockTypes.push(headRollSliderType);
+Blockly.Blocks[headRollSliderType] = {
   init: function () {
     this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
@@ -215,7 +244,9 @@ Blockly.Blocks["HeadRollSlider"] = {
   }
 };
 
-Blockly.Blocks["HeadYawSlider"] = {
+let headYawSliderType = "HeadYawSlider";
+allBlockTypes.push(headYawSliderType);
+Blockly.Blocks[headYawSliderType] = {
   init: function () {
     this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput()
@@ -225,7 +256,9 @@ Blockly.Blocks["HeadYawSlider"] = {
   }
 };
 
-Blockly.Blocks["MoveArms2"] = {
+let moveArms2Type = "MoveArms2";
+allBlockTypes.push(moveArms2Type);
+Blockly.Blocks[moveArms2Type] = {
   init: function () {
     var shadowBlock_1 = this.workspace.newBlock('ArmPositionSlider');
     shadowBlock_1.setShadow(true);
@@ -276,7 +309,9 @@ Blockly.Blocks["MoveArms2"] = {
 };
 
 
-Blockly.Blocks["MoveArm3"] = {
+let MoveArm3Type = "MoveArm3";
+allBlockTypes.push(MoveArm3Type);
+Blockly.Blocks[MoveArm3Type] = {
   init: function () {
     var shadowBlock_1 = this.workspace.newBlock('ArmPositionSlider');
     shadowBlock_1.setShadow(true);
@@ -309,7 +344,9 @@ Blockly.Blocks["MoveArm3"] = {
   }
 };
 
-Blockly.Blocks["DriveTime"] = {
+let DriveTimeType = "DriveTime";
+allBlockTypes.push(DriveTimeType);
+Blockly.Blocks[DriveTimeType] = {
   init: function () {
     this.setColour(blockColors["movement_category"]["colour"]);
     this.appendDummyInput()
@@ -326,7 +363,9 @@ Blockly.Blocks["DriveTime"] = {
   }
 };
 
-Blockly.Blocks["MoveHead3"] = {
+let MoveHead3Type = "MoveHead3";
+allBlockTypes.push(MoveHead3Type);
+Blockly.Blocks[MoveHead3Type] = {
 
   init: function () {
     var shadowBlock_1 = this.workspace.newBlock('HeadPitchSlider');
@@ -384,7 +423,9 @@ Blockly.Blocks["MoveHead3"] = {
   }
 };
 
-Blockly.Blocks["DriveTime2"] = {
+let DriveTime2Type = "DriveTime2";
+allBlockTypes.push(DriveTime2Type);
+Blockly.Blocks[DriveTime2Type] = {
 					
   init: function () {
     var shadowBlock_1 = this.workspace.newBlock('math_number');
@@ -425,7 +466,9 @@ Blockly.Blocks["DriveTime2"] = {
   }
 };
 
-Blockly.Blocks["Turn"] = {
+let TurnType = "Turn";
+allBlockTypes.push(TurnType);
+Blockly.Blocks[TurnType] = {
   init: function () {
     this.setColour(blockColors["movement_category"]["colour"]);
     this.appendDummyInput()
@@ -441,7 +484,9 @@ Blockly.Blocks["Turn"] = {
   }
 };
 
-Blockly.Blocks["Turn2"] = {
+let Turn2Type = "Turn2";
+allBlockTypes.push(Turn2Type);
+Blockly.Blocks[Turn2Type] = {
   init: function () {
     var shadowBlock_1 = this.workspace.newBlock('math_number');
     shadowBlock_1.setShadow(true);
@@ -466,7 +511,9 @@ Blockly.Blocks["Turn2"] = {
   }
 };
 
-Blockly.Blocks["Speak"] = {
+let SpeakType = "Speak";
+allBlockTypes.push(SpeakType);
+Blockly.Blocks[SpeakType] = {
   init: function () {
     this.setColour(blockColors["speech_category"]["colour"]);
     this.appendValueInput("FIELD_Speak_Text")
@@ -479,7 +526,9 @@ Blockly.Blocks["Speak"] = {
 };
 
 // TODO: Add another Speak block with a dropdown with defaults: “Hi”, “Hello”, etc.
-Blockly.Blocks["SpeakDefault"] = {
+let SpeakDefaultType = "SpeakDefault";
+allBlockTypes.push(SpeakDefaultType);
+Blockly.Blocks[SpeakDefaultType] = {
   init: function () {
     this.setColour(blockColors["speech_category"]["colour"]);
     this.appendDummyInput()
@@ -496,7 +545,9 @@ Blockly.Blocks["SpeakDefault"] = {
   }
 };
 
-Blockly.Blocks["TurnOnFlashlight"] = {
+let TurnOnFlashlightType = "TurnOnFlashlight";
+allBlockTypes.push(TurnOnFlashlightType);
+Blockly.Blocks[TurnOnFlashlightType] = {
   init: function () {
     this.setColour(blockColors["light_category"]["colour"]);
     this.appendDummyInput()
@@ -507,7 +558,9 @@ Blockly.Blocks["TurnOnFlashlight"] = {
   }
 };
 
-Blockly.Blocks["TurnOffFlashlight"] = {
+let TurnOffFlashlightType = "TurnOffFlashlight";
+allBlockTypes.push(TurnOffFlashlightType);
+Blockly.Blocks[TurnOffFlashlightType] = {
   init: function () {
     this.setColour(blockColors["light_category"]["colour"]);
     this.appendDummyInput()
@@ -518,7 +571,9 @@ Blockly.Blocks["TurnOffFlashlight"] = {
   }
 };
 
-Blockly.Blocks["WaitForSeconds"] = {
+let WaitForSecondsType = "WaitForSeconds";
+allBlockTypes.push(WaitForSecondsType);
+Blockly.Blocks[WaitForSecondsType] = {
   init: function() {
     this.appendDummyInput()
         .appendField("wait for");
@@ -535,7 +590,9 @@ Blockly.Blocks["WaitForSeconds"] = {
   }
 };
 
-Blockly.Blocks["PlayAudio"] = {
+let PlayAudioType = "PlayAudio";
+allBlockTypes.push(PlayAudioType);
+Blockly.Blocks[PlayAudioType] = {
   init: function () {
     this.setColour(blockColors["audio_category"]["colour"]);
     this.appendValueInput("FIELD_PlayAudio_Filename")
@@ -548,7 +605,9 @@ Blockly.Blocks["PlayAudio"] = {
 };
 
 
-Blockly.Blocks["SetVolume"] = {
+let SetVolumeType = "SetVolume";
+allBlockTypes.push(SetVolumeType);
+Blockly.Blocks[SetVolumeType] = {
 					
   init: function () {
     this.setColour(blockColors["audio_category"]["colour"]);
@@ -571,7 +630,9 @@ Blockly.Blocks["SetVolume"] = {
   }
 };
 
-Blockly.Blocks["DisplayText"] = {
+let DisplayTextType = "DisplayText";
+allBlockTypes.push(DisplayTextType);
+Blockly.Blocks[DisplayTextType] = {
   init: function () {
     this.setColour(blockColors["misc_category"]["colour"]);
     this.appendDummyInput()
@@ -584,7 +645,9 @@ Blockly.Blocks["DisplayText"] = {
 };
 
 
-Blockly.Blocks["ClearText"] = {
+let ClearText = "ClearText";
+allBlockTypes.push(ClearText);
+Blockly.Blocks[ClearText] = {
   init: function () {
     this.setColour(blockColors["misc_category"]["colour"]);
     this.appendDummyInput()
@@ -596,7 +659,9 @@ Blockly.Blocks["ClearText"] = {
 };
 
 // Face blocks
-Blockly.Blocks['eyes_acceptance'] = {
+let eyes_acceptance = "eyes_acceptance";
+allBlockTypes.push(eyes_acceptance);
+Blockly.Blocks[eyes_acceptance] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: acceptance");
@@ -606,7 +671,9 @@ Blockly.Blocks['eyes_acceptance'] = {
   }
 };
 
-Blockly.Blocks['eyes_admiration'] = {
+let eyes_admiration = "eyes_admiration";
+allBlockTypes.push(eyes_admiration);
+Blockly.Blocks[eyes_admiration] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: admiration");
@@ -616,7 +683,9 @@ Blockly.Blocks['eyes_admiration'] = {
   }
 };
 
-Blockly.Blocks['eyes_amazement'] = {
+let eyes_amazement = "eyes_amazement";
+allBlockTypes.push(eyes_amazement);
+Blockly.Blocks[eyes_amazement] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: amazement");
@@ -626,7 +695,9 @@ Blockly.Blocks['eyes_amazement'] = {
   }
 };
 
-Blockly.Blocks['eyes_anger'] = {
+let eyes_anger = "eyes_anger";
+allBlockTypes.push(eyes_anger);
+Blockly.Blocks[eyes_anger] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: anger");
@@ -636,7 +707,9 @@ Blockly.Blocks['eyes_anger'] = {
   }
 };
 
-Blockly.Blocks['eyes_annoyed'] = {
+let eyes_annoyed = "eyes_annoyed";
+allBlockTypes.push(eyes_annoyed);
+Blockly.Blocks[eyes_annoyed] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: annoyed");
@@ -646,7 +719,9 @@ Blockly.Blocks['eyes_annoyed'] = {
   }
 };
 
-Blockly.Blocks['eyes_anticipation'] = {
+let eyes_anticipation = "eyes_anticipation";
+allBlockTypes.push(eyes_anticipation);
+Blockly.Blocks[eyes_anticipation] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: anticipation");
@@ -656,7 +731,9 @@ Blockly.Blocks['eyes_anticipation'] = {
   }
 };
 
-Blockly.Blocks['eyes_apprehension'] = {
+let eyes_apprehension = "eyes_apprehension";
+allBlockTypes.push(eyes_apprehension);
+Blockly.Blocks[eyes_apprehension] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: apprehension");
@@ -666,7 +743,9 @@ Blockly.Blocks['eyes_apprehension'] = {
   }
 };
 
-Blockly.Blocks['eyes_boredom'] = {
+let eyes_boredom = "eyes_boredom";
+allBlockTypes.push(eyes_boredom);
+Blockly.Blocks[eyes_boredom] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: boredom");
@@ -676,7 +755,9 @@ Blockly.Blocks['eyes_boredom'] = {
   }
 };
 
-Blockly.Blocks['eyes_default'] = {
+let eyes_default = "eyes_default";
+allBlockTypes.push(eyes_default);
+Blockly.Blocks[eyes_default] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: default");
@@ -686,7 +767,9 @@ Blockly.Blocks['eyes_default'] = {
   }
 };
 
-Blockly.Blocks['eyes_disgust'] = {
+let eyes_disgust = "eyes_disgust";
+allBlockTypes.push(eyes_disgust);
+Blockly.Blocks[eyes_disgust] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: disgust");
@@ -696,7 +779,9 @@ Blockly.Blocks['eyes_disgust'] = {
   }
 };
 
-Blockly.Blocks['eyes_distraction'] = {
+let eyes_distraction = "eyes_distraction";
+allBlockTypes.push(eyes_distraction);
+Blockly.Blocks[eyes_distraction] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: distraction");
@@ -706,7 +791,9 @@ Blockly.Blocks['eyes_distraction'] = {
   }
 };
 
-Blockly.Blocks['eyes_ecstasy_frame_1'] = {
+let eyes_ecstasy_frame_1 = "eyes_ecstasy_frame_1";
+allBlockTypes.push(eyes_ecstasy_frame_1);
+Blockly.Blocks[eyes_ecstasy_frame_1] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: ecstasy 1");
@@ -716,7 +803,9 @@ Blockly.Blocks['eyes_ecstasy_frame_1'] = {
   }
 };
 
-Blockly.Blocks['eyes_ecstasy_frame_2'] = {
+let eyes_ecstasy_frame_2 = "eyes_ecstasy_frame_2";
+allBlockTypes.push(eyes_ecstasy_frame_2);
+Blockly.Blocks[eyes_ecstasy_frame_2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: ecstasy 2");
@@ -726,7 +815,9 @@ Blockly.Blocks['eyes_ecstasy_frame_2'] = {
   }
 };
 
-Blockly.Blocks['eyes_fear'] = {
+let eyes_fear = "eyes_fear";
+allBlockTypes.push(eyes_fear);
+Blockly.Blocks[eyes_fear] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: fear");
@@ -736,7 +827,9 @@ Blockly.Blocks['eyes_fear'] = {
   }
 };
 
-Blockly.Blocks['eyes_grief'] = {
+let eyes_grief = "eyes_grief";
+allBlockTypes.push(eyes_grief);
+Blockly.Blocks[eyes_grief] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: grief");
@@ -746,7 +839,9 @@ Blockly.Blocks['eyes_grief'] = {
   }
 };
 
-Blockly.Blocks['eyes_interest'] = {
+let eyes_interest = "eyes_interest";
+allBlockTypes.push(eyes_interest);
+Blockly.Blocks[eyes_interest] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: interest");
@@ -756,7 +851,9 @@ Blockly.Blocks['eyes_interest'] = {
   }
 };
 
-Blockly.Blocks['eyes_joy'] = {
+let eyes_joy = "eyes_joy";
+allBlockTypes.push(eyes_joy);
+Blockly.Blocks[eyes_joy] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: joy");
@@ -766,7 +863,9 @@ Blockly.Blocks['eyes_joy'] = {
   }
 };
 
-Blockly.Blocks['eyes_loathing'] = {
+let eyes_loathing = "eyes_loathing";
+allBlockTypes.push(eyes_loathing);
+Blockly.Blocks[eyes_loathing] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: loathing");
@@ -776,7 +875,9 @@ Blockly.Blocks['eyes_loathing'] = {
   }
 };
 
-Blockly.Blocks['eyes_pensiveness'] = {
+let eyes_pensiveness = "eyes_pensiveness";
+allBlockTypes.push(eyes_pensiveness);
+Blockly.Blocks[eyes_pensiveness] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: pensiveness");
@@ -786,7 +887,9 @@ Blockly.Blocks['eyes_pensiveness'] = {
   }
 };
 
-Blockly.Blocks['eyes_rage'] = {
+let eyes_rage = "eyes_rage";
+allBlockTypes.push(eyes_rage);
+Blockly.Blocks[eyes_rage] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: rage eyes");
@@ -796,7 +899,9 @@ Blockly.Blocks['eyes_rage'] = {
   }
 };
 
-Blockly.Blocks['eyes_sad'] = {
+let eyes_sad = "eyes_sad";
+allBlockTypes.push(eyes_sad);
+Blockly.Blocks[eyes_sad] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: sad");
@@ -806,7 +911,9 @@ Blockly.Blocks['eyes_sad'] = {
   }
 };
 
-Blockly.Blocks['eyes_serenity'] = {
+let eyes_serenity = "eyes_serenity";
+allBlockTypes.push(eyes_serenity);
+Blockly.Blocks[eyes_serenity] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: serenity");
@@ -816,7 +923,9 @@ Blockly.Blocks['eyes_serenity'] = {
   }
 };
 
-Blockly.Blocks['eyes_surprise'] = {
+let eyes_surprise = "eyes_surprise";
+allBlockTypes.push(eyes_surprise);
+Blockly.Blocks[eyes_surprise] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: surprise");
@@ -826,7 +935,9 @@ Blockly.Blocks['eyes_surprise'] = {
   }
 };
 
-Blockly.Blocks['eyes_terror'] = {
+let eyes_terror = "eyes_terror";
+allBlockTypes.push(eyes_terror);
+Blockly.Blocks[eyes_terror] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: terror");
@@ -836,7 +947,9 @@ Blockly.Blocks['eyes_terror'] = {
   }
 };
 
-Blockly.Blocks['eyes_trust'] = {
+let eyes_trust = "eyes_trust";
+allBlockTypes.push(eyes_trust);
+Blockly.Blocks[eyes_trust] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: trust");
@@ -846,7 +959,9 @@ Blockly.Blocks['eyes_trust'] = {
   }
 };
 
-Blockly.Blocks['eyes_vigilance'] = {
+let eyes_vigilance = "eyes_vigilance";
+allBlockTypes.push(eyes_vigilance);
+Blockly.Blocks[eyes_vigilance] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: vigilance");
@@ -856,7 +971,9 @@ Blockly.Blocks['eyes_vigilance'] = {
   }
 };
 
-Blockly.Blocks['e_Sleeping'] = {
+let e_Sleeping = "e_Sleeping";
+allBlockTypes.push(e_Sleeping);
+Blockly.Blocks[e_Sleeping] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: sleeping");
@@ -866,7 +983,9 @@ Blockly.Blocks['e_Sleeping'] = {
   }
 };
 
-Blockly.Blocks['e_SleepingZZZ'] = {
+let e_SleepingZZZ = "e_SleepingZZZ";
+allBlockTypes.push(e_SleepingZZZ);
+Blockly.Blocks[e_SleepingZZZ] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: sleeping ZZZ");
@@ -876,7 +995,9 @@ Blockly.Blocks['e_SleepingZZZ'] = {
   }
 };
 
-Blockly.Blocks['e_Contempt'] = {
+let e_Contempt = "e_Contempt";
+allBlockTypes.push(e_Contempt);
+Blockly.Blocks[e_Contempt] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: contempt");
@@ -886,7 +1007,9 @@ Blockly.Blocks['e_Contempt'] = {
   }
 };
 
-Blockly.Blocks['e_ContentLeft'] = {
+let e_ContentLeft = "e_ContentLeft";
+allBlockTypes.push(e_ContentLeft);
+Blockly.Blocks[e_ContentLeft] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: content (left)");
@@ -896,7 +1019,9 @@ Blockly.Blocks['e_ContentLeft'] = {
   }
 };
 
-Blockly.Blocks['e_ContentRight'] = {
+let e_ContentRight = "e_ContentRight";
+allBlockTypes.push(e_ContentRight);
+Blockly.Blocks[e_ContentRight] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: content (right)");
@@ -906,7 +1031,9 @@ Blockly.Blocks['e_ContentRight'] = {
   }
 };
 
-Blockly.Blocks['e_Disoriented'] = {
+let e_Disoriented = "e_Disoriented";
+allBlockTypes.push(e_Disoriented);
+Blockly.Blocks[e_Disoriented] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: disoriented");
@@ -916,7 +1043,9 @@ Blockly.Blocks['e_Disoriented'] = {
   }
 };
 
-Blockly.Blocks['e_EcstacyHilarious'] = {
+let e_EcstacyHilarious = "e_EcstacyHilarious";
+allBlockTypes.push(e_EcstacyHilarious);
+Blockly.Blocks[e_EcstacyHilarious] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: ecstacy hilarious");
@@ -926,7 +1055,9 @@ Blockly.Blocks['e_EcstacyHilarious'] = {
   }
 };
 
-Blockly.Blocks['e_EcstacyStarryEyed'] = {
+let e_EcstacyStarryEyed = "e_EcstacyStarryEyed";
+allBlockTypes.push(e_EcstacyStarryEyed);
+Blockly.Blocks[e_EcstacyStarryEyed] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: ecstacy starry eyed");
@@ -936,7 +1067,9 @@ Blockly.Blocks['e_EcstacyStarryEyed'] = {
   }
 };
 
-Blockly.Blocks['e_JoyGoofy'] = {
+let e_JoyGoofy = "e_JoyGoofy";
+allBlockTypes.push(e_JoyGoofy);
+Blockly.Blocks[e_JoyGoofy] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: joy goofy");
@@ -946,7 +1079,9 @@ Blockly.Blocks['e_JoyGoofy'] = {
   }
 };
 
-Blockly.Blocks['e_JoyGoofy2'] = {
+let e_JoyGoofy2 = "e_JoyGoofy2";
+allBlockTypes.push(e_JoyGoofy2);
+Blockly.Blocks[e_JoyGoofy2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: joy goofy 2");
@@ -956,7 +1091,9 @@ Blockly.Blocks['e_JoyGoofy2'] = {
   }
 };
 
-Blockly.Blocks['e_JoyGoofy3'] = {
+let e_JoyGoofy3 = "e_JoyGoofy3";
+allBlockTypes.push(e_JoyGoofy3);
+Blockly.Blocks[e_JoyGoofy3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: joy goofy 3");
@@ -966,7 +1103,9 @@ Blockly.Blocks['e_JoyGoofy3'] = {
   }
 };
 
-Blockly.Blocks['e_Love'] = {
+let e_Love = "e_Love";
+allBlockTypes.push(e_Love);
+Blockly.Blocks[e_Love] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: love");
@@ -976,7 +1115,9 @@ Blockly.Blocks['e_Love'] = {
   }
 };
 
-Blockly.Blocks['e_Rage'] = {
+let e_Rage = "e_Rage";
+allBlockTypes.push(e_Rage);
+Blockly.Blocks[e_Rage] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: rage");
@@ -986,7 +1127,9 @@ Blockly.Blocks['e_Rage'] = {
   }
 };
 
-Blockly.Blocks['e_Rage2'] = {
+let e_Rage2 = "e_Rage2";
+allBlockTypes.push(e_Rage2);
+Blockly.Blocks[e_Rage2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: rage 2");
@@ -996,7 +1139,9 @@ Blockly.Blocks['e_Rage2'] = {
   }
 };
 
-Blockly.Blocks['e_Rage3'] = {
+let e_Rage3 = "e_Rage3";
+allBlockTypes.push(e_Rage3);
+Blockly.Blocks[e_Rage3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: rage 3");
@@ -1006,7 +1151,9 @@ Blockly.Blocks['e_Rage3'] = {
   }
 };
 
-Blockly.Blocks['e_Rage4'] = {
+let e_Rage4 = "e_Rage4";
+allBlockTypes.push(e_Rage4);
+Blockly.Blocks[e_Rage4] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: rage 4");
@@ -1016,7 +1163,9 @@ Blockly.Blocks['e_Rage4'] = {
   }
 };
 
-Blockly.Blocks['e_RemorseShame'] = {
+let e_RemorseShame = "e_RemorseShame";
+allBlockTypes.push(e_RemorseShame);
+Blockly.Blocks[e_RemorseShame] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Expression: remorse shame");
@@ -1026,7 +1175,6 @@ Blockly.Blocks['e_RemorseShame'] = {
   }
 };
 
-// Animation blocks
 Blockly.Blocks['animation_sleepy.bv'] = {
   init: function() {
     this.appendDummyInput()
@@ -1058,7 +1206,9 @@ Blockly.Blocks['animation_spooked.bv'] = {
 };
 
 // Audio blocks
-Blockly.Blocks['s_Acceptance'] = {
+let s_Acceptance = "s_Acceptance";
+allBlockTypes.push(s_Acceptance);
+Blockly.Blocks[s_Acceptance] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: acceptance");
@@ -1068,7 +1218,9 @@ Blockly.Blocks['s_Acceptance'] = {
   }
 };
 
-Blockly.Blocks['s_Amazement'] = {
+let s_Amazement = "s_Amazement";
+allBlockTypes.push(s_Amazement);
+Blockly.Blocks[s_Amazement] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: amazement");
@@ -1078,7 +1230,9 @@ Blockly.Blocks['s_Amazement'] = {
   }
 };
 
-Blockly.Blocks['s_Amazement2'] = {
+let s_Amazement2 = "s_Amazement2";
+allBlockTypes.push(s_Amazement2);
+Blockly.Blocks[s_Amazement2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: amazement 2");
@@ -1088,7 +1242,9 @@ Blockly.Blocks['s_Amazement2'] = {
   }
 };
 
-Blockly.Blocks['s_Anger'] = {
+let s_Anger = "s_Anger";
+allBlockTypes.push(s_Anger);
+Blockly.Blocks[s_Anger] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: anger");
@@ -1098,7 +1254,9 @@ Blockly.Blocks['s_Anger'] = {
   }
 };
 
-Blockly.Blocks['s_Anger2'] = {
+let s_Anger2 = "s_Anger2";
+allBlockTypes.push(s_Anger2);
+Blockly.Blocks[s_Anger2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: anger 2");
@@ -1108,7 +1266,9 @@ Blockly.Blocks['s_Anger2'] = {
   }
 };
 
-Blockly.Blocks['s_Anger3'] = {
+let s_Anger3 = "s_Anger3";
+allBlockTypes.push(s_Anger3);
+Blockly.Blocks[s_Anger3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: anger 3");
@@ -1118,7 +1278,9 @@ Blockly.Blocks['s_Anger3'] = {
   }
 };
 
-Blockly.Blocks['s_Anger4'] = {
+let s_Anger4 = "s_Anger4";
+allBlockTypes.push(s_Anger4);
+Blockly.Blocks[s_Anger4] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: anger 4");
@@ -1128,7 +1290,9 @@ Blockly.Blocks['s_Anger4'] = {
   }
 };
 
-Blockly.Blocks['s_Annoyance'] = {
+let s_Annoyance = "s_Annoyance";
+allBlockTypes.push(s_Annoyance);
+Blockly.Blocks[s_Annoyance] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: annoyance");
@@ -1138,7 +1302,9 @@ Blockly.Blocks['s_Annoyance'] = {
   }
 };
 
-Blockly.Blocks['s_Annoyance2'] = {
+let s_Annoyance2 = "s_Annoyance2";
+allBlockTypes.push(s_Annoyance2);
+Blockly.Blocks[s_Annoyance2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: annoyance 2");
@@ -1148,7 +1314,9 @@ Blockly.Blocks['s_Annoyance2'] = {
   }
 };
 
-Blockly.Blocks['s_Annoyance3'] = {
+let s_Annoyance3 = "s_Annoyance3";
+allBlockTypes.push(s_Annoyance3);
+Blockly.Blocks[s_Annoyance3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: annoyance 3");
@@ -1158,7 +1326,9 @@ Blockly.Blocks['s_Annoyance3'] = {
   }
 };
 
-Blockly.Blocks['s_Annoyance4'] = {
+let s_Annoyance4 = "s_Annoyance4";
+allBlockTypes.push(s_Annoyance4);
+Blockly.Blocks[s_Annoyance4] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: annoyance 4");
@@ -1168,7 +1338,9 @@ Blockly.Blocks['s_Annoyance4'] = {
   }
 };
 
-Blockly.Blocks['s_Awe'] = {
+let s_Awe = "s_Awe";
+allBlockTypes.push(s_Awe);
+Blockly.Blocks[s_Awe] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: awe");
@@ -1178,7 +1350,9 @@ Blockly.Blocks['s_Awe'] = {
   }
 };
 
-Blockly.Blocks['s_Awe2'] = {
+let s_Awe2 = "s_Awe2";
+allBlockTypes.push(s_Awe2);
+Blockly.Blocks[s_Awe2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: awe 2");
@@ -1188,7 +1362,9 @@ Blockly.Blocks['s_Awe2'] = {
   }
 };
 
-Blockly.Blocks['s_Awe3'] = {
+let s_Awe3 = "s_Awe3";
+allBlockTypes.push(s_Awe3);
+Blockly.Blocks[s_Awe3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: awe 3");
@@ -1198,7 +1374,9 @@ Blockly.Blocks['s_Awe3'] = {
   }
 };
 
-Blockly.Blocks['s_Boredom'] = {
+let s_Boredom = "s_Boredom";
+allBlockTypes.push(s_Boredom);
+Blockly.Blocks[s_Boredom] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: boredom");
@@ -1208,7 +1386,9 @@ Blockly.Blocks['s_Boredom'] = {
   }
 };
 
-Blockly.Blocks['s_Disapproval'] = {
+let s_Disapproval = "s_Disapproval";
+allBlockTypes.push(s_Disapproval);
+Blockly.Blocks[s_Disapproval] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: disapproval");
@@ -1218,7 +1398,9 @@ Blockly.Blocks['s_Disapproval'] = {
   }
 };
 
-Blockly.Blocks['s_Disgust'] = {
+let s_Disgust = "s_Disgust";
+allBlockTypes.push(s_Disgust);
+Blockly.Blocks[s_Disgust] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: disgust");
@@ -1228,7 +1410,9 @@ Blockly.Blocks['s_Disgust'] = {
   }
 };
 
-Blockly.Blocks['s_Disgust2'] = {
+let s_Disgust2 = "s_Disgust2";
+allBlockTypes.push(s_Disgust2);
+Blockly.Blocks[s_Disgust2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: disgust 2");
@@ -1238,7 +1422,9 @@ Blockly.Blocks['s_Disgust2'] = {
   }
 };
 
-Blockly.Blocks['s_Disgust3'] = {
+let s_Disgust3 = "s_Disgust3";
+allBlockTypes.push(s_Disgust3);
+Blockly.Blocks[s_Disgust3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: disgust 3");
@@ -1248,7 +1434,9 @@ Blockly.Blocks['s_Disgust3'] = {
   }
 };
 
-Blockly.Blocks['s_DisorientedConfused'] = {
+let s_DisorientedConfused = "s_DisorientedConfused";
+allBlockTypes.push(s_DisorientedConfused);
+Blockly.Blocks[s_DisorientedConfused] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused");
@@ -1258,7 +1446,9 @@ Blockly.Blocks['s_DisorientedConfused'] = {
   }
 };
 
-Blockly.Blocks['s_DisorientedConfused2'] = {
+let s_DisorientedConfused2 = "s_DisorientedConfused2";
+allBlockTypes.push(s_DisorientedConfused2);
+Blockly.Blocks[s_DisorientedConfused2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused 2");
@@ -1268,7 +1458,9 @@ Blockly.Blocks['s_DisorientedConfused2'] = {
   }
 };
 
-Blockly.Blocks['s_DisorientedConfused3'] = {
+let s_DisorientedConfused3 = "s_DisorientedConfused3";
+allBlockTypes.push(s_DisorientedConfused3);
+Blockly.Blocks[s_DisorientedConfused3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused 3");
@@ -1278,7 +1470,9 @@ Blockly.Blocks['s_DisorientedConfused3'] = {
   }
 };
 
-Blockly.Blocks['s_DisorientedConfused4'] = {
+let s_DisorientedConfused4 = "s_DisorientedConfused4";
+allBlockTypes.push(s_DisorientedConfused4);
+Blockly.Blocks[s_DisorientedConfused4] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused 4");
@@ -1288,7 +1482,9 @@ Blockly.Blocks['s_DisorientedConfused4'] = {
   }
 };
 
-Blockly.Blocks['s_DisorientedConfused5'] = {
+let s_DisorientedConfused5 = "s_DisorientedConfused5";
+allBlockTypes.push(s_DisorientedConfused5);
+Blockly.Blocks[s_DisorientedConfused5] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused 5");
@@ -1298,7 +1494,9 @@ Blockly.Blocks['s_DisorientedConfused5'] = {
   }
 };
 
-Blockly.Blocks['s_DisorientedConfused6'] = {
+let s_DisorientedConfused6 = "s_DisorientedConfused6";
+allBlockTypes.push(s_DisorientedConfused6);
+Blockly.Blocks[s_DisorientedConfused6] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: disoriented confused 6");
@@ -1308,7 +1506,9 @@ Blockly.Blocks['s_DisorientedConfused6'] = {
   }
 };
 
-Blockly.Blocks['s_Distraction'] = {
+let s_Distraction = "s_Distraction";
+allBlockTypes.push(s_Distraction);
+Blockly.Blocks[s_Distraction] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: distraction");
@@ -1318,7 +1518,9 @@ Blockly.Blocks['s_Distraction'] = {
   }
 };
 
-Blockly.Blocks['s_Ecstacy'] = {
+let s_Ecstacy = "s_Ecstacy";
+allBlockTypes.push(s_Ecstacy);
+Blockly.Blocks[s_Ecstacy] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: ecstacy");
@@ -1328,7 +1530,9 @@ Blockly.Blocks['s_Ecstacy'] = {
   }
 };
 
-Blockly.Blocks['s_Ecstacy2'] = {
+let s_Ecstacy2 = "s_Ecstacy2";
+allBlockTypes.push(s_Ecstacy2);
+Blockly.Blocks[s_Ecstacy2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: ecstacy 2");
@@ -1338,7 +1542,9 @@ Blockly.Blocks['s_Ecstacy2'] = {
   }
 };
 
-Blockly.Blocks['s_Fear'] = {
+let s_Fear = "s_Fear";
+allBlockTypes.push(s_Fear);
+Blockly.Blocks[s_Fear] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: fear");
@@ -1348,7 +1554,9 @@ Blockly.Blocks['s_Fear'] = {
   }
 };
 
-Blockly.Blocks['s_Grief'] = {
+let s_Grief = "s_Grief";
+allBlockTypes.push(s_Grief);
+Blockly.Blocks[s_Grief] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: grief");
@@ -1358,7 +1566,9 @@ Blockly.Blocks['s_Grief'] = {
   }
 };
 
-Blockly.Blocks['s_Grief2'] = {
+let s_Grief2 = "s_Grief2";
+allBlockTypes.push(s_Grief2);
+Blockly.Blocks[s_Grief2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: grief 2");
@@ -1368,7 +1578,9 @@ Blockly.Blocks['s_Grief2'] = {
   }
 };
 
-Blockly.Blocks['s_Grief3'] = {
+let s_Grief3 = "s_Grief3";
+allBlockTypes.push(s_Grief3);
+Blockly.Blocks[s_Grief3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: grief 3");
@@ -1378,7 +1590,9 @@ Blockly.Blocks['s_Grief3'] = {
   }
 };
 
-Blockly.Blocks['s_Grief4'] = {
+let s_Grief4 = "s_Grief4";
+allBlockTypes.push(s_Grief4);
+Blockly.Blocks[s_Grief4] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: grief 4");
@@ -1388,7 +1602,9 @@ Blockly.Blocks['s_Grief4'] = {
   }
 };
 
-Blockly.Blocks['s_Joy'] = {
+let s_Joy = "s_Joy";
+allBlockTypes.push(s_Joy);
+Blockly.Blocks[s_Joy] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: joy");
@@ -1398,7 +1614,9 @@ Blockly.Blocks['s_Joy'] = {
   }
 };
 
-Blockly.Blocks['s_Joy2'] = {
+let s_Joy2 = "s_Joy2";
+allBlockTypes.push(s_Joy2);
+Blockly.Blocks[s_Joy2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: joy 2");
@@ -1408,7 +1626,9 @@ Blockly.Blocks['s_Joy2'] = {
   }
 };
 
-Blockly.Blocks['s_Joy3'] = {
+let s_Joy3 = "s_Joy3";
+allBlockTypes.push(s_Joy3);
+Blockly.Blocks[s_Joy3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: joy 3");
@@ -1418,7 +1638,9 @@ Blockly.Blocks['s_Joy3'] = {
   }
 };
 
-Blockly.Blocks['s_Joy4'] = {
+let s_Joy4 = "s_Joy4";
+allBlockTypes.push(s_Joy4);
+Blockly.Blocks[s_Joy4] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: joy 4");
@@ -1428,7 +1650,9 @@ Blockly.Blocks['s_Joy4'] = {
   }
 };
 
-Blockly.Blocks['s_Loathing'] = {
+let s_Loathing = "s_Loathing";
+allBlockTypes.push(s_Loathing);
+Blockly.Blocks[s_Loathing] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: loathing");
@@ -1438,7 +1662,9 @@ Blockly.Blocks['s_Loathing'] = {
   }
 };
 
-Blockly.Blocks['s_Love'] = {
+let s_Love = "s_Love";
+allBlockTypes.push(s_Love);
+Blockly.Blocks[s_Love] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: love");
@@ -1448,7 +1674,9 @@ Blockly.Blocks['s_Love'] = {
   }
 };
 
-Blockly.Blocks['s_PhraseByeBye'] = {
+let s_PhraseByeBye = "s_PhraseByeBye";
+allBlockTypes.push(s_PhraseByeBye);
+Blockly.Blocks[s_PhraseByeBye] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: Bye Bye");
@@ -1458,7 +1686,9 @@ Blockly.Blocks['s_PhraseByeBye'] = {
   }
 };
 
-Blockly.Blocks['s_PhraseEvilAhHa'] = {
+let s_PhraseEvilAhHa = "s_PhraseEvilAhHa";
+allBlockTypes.push(s_PhraseEvilAhHa);
+Blockly.Blocks[s_PhraseEvilAhHa] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: Evil Ah Ha");
@@ -1468,7 +1698,9 @@ Blockly.Blocks['s_PhraseEvilAhHa'] = {
   }
 };
 
-Blockly.Blocks['s_PhraseHello'] = {
+let s_PhraseHello = "s_PhraseHello";
+allBlockTypes.push(s_PhraseHello);
+Blockly.Blocks[s_PhraseHello] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: Hello");
@@ -1478,7 +1710,9 @@ Blockly.Blocks['s_PhraseHello'] = {
   }
 };
 
-Blockly.Blocks['s_PhraseNoNoNo'] = {
+let s_PhraseNoNoNo = "s_PhraseNoNoNo";
+allBlockTypes.push(s_PhraseNoNoNo);
+Blockly.Blocks[s_PhraseNoNoNo] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: No No No");
@@ -1488,7 +1722,9 @@ Blockly.Blocks['s_PhraseNoNoNo'] = {
   }
 };
 
-Blockly.Blocks['s_PhraseOopsy'] = {
+let s_PhraseOopsy = "s_PhraseOopsy";
+allBlockTypes.push(s_PhraseOopsy);
+Blockly.Blocks[s_PhraseOopsy] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: Oopsy");
@@ -1498,7 +1734,9 @@ Blockly.Blocks['s_PhraseOopsy'] = {
   }
 };
 
-Blockly.Blocks['s_PhraseOwOwOw'] = {
+let s_PhraseOwOwOw = "s_PhraseOwOwOw";
+allBlockTypes.push(s_PhraseOwOwOw);
+Blockly.Blocks[s_PhraseOwOwOw] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: Ow Ow Ow");
@@ -1508,7 +1746,9 @@ Blockly.Blocks['s_PhraseOwOwOw'] = {
   }
 };
 
-Blockly.Blocks['s_PhraseOwwww'] = {
+let s_PhraseOwwww = "s_PhraseOwwww";
+allBlockTypes.push(s_PhraseOwwww);
+Blockly.Blocks[s_PhraseOwwww] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: Owwww");
@@ -1518,7 +1758,9 @@ Blockly.Blocks['s_PhraseOwwww'] = {
   }
 };
 
-Blockly.Blocks['s_PhraseUhOh'] = {
+let s_PhraseUhOh = "s_PhraseUhOh";
+allBlockTypes.push(s_PhraseUhOh);
+Blockly.Blocks[s_PhraseUhOh] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: Uh Oh");
@@ -1528,7 +1770,9 @@ Blockly.Blocks['s_PhraseUhOh'] = {
   }
 };
 
-Blockly.Blocks['s_Rage'] = {
+let s_Rage = "s_Rage";
+allBlockTypes.push(s_Rage);
+Blockly.Blocks[s_Rage] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: rage");
@@ -1538,7 +1782,9 @@ Blockly.Blocks['s_Rage'] = {
   }
 };
 
-Blockly.Blocks['s_Sadness'] = {
+let s_Sadness = "s_Sadness";
+allBlockTypes.push(s_Sadness);
+Blockly.Blocks[s_Sadness] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sadness");
@@ -1548,7 +1794,9 @@ Blockly.Blocks['s_Sadness'] = {
   }
 };
 
-Blockly.Blocks['s_Sadness2'] = {
+let s_Sadness2 = "s_Sadness2";
+allBlockTypes.push(s_Sadness2);
+Blockly.Blocks[s_Sadness2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sadness 2");
@@ -1558,7 +1806,9 @@ Blockly.Blocks['s_Sadness2'] = {
   }
 };
 
-Blockly.Blocks['s_Sadness3'] = {
+let s_Sadness3 = "s_Sadness3";
+allBlockTypes.push(s_Sadness3);
+Blockly.Blocks[s_Sadness3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sadness 3");
@@ -1568,7 +1818,9 @@ Blockly.Blocks['s_Sadness3'] = {
   }
 };
 
-Blockly.Blocks['s_Sadness4'] = {
+let s_Sadness4 = "s_Sadness4";
+allBlockTypes.push(s_Sadness4);
+Blockly.Blocks[s_Sadness4] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sadness 4");
@@ -1578,7 +1830,9 @@ Blockly.Blocks['s_Sadness4'] = {
   }
 };
 
-Blockly.Blocks['s_Sadness5'] = {
+let s_Sadness5 = "s_Sadness5";
+allBlockTypes.push(s_Sadness5);
+Blockly.Blocks[s_Sadness5] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sadness 5");
@@ -1588,7 +1842,9 @@ Blockly.Blocks['s_Sadness5'] = {
   }
 };
 
-Blockly.Blocks['s_Sadness6'] = {
+let s_Sadness6 = "s_Sadness6";
+allBlockTypes.push(s_Sadness6);
+Blockly.Blocks[s_Sadness6] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sadness 6");
@@ -1598,7 +1854,9 @@ Blockly.Blocks['s_Sadness6'] = {
   }
 };
 
-Blockly.Blocks['s_Sadness7'] = {
+let s_Sadness7 = "s_Sadness7";
+allBlockTypes.push(s_Sadness7);
+Blockly.Blocks[s_Sadness7] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sadness 7");
@@ -1608,7 +1866,9 @@ Blockly.Blocks['s_Sadness7'] = {
   }
 };
 
-Blockly.Blocks['s_Sleepy'] = {
+let s_Sleepy = "s_Sleepy";
+allBlockTypes.push(s_Sleepy);
+Blockly.Blocks[s_Sleepy] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sleepy");
@@ -1618,7 +1878,9 @@ Blockly.Blocks['s_Sleepy'] = {
   }
 };
 
-Blockly.Blocks['s_Sleepy2'] = {
+let s_Sleepy2 = "s_Sleepy2";
+allBlockTypes.push(s_Sleepy2);
+Blockly.Blocks[s_Sleepy2] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sleepy 2");
@@ -1628,7 +1890,9 @@ Blockly.Blocks['s_Sleepy2'] = {
   }
 };
 
-Blockly.Blocks['s_Sleepy3'] = {
+let s_Sleepy3 = "s_Sleepy3";
+allBlockTypes.push(s_Sleepy3);
+Blockly.Blocks[s_Sleepy3] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sleepy 3");
@@ -1638,7 +1902,9 @@ Blockly.Blocks['s_Sleepy3'] = {
   }
 };
 
-Blockly.Blocks['s_Sleepy4'] = {
+let s_Sleepy4 = "s_Sleepy4";
+allBlockTypes.push(s_Sleepy4);
+Blockly.Blocks[s_Sleepy4] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sleepy 4");
@@ -1648,7 +1914,9 @@ Blockly.Blocks['s_Sleepy4'] = {
   }
 };
 
-Blockly.Blocks['s_SleepySnore'] = {
+let s_SleepySnore = "s_SleepySnore";
+allBlockTypes.push(s_SleepySnore);
+Blockly.Blocks[s_SleepySnore] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: sleepy snore");
@@ -1658,7 +1926,9 @@ Blockly.Blocks['s_SleepySnore'] = {
   }
 };
 
-Blockly.Blocks['s_SystemCameraShutter'] = {
+let s_SystemCameraShutter = "s_SystemCameraShutter";
+allBlockTypes.push(s_SystemCameraShutter);
+Blockly.Blocks[s_SystemCameraShutter] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Sound: system camera shutter");
@@ -1673,3 +1943,5 @@ Blockly.Blocks['s_SystemCameraShutter'] = {
 // This file has no side effects!
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray(
     [addText]);
+
+export const blockTypes = allBlockTypes;

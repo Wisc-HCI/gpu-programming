@@ -450,16 +450,16 @@ self.onmessage = function (e) {
         };
 
         // TODO: Uploading fails right now...
-        if (!mistyImageList.some(e => e.name === filename)) {
-          var temp = getBase64(FaceLookup(filename));
-          endpoint = "images";
-          payload = {
-            FileName: filename,
-            File: temp,
-            ImmediatelyApply: true,
-            Overwrite: true,
-          };
-        }
+        // if (!mistyImageList.some(e => e.name === filename)) {
+        //   var temp = getBase64(FaceLookup(filename));
+        //   endpoint = "images";
+        //   payload = {
+        //     FileName: filename,
+        //     File: temp,
+        //     ImmediatelyApply: true,
+        //     Overwrite: true,
+        //   };
+        // }
 
         sendPostRequestToRobot(endpoint, payload);
         delayJS(500);

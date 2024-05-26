@@ -1,13 +1,13 @@
 import React from "react";
-import { Box, Card, CardContent, Dialog, Input } from "@mui/material";
+import { Box, Card, CardContent, Dialog, FormControlLabel, FormGroup, Input, Switch } from "@mui/material";
 import useStore from "../Store";
 import FileSaver from "file-saver";
-import SettingsDiv from "./SettingsDiv";
-import LabeledButton from "./LabeledButton";
-import DropShadowButton from "./DropShadowButton";
+import SettingsDiv from "../components/SettingsDiv";
+import LabeledButton from "../components/LabeledButton";
+import DropShadowButton from "../components/DropShadowButton";
 import * as Blockly from "blockly";
 import { useShallow } from "zustand/react/shallow";
-import LabeledTextField from "./LabeledTextField";
+import LabeledTextField from "../components/LabeledTextField";
 import { SETTINGS_MODAL } from "../Constants";
 
 const DialogContent = () => {
@@ -19,6 +19,8 @@ const DialogContent = () => {
   const llmAPIKey = useStore(useShallow((state) => state.llmAPIKey));
   const llmEndpoint = useStore(useShallow((state) => state.llmEndpoint));
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
+  const toggleLLMBlockPrompt = useStore((state) => state.toggleLLMBlockPrompt);
+  const displayLLMBlockPrompt = useStore(useShallow((state) => state.displayLLMBlockPrompt));
 
   const handleDownload = () => {
     var blob = new Blob([activityLog], { type: "text/plain;charset=utf-8" });
@@ -64,7 +66,6 @@ const DialogContent = () => {
         margin: "0",
         borderRadius: "10px",
         maxHeight: "70vh",
-        width: "20vw",
         overflowY: "scroll",
       }}
     >
@@ -104,6 +105,12 @@ const DialogContent = () => {
       <SettingsDiv title={"Upload"}>
         {/* TODO!!!!!!! !!!!!!!!! */}
         <Input type="file" onChange={uploadBlocks} accept=".xml" />
+      </SettingsDiv>
+
+      <SettingsDiv title={"Toggles"}>
+        <FormGroup style={{justifyContent: "left"}}>
+          <FormControlLabel style={{justifyContent: "left"}} control={<Switch defaultChecked={displayLLMBlockPrompt} onChange={(e) => toggleLLMBlockPrompt(e.target.checked)}/>} label="Enable LLM Block Prompt" labelPlacement="start"/>
+        </FormGroup>
       </SettingsDiv>
 
       <DropShadowButton

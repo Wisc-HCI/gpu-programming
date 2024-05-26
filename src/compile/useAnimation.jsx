@@ -1,12 +1,12 @@
 import { ARM_OFFSET_ANGLE, MAX_ANGLE_PER_SEC, MAX_ARM_SPEED, MAX_DIST_PER_SEC, MISTY_ARM_LENGTH, MS_TO_SEC, PI, SIM_TIME } from "../Constants.js";
 import { JointLookup } from "../Misty-Robot/JointLookup.js";
 import { AudioLookup } from "../Misty-Robot/audio/audiolookup.js";
-import { FaceFilenameLookup } from "../Misty-Robot/faces/facefilename.js";
+import { FaceFilenameLookup, FaceFilenameMap } from "../Misty-Robot/faces/facefilename.js";
 import { FaceLookup } from "../Misty-Robot/faces/facemap.js";
 import { Quaternion, Vector3 } from "three";
 import { determineZAngleFromQuaternion, eulerToQuaternion, hexToRgb, interpolateScalar, quaternionToEuler } from "../utils.js";
 
-const useAnimation = ({blocks, tfs}) => {
+const useAnimation = ({blocks, tfs, items}) => {
   var leftArm = tfs[JointLookup("Left")];
   var rightArm = tfs[JointLookup("Right")];
   var head = tfs[JointLookup("Head")];
@@ -18,6 +18,12 @@ const useAnimation = ({blocks, tfs}) => {
     "Head": {"x": [head.rotation.x], "y": [head.rotation.y], "z": [head.rotation.z], "w": [head.rotation.w]},
     "Base": {"position": {"x": [base.position.x], "y": [base.position.y], "z": [base.position.z]}, "rotation": {"x": [base.rotation.x], "y": [base.rotation.y], "z": [base.rotation.z], "w": [base.rotation.w]}},
     "Time": [0],
+  }
+
+  let faceKeys = Object.keys(FaceFilenameMap);
+  for (let m = 0; m < faceKeys.length; m++) {
+    let face = faceKeys[m];
+    jointAnimationArrays[face] = [items[face]?.hidden ? true : false];
   }
 
   const addArmAnimationKeyFrame = (arm, position, velocity) => {
@@ -81,6 +87,12 @@ const useAnimation = ({blocks, tfs}) => {
               jointAnimationArrays["Base"]["rotation"]["x"].push(jointAnimationArrays["Base"]["rotation"]["x"][jointAnimationArrays["Base"]["rotation"]["x"].length-1]);
               jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][jointAnimationArrays["Base"]["rotation"]["y"].length-1]);
               jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][jointAnimationArrays["Base"]["rotation"]["z"].length-1]);
+
+              let faceKeys = Object.keys(FaceFilenameMap);
+              for (let m = 0; m < faceKeys.length; m++) {
+                let face = faceKeys[m];
+                jointAnimationArrays[face].push(jointAnimationArrays[face][jointAnimationArrays[face].length - 1]);
+              }
             }
             if (appends > 1) {
               jointAnimationArrays["Time"].push(time/2.0);
@@ -204,6 +216,12 @@ const useAnimation = ({blocks, tfs}) => {
           jointAnimationArrays["Base"]["rotation"]["x"].push(jointAnimationArrays["Base"]["rotation"]["x"][jointAnimationArrays["Base"]["rotation"]["x"].length-1]);
           jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][jointAnimationArrays["Base"]["rotation"]["y"].length-1]);
           jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][jointAnimationArrays["Base"]["rotation"]["z"].length-1]);  
+          
+          let faceKeys = Object.keys(FaceFilenameMap);
+          for (let m = 0; m < faceKeys.length; m++) {
+            let face = faceKeys[m];
+            jointAnimationArrays[face].push(jointAnimationArrays[face][jointAnimationArrays[face].length - 1]);
+          }
         }
 
         if (appends > 1) {
@@ -242,6 +260,12 @@ const useAnimation = ({blocks, tfs}) => {
         jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][jointAnimationArrays["Base"]["rotation"]["y"].length-1]);
         jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][jointAnimationArrays["Base"]["rotation"]["z"].length-1]);
         
+        let faceKeys = Object.keys(FaceFilenameMap);
+        for (let m = 0; m < faceKeys.length; m++) {
+          let face = faceKeys[m];
+          jointAnimationArrays[face].push(jointAnimationArrays[face][jointAnimationArrays[face].length - 1]);
+        }
+
         jointAnimationArrays["Time"].push(time);
     }
   }
@@ -314,8 +338,50 @@ const useAnimation = ({blocks, tfs}) => {
         jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][jointAnimationArrays["Right"]["y"].length-1]);
         jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][jointAnimationArrays["Right"]["z"].length-1]);
         
+        let faceKeys = Object.keys(FaceFilenameMap);
+        for (let m = 0; m < faceKeys.length; m++) {
+          let face = faceKeys[m];
+          jointAnimationArrays[face].push(jointAnimationArrays[face][jointAnimationArrays[face].length - 1]);
+        }
+
         jointAnimationArrays["Time"].push(time);
     }
+  }
+
+  const addDisplayImageKeyFrame = (image, time) => {
+    let faceKeys = Object.keys(FaceFilenameMap);
+    for (let m = 0; m < faceKeys.length; m++) {
+      let face = faceKeys[m];
+      jointAnimationArrays[face].push(image === face ? false : true);
+    }
+
+    // buffer all other frames
+    let lastElement = jointAnimationArrays["Head"]["x"].length-1;
+    jointAnimationArrays["Base"]["position"]["x"].push(jointAnimationArrays["Base"]["position"]["x"][lastElement]);
+    jointAnimationArrays["Base"]["position"]["y"].push(jointAnimationArrays["Base"]["position"]["y"][lastElement]);
+    jointAnimationArrays["Base"]["position"]["z"].push(jointAnimationArrays["Base"]["position"]["z"][lastElement]);
+
+    jointAnimationArrays["Base"]["rotation"]["w"].push(jointAnimationArrays["Base"]["rotation"]["w"][lastElement]);
+    jointAnimationArrays["Base"]["rotation"]["x"].push(jointAnimationArrays["Base"]["rotation"]["x"][lastElement]);
+    jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][lastElement]);
+    jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][lastElement]);
+    
+    jointAnimationArrays["Head"]["x"].push(jointAnimationArrays["Head"]["x"][lastElement]);
+    jointAnimationArrays["Head"]["y"].push(jointAnimationArrays["Head"]["y"][lastElement]);
+    jointAnimationArrays["Head"]["z"].push(jointAnimationArrays["Head"]["z"][lastElement]);
+    jointAnimationArrays["Head"]["w"].push(jointAnimationArrays["Head"]["w"][lastElement]);
+
+    jointAnimationArrays["Left"]["w"].push(jointAnimationArrays["Left"]["w"][lastElement]);
+    jointAnimationArrays["Left"]["x"].push(jointAnimationArrays["Left"]["x"][lastElement]);
+    jointAnimationArrays["Left"]["y"].push(jointAnimationArrays["Left"]["y"][lastElement]);
+    jointAnimationArrays["Left"]["z"].push(jointAnimationArrays["Left"]["z"][lastElement]);
+    
+    jointAnimationArrays["Right"]["w"].push(jointAnimationArrays["Right"]["w"][lastElement]);
+    jointAnimationArrays["Right"]["x"].push(jointAnimationArrays["Right"]["x"][lastElement]);
+    jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][lastElement]);
+    jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][lastElement]);
+
+    jointAnimationArrays["Time"].push(time);
   }
 
   const bufferAnimation = (time) => {
@@ -344,12 +410,20 @@ const useAnimation = ({blocks, tfs}) => {
     jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][lastElement]);
     jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][lastElement]);
     
+    let faceKeys = Object.keys(FaceFilenameMap);
+    for (let m = 0; m < faceKeys.length; m++) {
+      let face = faceKeys[m];
+      jointAnimationArrays[face].push(jointAnimationArrays[face][lastElement]);
+    }
+
     jointAnimationArrays["Time"].push(time);
   }
 
   const interpolateAnimationArray = () => {
     let newTfs = JSON.parse(JSON.stringify(tfs));
     let newEndingTfs = JSON.parse(JSON.stringify(tfs));
+    let newItems = JSON.parse(JSON.stringify(items));
+    let newEndingItems = JSON.parse(JSON.stringify(items));
 
     let totalLength = jointAnimationArrays["Time"].length;
     let runningTimeSum = 0
@@ -377,6 +451,12 @@ const useAnimation = ({blocks, tfs}) => {
     let baseRotationXVector = [];
     let baseRotationYVector = [];
     let baseRotationZVector = [];
+
+    let faceDisplayVector = [];
+    let keyIndex = Object.keys(FaceFilenameMap);
+    for (let m = 0; m < keyIndex.length; m++) {
+      faceDisplayVector.push([]);
+    }
 
     for (let i = 1; i < totalLength; i++) {
       let time = jointAnimationArrays["Time"][i];
@@ -426,6 +506,10 @@ const useAnimation = ({blocks, tfs}) => {
         baseRotationXVector.push(oldBaseQuat._x);
         baseRotationYVector.push(oldBaseQuat._y);
         baseRotationZVector.push(oldBaseQuat._z);
+
+        for (let k = 0; k < keyIndex.length; k++) {
+          faceDisplayVector[k].push(jointAnimationArrays[keyIndex[k]][i]);
+        }
       }
       runningTimeSum += time;
     }
@@ -460,6 +544,14 @@ const useAnimation = ({blocks, tfs}) => {
     baseRotationXVector.push(finalBaseQuat._x);
     baseRotationYVector.push(finalBaseQuat._y);
     baseRotationZVector.push(finalBaseQuat._z);
+
+    for (let k = 0; k < keyIndex.length; k++) {
+      faceDisplayVector[k].push(jointAnimationArrays[keyIndex[k]][totalLength-1]);
+      newItems[keyIndex[k]].hidden = interpolateScalar(timeVector, faceDisplayVector[k]);
+      newEndingItems[keyIndex[k]].hidden = jointAnimationArrays[keyIndex[k]][totalLength-1];
+    }
+    console.log(newEndingItems);
+    console.log(faceDisplayVector);
 
     newTfs[JointLookup("Left")].rotation.w = interpolateScalar(timeVector, leftArmWVector);
     newTfs[JointLookup("Left")].rotation.x = interpolateScalar(timeVector, leftArmXVector);
@@ -504,7 +596,7 @@ const useAnimation = ({blocks, tfs}) => {
     newEndingTfs[JointLookup("Base")].position.y = finalBaseVec.y;
     newEndingTfs[JointLookup("Base")].position.z = finalBaseVec.z;
 
-    return {newTfs, newEndingTfs};
+    return {newTfs, newEndingTfs, newItems, newEndingItems};
   }
 
   const getBlocksByType = (type) => {
@@ -891,6 +983,7 @@ const useAnimation = ({blocks, tfs}) => {
         var alpha = 1;
         var exprBlock = getBlock(params.inputs.FIELD_DisplayImage_Filename);
         var filename = FaceFilenameLookup(exprBlock.type);
+        addDisplayImageKeyFrame(exprBlock.type, 500);
         return;
 
       case type === "PlayAudio":
