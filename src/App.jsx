@@ -57,7 +57,7 @@ function App() {
         <ReflexElement flex={0.55}>
           <Item style={{width: "100%", height:"100%"}}>
             {<BlocklyInterface/>}
-            
+            {/* {<GPTPanel/>} */}
           </Item>
         </ReflexElement>
         

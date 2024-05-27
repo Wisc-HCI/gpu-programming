@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import * as Blockly from "blockly";
 import { appendActivity } from "./ActivityTracker";
 
@@ -37,6 +37,7 @@ export default function BlocklyInterface(props) {
   const setBlocklyWorkspace = useStore((state) => state.setBlocklyWorkspace);
   const loadBlocks = useStore((state) => state.loadBlocks);
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
+  const [showGPTConsole, setShowGPTConsole] = useState(false);
   const ip = useStore((state) => state.ip);
 
   const {height, _} = useWindowDimensions();
@@ -59,6 +60,11 @@ export default function BlocklyInterface(props) {
       appendActivity(`switch toolbox category from ${oldItem} to ${newItem}`);
     }
   };
+
+  const toggleGPTConsole = () => {
+    setShowGPTConsole(!showGPTConsole);
+  };
+
 
   // Register the blocks and generator with Blockly
   Blockly.common.defineBlocks(blocks);
@@ -426,19 +432,19 @@ export default function BlocklyInterface(props) {
             left: '35%',
             transform: 'translateX(-50%)', // Center the button horizontally
             zIndex: 10,
-            backgroundColor: 'rgba(51, 51, 51, 0.8)', // Dark grey background color with 80% opacity
+            backgroundColor: 'rgba(51, 51, 51, 0.8)', 
             color: '#fff', 
             padding: '10px 20px',
             borderRadius: '10px',
             border: 'none', // Remove default button border
             cursor: 'pointer',
           }}
-          onClick={() => alert('Button clicked!')}
+          onClick={toggleGPTConsole}
         >
           Goals
         </div>
-        
-        {/* <div
+        {showGPTConsole && (
+        <div
           style={{
             position: 'absolute',
             bottom: '0',
@@ -450,7 +456,8 @@ export default function BlocklyInterface(props) {
           }}
         >
           <GPTConsole />
-        </div> */}
+        </div>
+         )}
         <xml id="toolbox" style={{ display: "none" }}></xml>
       </div>
     </div>
