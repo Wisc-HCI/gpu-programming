@@ -13,35 +13,41 @@ export default function GPTConsole(props) {
 
   const isLLMProcessing = useStore(useShallow(state => state.llmProcessing));
 
+  const setFullScreenPanel = useStore(useShallow(state => state.setFullScreenPanel));
+  const setShowGPTConsole = useStore((state) => state.setShowGPTConsole);
+  const showGPTConsole = useStore((state) => state.showGPTConsole);
+
   return (
-    <div style={{
-      position: isFullScreen ? 'fixed' : 'relative',
-      top: isFullScreen ? 0 : 'auto',
-      left: isFullScreen ? 0 : 'auto',
-      width: isFullScreen ? '100vw' : '300px',
-      height: isFullScreen ? '100vh' : '200px',
-      backgroundColor: '#222',
-      color: '#fff',
-      padding: '10px',
-      overflow: 'auto',
-      zIndex: 1000,
-    }}>
-      {!showPanel ? (
-        <button onClick={() => setShowPanel(true)} style={{
+    <div style={{height: '25vh'}}>
+      
+        <button onClick={() => {
+          setFullScreenPanel(true)
+          setShowGPTConsole(!showGPTConsole)}  
+        } style={{
           position: 'relative',
           bottom: '0px',
-          left: '50%',
+          left: '10vw',
         }}>
-          {isFullScreen ? 'Exit Full Screen' : 'Expand to Full Screen'}
+          Expand to Full Screen
         </button>
-      ) : (
-        <GPTPanel />
-      )}
       <p style={{
         position: 'relative',
         bottom: '0px',
-        left: '50%',
+        left: '10vw',
       }}>Goals goes here...</p>
+      <button onClick={() => setShowGPTConsole(!showGPTConsole)} style={{
+        position: 'absolute',
+        top: '10px',
+        right: '10px',
+        backgroundColor: 'rgba(255, 0, 0, 0.8)', // Red color for visibility
+        color: '#fff',
+        padding: '5px 10px',
+        borderRadius: '5px',
+        border: 'none',
+        cursor: 'pointer',
+      }}>
+        ✖
+      </button>
     </div>
   );
 }

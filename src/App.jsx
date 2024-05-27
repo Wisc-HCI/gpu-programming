@@ -42,6 +42,7 @@ function App() {
   const llmMode = useStore(useShallow(state => state.llmMode));
   const isLLMProcessing = useStore(useShallow((state => state.llmProcessing)));
   const headerHeight = useStore(useShallow((state => state.headerHeight)));
+  const fullScreenPanel = useStore(state => state.fullScreenPanel);
 
   return (
     <Box width={"100vw"} height={`calc(100vh - ${headerHeight}px)`} padding={0}>
@@ -56,8 +57,8 @@ function App() {
         
         <ReflexElement flex={0.55}>
           <Item style={{width: "100%", height:"100%"}}>
-            {<BlocklyInterface/>}
-            {/* {<GPTPanel/>} */}
+            {fullScreenPanel ? <GPTPanel /> : null}
+            <BlocklyInterface />
           </Item>
         </ReflexElement>
         

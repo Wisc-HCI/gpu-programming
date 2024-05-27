@@ -37,7 +37,8 @@ export default function BlocklyInterface(props) {
   const setBlocklyWorkspace = useStore((state) => state.setBlocklyWorkspace);
   const loadBlocks = useStore((state) => state.loadBlocks);
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
-  const [showGPTConsole, setShowGPTConsole] = useState(false);
+  const setShowGPTConsole = useStore((state) => state.setShowGPTConsole);
+  const showGPTConsole = useStore((state) => state.showGPTConsole);
   const ip = useStore((state) => state.ip);
 
   const {height, _} = useWindowDimensions();
