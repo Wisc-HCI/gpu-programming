@@ -39,6 +39,7 @@ export default function BlocklyInterface(props) {
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
   const setShowGPTConsole = useStore((state) => state.setShowGPTConsole);
   const showGPTConsole = useStore((state) => state.showGPTConsole);
+  const fullScreenPanel = useStore((state) => state.fullScreenPanel);
   const ip = useStore((state) => state.ip);
 
   const {height, _} = useWindowDimensions();
@@ -416,7 +417,8 @@ export default function BlocklyInterface(props) {
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      {height >= 460 && <ProgramLogos />}
+      {/* if the GPT panel is full Screen, the Logos should not be rendered */}
+      {height >= 460 && !fullScreenPanel && <ProgramLogos />}
       <div id="pageContainer" style={{ width: "100%", height: "100%" }}>
         <div
           id="blocklyDiv"
@@ -426,7 +428,8 @@ export default function BlocklyInterface(props) {
           }}
          
         ></div>
-        <div
+        {/* if GPT panel is full screen, the Goals buttons should not be rendered */}
+        {!fullScreenPanel && <div
           style={{
             position: 'absolute',
             bottom: '10px',
@@ -443,7 +446,7 @@ export default function BlocklyInterface(props) {
           onClick={toggleGPTConsole}
         >
           Goals
-        </div>
+        </div>}
         {showGPTConsole && (
         <div
           style={{
