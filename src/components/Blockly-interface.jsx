@@ -189,6 +189,7 @@ export default function BlocklyInterface(props) {
           blocklyDiv.style.width = blocklyArea.offsetWidth + "px";
           blocklyDiv.style.height = blocklyArea.offsetHeight + "px";
           Blockly.svgResize(ws);
+          ws.scrollbar.setVisible(false);
         }
       });
       observer.observe(blocklyArea);

@@ -896,10 +896,10 @@ export const starting_items = {
         "z": 0
       },
       "color": {
-        "r": 178.5,
-        "g": 178.5,
-        "b": 178.5,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.5
       },
       "scale": {
         "x": 0.001,
@@ -915,7 +915,7 @@ export const starting_items = {
       "position": {
         "x": -0.074015,
         "y": -0.093353,
-        "z": -0.468404
+        "z": -0.468404-0.02
       },
       "rotation": {
         "w": 1,
@@ -930,11 +930,979 @@ export const starting_items = {
         "a": 1
       },
       "scale": {
-        "x": 0.001,
-        "y": 0.001,
-        "z": 0.001
+        "x": 0.00105,
+        "y": 0.00105,
+        "z": 0.00105
       },
       "highlight": "false"
+    },
+    "eyes_acceptance": {
+      "shape": "eyes_acceptance",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_admiration": {
+      "shape": "eyes_admiration",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_amazement": {
+      "shape": "eyes_amazement",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_anger": {
+      "shape": "eyes_anger",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_annoyed": {
+      "shape": "eyes_annoyed",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_anticipation": {
+      "shape": "eyes_anticipation",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_apprehension": {
+      "shape": "eyes_apprehension",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_apprehension_1": {
+      "shape": "eyes_apprehension_1",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_boredom": {
+      "shape": "eyes_boredom",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_default": {
+      "shape": "eyes_default",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: false,
+    },
+    "eyes_disgust": {
+      "shape": "eyes_disgust",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_distraction": {
+      "shape": "eyes_distraction",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_ecstasy_frame_1": {
+      "shape": "eyes_ecstasy_frame_1",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_ecstasy_frame_2": {
+      "shape": "eyes_ecstasy_frame_2",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_fear": {
+      "shape": "eyes_fear",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_grief": {
+      "shape": "eyes_grief",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_interest": {
+      "shape": "eyes_interest",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_joy": {
+      "shape": "eyes_joy",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_loathing": {
+      "shape": "eyes_loathing",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_pensiveness": {
+      "shape": "eyes_pensiveness",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_rage": {
+      "shape": "eyes_rage",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_sad": {
+      "shape": "eyes_sad",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_serenity": {
+      "shape": "eyes_serenity",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_surprise": {
+      "shape": "eyes_surprise",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_terror": {
+      "shape": "eyes_terror",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_trust": {
+      "shape": "eyes_trust",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "eyes_vigilance": {
+      "shape": "eyes_vigilance",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_Sleeping": {
+      "shape": "e_Sleeping",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_SleepingZZZ": {
+      "shape": "e_SleepingZZZ",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_Contempt": {
+      "shape": "e_Contempt",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_ContentLeft": {
+      "shape": "e_ContentLeft",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_ContentRight": {
+      "shape": "e_ContentRight",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_Disoriented": {
+      "shape": "e_Disoriented",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_EcstacyHilarious": {
+      "shape": "e_EcstacyHilarious",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_EcstacyStarryEyed": {
+      "shape": "e_EcstacyStarryEyed",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_JoyGoofy": {
+      "shape": "e_JoyGoofy",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_JoyGoofy2": {
+      "shape": "e_JoyGoofy2",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_JoyGoofy3": {
+      "shape": "e_JoyGoofy3",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_Love": {
+      "shape": "e_Love",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_Rage": {
+      "shape": "e_Rage",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_Rage2": {
+      "shape": "e_Rage2",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_Rage3": {
+      "shape": "e_Rage3",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_Rage4": {
+      "shape": "e_Rage4",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
+    },
+    "e_RemorseShame": {
+      "shape": "e_RemorseShame",
+      "name": "blink",
+      "frame": "FACE_1",
+      "position": {
+        "x": -0.01,
+        "y": -0.095,
+        "z": -0.19
+      },
+      "rotation": {
+        "w": 0.500,
+        "x": 0.500,
+        "y": -0.500,
+        "z": -0.500
+      },
+      "scale": {
+        "x": 0.045,
+        "y": 0.0253125,
+        "z": 1
+      },
+      hidden: true,
     },
     "VISOR_GLASS_1": {
       "shape": "package://misty_description/meshes/VISOR_GLASS_1.stl",
@@ -952,9 +1920,9 @@ export const starting_items = {
         "z": 0
       },
       "color": {
-        "r": 178.5,
-        "g": 178.5,
-        "b": 178.5,
+        "r": 22,
+        "g": 22,
+        "b": 22,
         "a": 1
       },
       "scale": {

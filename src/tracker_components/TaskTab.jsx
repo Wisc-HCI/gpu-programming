@@ -4,6 +4,8 @@ import './TaskTab.css';
 
 const TaskTab = (props) => {
 
+  // add checkbox to left of each subtask, like a to do list that users can check off
+
   return (
     <div className="task-tab-container">
       {props?.subtasks && props?.subtasks.map((subtask) => (
