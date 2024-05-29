@@ -58,7 +58,7 @@ function App() {
         <ReflexElement flex={0.55}>
           <Item style={{width: "100%", height:"100%"}}>
             {fullScreenPanel ? <GPTPanel /> : null}
-            <BlocklyInterface />
+            {!fullScreenPanel && <BlocklyInterface />}
           </Item>
         </ReflexElement>
         
