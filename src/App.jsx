@@ -28,6 +28,7 @@ import useStore from './Store.js';
 import { useShallow } from 'zustand/react/shallow';
 import GPTPanel from './components/GPTPanel.jsx';
 import { PromptModal } from './modals/PromptModal.jsx';
+import GPTConsole from './components/GPTConsole.jsx';
 
 const Item = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -41,6 +42,7 @@ function App() {
   const llmMode = useStore(useShallow(state => state.llmMode));
   const isLLMProcessing = useStore(useShallow((state => state.llmProcessing)));
   const headerHeight = useStore(useShallow((state => state.headerHeight)));
+  const fullScreenPanel = useStore(state => state.fullScreenPanel);
 
   return (
     <Box width={"100vw"} height={`calc(100vh - ${headerHeight}px)`} padding={0}>
@@ -55,8 +57,8 @@ function App() {
         
         <ReflexElement flex={0.55}>
           <Item style={{width: "100%", height:"100%"}}>
-            {!llmMode && <BlocklyInterface/>}
-            {llmMode && <GPTPanel />}
+            {fullScreenPanel ? <GPTPanel /> : null}
+            {!fullScreenPanel && <BlocklyInterface />}
           </Item>
         </ReflexElement>
         
@@ -66,8 +68,7 @@ function App() {
           <ReflexContainer orientation='horizontal'>
             <ReflexElement>
               <Item>
-                {!llmMode && <Simulator />}
-                {llmMode && <BlocklyInterface />}
+                {llmMode && <Simulator />}
               </Item>
             </ReflexElement>
             
@@ -75,8 +76,7 @@ function App() {
             
             <ReflexElement>
               <Item>
-                {!llmMode && <TrackerScreen/> }
-                {llmMode && <Simulator />}
+                {llmMode && <TrackerScreen/> }
               </Item>
             </ReflexElement>
           

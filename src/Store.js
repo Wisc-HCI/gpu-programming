@@ -35,7 +35,9 @@ const useStore = create((set,get) => ({
   userPrompt: "",
   programGoals: {...dummyData},
   llmProcessing: false,
-  llmMode: false,
+  llmMode: true,
+  showGPTConsole:false,
+  fullScreenPanel: false,
   displayLLMBlockPrompt: false,
   mistyAudioList: [],
   mistyImageList: [],
@@ -53,6 +55,12 @@ const useStore = create((set,get) => ({
   closeModal: () => set(_ => ({ activeModal: null })),
   toggleLLMMode: (toggle) => set({
     llmMode: toggle
+  }),
+  setFullScreenPanel:(state) => set({
+    fullScreenPanel: state
+  }),
+  setShowGPTConsole:(state) => set({
+    showGPTConsole: state
   }),
   toggleLLMBlockPrompt: (toggle) => set({
     displayLLMBlockPrompt: toggle

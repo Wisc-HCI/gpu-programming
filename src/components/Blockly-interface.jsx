@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import * as Blockly from "blockly";
 import { appendActivity } from "./ActivityTracker";
 
@@ -13,6 +13,7 @@ import useStore from "../Store";
 import blockColors from "../blockPallete.json";
 import ProgramLogos from './ProgramLogos.jsx';
 import useWindowDimensions from "../useWindowDimensions.jsx";
+import GPTConsole from "./GPTConsole.jsx";
 
 Blockly.Blocks["Start"] = {
   init: function () {
@@ -36,6 +37,9 @@ export default function BlocklyInterface(props) {
   const setBlocklyWorkspace = useStore((state) => state.setBlocklyWorkspace);
   const loadBlocks = useStore((state) => state.loadBlocks);
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
+  const setShowGPTConsole = useStore((state) => state.setShowGPTConsole);
+  const showGPTConsole = useStore((state) => state.showGPTConsole);
+  const fullScreenPanel = useStore((state) => state.fullScreenPanel);
   const ip = useStore((state) => state.ip);
 
   const {height, _} = useWindowDimensions();
@@ -58,6 +62,11 @@ export default function BlocklyInterface(props) {
       appendActivity(`switch toolbox category from ${oldItem} to ${newItem}`);
     }
   };
+
+  const toggleGPTConsole = () => {
+    setShowGPTConsole(!showGPTConsole);
+  };
+
 
   // Register the blocks and generator with Blockly
   Blockly.common.defineBlocks(blocks);
@@ -409,7 +418,8 @@ export default function BlocklyInterface(props) {
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      {height >= 460 && <ProgramLogos />}
+      {/* if the GPT panel is full Screen, the Logos should not be rendered */}
+      {height >= 460 && !fullScreenPanel && <ProgramLogos />}
       <div id="pageContainer" style={{ width: "100%", height: "100%" }}>
         <div
           id="blocklyDiv"
@@ -417,7 +427,43 @@ export default function BlocklyInterface(props) {
             width: "100%",
             height: "100%",
           }}
+         
         ></div>
+        {/* if GPT panel is full screen, the Goals buttons should not be rendered */}
+        {!fullScreenPanel && <div
+          style={{
+            position: 'absolute',
+            bottom: '10px',
+            left: '35%',
+            transform: 'translateX(-50%)', // Center the button horizontally
+            zIndex: 10,
+            backgroundColor: 'rgba(51, 51, 51, 0.8)', 
+            color: '#fff', 
+            padding: '10px 20px',
+            borderRadius: '10px',
+            border: 'none', // Remove default button border
+            cursor: 'pointer',
+          }}
+          onClick={toggleGPTConsole}
+        >
+          Goals
+        </div>}
+        {showGPTConsole && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '0',
+            left: '0',
+            width: '100%',
+            zIndex: 10,
+            backgroundColor: '#222',
+            color: '#fff',
+          }}
+        >
+          <GPTConsole />
+        </div>
+         )}
+        <xml id="toolbox" style={{ display: "none" }}></xml>
       </div>
     </div>
   );
