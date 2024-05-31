@@ -17,12 +17,55 @@ export const toolbox = {
     'contents': [
       {
         'kind': 'category',
-        'name': 'Logic',
+        'name': 'Functions',
+        'categorystyle': 'procedure_category',
+        'custom': 'PROCEDURE',
+      },
+      {
+        "kind": "category",
+        "name": "Triggers",
+        'categorystyle': 'trigger_category',
+        "contents": [
+          {
+            'kind': 'block',
+            'type': 'FrontLeftBumperPress',
+          },
+          {
+            'kind': 'block',
+            'type': 'FrontRightBumperPress',
+          },
+          {
+            'kind': 'block',
+            'type': 'RearLeftBumperPress',
+          },
+          {
+            'kind': 'block',
+            'type': 'RearRightBumperPress',
+          },
+        ]
+      },
+      {
+        'kind': 'category',
+        'name': 'Control',
         'categorystyle': 'logic_category',
         'contents': [
           {
             'kind': 'block',
             'type': 'controls_if',
+          },
+          {
+            'kind': 'block',
+            'type': 'controls_repeat_ext',
+            'inputs': {
+              'TIMES': {
+                'shadow': {
+                  'type': 'math_number',
+                  'fields': {
+                    'NUM': 10,
+                  },
+                },
+              },
+            },
           },
           {
             'kind': 'block',
@@ -47,28 +90,6 @@ export const toolbox = {
           {
             'kind': 'block',
             'type': 'logic_ternary',
-          },
-          
-        ],
-      },
-      {
-        'kind': 'category',
-        'name': 'Loops',
-        'categorystyle': 'loop_category',
-        'contents': [
-          {
-            'kind': 'block',
-            'type': 'controls_repeat_ext',
-            'inputs': {
-              'TIMES': {
-                'shadow': {
-                  'type': 'math_number',
-                  'fields': {
-                    'NUM': 10,
-                  },
-                },
-              },
-            },
           },
           
         ],
@@ -132,20 +153,14 @@ export const toolbox = {
         ],
       },
       {
-        'kind': 'category',
-        'name': 'Functions',
-        'categorystyle': 'procedure_category',
-        'custom': 'PROCEDURE',
-      },
-      {
-        'kind': 'sep',
-        'gap': '8'
-      },
-      {
         "kind": "category",
         "name": "Movement",
         'categorystyle': 'movement_category',
         "contents": [
+          {
+            'kind': 'block',
+            'type': 'WaitForSeconds',
+          },
           {
             'kind': 'block',
             'type': 'DriveTime',
@@ -303,6 +318,14 @@ export const toolbox = {
         "name": "Face",
         'categorystyle': 'face_category',
         "contents": [
+          {
+            'kind': 'block',
+            'type': 'DisplayText',
+          },
+          {
+            'kind': 'block',
+            'type': 'ClearText',
+          },
           {
             'kind': 'block',
             'type': 'DisplayImage',
@@ -740,29 +763,6 @@ export const toolbox = {
           }
         ]
       },
-      {
-        "kind": "category",
-        "name": "Misc",
-        "categorystyle": "misc_category",
-        "contents": [
-          {
-            'kind': 'block', 
-            'type': 'DisplayAnimation',
-          },
-          {
-            'kind': 'block',
-            'type': 'DisplayText',
-          },
-          {
-            'kind': 'block',
-            'type': 'ClearText',
-          },
-          {
-            'kind': 'block',
-            'type': 'WaitForSeconds',
-          },
-        ]
-      }
     ],
   };
   

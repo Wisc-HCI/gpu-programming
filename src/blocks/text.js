@@ -585,7 +585,7 @@ Blockly.Blocks[WaitForSecondsType] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(blockColors["misc_category"]["colour"]);
+    this.setColour(blockColors["movement_category"]["colour"]);
     this.setTooltip("Delay the execution of the next block by some number of seconds");
   }
 };
@@ -634,7 +634,7 @@ let DisplayTextType = "DisplayText";
 allBlockTypes.push(DisplayTextType);
 Blockly.Blocks[DisplayTextType] = {
   init: function () {
-    this.setColour(blockColors["misc_category"]["colour"]);
+    this.setColour(blockColors["face_category"]["colour"]);
     this.appendDummyInput()
       .appendField("Display Text: ")
       .appendField(new Blockly.FieldTextInput("default"), "FIELD_DisplayText_Text");
@@ -649,10 +649,76 @@ let ClearText = "ClearText";
 allBlockTypes.push(ClearText);
 Blockly.Blocks[ClearText] = {
   init: function () {
-    this.setColour(blockColors["misc_category"]["colour"]);
+    this.setColour(blockColors["face_category"]["colour"]);
     this.appendDummyInput()
       .appendField("Clear Text")
     this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("");
+  }
+};
+
+let Start = "Start";
+allBlockTypes.push(Start)
+Blockly.Blocks[Start] = {
+  init: function () {
+    this.setStyle("hat_blocks");
+    this.appendDummyInput().appendField("Program starts here");
+    this.setColour(blockColors["trigger_category"]["colour"]);
+    this.setTooltip("This is the starting block");
+    this.setNextStatement(true, null);
+    this.setHelpUrl("");
+    this.setDeletable(false);
+  },
+};
+
+let FrontLeftBumperPress = "FrontLeftBumperPress";
+allBlockTypes.push(FrontLeftBumperPress)
+Blockly.Blocks[FrontLeftBumperPress] = {
+  init: function () {
+    this.setStyle("hat_blocks");
+    this.setColour(blockColors["trigger_category"]["colour"]);
+    this.appendDummyInput()
+      .appendField("Front Left Bumper Pressed")
+    this.setNextStatement(true, null);
+    this.setTooltip("");
+  }
+};
+
+let FrontRightBumperPress = "FrontRightBumperPress";
+allBlockTypes.push(FrontRightBumperPress)
+Blockly.Blocks[FrontRightBumperPress] = {
+  init: function () {
+    this.setStyle("hat_blocks");
+    this.setColour(blockColors["trigger_category"]["colour"]);
+    this.appendDummyInput()
+      .appendField("Front Right Bumper Pressed")
+    this.setNextStatement(true, null);
+    this.setTooltip("");
+  }
+};
+
+let RearLeftBumperPress = "RearLeftBumperPress";
+allBlockTypes.push(RearLeftBumperPress)
+Blockly.Blocks[RearLeftBumperPress] = {
+  init: function () {
+    this.setStyle("hat_blocks");
+    this.setColour(blockColors["trigger_category"]["colour"]);
+    this.appendDummyInput()
+      .appendField("Rear Left Bumper Pressed")
+    this.setNextStatement(true, null);
+    this.setTooltip("");
+  }
+};
+
+let RearRightBumperPress = "RearRightBumperPress";
+allBlockTypes.push(RearRightBumperPress)
+Blockly.Blocks[RearRightBumperPress] = {
+  init: function () {
+    this.setStyle("hat_blocks");
+    this.setColour(blockColors["trigger_category"]["colour"]);
+    this.appendDummyInput()
+      .appendField("Right Rear Bumper Pressed")
     this.setNextStatement(true, null);
     this.setTooltip("");
   }

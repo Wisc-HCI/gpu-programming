@@ -19,7 +19,7 @@ const Subtask = (props) => {
   }
 
   return (
-    <div className="subtask-card">
+    <div  key={props.title} className="subtask-card">
       <div className="subtask-checkbox-container">
         <input type="checkbox" className={`subtask-checkbox ${isChecked ? 'checked' : ''}`} onChange={handleCheckboxChange}/>
       </div>
@@ -28,7 +28,7 @@ const Subtask = (props) => {
         <p className="subtask-subtext">{props.subtext}</p>
         <div className="hints-container">
           {props.hints && props.hints.map((hint, idx) => (
-            <button key={hint.title} className={`hint-button ${expandedHint === hint ? 'selected' : ''}`} onClick={() => toggleOpenHint(hint)}>
+            <button key={idx} className={`hint-button ${expandedHint === hint ? 'selected' : ''}`} onClick={() => toggleOpenHint(hint)}>
               Hint {idx+1}
             </button>
           ))}

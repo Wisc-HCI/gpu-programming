@@ -112,7 +112,7 @@ export default function TopBar(props) {
       alignItems={"center"}
       style={topbarStyle}
     >
-      <Grid item xs={12} sm={3} md={2} lg={3} xl={3}>
+      <Grid item xs={12} sm={4} md={4} lg={3} xl={3}>
         <Stack direction={"row"} alignItems={"center"}>
           <img style={{maxHeight: "35px", paddingRight: "5px"}} src={MistyLogo} />
           <Typography display={"inline"} variant="h5">
@@ -121,18 +121,18 @@ export default function TopBar(props) {
         </Stack>
       </Grid>
 
-      <Grid item xs={12} sm={9} md={10} lg={9} xl={9}>
+      <Grid item xs={12} sm={8} md={8} lg={9} xl={9}>
         <Grid 
           container
           direction={"row"}
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <Grid item xs={12} sm={12} md={4} lg={4} xl={3} style={{justifyContent: "right", display: "flex"}}>
-            {/* <DropShadowButton icon={<EditNote />} text={llmMode ? "Program Manually" : "Program with ChatGPT"} clickFunction={() => toggleLLMMode(!llmMode)}/> */}
+          {/* <Grid item xs={12} sm={12} md={4} lg={4} xl={3} style={{justifyContent: "right", display: "flex"}}>
+            <DropShadowButton icon={<EditNote />} text={llmMode ? "Program Manually" : "Program with ChatGPT"} clickFunction={() => toggleLLMMode(!llmMode)}/>
             <DropShadowButton icon={<EditNote />} text={llmMode ? "Program Manually" : "Program with ChatGPT"} clickFunction={() => setActiveModal(PROMPT_MODAL)}/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={8} lg={5} xl={4} style={{justifyContent: "right", display: "flex"}}>
+          </Grid> */}
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12} style={{justifyContent: "right", display: "flex"}}>
             <Stack direction={"row"} alignItems={"center"}>
                 {!isConnected && (
                   <div

@@ -550,8 +550,6 @@ const useAnimation = ({blocks, tfs, items}) => {
       newItems[keyIndex[k]].hidden = interpolateScalar(timeVector, faceDisplayVector[k]);
       newEndingItems[keyIndex[k]].hidden = jointAnimationArrays[keyIndex[k]][totalLength-1];
     }
-    console.log(newEndingItems);
-    console.log(faceDisplayVector);
 
     newTfs[JointLookup("Left")].rotation.w = interpolateScalar(timeVector, leftArmWVector);
     newTfs[JointLookup("Left")].rotation.x = interpolateScalar(timeVector, leftArmXVector);

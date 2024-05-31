@@ -72,7 +72,6 @@ export default function SimulationControls(props) {
         setWorkerThread(myWorker);
 
         let {newTfs, newEndingTfs, newItems, newEndingItems} = useAnimation({blocks: getBlocks(), tfs: endingTfs, items: getEndingItems()});
-        console.log(newEndingItems);
         setAnimationFrames(newTfs, newEndingTfs, newItems, newEndingItems);
 
         appendActivity("Click Run Code button");

@@ -15,18 +15,6 @@ import ProgramLogos from './ProgramLogos.jsx';
 import useWindowDimensions from "../useWindowDimensions.jsx";
 import GPTConsole from "./GPTConsole.jsx";
 
-Blockly.Blocks["Start"] = {
-  init: function () {
-    this.setStyle("hat_blocks");
-    this.appendDummyInput().appendField("Program starts here");
-    this.setColour(blockColors["procedure_category"]["colour"]);
-    this.setTooltip("This is the starting block");
-    this.setNextStatement(true, null);
-    this.setHelpUrl("");
-    this.setDeletable(false);
-  },
-};
-
 export default function BlocklyInterface(props) {
   const addBlock = useStore((state) => state.addBlock);
   const blocks = useStore((state) => state.blocks);

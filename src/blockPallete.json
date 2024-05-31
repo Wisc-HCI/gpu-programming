@@ -1,32 +1,32 @@
 {
-    "logic_category": {
-        "colour": "#D92626"
-    },
-    "loop_category": {
-        "colour": "#7F7F7F"
-    },
-    "math_category": {
-        "colour": "#8C564B"
+    "trigger_category": {
+        "colour": "#5f86b7"
     },
     "procedure_category": {
-        "colour": "#212121"
+        "colour": "#5f86b7"
+    },
+    "logic_category": {
+        "colour": "#0b522e"
+    },
+    "loop_category": {
+        "colour": "#0b522e"
+    },
+    "math_category": {
+        "colour": "#c86949"
     },
     "movement_category": {
-        "colour": "#CC6633"
+        "colour": "#50b166"
     },
     "light_category": {
-        "colour": "#25B14B"
+        "colour": "#802639"
     },
     "speech_category": {
-        "colour": "#33CCB3"
+        "colour": "#2dadb8"
     },
     "face_category": {
-        "colour": "#3366CC"
+        "colour": "#d20e4d"
     },
     "audio_category": {
-        "colour": "#7F33CC"
-    },
-    "misc_category": {
-        "colour": "#CC3399"
+        "colour": "#96a467"
     }
 }
