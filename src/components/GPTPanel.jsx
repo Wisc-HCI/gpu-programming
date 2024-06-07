@@ -18,7 +18,11 @@ export default function GPTPanel(props) {
       </Backdrop>
       <SplitSection
         leftChildren={<UserPromptInput />}
-        rightChildren={<TrackerScreen />}
+        rightChildren={
+          <div style={{ paddingRight: "50px" }}>
+            <TrackerScreen />
+          </div>
+        }
       />
       <button
         onClick={() => setFullScreenPanel(!fullScreenPanel)}
