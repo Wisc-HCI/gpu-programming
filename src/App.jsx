@@ -43,38 +43,45 @@ function App() {
   return (
     <Box width={"100vw"} height={`calc(100vh - ${headerHeight}px)`} padding={0}>
       <TopBar />
-      <ReflexContainer
-        orientation="vertical"
-        style={{
-          // backgroundColor: "red",
-          height: "100%",
-          width: "100vw",
-          // position: "fixed",
-        }}
-      >
-        <ReflexElement flex={0.55}>
-          <Item style={{ width: "100%", height: "100%" }}>
-            {fullScreenPanel ? <GPTPanel /> : null}
-            {!fullScreenPanel && <BlocklyInterface />}
-          </Item>
-        </ReflexElement>
+      {fullScreenPanel ? (
+        <GPTPanel
+          style={{
+            width: "100vw",
+          }}
+        />
+      ) : (
+        <ReflexContainer
+          orientation="vertical"
+          style={{
+            // backgroundColor: "red",
+            height: "100%",
+            width: "100vw",
+            // position: "fixed",
+          }}
+        >
+          <ReflexElement flex={0.55}>
+            <Item style={{ width: "100%", height: "100%" }}>
+              <BlocklyInterface />
+            </Item>
+          </ReflexElement>
 
-        <ReflexSplitter propagate={true} />
+          <ReflexSplitter propagate={true} />
 
-        <ReflexElement flex={0.45}>
-          <ReflexContainer orientation="horizontal">
-            <ReflexElement>
-              <Item>{llmMode && <Simulator />}</Item>
-            </ReflexElement>
+          <ReflexElement flex={0.45}>
+            <ReflexContainer orientation="horizontal">
+              <ReflexElement>
+                <Item>{llmMode && <Simulator />}</Item>
+              </ReflexElement>
 
-            <ReflexSplitter propagate={true} />
+              <ReflexSplitter propagate={true} />
 
-            <ReflexElement>
-              <Item>{llmMode && <TrackerScreen />}</Item>
-            </ReflexElement>
-          </ReflexContainer>
-        </ReflexElement>
-      </ReflexContainer>
+              <ReflexElement>
+                <Item>{llmMode && <TrackerScreen />}</Item>
+              </ReflexElement>
+            </ReflexContainer>
+          </ReflexElement>
+        </ReflexContainer>
+      )}
       <Backdrop style={{ color: "#fff", zIndex: 1500 }} open={isLLMProcessing}>
         <CircularProgress color="inherit" />
       </Backdrop>
