@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Blockly from "blockly";
 import { appendActivity } from "./ActivityTracker";
 
@@ -11,7 +11,7 @@ import "../index.css";
 import useStore from "../Store";
 
 import blockColors from "../blockPallete.json";
-import ProgramLogos from './ProgramLogos.jsx';
+import ProgramLogos from "./ProgramLogos.jsx";
 import useWindowDimensions from "../useWindowDimensions.jsx";
 import GPTConsole from "./GPTConsole.jsx";
 
@@ -30,7 +30,7 @@ export default function BlocklyInterface(props) {
   const fullScreenPanel = useStore((state) => state.fullScreenPanel);
   const ip = useStore((state) => state.ip);
 
-  const {height, _} = useWindowDimensions();
+  const { height, _ } = useWindowDimensions();
 
   const findNext = (arr, blockId) => {
     arr.push(blockId);
@@ -54,7 +54,6 @@ export default function BlocklyInterface(props) {
   const toggleGPTConsole = () => {
     setShowGPTConsole(!showGPTConsole);
   };
-
 
   // Register the blocks and generator with Blockly
   Blockly.common.defineBlocks(blocks);
@@ -109,33 +108,39 @@ export default function BlocklyInterface(props) {
 
       if (!blocklyWorkspace) {
         const existingStartBlocks = ws
-        .getAllBlocks()
-        .filter((block) => block.type === "Start");
+          .getAllBlocks()
+          .filter((block) => block.type === "Start");
         if (existingStartBlocks.length === 0) {
           const initialBlock = ws.newBlock("Start");
           initialBlock.setDeletable(false);
           initialBlock.moveBy(50, 50);
           initialBlock.initSvg();
           initialBlock.render();
-        } 
+        }
       }
 
       if (blocklyWorkspace) {
-        let data = {"data": []};
+        let data = { data: [] };
         let blockKeys = Object.keys(blocks);
         let numBlocks = blockKeys.length;
         for (let i = 0; i < numBlocks; i++) {
           let blockData = {
             id: blocks[blockKeys[i]].id,
             type: blocks[blockKeys[i]].type,
-          }
+          };
           if (blocks[blockKeys[i]].next && blocks[blockKeys[i]].next !== "") {
-            blockData["nextStatement"] = blocks[blockKeys[i]].next
+            blockData["nextStatement"] = blocks[blockKeys[i]].next;
           }
 
-          let fieldKeys = blocks[blockKeys[i]]?.inputs ? Object.keys(blocks[blockKeys[i]]?.inputs) : []
+          let fieldKeys = blocks[blockKeys[i]]?.inputs
+            ? Object.keys(blocks[blockKeys[i]]?.inputs)
+            : [];
           for (let j = 0; j < fieldKeys.length; j++) {
-            blockData[fieldKeys[j]] = blocks[blockKeys[i]]["inputs"][fieldKeys[j]]?.["shadow"] ? blocks[blockKeys[i]]["inputs"][fieldKeys[j]]["shadow"].id : blocks[blockKeys[i]]["inputs"][fieldKeys[j]];
+            blockData[fieldKeys[j]] = blocks[blockKeys[i]]["inputs"][
+              fieldKeys[j]
+            ]?.["shadow"]
+              ? blocks[blockKeys[i]]["inputs"][fieldKeys[j]]["shadow"].id
+              : blocks[blockKeys[i]]["inputs"][fieldKeys[j]];
           }
 
           // Will need to do this for each input type (colors, numbers)
@@ -148,10 +153,21 @@ export default function BlocklyInterface(props) {
           if (blockData.type === "text") {
             blockData["value"] = blocks[blockKeys[i]].fields.TEXT;
           }
-          if (["BasicSlider", "ArmPositionSlider", "SpeedSlider", "TimeSlider", "HeadPitchSlider", "HeadRollSlider", "HeadYawSlider"].includes(blockData.type)) {
-            blockData["value"] = blocks[blockKeys[i]].fields["FIELD_slider_value"];
+          if (
+            [
+              "BasicSlider",
+              "ArmPositionSlider",
+              "SpeedSlider",
+              "TimeSlider",
+              "HeadPitchSlider",
+              "HeadRollSlider",
+              "HeadYawSlider",
+            ].includes(blockData.type)
+          ) {
+            blockData["value"] =
+              blocks[blockKeys[i]].fields["FIELD_slider_value"];
           }
-          data["data"].push({...blockData});
+          data["data"].push({ ...blockData });
         }
         loadBlocks(data, ws);
       }
@@ -415,42 +431,33 @@ export default function BlocklyInterface(props) {
             width: "100%",
             height: "100%",
           }}
-         
         ></div>
         {/* if GPT panel is full screen, the Goals buttons should not be rendered */}
-        {!fullScreenPanel && <div
-          style={{
-            position: 'absolute',
-            bottom: '10px',
-            left: '35%',
-            transform: 'translateX(-50%)', // Center the button horizontally
-            zIndex: 10,
-            backgroundColor: 'rgba(51, 51, 51, 0.8)', 
-            color: '#fff', 
-            padding: '10px 20px',
-            borderRadius: '10px',
-            border: 'none', // Remove default button border
-            cursor: 'pointer',
-          }}
-          onClick={toggleGPTConsole}
-        >
-          Goals
-        </div>}
+        {!fullScreenPanel && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "10px",
+              left: "35%",
+              transform: "translateX(-50%)", // Center the button horizontally
+              zIndex: 10,
+              backgroundColor: "rgba(51, 51, 51, 0.8)",
+              color: "#fff",
+              padding: "10px 20px",
+              borderRadius: "10px",
+              border: "none", // Remove default button border
+              cursor: "pointer",
+            }}
+            onClick={toggleGPTConsole}
+          >
+            Goals
+          </div>
+        )}
         {showGPTConsole && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '0',
-            left: '0',
-            width: '100%',
-            zIndex: 10,
-            backgroundColor: '#222',
-            color: '#fff',
-          }}
-        >
-          <GPTConsole />
-        </div>
-         )}
+          <div>
+            <GPTConsole />
+          </div>
+        )}
         <xml id="toolbox" style={{ display: "none" }}></xml>
       </div>
     </div>

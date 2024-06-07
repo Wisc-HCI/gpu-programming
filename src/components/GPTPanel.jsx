@@ -4,6 +4,7 @@ import UserPromptInput from "./UserPromptInput";
 import useStore from "../Store";
 import { useShallow } from "zustand/react/shallow";
 import { Backdrop, CircularProgress } from "@mui/material";
+import TrackerScreen from "../tracker_components/TrackerScreen";
 
 export default function GPTPanel(props) {
   const isLLMProcessing = useStore(useShallow((state) => state.llmProcessing));
@@ -17,7 +18,7 @@ export default function GPTPanel(props) {
       </Backdrop>
       <SplitSection
         leftChildren={<UserPromptInput />}
-        rightChildren={<p>Test2</p>}
+        rightChildren={<TrackerScreen />}
       />
       <button
         onClick={() => setFullScreenPanel(!fullScreenPanel)}
