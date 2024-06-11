@@ -61,7 +61,8 @@ function App() {
         >
           <ReflexElement flex={0.55}>
             <Item style={{ width: "100%", height: "100%" }}>
-              <BlocklyInterface />
+              {fullScreenPanel && <GPTPanel />}
+              {!fullScreenPanel && <BlocklyInterface />}
             </Item>
           </ReflexElement>
 
@@ -70,13 +71,13 @@ function App() {
           <ReflexElement flex={0.45}>
             <ReflexContainer orientation="horizontal">
               <ReflexElement>
-                <Item>{llmMode && <Simulator />}</Item>
+                <Item>{!llmMode && <Simulator />}</Item>
               </ReflexElement>
 
               <ReflexSplitter propagate={true} />
 
               <ReflexElement>
-                <Item>{llmMode && <TrackerScreen />}</Item>
+                <Item>{!llmMode && <TrackerScreen />}</Item>
               </ReflexElement>
             </ReflexContainer>
           </ReflexElement>

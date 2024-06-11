@@ -1,11 +1,7 @@
 import {create }from 'zustand';
 import { parseUrdfForJoints, parseUrdfForLinks } from './urdfParser.js';
 import { Timer } from './Timer.js';
-import { determineZAngleFromQuaternion, eulerToQuaternion, interpolateScalar, quaternionToEuler } from './utils.js';
-import { JointLookup } from './Misty-Robot/JointLookup.js';
-import { MISTY_ARM_LENGTH, PI, MAX_ARM_SPEED, ARM_OFFSET_ANGLE, MAX_DIST_PER_SEC, MAX_ANGLE_PER_SEC, SIM_TIME } from './Constants.js';
 import { starting_tfs, starting_items } from './Misty_Load_File.js';
-import { Quaternion, Vector3 } from "three";
 import * as Blockly from "blockly";
 import goalPrompt from './prompts/goal_prompt.js';
 import dummyData from './tracker_components/dummy_data.json';
@@ -35,7 +31,7 @@ const useStore = create((set,get) => ({
   userPrompt: "",
   programGoals: {...dummyData},
   llmProcessing: false,
-  llmMode: true,
+  llmMode: false,
   showGPTConsole:false,
   fullScreenPanel: false,
   displayLLMBlockPrompt: false,
