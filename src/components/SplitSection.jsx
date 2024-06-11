@@ -13,18 +13,18 @@ export default function SplitSection({
         // alignItems={"center"}
         spacing={2}
         style={{
-            padding: "20px",
+            padding: "20px 30px 0px 30px",
             height: "100%",
             width: "100%"
         }}
     >
-        <Grid item xs={6}>
+        <Grid item xs={6} style={{overflowY: "scroll", height: "100%"}}>
             {leftChildren}
         </Grid>
-        <Grid item xs={1}>
+        {/* <Grid item xs={1}>
             <Divider orientation="vertical" style={{height: "100%", width: "1px"}} />
-        </Grid>
-        <Grid item xs={5}>
+        </Grid> */}
+        <Grid item xs={6} style={{overflowY: "scroll", height: "100%"}}>
             {rightChildren}
         </Grid>
     </Grid>

@@ -12,14 +12,14 @@ export default function GPTPanel(props) {
   const setFullScreenPanel = useStore((state) => state.setFullScreenPanel);
 
   return (
-    <div style={{ zIndex: 20 }}>
+    <div style={{ zIndex: 20, height: "100%" }}>
       <Backdrop style={{ color: "#fff", zIndex: 103 }} open={isLLMProcessing}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <SplitSection
         leftChildren={<UserPromptInput />}
         rightChildren={
-          <div style={{ paddingRight: "50px" }}>
+          <div style={{ width: "100%" }}>
             <TrackerScreen />
           </div>
         }
