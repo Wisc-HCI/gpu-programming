@@ -9,7 +9,6 @@ import { javascriptGenerator } from "blockly/javascript";
 import "./index.css";
 import TopBar from "./components/Topbar";
 import BlocklyInterface from "./components/Blockly-interface";
-import urdf from "./Misty-Robot/misty.xacro?raw";
 import TrackerScreen from "./tracker_components/TrackerScreen.jsx";
 
 import { styled } from "@mui/material/styles";
@@ -24,7 +23,13 @@ import useStore from "./Store.js";
 import { useShallow } from "zustand/react/shallow";
 import GPTPanel from "./components/GPTPanel.jsx";
 import { PromptModal } from "./modals/PromptModal.jsx";
-import GPTConsole from "./components/GPTConsole.jsx";
+import {
+  SELECTION_SCREEN,
+  DAY_ONE_SCREEN,
+  DAY_TWO_SCREEN,
+} from "./Constants.js";
+import DayOneScreen from "./components/DayOneScreen.jsx";
+import SelectionScreen from "./components/SelectionScreen.jsx";
 
 const Item = styled("div")(({ theme }) => ({
   textAlign: "center",
@@ -39,17 +44,21 @@ function App() {
   const isLLMProcessing = useStore(useShallow((state) => state.llmProcessing));
   const headerHeight = useStore(useShallow((state) => state.headerHeight));
   const fullScreenPanel = useStore((state) => state.fullScreenPanel);
+  const screenToShow = useStore((state) => state.screenToShow);
 
   return (
     <Box width={"100vw"} height={`calc(100vh - ${headerHeight}px)`} padding={0}>
       <TopBar />
-      {fullScreenPanel ? (
+      {screenToShow === SELECTION_SCREEN && <SelectionScreen />}
+      {screenToShow === DAY_ONE_SCREEN && <DayOneScreen />}
+      {screenToShow === DAY_TWO_SCREEN && fullScreenPanel && (
         <GPTPanel
           style={{
             width: "100vw",
           }}
         />
-      ) : (
+      )}
+      {screenToShow === DAY_TWO_SCREEN && !fullScreenPanel && (
         <ReflexContainer
           orientation="vertical"
           style={{

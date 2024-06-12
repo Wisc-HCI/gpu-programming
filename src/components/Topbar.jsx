@@ -10,7 +10,13 @@ import { default as UnpluggedIcon } from "../svgs/unplugged.svg";
 
 import DropShadowButton from "./DropShadowButton";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { PROMPT_MODAL, SETTINGS_MODAL } from "../Constants";
+import {
+  PROMPT_MODAL,
+  SETTINGS_MODAL,
+  SELECTION_SCREEN,
+  DAY_ONE_SCREEN,
+  DAY_TWO_SCREEN,
+} from "../Constants";
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
@@ -21,9 +27,9 @@ export default function TopBar(props) {
   const isConnected = useStore(useShallow((state) => state.isConnected));
   const disconnect = useStore(useShallow((state) => state.disconnect));
   const setActiveModal = useStore((state) => state.setActiveModal);
-  const toggleLLMMode = useStore((state) => state.toggleLLMMode);
-  const llmMode = useStore(useShallow((state) => state.llmMode));
   const setHeaderDimensions = useStore((state) => state.setHeaderDimensions);
+  const screenToShow = useStore(useShallow((state) => state.screenToShow));
+  const updateScreen = useStore((state) => state.updateScreen);
 
   useEffect(() => {
     const header = document.getElementById("website-header");
@@ -124,17 +130,39 @@ export default function TopBar(props) {
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          {/* <Grid item xs={12} sm={12} md={4} lg={4} xl={3} style={{justifyContent: "right", display: "flex"}}>
-            <DropShadowButton icon={<EditNote />} text={llmMode ? "Program Manually" : "Program with ChatGPT"} clickFunction={() => toggleLLMMode(!llmMode)}/>
-            <DropShadowButton icon={<EditNote />} text={llmMode ? "Program Manually" : "Program with ChatGPT"} clickFunction={() => setActiveModal(PROMPT_MODAL)}/>
-          </Grid> */}
           <Grid
             item
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            xl={12}
+            xs={3}
+            sm={3}
+            md={3}
+            lg={3}
+            xl={3}
+            style={{ justifyContent: "right", display: "flex" }}
+          >
+            {screenToShow !== SELECTION_SCREEN && (
+              <DropShadowButton
+                text={
+                  screenToShow === DAY_TWO_SCREEN
+                    ? "Create A Story"
+                    : "Program The Robot"
+                }
+                clickFunction={() =>
+                  updateScreen(
+                    screenToShow === DAY_TWO_SCREEN
+                      ? DAY_ONE_SCREEN
+                      : DAY_TWO_SCREEN
+                  )
+                }
+              />
+            )}
+          </Grid>
+          <Grid
+            item
+            xs={9}
+            sm={9}
+            md={9}
+            lg={9}
+            xl={9}
             style={{ justifyContent: "right", display: "flex" }}
           >
             <Stack direction={"row"} alignItems={"center"}>

@@ -8,6 +8,7 @@ import dummyData from './tracker_components/dummy_data.json';
 import blockPrompt from './prompts/block_prompt.js';
 import { pickBy } from 'lodash';
 import { blockTypes } from './blocks/text.js';
+import { SELECTION_SCREEN } from "./Constants.js";
 
 const useStore = create((set,get) => ({
   ip: '',
@@ -19,6 +20,7 @@ const useStore = create((set,get) => ({
   points:{},
   widgets:{},
   counter: 0,
+  screenToShow: SELECTION_SCREEN,
   blocklyWorkspaceXML:{},
   lightMode: true,
   simOnly: false,
@@ -33,7 +35,7 @@ const useStore = create((set,get) => ({
   llmProcessing: false,
   llmMode: false,
   showGPTConsole:false,
-  fullScreenPanel: false,
+  fullScreenPanel: true, // Toggle to true so participants have to use the prompting system before they can start programming
   displayLLMBlockPrompt: false,
   mistyAudioList: [],
   mistyImageList: [],
@@ -47,6 +49,7 @@ const useStore = create((set,get) => ({
   startingItems: JSON.parse(JSON.stringify(starting_items)),
   endingItems: JSON.parse(JSON.stringify(starting_items)),
   activeModal: null,
+  updateScreen: (newScreen) => set(_ => ({ screenToShow: newScreen })),
   setActiveModal: (modal) => set(_ => ({ activeModal: modal })),
   closeModal: () => set(_ => ({ activeModal: null })),
   toggleLLMMode: (toggle) => set({
