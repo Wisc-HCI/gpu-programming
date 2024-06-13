@@ -12,6 +12,9 @@ export const MS_TO_SEC = 1000;
 export const SETTINGS_MODAL = "settings"
 export const PROMPT_MODAL = "prompt"
 
+export const DAY_ONE_BTN_TEXT = "Planning";
+export const DAY_TWO_BTN_TEXT = "Programming";
+
 export const SELECTION_SCREEN = 0;
 export const DAY_ONE_SCREEN = 1;
 export const DAY_TWO_SCREEN = 2;

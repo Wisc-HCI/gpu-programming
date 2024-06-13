@@ -16,6 +16,8 @@ import {
   SELECTION_SCREEN,
   DAY_ONE_SCREEN,
   DAY_TWO_SCREEN,
+  DAY_ONE_BTN_TEXT,
+  DAY_TWO_BTN_TEXT
 } from "../Constants";
 
 export default function TopBar(props) {
@@ -143,8 +145,8 @@ export default function TopBar(props) {
               <DropShadowButton
                 text={
                   screenToShow === DAY_TWO_SCREEN
-                    ? "Create A Story"
-                    : "Program The Robot"
+                    ? DAY_ONE_BTN_TEXT
+                    : DAY_TWO_BTN_TEXT
                 }
                 clickFunction={() =>
                   updateScreen(

@@ -4,6 +4,8 @@ import useStore from "../Store";
 import {
   DAY_ONE_SCREEN,
   DAY_TWO_SCREEN,
+  DAY_ONE_BTN_TEXT,
+  DAY_TWO_BTN_TEXT
 } from "../Constants.js";
 import DropShadowButton from "./DropShadowButton.jsx";
 
@@ -24,15 +26,15 @@ export default function SelectionScreen(props) {
         marginTop: 0,
       }}
     >
-      <Grid item xs={2}></Grid>
-      <Grid item xs={2}>
-        <DropShadowButton text={"Day One"} clickFunction={() => updateScreen(DAY_ONE_SCREEN)} style={{padding: "50px"}}/>
+      <Grid item xs={1}></Grid>
+      <Grid item xs={3}>
+        <DropShadowButton text={DAY_ONE_BTN_TEXT} clickFunction={() => updateScreen(DAY_ONE_SCREEN)} style={{padding: "50px"}}/>
       </Grid>
       <Grid item xs={2}></Grid>
-      <Grid item xs={2}>
-        <DropShadowButton text={"Day Two"} clickFunction={() => updateScreen(DAY_TWO_SCREEN)} style={{padding: "50px"}}/>
+      <Grid item xs={3}>
+        <DropShadowButton text={DAY_TWO_BTN_TEXT} clickFunction={() => updateScreen(DAY_TWO_SCREEN)} style={{padding: "50px"}}/>
       </Grid>
-      <Grid item xs={2}></Grid>
+      <Grid item xs={1}></Grid>
     </Grid>
   );
 }
