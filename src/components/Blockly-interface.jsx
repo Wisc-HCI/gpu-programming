@@ -60,12 +60,12 @@ export default function BlocklyInterface(props) {
   Object.assign(javascriptGenerator.forBlock, forBlock);
 
   useEffect(() => {
+    let ws = null;
     if (!document.querySelector(".blocklySvg")) {
       const blocklyArea = document.getElementById("pageContainer");
       const blocklyDiv = document.getElementById("blocklyDiv");
       let startId = "";
 
-      let ws = null;
       ws = Blockly.inject(blocklyDiv, {
         toolbox: toolbox,
         grid: {
@@ -292,6 +292,7 @@ export default function BlocklyInterface(props) {
           if (e.json.type === "Start") {
             startId = e.json.id;
             params = { id: e.json.id, type: e.json.type, next: "" };
+            //ws.highlightBlock(startId)
           }
 
           //check if the blocks have field
@@ -418,6 +419,8 @@ export default function BlocklyInterface(props) {
         }
       });
     }
+  //  setBlocklyWorkspace(ws)
+    
   }, []);
 
   return (
