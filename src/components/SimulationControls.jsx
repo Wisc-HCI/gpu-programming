@@ -25,6 +25,7 @@ export default function SimulationControls(props) {
     const simOnly = useStore(useShallow((state) => state.simOnly));
     const endingTfs = useStore(useShallow((state) => state.endingTfs));
     const setAnimationFrames = useStore(useShallow((state) => state.setAnimationFrames));
+    const setHighlightBlocks = useStore(useShallow(state => state.setHighlightBlocks));
     const workerThread = useStore(useShallow((state) => state.workerThread));
     const setWorkerThread = useStore(useShallow((state) => state.setWorkerThread));
     const llmMode = useStore(useShallow(state => state.llmMode));
@@ -59,6 +60,17 @@ export default function SimulationControls(props) {
         myWorker.onerror = function (e) {
             // Todo, if worker errors, something isn't parameterized. Can do something with this data
             console.log(e);
+            // Extracting the id from the error message
+            const idPattern = /id: (.+)/;  // Adjust regex according to your id format
+            const match = idPattern.exec(e.message);
+
+            if (match) {
+                //console.log("Error block ID:", match[1]);
+                setHighlightBlocks(match[1])
+                
+            } else {
+                console.log("ID not found in error message.");
+            }
             URL.revokeObjectURL(workerURL);
         };
         myWorker.postMessage({

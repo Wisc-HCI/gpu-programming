@@ -100,7 +100,7 @@ self.onmessage = function (e) {
     switch (true) {
       case type === "controls_if":
         if (!params.inputs || !params.inputs.IF0 || !params.inputs.DO0) {
-          throw new Error("err: controls_if not complete!");
+          throw new Error(`err: controls_if not complete! id: ${params.id}`);
           //appendActivity("Try running with incomplete controls_if");
           return;
         } else {
