@@ -424,6 +424,82 @@ export default function BlocklyInterface(props) {
     }
   }, []);
 
+  useEffect(() => {
+    console.log(highlightBlocks); 
+    let ws = getBlocklyWorkspace()
+    if (ws && highlightBlocks) {
+       //ws.highlightBlock(highlightBlocks);
+       highlightBlockCustom2(ws, highlightBlocks, '#FF0000');
+    } else {
+        console.log('Workspace or block ID not defined.');
+    }
+  }, [highlightBlocks]); 
+
+  function highlightBlockCustom(workspace, blockId, color) {
+    var block = workspace.getBlockById(blockId);
+    if (block) {
+        var svgRoot = block.getSvgRoot();
+        
+        if (svgRoot) {
+          //console.log(svgRoot)
+          var paths = svgRoot.querySelectorAll('.blocklyPath');
+          // Apply the new color to the 'fill' property of each path
+          paths.forEach(function(path) {
+              path.style.fill = color;
+          });
+      }
+        
+        
+  }
+}
+function highlightBlockCustom2(workspace, blockId, newColor, duration = 500, blinks = 5) {
+  var block = workspace.getBlockById(blockId);
+  if (block) {
+      var svgRoot = block.getSvgRoot();
+
+      if (svgRoot) {
+          var paths = svgRoot.querySelectorAll('.blocklyPath');
+          if (paths.length > 0) {
+              // Store the original color from the first path element
+              let originalColor = paths[0].style.fill;
+              
+              let blinkCount = 0;
+              let isOriginalColor = false;
+              
+              // Function to toggle colors
+              const toggleColor = () => {
+                  paths.forEach(function(path) {
+                      path.style.fill = isOriginalColor ? newColor : originalColor;
+                  });
+                  isOriginalColor = !isOriginalColor;
+                  
+                  if (blinkCount++ < blinks * 2) {
+                      setTimeout(toggleColor, duration);
+                  } else {
+                      // Ensure ending with the original color
+                      paths.forEach(function(path) {
+                          path.style.fill = originalColor;
+                      });
+                  }
+              };
+
+              // Start the blinking effect
+              toggleColor();
+          }
+      }
+  }
+}
+
+
+function resetHighlightBlock(workspace, blockId) {
+    var block = workspace.getBlockById(blockId);
+    if (block) {
+        var svgRoot = block.getSvgRoot();
+        if (svgRoot) {
+            svgRoot.style.stroke = ''; // Reset the stroke
+        }
+    }
+}
   return (
     <div style={{ width: "100%", height: "100%" }}>
       {/* if the GPT panel is full Screen, the Logos should not be rendered */}
