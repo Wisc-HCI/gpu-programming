@@ -85,7 +85,7 @@ const useStore = create((set,get) => ({
     return get().highlightBlocks;
   },
   getBlocklyWorkspace: () => {
-    return get().ws;
+    return get().blocklyWorkspace;
   },
   setWorkerThread: (worker) => set({
     workerThread: worker
