@@ -24,6 +24,7 @@ const useStore = create((set,get) => ({
   widgets:{},
   counter: 0,
   blocklyWorkspaceXML:{},
+  highlightBlocks:{},
   lightMode: true,
   simOnly: false,
   isConnected: false,
@@ -81,6 +82,12 @@ const useStore = create((set,get) => ({
         return acc;
       }, {});
   },
+  getHighlightBlocks: () => {
+    return get().highlightBlocks;
+  },
+  getBlocklyWorkspace: () => {
+    return get().ws;
+  },
   setWorkerThread: (worker) => set({
     workerThread: worker
   }),
@@ -104,6 +111,9 @@ const useStore = create((set,get) => ({
   }),
   setUserPrompt: (userPrompt) => set({
     userPrompt
+  }),
+  setHighlightBlocks: (id) => set({
+    highlightBlocks: id
   }),
   setHeaderDimensions: (height, width) => set({
     headerHeight: height,
