@@ -23,8 +23,10 @@ export default function BlocklyInterface(props) {
   const updateBlock = useStore((state) => state.updateBlock);
   const getBlockType = useStore((state) => state.getBlockType);
   const setBlocklyWorkspace = useStore((state) => state.setBlocklyWorkspace);
+  const getBlocklyWorkspace = useStore((state) => state.getBlocklyWorkspace);
   const loadBlocks = useStore((state) => state.loadBlocks);
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
+  const highlightBlocks = useStore((state) => state.highlightBlocks);
   const setShowGPTConsole = useStore((state) => state.setShowGPTConsole);
   const showGPTConsole = useStore((state) => state.showGPTConsole);
   const fullScreenPanel = useStore((state) => state.fullScreenPanel);
@@ -199,6 +201,7 @@ export default function BlocklyInterface(props) {
       observer.observe(blocklyArea);
 
       ws.render();
+      setBlocklyWorkspace(ws)
 
       // Every time the workspace changes state, save the changes to storage.
       ws.addChangeListener((e) => {
@@ -419,8 +422,6 @@ export default function BlocklyInterface(props) {
         }
       });
     }
-  //  setBlocklyWorkspace(ws)
-    
   }, []);
 
   return (
