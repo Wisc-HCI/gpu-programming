@@ -5,17 +5,33 @@ import useStore from "../Store";
 import { useShallow } from "zustand/react/shallow";
 import DropShadowButton from "./DropShadowButton";
 
-const convertHelpMessage = (message) => {
+const sanitizeMessage = (message) => {
   if (message.includes("[Need Help]")) {
     return "Please help me."
   }
-  return message;
+  // if (message.includes("<Suggestion>")) {
+  //   let splits = message.split("<Suggestion>");
+  //   return splits[0].trim();
+  // }
+  return message.replaceAll("<Suggestion>", "").replaceAll("</Suggestion>", "");
 }
 
 const parseMessage = (message) => {
-  let suggestions = message.split("[Suggestion]")
-  let firstElement = convertHelpMessage(suggestions.shift());
-  return [firstElement.trim(), suggestions];
+  let suggestions = [];
+  let splits = message.split("<Suggestion>")
+  let firstElement = sanitizeMessage(splits.shift()).trim();
+  splits.forEach((elem) => {
+    if (elem.includes("</Suggestion>")) {
+      let splits = elem.split("</Suggestion>");
+      suggestions.push(splits[0].trim())
+      if (splits[1].length > 0) {
+        firstElement.concat(" ", splits[1].trim());
+      }
+    } else {
+      firstElement.concat(" ", elem.trim());
+    }
+  })
+  return [firstElement, suggestions];
 }
 
 export default function ChatBox(props) {
@@ -42,7 +58,7 @@ export default function ChatBox(props) {
               key={i}
               model={{
                   direction: message.role === "user" ? 'outgoing' : 'incoming',
-                  message: convertHelpMessage(message.content),
+                  message: sanitizeMessage(message.content),
                   position: 'single'
               }}
             />

@@ -39,7 +39,7 @@ const useStore = create((set,get) => ({
   blocklyWorkspaceXML:{},
   highlightBlocks:{},
   storyCreationGoals: {...storyData},
-  chatMessageHistory: [{role: "system", content: chatPrompt}, {role: "system", content: "How can I help you today?"}],
+  chatMessageHistory: [{role: "user", content: chatPrompt}, {role: "system", content: "How can I help you today?"}],
   lightMode: true,
   simOnly: false,
   isConnected: false,

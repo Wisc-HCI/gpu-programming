@@ -12,6 +12,7 @@ import BlocklyInterface from "./components/Blockly-interface";
 import TrackerScreen from "./tracker_components/TrackerScreen.jsx";
 
 import { styled } from "@mui/material/styles";
+import { default as LoadingLogo } from './svgs/misty_loading_combined.gif';
 
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
 
@@ -93,7 +94,8 @@ function App() {
         </ReflexContainer>
       )}
       <Backdrop style={{ color: "#fff", zIndex: 1500 }} open={isLLMProcessing}>
-        <CircularProgress color="inherit" />
+        <img src={LoadingLogo} style={{width: "10%"}} />
+        {/* <CircularProgress color="inherit" /> */}
       </Backdrop>
       <SettingsModal />
       <PromptModal />
