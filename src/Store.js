@@ -10,6 +10,19 @@ import { pickBy } from 'lodash';
 import { blockTypes } from './blocks/text.js';
 import { SELECTION_SCREEN } from "./Constants.js";
 
+const callLLM = (llmEndpoint, llmDeployment, llmAPIKey, messageList) => {
+  return fetch(llmEndpoint + "/openai/deployments/" + llmDeployment + "/chat/completions?api-version=2024-02-01", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "api-key": llmAPIKey
+    },
+    body: JSON.stringify({
+      messages: messageList
+    })
+  })
+}
+
 const useStore = create((set,get) => ({
   ip: '',
   blocks: {}, 
@@ -23,6 +36,7 @@ const useStore = create((set,get) => ({
   screenToShow: SELECTION_SCREEN,
   blocklyWorkspaceXML:{},
   highlightBlocks:{},
+  chatMessageHistory: [{role: "system", content: "Test"}],
   lightMode: true,
   simOnly: false,
   isConnected: false,
@@ -53,6 +67,36 @@ const useStore = create((set,get) => ({
   updateScreen: (newScreen) => set(_ => ({ screenToShow: newScreen })),
   setActiveModal: (modal) => set(_ => ({ activeModal: modal })),
   closeModal: () => set(_ => ({ activeModal: null })),
+  addMessageToHistory: (message) => {
+    set({
+      llmProcessing: true,
+      chatMessageHistory: [...history, {role: "user", content: message}]
+    });
+    let storeData = get();
+    let llmEndpoint = storeData.llmEndpoint;
+    let llmDeployment = storeData.llmDeployment;
+    let llmAPIKey = storeData.llmAPIKey;
+    let history = storeData.chatMessageHistory;
+    callLLM(llmEndpoint, llmDeployment, llmAPIKey, history)
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`LLM Request failed with status ${res.status}`);
+      }
+      return res.json();
+    })
+    .then(json => {
+      console.log(json);
+      set({
+        llmProcessing: false,
+      })
+    })
+    .catch((error) => {
+      set({
+        llmProcessing: false
+      })
+      alert(`Failed to connect to ChatGPT: ${error.message}`);
+    });
+  },
   toggleLLMMode: (toggle) => set({
     llmMode: toggle
   }),
@@ -128,18 +172,10 @@ const useStore = create((set,get) => ({
     let llmDeployment = storeData.llmDeployment;
     let llmAPIKey = storeData.llmAPIKey;
     // fetch("https://httpbin.org/delay/10")
-    fetch(llmEndpoint + "/openai/deployments/" + llmDeployment + "/chat/completions?api-version=2024-02-01", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "api-key": llmAPIKey
-      },
-      body: JSON.stringify({
-        messages: [
-          {role: "system", content: goalPrompt},
-          {role: "user", content: "Give me the output for the following user prompt: \"" + userPrompt + "\""}]
-      })
-    })
+    callLLM(llmEndpoint, llmDeployment, llmAPIKey, [
+      {role: "system", content: goalPrompt},
+      {role: "user", content: "Give me the output for the following user prompt: \"" + userPrompt + "\""}
+    ])
     .then(res => {
       if (!res.ok) {
         throw new Error(`LLM Request failed with status ${res.status}`);

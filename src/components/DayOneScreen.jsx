@@ -6,6 +6,7 @@ import { default as MistyLogo } from "../svgs/misty.svg";
 import { Grid } from "@mui/material";
 import DayOneTaskDescription from "./DayOneTaskDescription";
 import TrackerScreen from "../tracker_components/TrackerScreen";
+import ChatBox from "./ChatBox";
 
 const Item = styled("div")(({ theme }) => ({
   textAlign: "center",
@@ -22,21 +23,23 @@ export default function DayOneScreen(props) {
       }}
     >
       {/* Task overview */}
-      <ReflexElement flex={0.15}>
-        <Item style={{ width: "100%", height: "100%" }}>
-          <DayOneTaskDescription />
-        </Item>
-      </ReflexElement>
+      <ReflexElement flex={0.65}>
+        <ReflexContainer orientation="horizontal">
+          <ReflexElement flex={0.30}>
+            <Item style={{ width: "100%"}}>
+              <DayOneTaskDescription />
+            </Item>
+          </ReflexElement>
 
-      <ReflexSplitter propagate={true} />
+          <ReflexSplitter propagate={true} />
 
-      {/* LLM chatbox */}
-      <ReflexElement flex={0.5}>
-        <Item style={{ width: "100%", height: "100%" }}>
-          <div>
-            <p> LLM chatbox </p>
-          </div>
-        </Item>
+          {/* LLM chatbox */}
+          <ReflexElement flex={0.70}>
+            <Item style={{ width: "100%", height: "100%" }}>
+              <ChatBox />
+            </Item>
+          </ReflexElement>
+        </ReflexContainer>
       </ReflexElement>
 
       <ReflexSplitter propagate={true} />

@@ -4,6 +4,7 @@
   "homepage": "https://wisc-hci.github.io/gpu-programming/",
   "private": true,
   "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^2.0.3",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.15",
@@ -40,6 +41,7 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "sass": "^1.77.6",
     "vite": "^5.2.6",
     "vite-plugin-comlink": "^4.0.3"
   },
