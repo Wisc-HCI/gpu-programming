@@ -4,14 +4,14 @@ import './TrackerScreen.css';
 import useStore from "../Store";
 import { useShallow } from 'zustand/react/shallow';
 
-const TrackerScreen = () => {
+const TrackerScreen = ({isPlanningScreen=false}) => {
 
   const [activeTab, setActiveTab] = useState(0);
 
   const getAllTasks = useStore(useShallow((state) => state.getAllTasks));
   const getMainTasks = useStore(useShallow((state) => state.getMainTasks));
-  const allTasks = getAllTasks();
-  const mainTasks = getMainTasks();
+  const allTasks = getAllTasks(isPlanningScreen);
+  const mainTasks = getMainTasks(isPlanningScreen);
   
   const handleTabChange = (idx) => {
     setActiveTab(idx);
@@ -47,6 +47,7 @@ const TrackerScreen = () => {
             allTasks={allTasks}
             onNextTask={handleNextTask}
             hasNextTask={activeTab + 1 < allKeys.length}
+            isPlanningScreen={isPlanningScreen}
           />
         )}
       </div>

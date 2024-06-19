@@ -1,0 +1,33 @@
+{
+    "task1": {
+      "id": "task1",
+      "name": "Create a story with these elements",
+      "order": 1,
+      "type": "task",
+      "subtasks": ["subtask1a", "subtask1b"]
+    },
+    "subtask1a": {
+      "id": "subtask1a",
+      "type": "subtask",
+      "title": "Define the characters",
+      "subtext": "Who is in the story?",
+      "hints": ["hint1a"]
+    },
+    "hint1a": {
+      "id": "hint1a",
+      "type": "help",
+      "text": "Help me"
+    },
+    "subtask1b": {
+      "id": "subtask1b",
+      "type": "subtask",
+      "title": "Where are the characters at?",
+      "subtext": "Where does the story take place?",
+      "hints": ["hint2a"]
+    },
+    "hint2a": {
+      "id": "hint2a",
+      "type": "help",
+      "text": "Help me"
+    }
+  }

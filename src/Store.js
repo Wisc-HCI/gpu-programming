@@ -4,7 +4,9 @@ import { Timer } from './Timer.js';
 import { starting_tfs, starting_items } from './Misty_Load_File.js';
 import * as Blockly from "blockly";
 import goalPrompt from './prompts/goal_prompt.js';
+import chatPrompt from './prompts/chat_prompt.js';
 import dummyData from './tracker_components/dummy_data.json';
+import storyData from './tracker_components/story_goal_data.json';
 import blockPrompt from './prompts/block_prompt.js';
 import { pickBy } from 'lodash';
 import { blockTypes } from './blocks/text.js';
@@ -36,7 +38,8 @@ const useStore = create((set,get) => ({
   screenToShow: SELECTION_SCREEN,
   blocklyWorkspaceXML:{},
   highlightBlocks:{},
-  chatMessageHistory: [{role: "system", content: "Test"}],
+  storyCreationGoals: {...storyData},
+  chatMessageHistory: [{role: "system", content: chatPrompt}, {role: "system", content: "How can I help you today?"}],
   lightMode: true,
   simOnly: false,
   isConnected: false,
@@ -68,15 +71,16 @@ const useStore = create((set,get) => ({
   setActiveModal: (modal) => set(_ => ({ activeModal: modal })),
   closeModal: () => set(_ => ({ activeModal: null })),
   addMessageToHistory: (message) => {
+    let storeData = get();
+    let history = storeData.chatMessageHistory;
     set({
       llmProcessing: true,
       chatMessageHistory: [...history, {role: "user", content: message}]
     });
-    let storeData = get();
+    history = get().chatMessageHistory;
     let llmEndpoint = storeData.llmEndpoint;
     let llmDeployment = storeData.llmDeployment;
     let llmAPIKey = storeData.llmAPIKey;
-    let history = storeData.chatMessageHistory;
     callLLM(llmEndpoint, llmDeployment, llmAPIKey, history)
     .then(res => {
       if (!res.ok) {
@@ -86,8 +90,11 @@ const useStore = create((set,get) => ({
     })
     .then(json => {
       console.log(json);
+      // TODO: update based on actual response
+      let sys_response = json["choices"][0].message.content;
       set({
         llmProcessing: false,
+        chatMessageHistory: [...history, {role: "system", content: sys_response}]
       })
     })
     .catch((error) => {
@@ -112,11 +119,11 @@ const useStore = create((set,get) => ({
   toggleTheme: (toggle) => set({
     lightMode: toggle
   }),
-  getAllTasks: () => {
-    return get().programGoals;
+  getAllTasks: (isPlanning) => {
+    return isPlanning ? get().storyCreationGoals : get().programGoals;
   },
-  getMainTasks: () => {
-    let data = get().programGoals;
+  getMainTasks: (isPlanning) => {
+    let data = isPlanning ? get().storyCreationGoals : get().programGoals;
     return Object.keys(data)
       .filter(key => data[key].type === "task")
       .sort((keyA, keyB) => data[keyA].order - data[keyB].order)

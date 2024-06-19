@@ -48,7 +48,7 @@ export default function DayOneScreen(props) {
         <ReflexContainer orientation="horizontal">
           <ReflexElement>
             <Item>
-              <TrackerScreen />
+              <TrackerScreen isPlanningScreen={true}/>
             </Item>
           </ReflexElement>
 
