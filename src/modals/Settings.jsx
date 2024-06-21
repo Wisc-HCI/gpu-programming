@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Card, CardContent, Dialog, FormControlLabel, FormGroup, Input, Switch } from "@mui/material";
+import { Box, Card, CardContent, Dialog, FormControlLabel, FormGroup, Switch } from "@mui/material";
 import useStore from "../Store";
 import FileSaver from "file-saver";
 import SettingsDiv from "../components/SettingsDiv";
@@ -9,6 +9,8 @@ import * as Blockly from "blockly";
 import { useShallow } from "zustand/react/shallow";
 import LabeledTextField from "../components/LabeledTextField";
 import { SETTINGS_MODAL } from "../Constants";
+import { activityLog } from "../components/ActivityTracker";
+import LabeledInput from "../components/LabeledInput";
 
 const DialogContent = () => {
   const closeModal = useStore((store) => store.closeModal);
@@ -21,10 +23,19 @@ const DialogContent = () => {
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
   const toggleLLMBlockPrompt = useStore((state) => state.toggleLLMBlockPrompt);
   const displayLLMBlockPrompt = useStore(useShallow((state) => state.displayLLMBlockPrompt));
+  const chatMessageHistory = useStore(useShallow((state) => state.chatMessageHistory));
+  const setChatMessageHistory = useStore(useShallow((state) => state.setChatMessageHistory));
 
   const handleDownload = () => {
     var blob = new Blob([activityLog], { type: "text/plain;charset=utf-8" });
-    FileSaver.saveAs(blob, "activity log.txt");
+    FileSaver.saveAs(blob, "activity_log.txt");
+  };
+
+  const handleChatDownload = () => {
+    console.log(chatMessageHistory);
+    var blob = new Blob([JSON.stringify(chatMessageHistory)], { type: "text/plain;charset=utf-8" });
+    // console.log(blob);
+    FileSaver.saveAs(blob, "chat_log.txt");
   };
 
   const downloadWorkspace = () => {
@@ -38,6 +49,15 @@ const DialogContent = () => {
     a.download = "myBlocks.xml";
     a.click();
   };
+
+  const uploadChatHistory = (event) => {
+    const fileReader = new FileReader();
+    fileReader.onload = function () {
+      const text = fileReader.result;
+      setChatMessageHistory(JSON.parse(text));
+    };
+    fileReader.readAsText(event.target.files[0]);
+  }
 
   const uploadBlocks = (event) => {
     const fileReader = new FileReader();
@@ -97,14 +117,19 @@ const DialogContent = () => {
         />
         <LabeledButton
           clickFunction={downloadWorkspace}
-          label={"Download Workspace XML"}
+          label={"Download Program"}
+          buttonText={"Download"}
+        />
+        <LabeledButton
+          clickFunction={handleChatDownload}
+          label={"Download Chat Log"}
           buttonText={"Download"}
         />
       </SettingsDiv>
 
       <SettingsDiv title={"Upload"}>
-        {/* TODO!!!!!!! !!!!!!!!! */}
-        <Input type="file" onChange={uploadBlocks} accept=".xml" />
+        <LabeledInput onChange={uploadBlocks} label={"Upload Program"} />
+        <LabeledInput onChange={uploadChatHistory} label={"Upload Chat Logs"} />
       </SettingsDiv>
 
       <SettingsDiv title={"Toggles"}>

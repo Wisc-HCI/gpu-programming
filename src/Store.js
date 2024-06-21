@@ -70,12 +70,13 @@ const useStore = create((set,get) => ({
   updateScreen: (newScreen) => set(_ => ({ screenToShow: newScreen })),
   setActiveModal: (modal) => set(_ => ({ activeModal: modal })),
   closeModal: () => set(_ => ({ activeModal: null })),
+  setChatMessageHistory: (history) => set(_ => ({ chatMessageHistory: history })),
   addMessageToHistory: (message) => {
     let storeData = get();
     let history = storeData.chatMessageHistory;
     set({
       llmProcessing: true,
-      chatMessageHistory: [...history, {role: "user", content: message}]
+      chatMessageHistory: [...history, {role: "user", content: message.replace("<br>", "")}]
     });
     history = get().chatMessageHistory;
     let llmEndpoint = storeData.llmEndpoint;
@@ -190,9 +191,10 @@ const useStore = create((set,get) => ({
       return res.json();
     })
     .then(json => {
-      console.log(json);
       let tempGoalString = json["choices"][0].message.content;
-      tempGoalString = tempGoalString.length > 0 ? tempGoalString.slice(1, tempGoalString.length - 1) : {};
+      let firstBracketLocation = json["choices"][0].message.content.indexOf("{");
+      let lastBracketLocation = json["choices"][0].message.content.lastIndexOf("}") + 1;
+      tempGoalString = tempGoalString.length > 0 ? tempGoalString.slice(firstBracketLocation, lastBracketLocation) : "{}";
       set({
         programGoals: JSON.parse(tempGoalString),
         llmProcessing: false,

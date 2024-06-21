@@ -4,9 +4,6 @@ import DropShadowButton from '../components/DropShadowButton';
 import useStore from '../Store';
 
 const Subtask = ({title, subtext, hints, isPlanningScreen}) => {
-  console.log(hints);
-  console.log(title);
-
   let addMessageToHistory = useStore((state) => state.addMessageToHistory);
 
   const [expandedHint, setExpandedHint] = useState(null);

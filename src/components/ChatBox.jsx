@@ -9,11 +9,15 @@ const sanitizeMessage = (message) => {
   if (message.includes("[Need Help]")) {
     return "Please help me."
   }
+  
+  if (message.includes("[Done]")) {
+    return "Next phase."
+  }
   // if (message.includes("<Suggestion>")) {
   //   let splits = message.split("<Suggestion>");
   //   return splits[0].trim();
   // }
-  return message.replaceAll("<Suggestion>", "").replaceAll("</Suggestion>", "");
+  return message.replaceAll("<Suggestion>", "").replaceAll("</Suggestion>", "").replace("[Summary]", "Summary: ");
 }
 
 const parseMessage = (message) => {
@@ -22,13 +26,13 @@ const parseMessage = (message) => {
   let firstElement = sanitizeMessage(splits.shift()).trim();
   splits.forEach((elem) => {
     if (elem.includes("</Suggestion>")) {
-      let splits = elem.split("</Suggestion>");
-      suggestions.push(splits[0].trim())
-      if (splits[1].length > 0) {
-        firstElement.concat(" ", splits[1].trim());
+      let newSplits = elem.split("</Suggestion>");
+      suggestions.push(newSplits[0].trim());
+      if (newSplits[1].length > 0) {
+        firstElement = firstElement.concat(" ", sanitizeMessage(newSplits[1]).trim());
       }
     } else {
-      firstElement.concat(" ", elem.trim());
+      firstElement = firstElement.concat(" ", sanitizeMessage(elem.trim()));
     }
   })
   return [firstElement, suggestions];
@@ -83,6 +87,13 @@ export default function ChatBox(props) {
               />
             })}
           </div>}
+        <div style={{right: 0, position: "absolute"}}>
+          <DropShadowButton
+              key={"next-phase-btn"} 
+              text={"Next Phase"} 
+              clickFunction={() => addMessageToHistory("[Done]")}
+            />
+        </div>
       </MessageList>
       <MessageInput placeholder="Type message here" attachButton={false} onSend={addMessageToHistory}/>
     </ChatContainer>
