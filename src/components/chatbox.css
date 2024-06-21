@@ -1,0 +1,36 @@
+
+.my-outgoing-message {
+    .cs-message__content-wrapper {
+        .cs-message__content {
+            background-color: #585D92;
+            .cs-message__html-content {
+                color: #FFFFFF;
+            }
+        }
+    }
+}
+
+.my-incoming-message {
+    .cs-message__content-wrapper {
+        .cs-message__content {
+            background-color: #E4E5F1;
+        }
+    }
+}
+
+.cs-message-input__content-editor-wrapper {
+    background-color: #585D92;
+    .cs-message-input__content-editor-container {
+        .cs-message-input__content-editor {
+            background-color: #585D92;
+            color: #FFFFFF;
+        }
+        .cs-message-input__content-editor::before {
+            color: #FFFFFFA0;
+        }
+    }
+}
+
+.cs-button--send {
+    color: #585D92;
+}

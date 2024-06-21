@@ -5,6 +5,7 @@ import {
   MessageList,
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/themes/default/main.scss";
+import "./chatbox.css"; // Assuming index.css is renamed to App.css
 import React from "react";
 import useStore from "../Store";
 import { useShallow } from "zustand/react/shallow";
@@ -18,7 +19,7 @@ const sanitizeMessage = (message) => {
   if (message.includes("[Done]")) {
     return "Next phase.";
   }
-  
+
   return message
     .replaceAll("<Suggestion>", "")
     .replaceAll("</Suggestion>", "")
@@ -74,6 +75,7 @@ export default function ChatBox(props) {
             return (
               <Message
                 key={i}
+                className={message.role === "user" ? "my-outgoing-message" : "my-incoming-message"}
                 model={{
                   direction: message.role === "user" ? "outgoing" : "incoming",
                   message: sanitizeMessage(message.content),
@@ -86,6 +88,7 @@ export default function ChatBox(props) {
           return (
             <Message
               key={i}
+              className={message.role === "user" ? "my-outgoing-message" : "my-incoming-message"}
               model={{
                 direction: message.role === "user" ? "outgoing" : "incoming",
                 message: messageAndSuggestions[0],
