@@ -2,25 +2,29 @@ import React from "react";
 import SplitSection from "./SplitSection";
 import UserPromptInput from "./UserPromptInput";
 import useStore from "../Store";
-import { useShallow } from "zustand/react/shallow";
-import { Backdrop, CircularProgress } from "@mui/material";
 import TrackerScreen from "../tracker_components/TrackerScreen";
+import DropShadowButton from "./DropShadowButton";
+import useWindowDimensions from "../useWindowDimensions";
 
 export default function GPTPanel(props) {
-  const isLLMProcessing = useStore(useShallow((state) => state.llmProcessing));
   const fullScreenPanel = useStore((state) => state.fullScreenPanel);
   const setFullScreenPanel = useStore((state) => state.setFullScreenPanel);
 
+  const {height, _} = useWindowDimensions();
+  let calcHeight = height-155;
+
   return (
     <div style={{ zIndex: 20, height: "100%" }}>
-      <Backdrop style={{ color: "#fff", zIndex: 103 }} open={isLLMProcessing}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
       <SplitSection
         leftChildren={<UserPromptInput />}
         rightChildren={
           <div style={{ width: "100%" }}>
-            <TrackerScreen />
+            <div style={{ height: calcHeight, overflowY: "scroll" }}>
+              <TrackerScreen />
+            </div>
+            <div style={{ position: "absolute", right: 20 }}>
+              <DropShadowButton text={"Done"} clickFunction={() => setFullScreenPanel(!fullScreenPanel)} style={{backgroundColor: "#A0FF7E"}}/>
+            </div>
           </div>
         }
       />

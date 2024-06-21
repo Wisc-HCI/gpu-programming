@@ -14,6 +14,7 @@ import blockColors from "../blockPallete.json";
 import ProgramLogos from "./ProgramLogos.jsx";
 import useWindowDimensions from "../useWindowDimensions.jsx";
 import GPTConsole from "./GPTConsole.jsx";
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 
 export default function BlocklyInterface(props) {
   const addBlock = useStore((state) => state.addBlock);
@@ -31,6 +32,7 @@ export default function BlocklyInterface(props) {
   const showGPTConsole = useStore((state) => state.showGPTConsole);
   const fullScreenPanel = useStore((state) => state.fullScreenPanel);
   const ip = useStore((state) => state.ip);
+  const setFullScreenPanel = useStore((state) => state.setFullScreenPanel);
 
   const { height, _ } = useWindowDimensions();
 
@@ -54,7 +56,9 @@ export default function BlocklyInterface(props) {
   };
 
   const toggleGPTConsole = () => {
-    setShowGPTConsole(!showGPTConsole);
+    // setShowGPTConsole(!showGPTConsole);
+    setFullScreenPanel(true);
+    
   };
 
   // Register the blocks and generator with Blockly
@@ -518,7 +522,7 @@ function resetHighlightBlock(workspace, blockId) {
             style={{
               position: "absolute",
               bottom: "10px",
-              left: "35%",
+              left: "170px",
               transform: "translateX(-50%)", // Center the button horizontally
               zIndex: 10,
               backgroundColor: "rgba(51, 51, 51, 0.8)",
@@ -530,7 +534,14 @@ function resetHighlightBlock(workspace, blockId) {
             }}
             onClick={toggleGPTConsole}
           >
-            Goals
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+            }}>
+                <OpenInFullIcon />
+                <span>Goals</span>
+            </div>
           </div>
         )}
         {showGPTConsole && (
