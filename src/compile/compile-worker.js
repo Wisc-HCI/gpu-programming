@@ -12,16 +12,16 @@ const delayJS = (timeMS) => {
   while (end < start + timeMS) {
     end = new Date().getTime();
   }
-}
+};
 
 function getBase64(file) {
   var reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = function () {
-    return (reader.result);
+    return reader.result;
   };
   reader.onerror = function (error) {
-    return ('Error: ', error);
+    return "Error: ", error;
   };
 }
 
@@ -73,7 +73,7 @@ self.onmessage = function (e) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
-      })
+      });
     }
   }
 
@@ -100,9 +100,8 @@ self.onmessage = function (e) {
     switch (true) {
       case type === "controls_if":
         if (!params.inputs || !params.inputs.IF0 || !params.inputs.DO0) {
-          throw new Error(`err: controls_if not complete! id: ${params.id}`);
+          throw new Error(`err: controls_if do not have input value! id: ${params.id}`);
           //appendActivity("Try running with incomplete controls_if");
-          return;
         } else {
           ifDo(params.inputs.IF0, params.inputs.DO0);
         }
@@ -113,9 +112,8 @@ self.onmessage = function (e) {
 
       case type === "logic_compare":
         if (!params.inputs || !params.inputs.A || !params.inputs.B) {
-          throw new Error("err: logic_compare is not complete!");
+          throw new Error( `err: logic_compare do not have input value! id: ${params.id}` );
           //appendActivity("Try running with incomplete logic_compare");
-          return;
         }
         //get the two input and see if they are logically equal
         const logic_compare_oprand = params.fields.OP;
@@ -158,9 +156,8 @@ self.onmessage = function (e) {
       /* eslint-disable-next-line no-fallthrough */
       case type === "logic_operation":
         if (!params.inputs || !params.inputs.A || !params.inputs.B) {
-          throw new Error("err: logic_operation is not complete!");
+          throw new Error( `err: logic_operation do not have input value! id: ${params.id}` );      
           //appendActivity("Try running with incomplete logic_operation");
-          return;
         }
 
         const oprand = params.fields.OP;
@@ -183,9 +180,8 @@ self.onmessage = function (e) {
 
       case type === "logic_negate":
         if (!params.inputs) {
-          throw new Error("err: logic_negate is not complete!");
+          throw new Error(`err: logic_negate do not have input value! id: ${params.id}`);
           //appendActivity("Try running with incomplete logic_negate");
-          return;
         }
         const logic_negate_BOOL = getBlock(params.inputs.BOOL);
         return !compile(logic_negate_BOOL, logic_negate_BOOL.type);
@@ -207,9 +203,8 @@ self.onmessage = function (e) {
           !params.inputs.THEN ||
           !params.inputs.ELSE
         ) {
-          throw new Error("err: logic_ternary is not complete!");
+          throw new Error( `err: logic_ternary do not have input value! id: ${params.id}` );
           //appendActivity("Try running with incomplete logic_ternary");
-          return;
         }
         const logic_ternary_IF_id = params.inputs.IF;
         const logic_ternary_THEN_id = params.inputs.THEN;
@@ -239,9 +234,8 @@ self.onmessage = function (e) {
       case type === "controls_repeat_ext":
         const controls_repeat_ext_TIMES = checkShadowinput(params.inputs.TIMES);
         if (!params.inputs.DO) {
-          throw new Error("err: controls_repeat_ext is not complete!");
+          throw new Error(`err: controls_repeat_ext do not have input value! id: ${params.id}`);
           //appendActivity("Try running with incomplete controls_repeat_ext");
-          return;
         }
         let controls_repeat_ext_DO_params = getBlock(params.inputs.DO);
         for (let i = 0; i < controls_repeat_ext_TIMES; i++) {
@@ -295,6 +289,7 @@ self.onmessage = function (e) {
         } else if (math_number_property_PROPERTY === "DIVISIBLE_BY") {
           if (!params.inputs || !params.inputs.DIVISOR) {
             throw new Error("err: DIVISOR is not filled!");
+
             // appendActivity(
             //   "Try running with incomplete math_number_property, DIVISOR is not filled"
             // );
@@ -373,9 +368,9 @@ self.onmessage = function (e) {
       /////////////////////////////////////////////Color///////////////////////////////////////////////////////////////
       case type === "ChangeLED":
         if (!params.inputs || !params.inputs.FIELD_ChangeLED) {
-          throw new Error("err: ChangeLED is not complete!");
+
+          throw new Error(`err: ChangeLED do not have input value! id: ${params.id}`);
           //appendActivity("Try running with incomplete ChangeLED");
-          return;
         }
         var endpoint = "led";
         var colorBlock = getBlock(params.inputs.FIELD_ChangeLED);
@@ -397,9 +392,8 @@ self.onmessage = function (e) {
 
       case type === "TransitionLED":
         if (!params.inputs || !params.inputs.COLOR1 || !params.inputs.COLOR2) {
-          throw new Error("err: TransitionLED is not complete!");
+          throw new Error(`err: TransitionLED do not have input value! id: ${params.id}`);
           //appendActivity("Try running with incomplete TransitionLED");
-          return;
         }
         var endpoint = "led/transition";
         var colorBlock1 = getBlock(params.inputs.COLOR1);
@@ -435,9 +429,8 @@ self.onmessage = function (e) {
 
       case type === "DisplayImage":
         if (!params.inputs || !params.inputs.FIELD_DisplayImage_Filename) {
-          throw new Error("err: DisplayImage is not complete!");
+          throw new Error(`err: DisplayImage do not have input value! id: ${params.id}`);
           //appendActivity("Try running with incomplete DisplayImage");
-          return;
         }
         var alpha = 1;
         var exprBlock = getBlock(params.inputs.FIELD_DisplayImage_Filename);
@@ -467,7 +460,7 @@ self.onmessage = function (e) {
 
       case type === "PlayAudio":
         if (!params.inputs || !params.inputs.FIELD_PlayAudio_Filename) {
-          throw new Error("err: PlayAudio is not complete!");
+          throw new Error(`err: PlayAudio do not have input value! id: ${params.id}`);
           //appendActivity("Try running with incomplete PlayAudio");
         }
         var endpoint = "audio/play";
@@ -482,7 +475,7 @@ self.onmessage = function (e) {
 
       case type === "SetVolume":
         if (!params.inputs || !params.inputs.FIELD_Volume) {
-          throw new Error("err: SetVolume is not complete!");
+          throw new Error(`err: SetVolume do not have input value! id: ${params.id}`);
         }
         var endpoint = "audio/volume";
         var volumeLevel = getBlock(params.inputs.FIELD_Volume);
@@ -495,9 +488,8 @@ self.onmessage = function (e) {
 
       case type === "DisplayAnimation":
         if (!params.inputs || !params.inputs.FIELD_DisplayAnimation_Filename) {
-          throw new Error("err: DisplayAnimation is not complete!");
+          throw new Error(`err: DisplayAnimation do not have input value! id: ${params.id}`);
           //appendActivity("Try running with incomplete DisplayAnimation");
-          return;
         }
         var exprBlock = getBlock(params.inputs.FIELD_DisplayAnimation_Filename);
         var filename = AudioLookup(exprBlock.type);
@@ -603,8 +595,8 @@ self.onmessage = function (e) {
         var temp = {x: 0, y: position-ARM_OFFSET_ANGLE, z: 0};
         var lNewQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
 
-        temp = {x: 0, y: position-ARM_OFFSET_ANGLE, z: 0};
-        var rNewQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
+        temp = { x: 0, y: position - ARM_OFFSET_ANGLE, z: 0 };
+        var rNewQuat = eulerToQuaternion(temp.x, (temp.y * PI) / 180, temp.z);
 
         tfs[JointLookup("Left")].rotation.w = lNewQuat._w;
         tfs[JointLookup("Left")].rotation.x = lNewQuat._x;
