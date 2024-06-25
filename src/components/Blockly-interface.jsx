@@ -432,31 +432,14 @@ export default function BlocklyInterface(props) {
     console.log(highlightBlocks); 
     let ws = getBlocklyWorkspace()
     if (ws && highlightBlocks) {
-       //ws.highlightBlock(highlightBlocks);
-       highlightBlockCustom2(ws, highlightBlocks, '#FF0000');
+       highlightBlockCustom(ws, highlightBlocks, '#FF0000');
     } else {
         console.log('Workspace or block ID not defined.');
     }
   }, [highlightBlocks]); 
 
-  function highlightBlockCustom(workspace, blockId, color) {
-    var block = workspace.getBlockById(blockId);
-    if (block) {
-        var svgRoot = block.getSvgRoot();
-        
-        if (svgRoot) {
-          //console.log(svgRoot)
-          var paths = svgRoot.querySelectorAll('.blocklyPath');
-          // Apply the new color to the 'fill' property of each path
-          paths.forEach(function(path) {
-              path.style.fill = color;
-          });
-      }
-        
-        
-  }
-}
-function highlightBlockCustom2(workspace, blockId, newColor, duration = 500, blinks = 5) {
+  
+function highlightBlockCustom(workspace, blockId, newColor, duration = 300, blinks = 5) {
   var block = workspace.getBlockById(blockId);
   if (block) {
       var svgRoot = block.getSvgRoot();

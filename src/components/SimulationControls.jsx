@@ -58,7 +58,7 @@ export default function SimulationControls(props) {
             setWorkerThread(null);
         };
         myWorker.onerror = function (e) {
-            // Todo, if worker errors, something isn't parameterized. Can do something with this data
+            // If worker throw error, something isn't parameterized
             console.log(e);
             // Extracting the id from the error message
             const idPattern = /id: (.+)/;  // Adjust regex according to your id format
