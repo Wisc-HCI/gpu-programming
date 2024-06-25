@@ -124,83 +124,60 @@ const useAnimation = ({ blocks, tfs, items }) => {
         jointAnimationArrays[armKey]["z"].push(newQuat._z);
 
         for (let i = 0; i < appends; i++) {
+          let lastElement = jointAnimationArrays[oppositeArm]["w"].length - 1;
           jointAnimationArrays[oppositeArm]["w"].push(
-            jointAnimationArrays[oppositeArm]["w"][
-              jointAnimationArrays[oppositeArm]["w"].length - 1
-            ]
+            jointAnimationArrays[oppositeArm]["w"][lastElement]
           );
           jointAnimationArrays[oppositeArm]["x"].push(
-            jointAnimationArrays[oppositeArm]["x"][
-              jointAnimationArrays[oppositeArm]["x"].length - 1
-            ]
+            jointAnimationArrays[oppositeArm]["x"][lastElement]
           );
           jointAnimationArrays[oppositeArm]["y"].push(
-            jointAnimationArrays[oppositeArm]["y"][
-              jointAnimationArrays[oppositeArm]["y"].length - 1
-            ]
+            jointAnimationArrays[oppositeArm]["y"][lastElement]
           );
           jointAnimationArrays[oppositeArm]["z"].push(
-            jointAnimationArrays[oppositeArm]["z"][
-              jointAnimationArrays[oppositeArm]["z"].length - 1
-            ]
+            jointAnimationArrays[oppositeArm]["z"][lastElement]
           );
 
           jointAnimationArrays["Head"]["x"].push(
-            jointAnimationArrays["Head"]["x"][
-              jointAnimationArrays["Head"]["x"].length - 1
-            ]
+            jointAnimationArrays["Head"]["x"][lastElement]
           );
           jointAnimationArrays["Head"]["y"].push(
-            jointAnimationArrays["Head"]["y"][
-              jointAnimationArrays["Head"]["y"].length - 1
-            ]
+            jointAnimationArrays["Head"]["y"][lastElement]
           );
           jointAnimationArrays["Head"]["z"].push(
-            jointAnimationArrays["Head"]["z"][
-              jointAnimationArrays["Head"]["z"].length - 1
-            ]
+            jointAnimationArrays["Head"]["z"][lastElement]
           );
           jointAnimationArrays["Head"]["w"].push(
-            jointAnimationArrays["Head"]["w"][
-              jointAnimationArrays["Head"]["w"].length - 1
-            ]
+            jointAnimationArrays["Head"]["w"][lastElement]
           );
 
           jointAnimationArrays["Base"]["position"]["x"].push(
-            jointAnimationArrays["Base"]["position"]["x"][
-              jointAnimationArrays["Base"]["position"]["x"].length - 1
-            ]
+            jointAnimationArrays["Base"]["position"]["x"][lastElement]
           );
           jointAnimationArrays["Base"]["position"]["y"].push(
-            jointAnimationArrays["Base"]["position"]["y"][
-              jointAnimationArrays["Base"]["position"]["y"].length - 1
-            ]
+            jointAnimationArrays["Base"]["position"]["y"][lastElement]
           );
           jointAnimationArrays["Base"]["position"]["z"].push(
-            jointAnimationArrays["Base"]["position"]["z"][
-              jointAnimationArrays["Base"]["position"]["z"].length - 1
-            ]
+            jointAnimationArrays["Base"]["position"]["z"][lastElement]
+          );
+          jointAnimationArrays["Base"]["position"]["distance"].push(
+            jointAnimationArrays["Base"]["position"]["distance"][lastElement]
+          );
+          jointAnimationArrays["Base"]["position"]["angle"].push(
+            jointAnimationArrays["Base"]["position"]["angle"][lastElement]
           );
 
           jointAnimationArrays["Base"]["rotation"]["w"].push(
-            jointAnimationArrays["Base"]["rotation"]["w"][
-              jointAnimationArrays["Base"]["rotation"]["w"].length - 1
-            ]
+            jointAnimationArrays["Base"]["rotation"]["w"][lastElement]
           );
           jointAnimationArrays["Base"]["rotation"]["x"].push(
-            jointAnimationArrays["Base"]["rotation"]["x"][
-              jointAnimationArrays["Base"]["rotation"]["x"].length - 1
-            ]
+            jointAnimationArrays["Base"]["rotation"]["x"][lastElement]
           );
           jointAnimationArrays["Base"]["rotation"]["y"].push(
-            jointAnimationArrays["Base"]["rotation"]["y"][
-              jointAnimationArrays["Base"]["rotation"]["y"].length - 1
-            ]
+            jointAnimationArrays["Base"]["rotation"]["y"][lastElement]
           );
           jointAnimationArrays["Base"]["rotation"]["z"].push(
-            jointAnimationArrays["Base"]["rotation"]["z"][
-              jointAnimationArrays["Base"]["rotation"]["z"].length - 1
-            ]
+            jointAnimationArrays["Base"]["rotation"]["z"][lastElement]
           );
 
           let faceKeys = Object.keys(FaceFilenameMap);
@@ -416,62 +393,47 @@ const useAnimation = ({ blocks, tfs, items }) => {
       }
 
       for (let i = 0; i < appends; i++) {
+        let lastElement = jointAnimationArrays["Head"]["x"].length - 1;
         jointAnimationArrays["Head"]["x"].push(
-          jointAnimationArrays["Head"]["x"][
-            jointAnimationArrays["Head"]["x"].length - 1
-          ]
+          jointAnimationArrays["Head"]["x"][lastElement]
         );
         jointAnimationArrays["Head"]["y"].push(
-          jointAnimationArrays["Head"]["y"][
-            jointAnimationArrays["Head"]["y"].length - 1
-          ]
+          jointAnimationArrays["Head"]["y"][lastElement]
         );
         jointAnimationArrays["Head"]["z"].push(
-          jointAnimationArrays["Head"]["z"][
-            jointAnimationArrays["Head"]["z"].length - 1
-          ]
+          jointAnimationArrays["Head"]["z"][lastElement]
         );
         jointAnimationArrays["Head"]["w"].push(
-          jointAnimationArrays["Head"]["w"][
-            jointAnimationArrays["Head"]["w"].length - 1
-          ]
+          jointAnimationArrays["Head"]["w"][lastElement]
         );
 
         jointAnimationArrays["Base"]["position"]["x"].push(
-          jointAnimationArrays["Base"]["position"]["x"][
-            jointAnimationArrays["Base"]["position"]["x"].length - 1
-          ]
+          jointAnimationArrays["Base"]["position"]["x"][lastElement]
         );
         jointAnimationArrays["Base"]["position"]["y"].push(
-          jointAnimationArrays["Base"]["position"]["y"][
-            jointAnimationArrays["Base"]["position"]["y"].length - 1
-          ]
+          jointAnimationArrays["Base"]["position"]["y"][lastElement]
         );
         jointAnimationArrays["Base"]["position"]["z"].push(
-          jointAnimationArrays["Base"]["position"]["z"][
-            jointAnimationArrays["Base"]["position"]["z"].length - 1
-          ]
+          jointAnimationArrays["Base"]["position"]["z"][lastElement]
+        );
+        jointAnimationArrays["Base"]["position"]["distance"].push(
+          jointAnimationArrays["Base"]["position"]["distance"][lastElement]
+        );
+        jointAnimationArrays["Base"]["position"]["angle"].push(
+          jointAnimationArrays["Base"]["position"]["angle"][lastElement]
         );
 
         jointAnimationArrays["Base"]["rotation"]["w"].push(
-          jointAnimationArrays["Base"]["rotation"]["w"][
-            jointAnimationArrays["Base"]["rotation"]["w"].length - 1
-          ]
+          jointAnimationArrays["Base"]["rotation"]["w"][lastElement]
         );
         jointAnimationArrays["Base"]["rotation"]["x"].push(
-          jointAnimationArrays["Base"]["rotation"]["x"][
-            jointAnimationArrays["Base"]["rotation"]["x"].length - 1
-          ]
+          jointAnimationArrays["Base"]["rotation"]["x"][lastElement]
         );
         jointAnimationArrays["Base"]["rotation"]["y"].push(
-          jointAnimationArrays["Base"]["rotation"]["y"][
-            jointAnimationArrays["Base"]["rotation"]["y"].length - 1
-          ]
+          jointAnimationArrays["Base"]["rotation"]["y"][lastElement]
         );
         jointAnimationArrays["Base"]["rotation"]["z"].push(
-          jointAnimationArrays["Base"]["rotation"]["z"][
-            jointAnimationArrays["Base"]["rotation"]["z"].length - 1
-          ]
+          jointAnimationArrays["Base"]["rotation"]["z"][lastElement]
         );
 
         let faceKeys = Object.keys(FaceFilenameMap);
@@ -504,82 +466,59 @@ const useAnimation = ({ blocks, tfs, items }) => {
       jointAnimationArrays["Head"]["y"].push(headQuat._y);
       jointAnimationArrays["Head"]["z"].push(headQuat._z);
 
+      let lastElement = jointAnimationArrays["Left"]["w"].length - 1;
       jointAnimationArrays["Left"]["w"].push(
-        jointAnimationArrays["Left"]["w"][
-          jointAnimationArrays["Left"]["w"].length - 1
-        ]
+        jointAnimationArrays["Left"]["w"][lastElement]
       );
       jointAnimationArrays["Left"]["x"].push(
-        jointAnimationArrays["Left"]["x"][
-          jointAnimationArrays["Left"]["x"].length - 1
-        ]
+        jointAnimationArrays["Left"]["x"][lastElement]
       );
       jointAnimationArrays["Left"]["y"].push(
-        jointAnimationArrays["Left"]["y"][
-          jointAnimationArrays["Left"]["y"].length - 1
-        ]
+        jointAnimationArrays["Left"]["y"][lastElement]
       );
       jointAnimationArrays["Left"]["z"].push(
-        jointAnimationArrays["Left"]["z"][
-          jointAnimationArrays["Left"]["z"].length - 1
-        ]
+        jointAnimationArrays["Left"]["z"][lastElement]
       );
       jointAnimationArrays["Right"]["w"].push(
-        jointAnimationArrays["Right"]["w"][
-          jointAnimationArrays["Right"]["w"].length - 1
-        ]
+        jointAnimationArrays["Right"]["w"][lastElement]
       );
       jointAnimationArrays["Right"]["x"].push(
-        jointAnimationArrays["Right"]["x"][
-          jointAnimationArrays["Right"]["x"].length - 1
-        ]
+        jointAnimationArrays["Right"]["x"][lastElement]
       );
       jointAnimationArrays["Right"]["y"].push(
-        jointAnimationArrays["Right"]["y"][
-          jointAnimationArrays["Right"]["y"].length - 1
-        ]
+        jointAnimationArrays["Right"]["y"][lastElement]
       );
       jointAnimationArrays["Right"]["z"].push(
-        jointAnimationArrays["Right"]["z"][
-          jointAnimationArrays["Right"]["z"].length - 1
-        ]
+        jointAnimationArrays["Right"]["z"][lastElement]
       );
 
       jointAnimationArrays["Base"]["position"]["x"].push(
-        jointAnimationArrays["Base"]["position"]["x"][
-          jointAnimationArrays["Base"]["position"]["x"].length - 1
-        ]
+        jointAnimationArrays["Base"]["position"]["x"][lastElement]
       );
       jointAnimationArrays["Base"]["position"]["y"].push(
-        jointAnimationArrays["Base"]["position"]["y"][
-          jointAnimationArrays["Base"]["position"]["y"].length - 1
-        ]
+        jointAnimationArrays["Base"]["position"]["y"][lastElement]
       );
       jointAnimationArrays["Base"]["position"]["z"].push(
-        jointAnimationArrays["Base"]["position"]["z"][
-          jointAnimationArrays["Base"]["position"]["z"].length - 1
-        ]
+        jointAnimationArrays["Base"]["position"]["z"][lastElement]
+      );
+      jointAnimationArrays["Base"]["position"]["distance"].push(
+        jointAnimationArrays["Base"]["position"]["distance"][lastElement]
+      );
+      jointAnimationArrays["Base"]["position"]["angle"].push(
+        jointAnimationArrays["Base"]["position"]["angle"][lastElement]
       );
 
       jointAnimationArrays["Base"]["rotation"]["w"].push(
-        jointAnimationArrays["Base"]["rotation"]["w"][
-          jointAnimationArrays["Base"]["rotation"]["w"].length - 1
-        ]
+        jointAnimationArrays["Base"]["rotation"]["w"][lastElement]
       );
       jointAnimationArrays["Base"]["rotation"]["x"].push(
-        jointAnimationArrays["Base"]["rotation"]["x"][
-          jointAnimationArrays["Base"]["rotation"]["x"].length - 1
-        ]
+        jointAnimationArrays["Base"]["rotation"]["x"][lastElement]
       );
       jointAnimationArrays["Base"]["rotation"]["y"].push(
-        jointAnimationArrays["Base"]["rotation"]["y"][
-          jointAnimationArrays["Base"]["rotation"]["y"].length - 1
-        ]
+        jointAnimationArrays["Base"]["rotation"]["y"][lastElement]
       );
       jointAnimationArrays["Base"]["rotation"]["z"].push(
-        jointAnimationArrays["Base"]["rotation"]["z"][
-          jointAnimationArrays["Base"]["rotation"]["z"].length - 1
-        ]
+        jointAnimationArrays["Base"]["rotation"]["z"][lastElement]
       );
 
       let faceKeys = Object.keys(FaceFilenameMap);
@@ -768,6 +707,12 @@ const useAnimation = ({ blocks, tfs, items }) => {
     jointAnimationArrays["Base"]["position"]["z"].push(
       jointAnimationArrays["Base"]["position"]["z"][lastElement]
     );
+    jointAnimationArrays["Base"]["position"]["distance"].push(
+      jointAnimationArrays["Base"]["position"]["distance"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["angle"].push(
+      jointAnimationArrays["Base"]["position"]["angle"][lastElement]
+    );
 
     jointAnimationArrays["Base"]["rotation"]["w"].push(
       jointAnimationArrays["Base"]["rotation"]["w"][lastElement]
@@ -834,6 +779,12 @@ const useAnimation = ({ blocks, tfs, items }) => {
     );
     jointAnimationArrays["Base"]["position"]["z"].push(
       jointAnimationArrays["Base"]["position"]["z"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["distance"].push(
+      jointAnimationArrays["Base"]["position"]["distance"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["angle"].push(
+      jointAnimationArrays["Base"]["position"]["angle"][lastElement]
     );
 
     jointAnimationArrays["Base"]["rotation"]["w"].push(
@@ -973,22 +924,26 @@ const useAnimation = ({ blocks, tfs, items }) => {
         jointAnimationArrays["Base"]["position"]["z"][i]
       );
 
-      if (Object.keys(priorPosition).length === 0) {  
+      if (Object.keys(priorPosition).length === 0) {
         priorPosition = {
-          x: jointAnimationArrays["Base"]["position"]["x"][i- 1],
-          y: jointAnimationArrays["Base"]["position"]["y"][i- 1],
-          z: jointAnimationArrays["Base"]["position"]["z"][i- 1]
-        }
+          x: jointAnimationArrays["Base"]["position"]["x"][i - 1],
+          y: jointAnimationArrays["Base"]["position"]["y"][i - 1],
+          z: jointAnimationArrays["Base"]["position"]["z"][i - 1],
+        };
       }
 
       let angle_i = jointAnimationArrays["Base"]["position"]["angle"][i];
       let distance_i = jointAnimationArrays["Base"]["position"]["distance"][i];
 
-      let oldBaseVec = new Vector3(priorPosition.x, priorPosition.y, priorPosition.z);
+      let oldBaseVec = new Vector3(
+        priorPosition.x,
+        priorPosition.y,
+        priorPosition.z
+      );
       for (let j = 10; j < SIM_TIME; j += 10) {
         timeVector.push((time / MS_TO_SEC) * j + runningTimeSum);
-        let distance_i_t = distance_i * j / SIM_TIME;
-        let angle_i_t = angle_i * j / SIM_TIME;
+        let distance_i_t = (distance_i * j) / SIM_TIME;
+        let angle_i_t = (angle_i * j) / SIM_TIME;
         let oldLeftArmQuat = new Quaternion(
           jointAnimationArrays["Left"]["x"][i - 1],
           jointAnimationArrays["Left"]["y"][i - 1],
@@ -1013,10 +968,12 @@ const useAnimation = ({ blocks, tfs, items }) => {
           jointAnimationArrays["Base"]["rotation"]["z"][i - 1],
           jointAnimationArrays["Base"]["rotation"]["w"][i - 1]
         );
+        // console.log(oldBaseQuat);
         let z = determineZAngleFromQuaternion(oldBaseQuat);
+        console.log(z);
         oldBaseVec = new Vector3(
-          priorPosition.x - distance_i_t * Math.sin(z - angle_i_t),
-          priorPosition.y + distance_i_t * Math.cos(z - angle_i_t),
+          priorPosition.x + distance_i_t * Math.cos(z + angle_i_t),
+          priorPosition.y + distance_i_t * Math.sin(z + angle_i_t),
           priorPosition.z
         );
         // let oldBaseVec = new Vector3(
@@ -1064,8 +1021,8 @@ const useAnimation = ({ blocks, tfs, items }) => {
       priorPosition = {
         x: oldBaseVec.x,
         y: oldBaseVec.y,
-        z: oldBaseVec.z
-      }
+        z: oldBaseVec.z,
+      };
       runningTimeSum += time;
     }
 
@@ -1234,7 +1191,7 @@ const useAnimation = ({ blocks, tfs, items }) => {
     newEndingTfs[JointLookup("Base")].position.x = finalBaseVec.x;
     newEndingTfs[JointLookup("Base")].position.y = finalBaseVec.y;
     newEndingTfs[JointLookup("Base")].position.z = finalBaseVec.z;
-
+    console.log(newEndingTfs);
     return { newTfs, newEndingTfs, newItems, newEndingItems };
   };
 
