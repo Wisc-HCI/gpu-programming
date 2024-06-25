@@ -1,24 +1,71 @@
-import { ARM_OFFSET_ANGLE, MAX_ANGLE_PER_SEC, MAX_ARM_SPEED, MAX_DIST_PER_SEC, MISTY_ARM_LENGTH, MS_TO_SEC, PI, SIM_TIME } from "../Constants.js";
+import {
+  ARM_OFFSET_ANGLE,
+  MAX_ANGLE_PER_SEC,
+  MAX_ARM_SPEED,
+  MAX_DIST_PER_SEC,
+  MISTY_ARM_LENGTH,
+  MS_TO_SEC,
+  PI,
+  SIM_TIME,
+} from "../Constants.js";
 import { JointLookup } from "../Misty-Robot/JointLookup.js";
 import { AudioLookup } from "../Misty-Robot/audio/audiolookup.js";
-import { FaceFilenameLookup, FaceFilenameMap } from "../Misty-Robot/faces/facefilename.js";
+import {
+  FaceFilenameLookup,
+  FaceFilenameMap,
+} from "../Misty-Robot/faces/facefilename.js";
 import { FaceLookup } from "../Misty-Robot/faces/facemap.js";
 import { Quaternion, Vector3 } from "three";
-import { determineZAngleFromQuaternion, eulerToQuaternion, hexToRgb, interpolateScalar, quaternionToEuler } from "../utils.js";
+import {
+  determineZAngleFromQuaternion,
+  eulerToQuaternion,
+  hexToRgb,
+  interpolateScalar,
+  quaternionToEuler,
+} from "../utils.js";
 
-const useAnimation = ({blocks, tfs, items}) => {
+const useAnimation = ({ blocks, tfs, items }) => {
   var leftArm = tfs[JointLookup("Left")];
   var rightArm = tfs[JointLookup("Right")];
   var head = tfs[JointLookup("Head")];
   var base = tfs[JointLookup("Base")];
 
   let jointAnimationArrays = {
-    "Left": {"x": [leftArm.rotation.x], "y": [leftArm.rotation.y], "z": [leftArm.rotation.z], "w": [leftArm.rotation.w]},
-    "Right": {"x": [rightArm.rotation.x], "y": [rightArm.rotation.y], "z": [rightArm.rotation.z], "w": [rightArm.rotation.w]},
-    "Head": {"x": [head.rotation.x], "y": [head.rotation.y], "z": [head.rotation.z], "w": [head.rotation.w]},
-    "Base": {"position": {"x": [base.position.x], "y": [base.position.y], "z": [base.position.z]}, "rotation": {"x": [base.rotation.x], "y": [base.rotation.y], "z": [base.rotation.z], "w": [base.rotation.w]}},
-    "Time": [0],
-  }
+    Left: {
+      x: [leftArm.rotation.x],
+      y: [leftArm.rotation.y],
+      z: [leftArm.rotation.z],
+      w: [leftArm.rotation.w],
+    },
+    Right: {
+      x: [rightArm.rotation.x],
+      y: [rightArm.rotation.y],
+      z: [rightArm.rotation.z],
+      w: [rightArm.rotation.w],
+    },
+    Head: {
+      x: [head.rotation.x],
+      y: [head.rotation.y],
+      z: [head.rotation.z],
+      w: [head.rotation.w],
+    },
+    Base: {
+      position: {
+        x: [base.position.x],
+        y: [base.position.y],
+        z: [base.position.z],
+        angle: [0],
+        distance: [0],
+      },
+      rotation: {
+        x: [base.rotation.x],
+        y: [base.rotation.y],
+        z: [base.rotation.z],
+        w: [base.rotation.w],
+      },
+    },
+    Time: [0],
+  };
 
   let faceKeys = Object.keys(FaceFilenameMap);
   for (let m = 0; m < faceKeys.length; m++) {
@@ -28,325 +75,680 @@ const useAnimation = ({blocks, tfs, items}) => {
 
   const addArmAnimationKeyFrame = (arm, position, velocity) => {
     if (arm === "both") {
-        addArmsAnimationKeyFrame(position, velocity, position, velocity);
+      addArmsAnimationKeyFrame(position, velocity, position, velocity);
     } else {
-        if (velocity > 0) {
-            var armKey = arm;
-            var oppositeArm = arm === "Left" ? "Right" : "Left";
+      if (velocity > 0) {
+        var armKey = arm;
+        var oppositeArm = arm === "Left" ? "Right" : "Left";
 
-            var armTf = {
-                rotation: {
-                    x: jointAnimationArrays[armKey]["x"][jointAnimationArrays[armKey]["x"].length-1],
-                    y: jointAnimationArrays[armKey]["y"][jointAnimationArrays[armKey]["y"].length-1],
-                    z: jointAnimationArrays[armKey]["z"][jointAnimationArrays[armKey]["z"].length-1],
-                    w: jointAnimationArrays[armKey]["w"][jointAnimationArrays[armKey]["w"].length-1]
-                }
-            };
-            var euler = quaternionToEuler(armTf.rotation);
-            var distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(euler.y - position);
-            var time = distance / ((velocity / 100) * MAX_ARM_SPEED);
-            var temp = {x: 0, y: position-ARM_OFFSET_ANGLE, z: 0};
-            var appends = 1;
-            if ((temp.y < 0 && euler.y > 0) || (temp.y > 0 && euler.y < 0)) {
-              let temp2 = (temp.y - euler.y) / 2.0;
-              let midValue = temp.y - temp2;
-              
-              var midQuat = eulerToQuaternion(0, midValue * PI/180, 0);
-              
-              jointAnimationArrays[armKey]["w"].push(midQuat._w);
-              jointAnimationArrays[armKey]["x"].push(midQuat._x);
-              jointAnimationArrays[armKey]["y"].push(midQuat._y);
-              jointAnimationArrays[armKey]["z"].push(midQuat._z);
-              
-              jointAnimationArrays["Time"].push(time/2.0);
-              appends += 1;
-            }
-
-            var newQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
-            jointAnimationArrays[armKey]["w"].push(newQuat._w);
-            jointAnimationArrays[armKey]["x"].push(newQuat._x);
-            jointAnimationArrays[armKey]["y"].push(newQuat._y);
-            jointAnimationArrays[armKey]["z"].push(newQuat._z);
-            
-            for (let i = 0; i < appends; i++) {
-              jointAnimationArrays[oppositeArm]["w"].push(jointAnimationArrays[oppositeArm]["w"][jointAnimationArrays[oppositeArm]["w"].length-1]);
-              jointAnimationArrays[oppositeArm]["x"].push(jointAnimationArrays[oppositeArm]["x"][jointAnimationArrays[oppositeArm]["x"].length-1]);
-              jointAnimationArrays[oppositeArm]["y"].push(jointAnimationArrays[oppositeArm]["y"][jointAnimationArrays[oppositeArm]["y"].length-1]);
-              jointAnimationArrays[oppositeArm]["z"].push(jointAnimationArrays[oppositeArm]["z"][jointAnimationArrays[oppositeArm]["z"].length-1]);
-              
-              jointAnimationArrays["Head"]["x"].push(jointAnimationArrays["Head"]["x"][jointAnimationArrays["Head"]["x"].length-1]);
-              jointAnimationArrays["Head"]["y"].push(jointAnimationArrays["Head"]["y"][jointAnimationArrays["Head"]["y"].length-1]);
-              jointAnimationArrays["Head"]["z"].push(jointAnimationArrays["Head"]["z"][jointAnimationArrays["Head"]["z"].length-1]);
-              jointAnimationArrays["Head"]["w"].push(jointAnimationArrays["Head"]["w"][jointAnimationArrays["Head"]["w"].length-1]);
-
-              jointAnimationArrays["Base"]["position"]["x"].push(jointAnimationArrays["Base"]["position"]["x"][jointAnimationArrays["Base"]["position"]["x"].length-1]);
-              jointAnimationArrays["Base"]["position"]["y"].push(jointAnimationArrays["Base"]["position"]["y"][jointAnimationArrays["Base"]["position"]["y"].length-1]);
-              jointAnimationArrays["Base"]["position"]["z"].push(jointAnimationArrays["Base"]["position"]["z"][jointAnimationArrays["Base"]["position"]["z"].length-1]);
-
-              jointAnimationArrays["Base"]["rotation"]["w"].push(jointAnimationArrays["Base"]["rotation"]["w"][jointAnimationArrays["Base"]["rotation"]["w"].length-1]);
-              jointAnimationArrays["Base"]["rotation"]["x"].push(jointAnimationArrays["Base"]["rotation"]["x"][jointAnimationArrays["Base"]["rotation"]["x"].length-1]);
-              jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][jointAnimationArrays["Base"]["rotation"]["y"].length-1]);
-              jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][jointAnimationArrays["Base"]["rotation"]["z"].length-1]);
-
-              let faceKeys = Object.keys(FaceFilenameMap);
-              for (let m = 0; m < faceKeys.length; m++) {
-                let face = faceKeys[m];
-                jointAnimationArrays[face].push(jointAnimationArrays[face][jointAnimationArrays[face].length - 1]);
-              }
-            }
-            if (appends > 1) {
-              jointAnimationArrays["Time"].push(time/2.0);
-            } else {
-              jointAnimationArrays["Time"].push(time);
-            }
-            
-        }
-    }
-  }
-
-  const addArmsAnimationKeyFrame = (left_position, left_velocity, right_position, right_velocity) => {
-    if (left_velocity > 0 || right_velocity > 0) {
-        var lArmTf = {
-            rotation: {
-                x: jointAnimationArrays["Left"]["x"][jointAnimationArrays["Left"]["x"].length-1],
-                y: jointAnimationArrays["Left"]["y"][jointAnimationArrays["Left"]["y"].length-1],
-                z: jointAnimationArrays["Left"]["z"][jointAnimationArrays["Left"]["z"].length-1],
-                w: jointAnimationArrays["Left"]["w"][jointAnimationArrays["Left"]["w"].length-1]
-            }
+        var armTf = {
+          rotation: {
+            x: jointAnimationArrays[armKey]["x"][
+              jointAnimationArrays[armKey]["x"].length - 1
+            ],
+            y: jointAnimationArrays[armKey]["y"][
+              jointAnimationArrays[armKey]["y"].length - 1
+            ],
+            z: jointAnimationArrays[armKey]["z"][
+              jointAnimationArrays[armKey]["z"].length - 1
+            ],
+            w: jointAnimationArrays[armKey]["w"][
+              jointAnimationArrays[armKey]["w"].length - 1
+            ],
+          },
         };
-        var rArmTf = {
-            rotation: {
-                x: jointAnimationArrays["Right"]["x"][jointAnimationArrays["Right"]["x"].length-1],
-                y: jointAnimationArrays["Right"]["y"][jointAnimationArrays["Right"]["y"].length-1],
-                z: jointAnimationArrays["Right"]["z"][jointAnimationArrays["Right"]["z"].length-1],
-                w: jointAnimationArrays["Right"]["w"][jointAnimationArrays["Right"]["w"].length-1]
-            }
-        };
+        var euler = quaternionToEuler(armTf.rotation);
+        var distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(euler.y - position);
+        var time = distance / ((velocity / 100) * MAX_ARM_SPEED);
+        var temp = { x: 0, y: position - ARM_OFFSET_ANGLE, z: 0 };
+        var appends = 1;
+        if ((temp.y < 0 && euler.y > 0) || (temp.y > 0 && euler.y < 0)) {
+          let temp2 = (temp.y - euler.y) / 2.0;
+          let midValue = temp.y - temp2;
 
-        var lEuler = quaternionToEuler(lArmTf.rotation);
-        var distance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(lEuler.y - left_position);
-        var lTime = distance / ((left_velocity / 100) * MAX_ARM_SPEED);
+          var midQuat = eulerToQuaternion(0, (midValue * PI) / 180, 0);
 
-        var rEuler = quaternionToEuler(rArmTf.rotation);
-        var rDistance = 2 * PI * MISTY_ARM_LENGTH * Math.abs(rEuler.y - right_position);
-        var rTime = rDistance / ((right_velocity / 100) * MAX_ARM_SPEED);
+          jointAnimationArrays[armKey]["w"].push(midQuat._w);
+          jointAnimationArrays[armKey]["x"].push(midQuat._x);
+          jointAnimationArrays[armKey]["y"].push(midQuat._y);
+          jointAnimationArrays[armKey]["z"].push(midQuat._z);
 
-        var execTime = left_velocity === 0 ? rTime : right_velocity === 0 ? lTime : Math.max(lTime, rTime);
-        
-        var temp = {x: 0, y: left_position-ARM_OFFSET_ANGLE, z: 0};
-        var lNewQuat = eulerToQuaternion(temp.x, temp.y * PI/180, temp.z);
-
-        var temp2 = {x: 0, y: right_position-ARM_OFFSET_ANGLE, z: 0};
-        var rNewQuat = eulerToQuaternion(temp2.x, temp2.y * PI/180, temp2.z);
-
-        let appends = 1;
-        
-        if (((temp.y < 0 && lEuler.y > 0) || (temp.y > 0 && lEuler.y < 0)) || ((temp2.y < 0 && rEuler.y > 0) || (temp2.y > 0 && rEuler.y < 0))) {
-          let temp3 = (temp.y - lEuler.y) / 2.0;
-          let temp4 = (temp.y - lEuler.y) / 2.0;
-          let lMidValue = temp.y - temp3;
-          let rMidValue = temp2.y - temp4;
-          
-          var lMidQuat = eulerToQuaternion(0, lMidValue * PI/180, 0);
-          var rMidQuat = eulerToQuaternion(0, rMidValue * PI/180, 0);
-
-          if (left_velocity > 0) {
-            jointAnimationArrays["Left"]["w"].push(lMidQuat._w);
-            jointAnimationArrays["Left"]["x"].push(lMidQuat._x);
-            jointAnimationArrays["Left"]["y"].push(lMidQuat._y);
-            jointAnimationArrays["Left"]["z"].push(lMidQuat._z);    
-          } else {
-            jointAnimationArrays["Left"]["w"].push(jointAnimationArrays["Left"]["w"][jointAnimationArrays["Left"]["w"].length-1]);
-            jointAnimationArrays["Left"]["x"].push(jointAnimationArrays["Left"]["x"][jointAnimationArrays["Left"]["x"].length-1]);
-            jointAnimationArrays["Left"]["y"].push(jointAnimationArrays["Left"]["y"][jointAnimationArrays["Left"]["y"].length-1]);
-            jointAnimationArrays["Left"]["z"].push(jointAnimationArrays["Left"]["z"][jointAnimationArrays["Left"]["z"].length-1]);
-          }
-        
-          if (right_velocity > 0) {
-            jointAnimationArrays["Right"]["w"].push(rMidQuat._w);
-            jointAnimationArrays["Right"]["x"].push(rMidQuat._x);
-            jointAnimationArrays["Right"]["y"].push(rMidQuat._y);
-            jointAnimationArrays["Right"]["z"].push(rMidQuat._z);
-          } else {
-            jointAnimationArrays["Right"]["w"].push(jointAnimationArrays["Right"]["w"][jointAnimationArrays["Right"]["w"].length-1]);
-            jointAnimationArrays["Right"]["x"].push(jointAnimationArrays["Right"]["x"][jointAnimationArrays["Right"]["x"].length-1]);
-            jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][jointAnimationArrays["Right"]["y"].length-1]);
-            jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][jointAnimationArrays["Right"]["z"].length-1]);
-          }
-          
-          jointAnimationArrays["Time"].push(execTime/2.0);
+          jointAnimationArrays["Time"].push(time / 2.0);
           appends += 1;
         }
 
-        if (left_velocity > 0) {
-            jointAnimationArrays["Left"]["w"].push(lNewQuat._w);
-            jointAnimationArrays["Left"]["x"].push(lNewQuat._x);
-            jointAnimationArrays["Left"]["y"].push(lNewQuat._y);
-            jointAnimationArrays["Left"]["z"].push(lNewQuat._z);    
-        } else {
-            jointAnimationArrays["Left"]["w"].push(jointAnimationArrays["Left"]["w"][jointAnimationArrays["Left"]["w"].length-1]);
-            jointAnimationArrays["Left"]["x"].push(jointAnimationArrays["Left"]["x"][jointAnimationArrays["Left"]["x"].length-1]);
-            jointAnimationArrays["Left"]["y"].push(jointAnimationArrays["Left"]["y"][jointAnimationArrays["Left"]["y"].length-1]);
-            jointAnimationArrays["Left"]["z"].push(jointAnimationArrays["Left"]["z"][jointAnimationArrays["Left"]["z"].length-1]);
-        }
-        
-        if (right_velocity > 0) {
-            jointAnimationArrays["Right"]["w"].push(rNewQuat._w);
-            jointAnimationArrays["Right"]["x"].push(rNewQuat._x);
-            jointAnimationArrays["Right"]["y"].push(rNewQuat._y);
-            jointAnimationArrays["Right"]["z"].push(rNewQuat._z);
-        } else {
-            jointAnimationArrays["Right"]["w"].push(jointAnimationArrays["Right"]["w"][jointAnimationArrays["Right"]["w"].length-1]);
-            jointAnimationArrays["Right"]["x"].push(jointAnimationArrays["Right"]["x"][jointAnimationArrays["Right"]["x"].length-1]);
-            jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][jointAnimationArrays["Right"]["y"].length-1]);
-            jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][jointAnimationArrays["Right"]["z"].length-1]);
-        }
+        var newQuat = eulerToQuaternion(temp.x, (temp.y * PI) / 180, temp.z);
+        jointAnimationArrays[armKey]["w"].push(newQuat._w);
+        jointAnimationArrays[armKey]["x"].push(newQuat._x);
+        jointAnimationArrays[armKey]["y"].push(newQuat._y);
+        jointAnimationArrays[armKey]["z"].push(newQuat._z);
 
         for (let i = 0; i < appends; i++) {
-          jointAnimationArrays["Head"]["x"].push(jointAnimationArrays["Head"]["x"][jointAnimationArrays["Head"]["x"].length-1]);
-          jointAnimationArrays["Head"]["y"].push(jointAnimationArrays["Head"]["y"][jointAnimationArrays["Head"]["y"].length-1]);
-          jointAnimationArrays["Head"]["z"].push(jointAnimationArrays["Head"]["z"][jointAnimationArrays["Head"]["z"].length-1]);
-          jointAnimationArrays["Head"]["w"].push(jointAnimationArrays["Head"]["w"][jointAnimationArrays["Head"]["w"].length-1]);
-  
-          jointAnimationArrays["Base"]["position"]["x"].push(jointAnimationArrays["Base"]["position"]["x"][jointAnimationArrays["Base"]["position"]["x"].length-1]);
-          jointAnimationArrays["Base"]["position"]["y"].push(jointAnimationArrays["Base"]["position"]["y"][jointAnimationArrays["Base"]["position"]["y"].length-1]);
-          jointAnimationArrays["Base"]["position"]["z"].push(jointAnimationArrays["Base"]["position"]["z"][jointAnimationArrays["Base"]["position"]["z"].length-1]);
-  
-          jointAnimationArrays["Base"]["rotation"]["w"].push(jointAnimationArrays["Base"]["rotation"]["w"][jointAnimationArrays["Base"]["rotation"]["w"].length-1]);
-          jointAnimationArrays["Base"]["rotation"]["x"].push(jointAnimationArrays["Base"]["rotation"]["x"][jointAnimationArrays["Base"]["rotation"]["x"].length-1]);
-          jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][jointAnimationArrays["Base"]["rotation"]["y"].length-1]);
-          jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][jointAnimationArrays["Base"]["rotation"]["z"].length-1]);  
-          
+          jointAnimationArrays[oppositeArm]["w"].push(
+            jointAnimationArrays[oppositeArm]["w"][
+              jointAnimationArrays[oppositeArm]["w"].length - 1
+            ]
+          );
+          jointAnimationArrays[oppositeArm]["x"].push(
+            jointAnimationArrays[oppositeArm]["x"][
+              jointAnimationArrays[oppositeArm]["x"].length - 1
+            ]
+          );
+          jointAnimationArrays[oppositeArm]["y"].push(
+            jointAnimationArrays[oppositeArm]["y"][
+              jointAnimationArrays[oppositeArm]["y"].length - 1
+            ]
+          );
+          jointAnimationArrays[oppositeArm]["z"].push(
+            jointAnimationArrays[oppositeArm]["z"][
+              jointAnimationArrays[oppositeArm]["z"].length - 1
+            ]
+          );
+
+          jointAnimationArrays["Head"]["x"].push(
+            jointAnimationArrays["Head"]["x"][
+              jointAnimationArrays["Head"]["x"].length - 1
+            ]
+          );
+          jointAnimationArrays["Head"]["y"].push(
+            jointAnimationArrays["Head"]["y"][
+              jointAnimationArrays["Head"]["y"].length - 1
+            ]
+          );
+          jointAnimationArrays["Head"]["z"].push(
+            jointAnimationArrays["Head"]["z"][
+              jointAnimationArrays["Head"]["z"].length - 1
+            ]
+          );
+          jointAnimationArrays["Head"]["w"].push(
+            jointAnimationArrays["Head"]["w"][
+              jointAnimationArrays["Head"]["w"].length - 1
+            ]
+          );
+
+          jointAnimationArrays["Base"]["position"]["x"].push(
+            jointAnimationArrays["Base"]["position"]["x"][
+              jointAnimationArrays["Base"]["position"]["x"].length - 1
+            ]
+          );
+          jointAnimationArrays["Base"]["position"]["y"].push(
+            jointAnimationArrays["Base"]["position"]["y"][
+              jointAnimationArrays["Base"]["position"]["y"].length - 1
+            ]
+          );
+          jointAnimationArrays["Base"]["position"]["z"].push(
+            jointAnimationArrays["Base"]["position"]["z"][
+              jointAnimationArrays["Base"]["position"]["z"].length - 1
+            ]
+          );
+
+          jointAnimationArrays["Base"]["rotation"]["w"].push(
+            jointAnimationArrays["Base"]["rotation"]["w"][
+              jointAnimationArrays["Base"]["rotation"]["w"].length - 1
+            ]
+          );
+          jointAnimationArrays["Base"]["rotation"]["x"].push(
+            jointAnimationArrays["Base"]["rotation"]["x"][
+              jointAnimationArrays["Base"]["rotation"]["x"].length - 1
+            ]
+          );
+          jointAnimationArrays["Base"]["rotation"]["y"].push(
+            jointAnimationArrays["Base"]["rotation"]["y"][
+              jointAnimationArrays["Base"]["rotation"]["y"].length - 1
+            ]
+          );
+          jointAnimationArrays["Base"]["rotation"]["z"].push(
+            jointAnimationArrays["Base"]["rotation"]["z"][
+              jointAnimationArrays["Base"]["rotation"]["z"].length - 1
+            ]
+          );
+
           let faceKeys = Object.keys(FaceFilenameMap);
           for (let m = 0; m < faceKeys.length; m++) {
             let face = faceKeys[m];
-            jointAnimationArrays[face].push(jointAnimationArrays[face][jointAnimationArrays[face].length - 1]);
+            jointAnimationArrays[face].push(
+              jointAnimationArrays[face][jointAnimationArrays[face].length - 1]
+            );
           }
         }
-
         if (appends > 1) {
-          jointAnimationArrays["Time"].push(execTime/2);
+          jointAnimationArrays["Time"].push(time / 2.0);
         } else {
-          jointAnimationArrays["Time"].push(execTime);
+          jointAnimationArrays["Time"].push(time);
         }
-        
+      }
     }
-  }
+  };
+
+  const addArmsAnimationKeyFrame = (
+    left_position,
+    left_velocity,
+    right_position,
+    right_velocity
+  ) => {
+    if (left_velocity > 0 || right_velocity > 0) {
+      var lArmTf = {
+        rotation: {
+          x: jointAnimationArrays["Left"]["x"][
+            jointAnimationArrays["Left"]["x"].length - 1
+          ],
+          y: jointAnimationArrays["Left"]["y"][
+            jointAnimationArrays["Left"]["y"].length - 1
+          ],
+          z: jointAnimationArrays["Left"]["z"][
+            jointAnimationArrays["Left"]["z"].length - 1
+          ],
+          w: jointAnimationArrays["Left"]["w"][
+            jointAnimationArrays["Left"]["w"].length - 1
+          ],
+        },
+      };
+      var rArmTf = {
+        rotation: {
+          x: jointAnimationArrays["Right"]["x"][
+            jointAnimationArrays["Right"]["x"].length - 1
+          ],
+          y: jointAnimationArrays["Right"]["y"][
+            jointAnimationArrays["Right"]["y"].length - 1
+          ],
+          z: jointAnimationArrays["Right"]["z"][
+            jointAnimationArrays["Right"]["z"].length - 1
+          ],
+          w: jointAnimationArrays["Right"]["w"][
+            jointAnimationArrays["Right"]["w"].length - 1
+          ],
+        },
+      };
+
+      var lEuler = quaternionToEuler(lArmTf.rotation);
+      var distance =
+        2 * PI * MISTY_ARM_LENGTH * Math.abs(lEuler.y - left_position);
+      var lTime = distance / ((left_velocity / 100) * MAX_ARM_SPEED);
+
+      var rEuler = quaternionToEuler(rArmTf.rotation);
+      var rDistance =
+        2 * PI * MISTY_ARM_LENGTH * Math.abs(rEuler.y - right_position);
+      var rTime = rDistance / ((right_velocity / 100) * MAX_ARM_SPEED);
+
+      var execTime =
+        left_velocity === 0
+          ? rTime
+          : right_velocity === 0
+          ? lTime
+          : Math.max(lTime, rTime);
+
+      var temp = { x: 0, y: left_position - ARM_OFFSET_ANGLE, z: 0 };
+      var lNewQuat = eulerToQuaternion(temp.x, (temp.y * PI) / 180, temp.z);
+
+      var temp2 = { x: 0, y: right_position - ARM_OFFSET_ANGLE, z: 0 };
+      var rNewQuat = eulerToQuaternion(temp2.x, (temp2.y * PI) / 180, temp2.z);
+
+      let appends = 1;
+
+      if (
+        (temp.y < 0 && lEuler.y > 0) ||
+        (temp.y > 0 && lEuler.y < 0) ||
+        (temp2.y < 0 && rEuler.y > 0) ||
+        (temp2.y > 0 && rEuler.y < 0)
+      ) {
+        let temp3 = (temp.y - lEuler.y) / 2.0;
+        let temp4 = (temp.y - lEuler.y) / 2.0;
+        let lMidValue = temp.y - temp3;
+        let rMidValue = temp2.y - temp4;
+
+        var lMidQuat = eulerToQuaternion(0, (lMidValue * PI) / 180, 0);
+        var rMidQuat = eulerToQuaternion(0, (rMidValue * PI) / 180, 0);
+
+        if (left_velocity > 0) {
+          jointAnimationArrays["Left"]["w"].push(lMidQuat._w);
+          jointAnimationArrays["Left"]["x"].push(lMidQuat._x);
+          jointAnimationArrays["Left"]["y"].push(lMidQuat._y);
+          jointAnimationArrays["Left"]["z"].push(lMidQuat._z);
+        } else {
+          jointAnimationArrays["Left"]["w"].push(
+            jointAnimationArrays["Left"]["w"][
+              jointAnimationArrays["Left"]["w"].length - 1
+            ]
+          );
+          jointAnimationArrays["Left"]["x"].push(
+            jointAnimationArrays["Left"]["x"][
+              jointAnimationArrays["Left"]["x"].length - 1
+            ]
+          );
+          jointAnimationArrays["Left"]["y"].push(
+            jointAnimationArrays["Left"]["y"][
+              jointAnimationArrays["Left"]["y"].length - 1
+            ]
+          );
+          jointAnimationArrays["Left"]["z"].push(
+            jointAnimationArrays["Left"]["z"][
+              jointAnimationArrays["Left"]["z"].length - 1
+            ]
+          );
+        }
+
+        if (right_velocity > 0) {
+          jointAnimationArrays["Right"]["w"].push(rMidQuat._w);
+          jointAnimationArrays["Right"]["x"].push(rMidQuat._x);
+          jointAnimationArrays["Right"]["y"].push(rMidQuat._y);
+          jointAnimationArrays["Right"]["z"].push(rMidQuat._z);
+        } else {
+          jointAnimationArrays["Right"]["w"].push(
+            jointAnimationArrays["Right"]["w"][
+              jointAnimationArrays["Right"]["w"].length - 1
+            ]
+          );
+          jointAnimationArrays["Right"]["x"].push(
+            jointAnimationArrays["Right"]["x"][
+              jointAnimationArrays["Right"]["x"].length - 1
+            ]
+          );
+          jointAnimationArrays["Right"]["y"].push(
+            jointAnimationArrays["Right"]["y"][
+              jointAnimationArrays["Right"]["y"].length - 1
+            ]
+          );
+          jointAnimationArrays["Right"]["z"].push(
+            jointAnimationArrays["Right"]["z"][
+              jointAnimationArrays["Right"]["z"].length - 1
+            ]
+          );
+        }
+
+        jointAnimationArrays["Time"].push(execTime / 2.0);
+        appends += 1;
+      }
+
+      if (left_velocity > 0) {
+        jointAnimationArrays["Left"]["w"].push(lNewQuat._w);
+        jointAnimationArrays["Left"]["x"].push(lNewQuat._x);
+        jointAnimationArrays["Left"]["y"].push(lNewQuat._y);
+        jointAnimationArrays["Left"]["z"].push(lNewQuat._z);
+      } else {
+        jointAnimationArrays["Left"]["w"].push(
+          jointAnimationArrays["Left"]["w"][
+            jointAnimationArrays["Left"]["w"].length - 1
+          ]
+        );
+        jointAnimationArrays["Left"]["x"].push(
+          jointAnimationArrays["Left"]["x"][
+            jointAnimationArrays["Left"]["x"].length - 1
+          ]
+        );
+        jointAnimationArrays["Left"]["y"].push(
+          jointAnimationArrays["Left"]["y"][
+            jointAnimationArrays["Left"]["y"].length - 1
+          ]
+        );
+        jointAnimationArrays["Left"]["z"].push(
+          jointAnimationArrays["Left"]["z"][
+            jointAnimationArrays["Left"]["z"].length - 1
+          ]
+        );
+      }
+
+      if (right_velocity > 0) {
+        jointAnimationArrays["Right"]["w"].push(rNewQuat._w);
+        jointAnimationArrays["Right"]["x"].push(rNewQuat._x);
+        jointAnimationArrays["Right"]["y"].push(rNewQuat._y);
+        jointAnimationArrays["Right"]["z"].push(rNewQuat._z);
+      } else {
+        jointAnimationArrays["Right"]["w"].push(
+          jointAnimationArrays["Right"]["w"][
+            jointAnimationArrays["Right"]["w"].length - 1
+          ]
+        );
+        jointAnimationArrays["Right"]["x"].push(
+          jointAnimationArrays["Right"]["x"][
+            jointAnimationArrays["Right"]["x"].length - 1
+          ]
+        );
+        jointAnimationArrays["Right"]["y"].push(
+          jointAnimationArrays["Right"]["y"][
+            jointAnimationArrays["Right"]["y"].length - 1
+          ]
+        );
+        jointAnimationArrays["Right"]["z"].push(
+          jointAnimationArrays["Right"]["z"][
+            jointAnimationArrays["Right"]["z"].length - 1
+          ]
+        );
+      }
+
+      for (let i = 0; i < appends; i++) {
+        jointAnimationArrays["Head"]["x"].push(
+          jointAnimationArrays["Head"]["x"][
+            jointAnimationArrays["Head"]["x"].length - 1
+          ]
+        );
+        jointAnimationArrays["Head"]["y"].push(
+          jointAnimationArrays["Head"]["y"][
+            jointAnimationArrays["Head"]["y"].length - 1
+          ]
+        );
+        jointAnimationArrays["Head"]["z"].push(
+          jointAnimationArrays["Head"]["z"][
+            jointAnimationArrays["Head"]["z"].length - 1
+          ]
+        );
+        jointAnimationArrays["Head"]["w"].push(
+          jointAnimationArrays["Head"]["w"][
+            jointAnimationArrays["Head"]["w"].length - 1
+          ]
+        );
+
+        jointAnimationArrays["Base"]["position"]["x"].push(
+          jointAnimationArrays["Base"]["position"]["x"][
+            jointAnimationArrays["Base"]["position"]["x"].length - 1
+          ]
+        );
+        jointAnimationArrays["Base"]["position"]["y"].push(
+          jointAnimationArrays["Base"]["position"]["y"][
+            jointAnimationArrays["Base"]["position"]["y"].length - 1
+          ]
+        );
+        jointAnimationArrays["Base"]["position"]["z"].push(
+          jointAnimationArrays["Base"]["position"]["z"][
+            jointAnimationArrays["Base"]["position"]["z"].length - 1
+          ]
+        );
+
+        jointAnimationArrays["Base"]["rotation"]["w"].push(
+          jointAnimationArrays["Base"]["rotation"]["w"][
+            jointAnimationArrays["Base"]["rotation"]["w"].length - 1
+          ]
+        );
+        jointAnimationArrays["Base"]["rotation"]["x"].push(
+          jointAnimationArrays["Base"]["rotation"]["x"][
+            jointAnimationArrays["Base"]["rotation"]["x"].length - 1
+          ]
+        );
+        jointAnimationArrays["Base"]["rotation"]["y"].push(
+          jointAnimationArrays["Base"]["rotation"]["y"][
+            jointAnimationArrays["Base"]["rotation"]["y"].length - 1
+          ]
+        );
+        jointAnimationArrays["Base"]["rotation"]["z"].push(
+          jointAnimationArrays["Base"]["rotation"]["z"][
+            jointAnimationArrays["Base"]["rotation"]["z"].length - 1
+          ]
+        );
+
+        let faceKeys = Object.keys(FaceFilenameMap);
+        for (let m = 0; m < faceKeys.length; m++) {
+          let face = faceKeys[m];
+          jointAnimationArrays[face].push(
+            jointAnimationArrays[face][jointAnimationArrays[face].length - 1]
+          );
+        }
+      }
+
+      if (appends > 1) {
+        jointAnimationArrays["Time"].push(execTime / 2);
+      } else {
+        jointAnimationArrays["Time"].push(execTime);
+      }
+    }
+  };
 
   const addHeadAnimationKeyFrame = (pitch, roll, yaw, time) => {
     if (time > 0) {
-        var headQuat = eulerToQuaternion(roll * PI/180, pitch * PI/180, yaw * PI/180);
-        
-        jointAnimationArrays["Head"]["w"].push(headQuat._w);
-        jointAnimationArrays["Head"]["x"].push(headQuat._x);
-        jointAnimationArrays["Head"]["y"].push(headQuat._y);
-        jointAnimationArrays["Head"]["z"].push(headQuat._z);
-        
-        jointAnimationArrays["Left"]["w"].push(jointAnimationArrays["Left"]["w"][jointAnimationArrays["Left"]["w"].length-1]);
-        jointAnimationArrays["Left"]["x"].push(jointAnimationArrays["Left"]["x"][jointAnimationArrays["Left"]["x"].length-1]);
-        jointAnimationArrays["Left"]["y"].push(jointAnimationArrays["Left"]["y"][jointAnimationArrays["Left"]["y"].length-1]);
-        jointAnimationArrays["Left"]["z"].push(jointAnimationArrays["Left"]["z"][jointAnimationArrays["Left"]["z"].length-1]);
-        jointAnimationArrays["Right"]["w"].push(jointAnimationArrays["Right"]["w"][jointAnimationArrays["Right"]["w"].length-1]);
-        jointAnimationArrays["Right"]["x"].push(jointAnimationArrays["Right"]["x"][jointAnimationArrays["Right"]["x"].length-1]);
-        jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][jointAnimationArrays["Right"]["y"].length-1]);
-        jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][jointAnimationArrays["Right"]["z"].length-1]);
-        
-        jointAnimationArrays["Base"]["position"]["x"].push(jointAnimationArrays["Base"]["position"]["x"][jointAnimationArrays["Base"]["position"]["x"].length-1]);
-        jointAnimationArrays["Base"]["position"]["y"].push(jointAnimationArrays["Base"]["position"]["y"][jointAnimationArrays["Base"]["position"]["y"].length-1]);
-        jointAnimationArrays["Base"]["position"]["z"].push(jointAnimationArrays["Base"]["position"]["z"][jointAnimationArrays["Base"]["position"]["z"].length-1]);
+      var headQuat = eulerToQuaternion(
+        (roll * PI) / 180,
+        (pitch * PI) / 180,
+        (yaw * PI) / 180
+      );
 
-        jointAnimationArrays["Base"]["rotation"]["w"].push(jointAnimationArrays["Base"]["rotation"]["w"][jointAnimationArrays["Base"]["rotation"]["w"].length-1]);
-        jointAnimationArrays["Base"]["rotation"]["x"].push(jointAnimationArrays["Base"]["rotation"]["x"][jointAnimationArrays["Base"]["rotation"]["x"].length-1]);
-        jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][jointAnimationArrays["Base"]["rotation"]["y"].length-1]);
-        jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][jointAnimationArrays["Base"]["rotation"]["z"].length-1]);
-        
-        let faceKeys = Object.keys(FaceFilenameMap);
-        for (let m = 0; m < faceKeys.length; m++) {
-          let face = faceKeys[m];
-          jointAnimationArrays[face].push(jointAnimationArrays[face][jointAnimationArrays[face].length - 1]);
-        }
+      jointAnimationArrays["Head"]["w"].push(headQuat._w);
+      jointAnimationArrays["Head"]["x"].push(headQuat._x);
+      jointAnimationArrays["Head"]["y"].push(headQuat._y);
+      jointAnimationArrays["Head"]["z"].push(headQuat._z);
 
-        jointAnimationArrays["Time"].push(time);
+      jointAnimationArrays["Left"]["w"].push(
+        jointAnimationArrays["Left"]["w"][
+          jointAnimationArrays["Left"]["w"].length - 1
+        ]
+      );
+      jointAnimationArrays["Left"]["x"].push(
+        jointAnimationArrays["Left"]["x"][
+          jointAnimationArrays["Left"]["x"].length - 1
+        ]
+      );
+      jointAnimationArrays["Left"]["y"].push(
+        jointAnimationArrays["Left"]["y"][
+          jointAnimationArrays["Left"]["y"].length - 1
+        ]
+      );
+      jointAnimationArrays["Left"]["z"].push(
+        jointAnimationArrays["Left"]["z"][
+          jointAnimationArrays["Left"]["z"].length - 1
+        ]
+      );
+      jointAnimationArrays["Right"]["w"].push(
+        jointAnimationArrays["Right"]["w"][
+          jointAnimationArrays["Right"]["w"].length - 1
+        ]
+      );
+      jointAnimationArrays["Right"]["x"].push(
+        jointAnimationArrays["Right"]["x"][
+          jointAnimationArrays["Right"]["x"].length - 1
+        ]
+      );
+      jointAnimationArrays["Right"]["y"].push(
+        jointAnimationArrays["Right"]["y"][
+          jointAnimationArrays["Right"]["y"].length - 1
+        ]
+      );
+      jointAnimationArrays["Right"]["z"].push(
+        jointAnimationArrays["Right"]["z"][
+          jointAnimationArrays["Right"]["z"].length - 1
+        ]
+      );
+
+      jointAnimationArrays["Base"]["position"]["x"].push(
+        jointAnimationArrays["Base"]["position"]["x"][
+          jointAnimationArrays["Base"]["position"]["x"].length - 1
+        ]
+      );
+      jointAnimationArrays["Base"]["position"]["y"].push(
+        jointAnimationArrays["Base"]["position"]["y"][
+          jointAnimationArrays["Base"]["position"]["y"].length - 1
+        ]
+      );
+      jointAnimationArrays["Base"]["position"]["z"].push(
+        jointAnimationArrays["Base"]["position"]["z"][
+          jointAnimationArrays["Base"]["position"]["z"].length - 1
+        ]
+      );
+
+      jointAnimationArrays["Base"]["rotation"]["w"].push(
+        jointAnimationArrays["Base"]["rotation"]["w"][
+          jointAnimationArrays["Base"]["rotation"]["w"].length - 1
+        ]
+      );
+      jointAnimationArrays["Base"]["rotation"]["x"].push(
+        jointAnimationArrays["Base"]["rotation"]["x"][
+          jointAnimationArrays["Base"]["rotation"]["x"].length - 1
+        ]
+      );
+      jointAnimationArrays["Base"]["rotation"]["y"].push(
+        jointAnimationArrays["Base"]["rotation"]["y"][
+          jointAnimationArrays["Base"]["rotation"]["y"].length - 1
+        ]
+      );
+      jointAnimationArrays["Base"]["rotation"]["z"].push(
+        jointAnimationArrays["Base"]["rotation"]["z"][
+          jointAnimationArrays["Base"]["rotation"]["z"].length - 1
+        ]
+      );
+
+      let faceKeys = Object.keys(FaceFilenameMap);
+      for (let m = 0; m < faceKeys.length; m++) {
+        let face = faceKeys[m];
+        jointAnimationArrays[face].push(
+          jointAnimationArrays[face][jointAnimationArrays[face].length - 1]
+        );
+      }
+
+      jointAnimationArrays["Time"].push(time);
     }
-  }
+  };
 
   const addDriveAnimationKeyFrame = (linearVelocity, angularVelocity, time) => {
     if (time > 0) {
-        // shit this wont work. you need to update tfs at each animation...so...you should be building this based on the jointAnimationArray
-        var baseTf = {
-            position: {
-                x: jointAnimationArrays["Base"]["position"]["x"][jointAnimationArrays["Base"]["position"]["x"].length-1],
-                y: jointAnimationArrays["Base"]["position"]["y"][jointAnimationArrays["Base"]["position"]["y"].length-1],
-                z: jointAnimationArrays["Base"]["position"]["z"][jointAnimationArrays["Base"]["position"]["z"].length-1]
-            },
-            rotation: {
-                x: jointAnimationArrays["Base"]["rotation"]["x"][jointAnimationArrays["Base"]["rotation"]["x"].length-1],
-                y: jointAnimationArrays["Base"]["rotation"]["y"][jointAnimationArrays["Base"]["rotation"]["y"].length-1],
-                z: jointAnimationArrays["Base"]["rotation"]["z"][jointAnimationArrays["Base"]["rotation"]["z"].length-1],
-                w: jointAnimationArrays["Base"]["rotation"]["w"][jointAnimationArrays["Base"]["rotation"]["w"].length-1]
-            }
-        };
-        var angle = (angularVelocity/100 * MAX_ANGLE_PER_SEC) * time/MS_TO_SEC;
-        var distance = linearVelocity/100 * MAX_DIST_PER_SEC * time/MS_TO_SEC;
-        var r = angle !== 0 ? distance/angle : distance;
-        
-        var newQuat = new Quaternion(baseTf.rotation.x, baseTf.rotation.y, baseTf.rotation.z, baseTf.rotation.w);
-        var currentEulerZ = determineZAngleFromQuaternion(newQuat);
-        if (angle !== 0) {
-            var temp = {x: 0, y: 0, z: angle};
-            newQuat = eulerToQuaternion(temp.x, temp.y, temp.z);
-            newQuat.multiply(new Quaternion(baseTf.rotation.x, baseTf.rotation.y, baseTf.rotation.z, baseTf.rotation.w));
-        }
-        
-        // offset to circle center
-        let aX = baseTf.position.x;
-        let aY = baseTf.position.y;
-        if (angle > 0) {
-          aX += r;
-        } else if (angle < 0) {
-          aX -= r;
-        }
+      var baseTf = {
+        position: {
+          x: jointAnimationArrays["Base"]["position"]["x"][
+            jointAnimationArrays["Base"]["position"]["x"].length - 1
+          ],
+          y: jointAnimationArrays["Base"]["position"]["y"][
+            jointAnimationArrays["Base"]["position"]["y"].length - 1
+          ],
+          z: jointAnimationArrays["Base"]["position"]["z"][
+            jointAnimationArrays["Base"]["position"]["z"].length - 1
+          ],
+        },
+        rotation: {
+          x: jointAnimationArrays["Base"]["rotation"]["x"][
+            jointAnimationArrays["Base"]["rotation"]["x"].length - 1
+          ],
+          y: jointAnimationArrays["Base"]["rotation"]["y"][
+            jointAnimationArrays["Base"]["rotation"]["y"].length - 1
+          ],
+          z: jointAnimationArrays["Base"]["rotation"]["z"][
+            jointAnimationArrays["Base"]["rotation"]["z"].length - 1
+          ],
+          w: jointAnimationArrays["Base"]["rotation"]["w"][
+            jointAnimationArrays["Base"]["rotation"]["w"].length - 1
+          ],
+        },
+      };
+      var angle =
+        ((angularVelocity / 100) * MAX_ANGLE_PER_SEC * time) / MS_TO_SEC;
+      var distance =
+        ((linearVelocity / 100) * MAX_DIST_PER_SEC * time) / MS_TO_SEC;
+      var r = angle !== 0 ? distance / angle : distance;
 
-        let newPosition = null;
-        if (angle !== 0) {
-          newPosition = new Vector3(aX + (Math.cos(currentEulerZ) * distance / angle * Math.cos(distance)), aY + (Math.sin(currentEulerZ) * distance / angle * Math.sin(distance)), baseTf.position.z);
-        } else {
-          newPosition = new Vector3(aX + (Math.cos(currentEulerZ) * distance), aY + (Math.sin(currentEulerZ) * distance), baseTf.position.z);
-        }
+      var newQuat = new Quaternion(
+        baseTf.rotation.x,
+        baseTf.rotation.y,
+        baseTf.rotation.z,
+        baseTf.rotation.w
+      );
+      var currentEulerZ = determineZAngleFromQuaternion(newQuat);
+      if (angle !== 0) {
+        var temp = { x: 0, y: 0, z: angle };
+        newQuat = eulerToQuaternion(temp.x, temp.y, temp.z);
+        newQuat.multiply(
+          new Quaternion(
+            baseTf.rotation.x,
+            baseTf.rotation.y,
+            baseTf.rotation.z,
+            baseTf.rotation.w
+          )
+        );
+      }
 
-        jointAnimationArrays["Base"]["position"]["x"].push(newPosition.x);
-        jointAnimationArrays["Base"]["position"]["y"].push(newPosition.y);
-        jointAnimationArrays["Base"]["position"]["z"].push(newPosition.z);
-        
-        jointAnimationArrays["Base"]["rotation"]["w"].push(newQuat._w);
-        jointAnimationArrays["Base"]["rotation"]["x"].push(newQuat._x);
-        jointAnimationArrays["Base"]["rotation"]["y"].push(newQuat._y);
-        jointAnimationArrays["Base"]["rotation"]["z"].push(newQuat._z);
-        
-        jointAnimationArrays["Head"]["x"].push(jointAnimationArrays["Head"]["x"][jointAnimationArrays["Head"]["x"].length-1]);
-        jointAnimationArrays["Head"]["y"].push(jointAnimationArrays["Head"]["y"][jointAnimationArrays["Head"]["y"].length-1]);
-        jointAnimationArrays["Head"]["z"].push(jointAnimationArrays["Head"]["z"][jointAnimationArrays["Head"]["z"].length-1]);
-        jointAnimationArrays["Head"]["w"].push(jointAnimationArrays["Head"]["w"][jointAnimationArrays["Head"]["w"].length-1]);
+      // offset to circle center
+      let aX = baseTf.position.x;
+      let aY = baseTf.position.y;
 
-        jointAnimationArrays["Left"]["w"].push(jointAnimationArrays["Left"]["w"][jointAnimationArrays["Left"]["w"].length-1]);
-        jointAnimationArrays["Left"]["x"].push(jointAnimationArrays["Left"]["x"][jointAnimationArrays["Left"]["x"].length-1]);
-        jointAnimationArrays["Left"]["y"].push(jointAnimationArrays["Left"]["y"][jointAnimationArrays["Left"]["y"].length-1]);
-        jointAnimationArrays["Left"]["z"].push(jointAnimationArrays["Left"]["z"][jointAnimationArrays["Left"]["z"].length-1]);
-        
-        jointAnimationArrays["Right"]["w"].push(jointAnimationArrays["Right"]["w"][jointAnimationArrays["Right"]["w"].length-1]);
-        jointAnimationArrays["Right"]["x"].push(jointAnimationArrays["Right"]["x"][jointAnimationArrays["Right"]["x"].length-1]);
-        jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][jointAnimationArrays["Right"]["y"].length-1]);
-        jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][jointAnimationArrays["Right"]["z"].length-1]);
-        
-        let faceKeys = Object.keys(FaceFilenameMap);
-        for (let m = 0; m < faceKeys.length; m++) {
-          let face = faceKeys[m];
-          jointAnimationArrays[face].push(jointAnimationArrays[face][jointAnimationArrays[face].length - 1]);
-        }
+      let newPosition = null;
+      // if (angle !== 0) {
+      //   // newPosition = new Vector3(aX + (Math.cos(currentEulerZ) * distance / angle * Math.cos(distance)), aY + (Math.sin(currentEulerZ) * distance / angle * Math.sin(distance)), baseTf.position.z);
+      // } else {
+      newPosition = new Vector3(
+        aX + Math.sin(currentEulerZ - angle) * distance,
+        aY - Math.cos(currentEulerZ - angle) * distance,
+        baseTf.position.z
+      );
+      // }
 
-        jointAnimationArrays["Time"].push(time);
+      jointAnimationArrays["Base"]["position"]["x"].push(newPosition.x);
+      jointAnimationArrays["Base"]["position"]["y"].push(newPosition.y);
+      jointAnimationArrays["Base"]["position"]["z"].push(newPosition.z);
+      jointAnimationArrays["Base"]["position"]["angle"].push(angle);
+      jointAnimationArrays["Base"]["position"]["distance"].push(distance);
+
+      jointAnimationArrays["Base"]["rotation"]["w"].push(newQuat._w);
+      jointAnimationArrays["Base"]["rotation"]["x"].push(newQuat._x);
+      jointAnimationArrays["Base"]["rotation"]["y"].push(newQuat._y);
+      jointAnimationArrays["Base"]["rotation"]["z"].push(newQuat._z);
+
+      jointAnimationArrays["Head"]["x"].push(
+        jointAnimationArrays["Head"]["x"][
+          jointAnimationArrays["Head"]["x"].length - 1
+        ]
+      );
+      jointAnimationArrays["Head"]["y"].push(
+        jointAnimationArrays["Head"]["y"][
+          jointAnimationArrays["Head"]["y"].length - 1
+        ]
+      );
+      jointAnimationArrays["Head"]["z"].push(
+        jointAnimationArrays["Head"]["z"][
+          jointAnimationArrays["Head"]["z"].length - 1
+        ]
+      );
+      jointAnimationArrays["Head"]["w"].push(
+        jointAnimationArrays["Head"]["w"][
+          jointAnimationArrays["Head"]["w"].length - 1
+        ]
+      );
+
+      jointAnimationArrays["Left"]["w"].push(
+        jointAnimationArrays["Left"]["w"][
+          jointAnimationArrays["Left"]["w"].length - 1
+        ]
+      );
+      jointAnimationArrays["Left"]["x"].push(
+        jointAnimationArrays["Left"]["x"][
+          jointAnimationArrays["Left"]["x"].length - 1
+        ]
+      );
+      jointAnimationArrays["Left"]["y"].push(
+        jointAnimationArrays["Left"]["y"][
+          jointAnimationArrays["Left"]["y"].length - 1
+        ]
+      );
+      jointAnimationArrays["Left"]["z"].push(
+        jointAnimationArrays["Left"]["z"][
+          jointAnimationArrays["Left"]["z"].length - 1
+        ]
+      );
+
+      jointAnimationArrays["Right"]["w"].push(
+        jointAnimationArrays["Right"]["w"][
+          jointAnimationArrays["Right"]["w"].length - 1
+        ]
+      );
+      jointAnimationArrays["Right"]["x"].push(
+        jointAnimationArrays["Right"]["x"][
+          jointAnimationArrays["Right"]["x"].length - 1
+        ]
+      );
+      jointAnimationArrays["Right"]["y"].push(
+        jointAnimationArrays["Right"]["y"][
+          jointAnimationArrays["Right"]["y"].length - 1
+        ]
+      );
+      jointAnimationArrays["Right"]["z"].push(
+        jointAnimationArrays["Right"]["z"][
+          jointAnimationArrays["Right"]["z"].length - 1
+        ]
+      );
+
+      let faceKeys = Object.keys(FaceFilenameMap);
+      for (let m = 0; m < faceKeys.length; m++) {
+        let face = faceKeys[m];
+        jointAnimationArrays[face].push(
+          jointAnimationArrays[face][jointAnimationArrays[face].length - 1]
+        );
+      }
+
+      jointAnimationArrays["Time"].push(time);
     }
-  }
+  };
 
   const addDisplayImageKeyFrame = (image, time) => {
     let faceKeys = Object.keys(FaceFilenameMap);
@@ -356,60 +758,136 @@ const useAnimation = ({blocks, tfs, items}) => {
     }
 
     // buffer all other frames
-    let lastElement = jointAnimationArrays["Head"]["x"].length-1;
-    jointAnimationArrays["Base"]["position"]["x"].push(jointAnimationArrays["Base"]["position"]["x"][lastElement]);
-    jointAnimationArrays["Base"]["position"]["y"].push(jointAnimationArrays["Base"]["position"]["y"][lastElement]);
-    jointAnimationArrays["Base"]["position"]["z"].push(jointAnimationArrays["Base"]["position"]["z"][lastElement]);
+    let lastElement = jointAnimationArrays["Head"]["x"].length - 1;
+    jointAnimationArrays["Base"]["position"]["x"].push(
+      jointAnimationArrays["Base"]["position"]["x"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["y"].push(
+      jointAnimationArrays["Base"]["position"]["y"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["z"].push(
+      jointAnimationArrays["Base"]["position"]["z"][lastElement]
+    );
 
-    jointAnimationArrays["Base"]["rotation"]["w"].push(jointAnimationArrays["Base"]["rotation"]["w"][lastElement]);
-    jointAnimationArrays["Base"]["rotation"]["x"].push(jointAnimationArrays["Base"]["rotation"]["x"][lastElement]);
-    jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][lastElement]);
-    jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][lastElement]);
-    
-    jointAnimationArrays["Head"]["x"].push(jointAnimationArrays["Head"]["x"][lastElement]);
-    jointAnimationArrays["Head"]["y"].push(jointAnimationArrays["Head"]["y"][lastElement]);
-    jointAnimationArrays["Head"]["z"].push(jointAnimationArrays["Head"]["z"][lastElement]);
-    jointAnimationArrays["Head"]["w"].push(jointAnimationArrays["Head"]["w"][lastElement]);
+    jointAnimationArrays["Base"]["rotation"]["w"].push(
+      jointAnimationArrays["Base"]["rotation"]["w"][lastElement]
+    );
+    jointAnimationArrays["Base"]["rotation"]["x"].push(
+      jointAnimationArrays["Base"]["rotation"]["x"][lastElement]
+    );
+    jointAnimationArrays["Base"]["rotation"]["y"].push(
+      jointAnimationArrays["Base"]["rotation"]["y"][lastElement]
+    );
+    jointAnimationArrays["Base"]["rotation"]["z"].push(
+      jointAnimationArrays["Base"]["rotation"]["z"][lastElement]
+    );
 
-    jointAnimationArrays["Left"]["w"].push(jointAnimationArrays["Left"]["w"][lastElement]);
-    jointAnimationArrays["Left"]["x"].push(jointAnimationArrays["Left"]["x"][lastElement]);
-    jointAnimationArrays["Left"]["y"].push(jointAnimationArrays["Left"]["y"][lastElement]);
-    jointAnimationArrays["Left"]["z"].push(jointAnimationArrays["Left"]["z"][lastElement]);
-    
-    jointAnimationArrays["Right"]["w"].push(jointAnimationArrays["Right"]["w"][lastElement]);
-    jointAnimationArrays["Right"]["x"].push(jointAnimationArrays["Right"]["x"][lastElement]);
-    jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][lastElement]);
-    jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][lastElement]);
+    jointAnimationArrays["Head"]["x"].push(
+      jointAnimationArrays["Head"]["x"][lastElement]
+    );
+    jointAnimationArrays["Head"]["y"].push(
+      jointAnimationArrays["Head"]["y"][lastElement]
+    );
+    jointAnimationArrays["Head"]["z"].push(
+      jointAnimationArrays["Head"]["z"][lastElement]
+    );
+    jointAnimationArrays["Head"]["w"].push(
+      jointAnimationArrays["Head"]["w"][lastElement]
+    );
+
+    jointAnimationArrays["Left"]["w"].push(
+      jointAnimationArrays["Left"]["w"][lastElement]
+    );
+    jointAnimationArrays["Left"]["x"].push(
+      jointAnimationArrays["Left"]["x"][lastElement]
+    );
+    jointAnimationArrays["Left"]["y"].push(
+      jointAnimationArrays["Left"]["y"][lastElement]
+    );
+    jointAnimationArrays["Left"]["z"].push(
+      jointAnimationArrays["Left"]["z"][lastElement]
+    );
+
+    jointAnimationArrays["Right"]["w"].push(
+      jointAnimationArrays["Right"]["w"][lastElement]
+    );
+    jointAnimationArrays["Right"]["x"].push(
+      jointAnimationArrays["Right"]["x"][lastElement]
+    );
+    jointAnimationArrays["Right"]["y"].push(
+      jointAnimationArrays["Right"]["y"][lastElement]
+    );
+    jointAnimationArrays["Right"]["z"].push(
+      jointAnimationArrays["Right"]["z"][lastElement]
+    );
 
     jointAnimationArrays["Time"].push(time);
-  }
+  };
 
   const bufferAnimation = (time) => {
-    let lastElement = jointAnimationArrays["Head"]["x"].length-1;
-    jointAnimationArrays["Base"]["position"]["x"].push(jointAnimationArrays["Base"]["position"]["x"][lastElement]);
-    jointAnimationArrays["Base"]["position"]["y"].push(jointAnimationArrays["Base"]["position"]["y"][lastElement]);
-    jointAnimationArrays["Base"]["position"]["z"].push(jointAnimationArrays["Base"]["position"]["z"][lastElement]);
+    let lastElement = jointAnimationArrays["Head"]["x"].length - 1;
+    jointAnimationArrays["Base"]["position"]["x"].push(
+      jointAnimationArrays["Base"]["position"]["x"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["y"].push(
+      jointAnimationArrays["Base"]["position"]["y"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["z"].push(
+      jointAnimationArrays["Base"]["position"]["z"][lastElement]
+    );
 
-    jointAnimationArrays["Base"]["rotation"]["w"].push(jointAnimationArrays["Base"]["rotation"]["w"][lastElement]);
-    jointAnimationArrays["Base"]["rotation"]["x"].push(jointAnimationArrays["Base"]["rotation"]["x"][lastElement]);
-    jointAnimationArrays["Base"]["rotation"]["y"].push(jointAnimationArrays["Base"]["rotation"]["y"][lastElement]);
-    jointAnimationArrays["Base"]["rotation"]["z"].push(jointAnimationArrays["Base"]["rotation"]["z"][lastElement]);
-    
-    jointAnimationArrays["Head"]["x"].push(jointAnimationArrays["Head"]["x"][lastElement]);
-    jointAnimationArrays["Head"]["y"].push(jointAnimationArrays["Head"]["y"][lastElement]);
-    jointAnimationArrays["Head"]["z"].push(jointAnimationArrays["Head"]["z"][lastElement]);
-    jointAnimationArrays["Head"]["w"].push(jointAnimationArrays["Head"]["w"][lastElement]);
+    jointAnimationArrays["Base"]["rotation"]["w"].push(
+      jointAnimationArrays["Base"]["rotation"]["w"][lastElement]
+    );
+    jointAnimationArrays["Base"]["rotation"]["x"].push(
+      jointAnimationArrays["Base"]["rotation"]["x"][lastElement]
+    );
+    jointAnimationArrays["Base"]["rotation"]["y"].push(
+      jointAnimationArrays["Base"]["rotation"]["y"][lastElement]
+    );
+    jointAnimationArrays["Base"]["rotation"]["z"].push(
+      jointAnimationArrays["Base"]["rotation"]["z"][lastElement]
+    );
 
-    jointAnimationArrays["Left"]["w"].push(jointAnimationArrays["Left"]["w"][lastElement]);
-    jointAnimationArrays["Left"]["x"].push(jointAnimationArrays["Left"]["x"][lastElement]);
-    jointAnimationArrays["Left"]["y"].push(jointAnimationArrays["Left"]["y"][lastElement]);
-    jointAnimationArrays["Left"]["z"].push(jointAnimationArrays["Left"]["z"][lastElement]);
-    
-    jointAnimationArrays["Right"]["w"].push(jointAnimationArrays["Right"]["w"][lastElement]);
-    jointAnimationArrays["Right"]["x"].push(jointAnimationArrays["Right"]["x"][lastElement]);
-    jointAnimationArrays["Right"]["y"].push(jointAnimationArrays["Right"]["y"][lastElement]);
-    jointAnimationArrays["Right"]["z"].push(jointAnimationArrays["Right"]["z"][lastElement]);
-    
+    jointAnimationArrays["Head"]["x"].push(
+      jointAnimationArrays["Head"]["x"][lastElement]
+    );
+    jointAnimationArrays["Head"]["y"].push(
+      jointAnimationArrays["Head"]["y"][lastElement]
+    );
+    jointAnimationArrays["Head"]["z"].push(
+      jointAnimationArrays["Head"]["z"][lastElement]
+    );
+    jointAnimationArrays["Head"]["w"].push(
+      jointAnimationArrays["Head"]["w"][lastElement]
+    );
+
+    jointAnimationArrays["Left"]["w"].push(
+      jointAnimationArrays["Left"]["w"][lastElement]
+    );
+    jointAnimationArrays["Left"]["x"].push(
+      jointAnimationArrays["Left"]["x"][lastElement]
+    );
+    jointAnimationArrays["Left"]["y"].push(
+      jointAnimationArrays["Left"]["y"][lastElement]
+    );
+    jointAnimationArrays["Left"]["z"].push(
+      jointAnimationArrays["Left"]["z"][lastElement]
+    );
+
+    jointAnimationArrays["Right"]["w"].push(
+      jointAnimationArrays["Right"]["w"][lastElement]
+    );
+    jointAnimationArrays["Right"]["x"].push(
+      jointAnimationArrays["Right"]["x"][lastElement]
+    );
+    jointAnimationArrays["Right"]["y"].push(
+      jointAnimationArrays["Right"]["y"][lastElement]
+    );
+    jointAnimationArrays["Right"]["z"].push(
+      jointAnimationArrays["Right"]["z"][lastElement]
+    );
+
     let faceKeys = Object.keys(FaceFilenameMap);
     for (let m = 0; m < faceKeys.length; m++) {
       let face = faceKeys[m];
@@ -417,7 +895,7 @@ const useAnimation = ({blocks, tfs, items}) => {
     }
 
     jointAnimationArrays["Time"].push(time);
-  }
+  };
 
   const interpolateAnimationArray = () => {
     let newTfs = JSON.parse(JSON.stringify(tfs));
@@ -426,7 +904,7 @@ const useAnimation = ({blocks, tfs, items}) => {
     let newEndingItems = JSON.parse(JSON.stringify(items));
 
     let totalLength = jointAnimationArrays["Time"].length;
-    let runningTimeSum = 0
+    let runningTimeSum = 0;
     let timeVector = [];
     let leftArmWVector = [];
     let leftArmXVector = [];
@@ -458,30 +936,102 @@ const useAnimation = ({blocks, tfs, items}) => {
       faceDisplayVector.push([]);
     }
 
+    let priorPosition = {};
+    // let priorRotation = {};
+
+    console.log(jointAnimationArrays);
     for (let i = 1; i < totalLength; i++) {
       let time = jointAnimationArrays["Time"][i];
-      
-      let newLeftArmQuat = new Quaternion(jointAnimationArrays["Left"]["x"][i], jointAnimationArrays["Left"]["y"][i], jointAnimationArrays["Left"]["z"][i], jointAnimationArrays["Left"]["w"][i]);
-      let newRightArmQuat = new Quaternion(jointAnimationArrays["Right"]["x"][i], jointAnimationArrays["Right"]["y"][i], jointAnimationArrays["Right"]["z"][i], jointAnimationArrays["Right"]["w"][i]);
-      let newHeadQuat = new Quaternion(jointAnimationArrays["Head"]["x"][i], jointAnimationArrays["Head"]["y"][i], jointAnimationArrays["Head"]["z"][i], jointAnimationArrays["Head"]["w"][i]);
-      let newBaseQuat = new Quaternion(jointAnimationArrays["Base"]["rotation"]["x"][i], jointAnimationArrays["Base"]["rotation"]["y"][i], jointAnimationArrays["Base"]["rotation"]["z"][i], jointAnimationArrays["Base"]["rotation"]["w"][i]);
-      let newBaseVec = new Vector3(jointAnimationArrays["Base"]["position"]["x"][i], jointAnimationArrays["Base"]["position"]["y"][i], jointAnimationArrays["Base"]["position"]["z"][i]);
 
+      let newLeftArmQuat = new Quaternion(
+        jointAnimationArrays["Left"]["x"][i],
+        jointAnimationArrays["Left"]["y"][i],
+        jointAnimationArrays["Left"]["z"][i],
+        jointAnimationArrays["Left"]["w"][i]
+      );
+      let newRightArmQuat = new Quaternion(
+        jointAnimationArrays["Right"]["x"][i],
+        jointAnimationArrays["Right"]["y"][i],
+        jointAnimationArrays["Right"]["z"][i],
+        jointAnimationArrays["Right"]["w"][i]
+      );
+      let newHeadQuat = new Quaternion(
+        jointAnimationArrays["Head"]["x"][i],
+        jointAnimationArrays["Head"]["y"][i],
+        jointAnimationArrays["Head"]["z"][i],
+        jointAnimationArrays["Head"]["w"][i]
+      );
+      let newBaseQuat = new Quaternion(
+        jointAnimationArrays["Base"]["rotation"]["x"][i],
+        jointAnimationArrays["Base"]["rotation"]["y"][i],
+        jointAnimationArrays["Base"]["rotation"]["z"][i],
+        jointAnimationArrays["Base"]["rotation"]["w"][i]
+      );
+      let newBaseVec = new Vector3(
+        jointAnimationArrays["Base"]["position"]["x"][i],
+        jointAnimationArrays["Base"]["position"]["y"][i],
+        jointAnimationArrays["Base"]["position"]["z"][i]
+      );
+
+      if (Object.keys(priorPosition).length === 0) {  
+        priorPosition = {
+          x: jointAnimationArrays["Base"]["position"]["x"][i- 1],
+          y: jointAnimationArrays["Base"]["position"]["y"][i- 1],
+          z: jointAnimationArrays["Base"]["position"]["z"][i- 1]
+        }
+      }
+
+      let angle_i = jointAnimationArrays["Base"]["position"]["angle"][i];
+      let distance_i = jointAnimationArrays["Base"]["position"]["distance"][i];
+
+      let oldBaseVec = new Vector3(priorPosition.x, priorPosition.y, priorPosition.z);
       for (let j = 10; j < SIM_TIME; j += 10) {
-        timeVector.push((time/MS_TO_SEC * j) + runningTimeSum);
-        let oldLeftArmQuat = new Quaternion(jointAnimationArrays["Left"]["x"][i-1], jointAnimationArrays["Left"]["y"][i-1], jointAnimationArrays["Left"]["z"][i-1], jointAnimationArrays["Left"]["w"][i-1]);
-        let oldRightArmQuat = new Quaternion(jointAnimationArrays["Right"]["x"][i-1], jointAnimationArrays["Right"]["y"][i-1], jointAnimationArrays["Right"]["z"][i-1], jointAnimationArrays["Right"]["w"][i-1]);
-        let oldHeadQuat = new Quaternion(jointAnimationArrays["Head"]["x"][i-1], jointAnimationArrays["Head"]["y"][i-1], jointAnimationArrays["Head"]["z"][i-1], jointAnimationArrays["Head"]["w"][i-1]);
-        let oldBaseQuat = new Quaternion(jointAnimationArrays["Base"]["rotation"]["x"][i-1], jointAnimationArrays["Base"]["rotation"]["y"][i-1], jointAnimationArrays["Base"]["rotation"]["z"][i-1], jointAnimationArrays["Base"]["rotation"]["w"][i-1]);
-        let oldBaseVec = new Vector3(jointAnimationArrays["Base"]["position"]["x"][i-1], jointAnimationArrays["Base"]["position"]["y"][i-1], jointAnimationArrays["Base"]["position"]["z"][i-1]);
+        timeVector.push((time / MS_TO_SEC) * j + runningTimeSum);
+        let distance_i_t = distance_i * j / SIM_TIME;
+        let angle_i_t = angle_i * j / SIM_TIME;
+        let oldLeftArmQuat = new Quaternion(
+          jointAnimationArrays["Left"]["x"][i - 1],
+          jointAnimationArrays["Left"]["y"][i - 1],
+          jointAnimationArrays["Left"]["z"][i - 1],
+          jointAnimationArrays["Left"]["w"][i - 1]
+        );
+        let oldRightArmQuat = new Quaternion(
+          jointAnimationArrays["Right"]["x"][i - 1],
+          jointAnimationArrays["Right"]["y"][i - 1],
+          jointAnimationArrays["Right"]["z"][i - 1],
+          jointAnimationArrays["Right"]["w"][i - 1]
+        );
+        let oldHeadQuat = new Quaternion(
+          jointAnimationArrays["Head"]["x"][i - 1],
+          jointAnimationArrays["Head"]["y"][i - 1],
+          jointAnimationArrays["Head"]["z"][i - 1],
+          jointAnimationArrays["Head"]["w"][i - 1]
+        );
+        let oldBaseQuat = new Quaternion(
+          jointAnimationArrays["Base"]["rotation"]["x"][i - 1],
+          jointAnimationArrays["Base"]["rotation"]["y"][i - 1],
+          jointAnimationArrays["Base"]["rotation"]["z"][i - 1],
+          jointAnimationArrays["Base"]["rotation"]["w"][i - 1]
+        );
+        let z = determineZAngleFromQuaternion(oldBaseQuat);
+        oldBaseVec = new Vector3(
+          priorPosition.x - distance_i_t * Math.sin(z - angle_i_t),
+          priorPosition.y + distance_i_t * Math.cos(z - angle_i_t),
+          priorPosition.z
+        );
+        // let oldBaseVec = new Vector3(
+        //   jointAnimationArrays["Base"]["position"]["x"][i ],
+        //   jointAnimationArrays["Base"]["position"]["y"][i ],
+        //   jointAnimationArrays["Base"]["position"]["z"][i ]
+        // );
 
-        oldLeftArmQuat.slerp(newLeftArmQuat, j/SIM_TIME);
-        oldRightArmQuat.slerp(newRightArmQuat, j/SIM_TIME);
-        oldHeadQuat.slerp(newHeadQuat, j/SIM_TIME);
+        oldLeftArmQuat.slerp(newLeftArmQuat, j / SIM_TIME);
+        oldRightArmQuat.slerp(newRightArmQuat, j / SIM_TIME);
+        oldHeadQuat.slerp(newHeadQuat, j / SIM_TIME);
 
         // TODO: cannot lerp/slerp....need to calculate each frame manually.
-        oldBaseQuat.slerp(newBaseQuat, j/SIM_TIME);
-        oldBaseVec.lerp(newBaseVec, j/SIM_TIME);
+        oldBaseQuat.slerp(newBaseQuat, j / SIM_TIME);
+        // oldBaseVec.lerp(newBaseVec, j / SIM_TIME);
 
         leftArmWVector.push(oldLeftArmQuat._w);
         leftArmXVector.push(oldLeftArmQuat._x);
@@ -511,14 +1061,43 @@ const useAnimation = ({blocks, tfs, items}) => {
           faceDisplayVector[k].push(jointAnimationArrays[keyIndex[k]][i]);
         }
       }
+      priorPosition = {
+        x: oldBaseVec.x,
+        y: oldBaseVec.y,
+        z: oldBaseVec.z
+      }
       runningTimeSum += time;
     }
 
-    let finalLeftArmQuat = new Quaternion(jointAnimationArrays["Left"]["x"][totalLength-1], jointAnimationArrays["Left"]["y"][totalLength-1], jointAnimationArrays["Left"]["z"][totalLength-1], jointAnimationArrays["Left"]["w"][totalLength-1]);
-    let finalRightArmQuat = new Quaternion(jointAnimationArrays["Right"]["x"][totalLength-1], jointAnimationArrays["Right"]["y"][totalLength-1], jointAnimationArrays["Right"]["z"][totalLength-1], jointAnimationArrays["Right"]["w"][totalLength-1]);
-    let finalHeadQuat = new Quaternion(jointAnimationArrays["Head"]["x"][totalLength-1], jointAnimationArrays["Head"]["y"][totalLength-1], jointAnimationArrays["Head"]["z"][totalLength-1], jointAnimationArrays["Head"]["w"][totalLength-1]);
-    let finalBaseQuat = new Quaternion(jointAnimationArrays["Base"]["rotation"]["x"][totalLength-1], jointAnimationArrays["Base"]["rotation"]["y"][totalLength-1], jointAnimationArrays["Base"]["rotation"]["z"][totalLength-1], jointAnimationArrays["Base"]["rotation"]["w"][totalLength-1]);
-    let finalBaseVec = new Vector3(jointAnimationArrays["Base"]["position"]["x"][totalLength-1], jointAnimationArrays["Base"]["position"]["y"][totalLength-1], jointAnimationArrays["Base"]["position"]["z"][totalLength-1]);
+    let finalLeftArmQuat = new Quaternion(
+      jointAnimationArrays["Left"]["x"][totalLength - 1],
+      jointAnimationArrays["Left"]["y"][totalLength - 1],
+      jointAnimationArrays["Left"]["z"][totalLength - 1],
+      jointAnimationArrays["Left"]["w"][totalLength - 1]
+    );
+    let finalRightArmQuat = new Quaternion(
+      jointAnimationArrays["Right"]["x"][totalLength - 1],
+      jointAnimationArrays["Right"]["y"][totalLength - 1],
+      jointAnimationArrays["Right"]["z"][totalLength - 1],
+      jointAnimationArrays["Right"]["w"][totalLength - 1]
+    );
+    let finalHeadQuat = new Quaternion(
+      jointAnimationArrays["Head"]["x"][totalLength - 1],
+      jointAnimationArrays["Head"]["y"][totalLength - 1],
+      jointAnimationArrays["Head"]["z"][totalLength - 1],
+      jointAnimationArrays["Head"]["w"][totalLength - 1]
+    );
+    let finalBaseQuat = new Quaternion(
+      jointAnimationArrays["Base"]["rotation"]["x"][totalLength - 1],
+      jointAnimationArrays["Base"]["rotation"]["y"][totalLength - 1],
+      jointAnimationArrays["Base"]["rotation"]["z"][totalLength - 1],
+      jointAnimationArrays["Base"]["rotation"]["w"][totalLength - 1]
+    );
+    let finalBaseVec = new Vector3(
+      priorPosition.x,
+      priorPosition.y,
+      priorPosition.z
+    );
 
     timeVector.push(Infinity);
     leftArmWVector.push(finalLeftArmQuat._w);
@@ -530,12 +1109,12 @@ const useAnimation = ({blocks, tfs, items}) => {
     rightArmXVector.push(finalRightArmQuat._x);
     rightArmYVector.push(finalRightArmQuat._y);
     rightArmZVector.push(finalRightArmQuat._z);
-    
+
     headWVector.push(finalHeadQuat._w);
     headXVector.push(finalHeadQuat._x);
     headYVector.push(finalHeadQuat._y);
     headZVector.push(finalHeadQuat._z);
-    
+
     basePositionXVector.push(finalBaseVec.x);
     basePositionYVector.push(finalBaseVec.y);
     basePositionZVector.push(finalBaseVec.z);
@@ -546,46 +1125,108 @@ const useAnimation = ({blocks, tfs, items}) => {
     baseRotationZVector.push(finalBaseQuat._z);
 
     for (let k = 0; k < keyIndex.length; k++) {
-      faceDisplayVector[k].push(jointAnimationArrays[keyIndex[k]][totalLength-1]);
-      newItems[keyIndex[k]].hidden = interpolateScalar(timeVector, faceDisplayVector[k]);
-      newEndingItems[keyIndex[k]].hidden = jointAnimationArrays[keyIndex[k]][totalLength-1];
+      faceDisplayVector[k].push(
+        jointAnimationArrays[keyIndex[k]][totalLength - 1]
+      );
+      newItems[keyIndex[k]].hidden = interpolateScalar(
+        timeVector,
+        faceDisplayVector[k]
+      );
+      newEndingItems[keyIndex[k]].hidden =
+        jointAnimationArrays[keyIndex[k]][totalLength - 1];
     }
 
-    newTfs[JointLookup("Left")].rotation.w = interpolateScalar(timeVector, leftArmWVector);
-    newTfs[JointLookup("Left")].rotation.x = interpolateScalar(timeVector, leftArmXVector);
-    newTfs[JointLookup("Left")].rotation.y = interpolateScalar(timeVector, leftArmYVector);
-    newTfs[JointLookup("Left")].rotation.z = interpolateScalar(timeVector, leftArmZVector);
+    newTfs[JointLookup("Left")].rotation.w = interpolateScalar(
+      timeVector,
+      leftArmWVector
+    );
+    newTfs[JointLookup("Left")].rotation.x = interpolateScalar(
+      timeVector,
+      leftArmXVector
+    );
+    newTfs[JointLookup("Left")].rotation.y = interpolateScalar(
+      timeVector,
+      leftArmYVector
+    );
+    newTfs[JointLookup("Left")].rotation.z = interpolateScalar(
+      timeVector,
+      leftArmZVector
+    );
     newEndingTfs[JointLookup("Left")].rotation.w = finalLeftArmQuat._w;
     newEndingTfs[JointLookup("Left")].rotation.x = finalLeftArmQuat._x;
     newEndingTfs[JointLookup("Left")].rotation.y = finalLeftArmQuat._y;
     newEndingTfs[JointLookup("Left")].rotation.z = finalLeftArmQuat._z;
-    
-    newTfs[JointLookup("Right")].rotation.w = interpolateScalar(timeVector, rightArmWVector);
-    newTfs[JointLookup("Right")].rotation.x = interpolateScalar(timeVector, rightArmXVector);
-    newTfs[JointLookup("Right")].rotation.y = interpolateScalar(timeVector, rightArmYVector);
-    newTfs[JointLookup("Right")].rotation.z = interpolateScalar(timeVector, rightArmZVector);
+
+    newTfs[JointLookup("Right")].rotation.w = interpolateScalar(
+      timeVector,
+      rightArmWVector
+    );
+    newTfs[JointLookup("Right")].rotation.x = interpolateScalar(
+      timeVector,
+      rightArmXVector
+    );
+    newTfs[JointLookup("Right")].rotation.y = interpolateScalar(
+      timeVector,
+      rightArmYVector
+    );
+    newTfs[JointLookup("Right")].rotation.z = interpolateScalar(
+      timeVector,
+      rightArmZVector
+    );
     newEndingTfs[JointLookup("Right")].rotation.w = finalRightArmQuat._w;
     newEndingTfs[JointLookup("Right")].rotation.x = finalRightArmQuat._x;
     newEndingTfs[JointLookup("Right")].rotation.y = finalRightArmQuat._y;
     newEndingTfs[JointLookup("Right")].rotation.z = finalRightArmQuat._z;
 
-    newTfs[JointLookup("Head")].rotation.w = interpolateScalar(timeVector, headWVector);
-    newTfs[JointLookup("Head")].rotation.x = interpolateScalar(timeVector, headXVector);
-    newTfs[JointLookup("Head")].rotation.y = interpolateScalar(timeVector, headYVector);
-    newTfs[JointLookup("Head")].rotation.z = interpolateScalar(timeVector, headZVector);
+    newTfs[JointLookup("Head")].rotation.w = interpolateScalar(
+      timeVector,
+      headWVector
+    );
+    newTfs[JointLookup("Head")].rotation.x = interpolateScalar(
+      timeVector,
+      headXVector
+    );
+    newTfs[JointLookup("Head")].rotation.y = interpolateScalar(
+      timeVector,
+      headYVector
+    );
+    newTfs[JointLookup("Head")].rotation.z = interpolateScalar(
+      timeVector,
+      headZVector
+    );
     newEndingTfs[JointLookup("Head")].rotation.w = finalHeadQuat._w;
     newEndingTfs[JointLookup("Head")].rotation.x = finalHeadQuat._x;
     newEndingTfs[JointLookup("Head")].rotation.y = finalHeadQuat._y;
     newEndingTfs[JointLookup("Head")].rotation.z = finalHeadQuat._z;
 
-
-    newTfs[JointLookup("Base")].rotation.w = interpolateScalar(timeVector, baseRotationWVector);
-    newTfs[JointLookup("Base")].rotation.x = interpolateScalar(timeVector, baseRotationXVector);
-    newTfs[JointLookup("Base")].rotation.y = interpolateScalar(timeVector, baseRotationYVector);
-    newTfs[JointLookup("Base")].rotation.z = interpolateScalar(timeVector, baseRotationZVector);
-    newTfs[JointLookup("Base")].position.x = interpolateScalar(timeVector, basePositionXVector);
-    newTfs[JointLookup("Base")].position.y = interpolateScalar(timeVector, basePositionYVector);
-    newTfs[JointLookup("Base")].position.z = interpolateScalar(timeVector, basePositionZVector);
+    newTfs[JointLookup("Base")].rotation.w = interpolateScalar(
+      timeVector,
+      baseRotationWVector
+    );
+    newTfs[JointLookup("Base")].rotation.x = interpolateScalar(
+      timeVector,
+      baseRotationXVector
+    );
+    newTfs[JointLookup("Base")].rotation.y = interpolateScalar(
+      timeVector,
+      baseRotationYVector
+    );
+    newTfs[JointLookup("Base")].rotation.z = interpolateScalar(
+      timeVector,
+      baseRotationZVector
+    );
+    newTfs[JointLookup("Base")].position.x = interpolateScalar(
+      timeVector,
+      basePositionXVector
+    );
+    newTfs[JointLookup("Base")].position.y = interpolateScalar(
+      timeVector,
+      basePositionYVector
+    );
+    newTfs[JointLookup("Base")].position.z = interpolateScalar(
+      timeVector,
+      basePositionZVector
+    );
     newEndingTfs[JointLookup("Base")].rotation.w = finalBaseQuat._w;
     newEndingTfs[JointLookup("Base")].rotation.x = finalBaseQuat._x;
     newEndingTfs[JointLookup("Base")].rotation.y = finalBaseQuat._y;
@@ -594,8 +1235,8 @@ const useAnimation = ({blocks, tfs, items}) => {
     newEndingTfs[JointLookup("Base")].position.y = finalBaseVec.y;
     newEndingTfs[JointLookup("Base")].position.z = finalBaseVec.z;
 
-    return {newTfs, newEndingTfs, newItems, newEndingItems};
-  }
+    return { newTfs, newEndingTfs, newItems, newEndingItems };
+  };
 
   const getBlocksByType = (type) => {
     return Object.values(blocks).filter((block) => block.type === type)[0];
@@ -645,13 +1286,14 @@ const useAnimation = ({blocks, tfs, items}) => {
     if (typeof input !== "string" && typeof input !== "object") {
       return input.shadow.fields.NUM;
     } else {
-      let block = input?.shadow?.id ? getBlock(input.shadow.id) : getBlock(input);
+      let block = input?.shadow?.id
+        ? getBlock(input.shadow.id)
+        : getBlock(input);
       return animate(block, block.type);
     }
   }
 
   const animate = (params, type) => {
-
     switch (true) {
       case type === "controls_if":
         if (!params.inputs || !params.inputs.IF0 || !params.inputs.DO0) {
@@ -919,7 +1561,7 @@ const useAnimation = ({blocks, tfs, items}) => {
       case type === "ChangeLED":
         // Todo, add new item????? to display led color....
         if (!params.inputs || !params.inputs.FIELD_ChangeLED) {
-            // todo: keep list of errors and push at end instead of now!!!!
+          // todo: keep list of errors and push at end instead of now!!!!
           throw new Error("err: ChangeLED is not complete!");
         }
         var colorBlock = getBlock(params.inputs.FIELD_ChangeLED);
@@ -940,7 +1582,7 @@ const useAnimation = ({blocks, tfs, items}) => {
       case type === "TransitionLED":
         // Todo, add new item????? to display led color....
         if (!params.inputs || !params.inputs.COLOR1 || !params.inputs.COLOR2) {
-            // todo: keep list of errors and push at end instead of now!!!!
+          // todo: keep list of errors and push at end instead of now!!!!
           throw new Error("err: TransitionLED is not complete!");
         }
         var colorBlock1 = getBlock(params.inputs.COLOR1);
@@ -951,7 +1593,7 @@ const useAnimation = ({blocks, tfs, items}) => {
         } else {
           COLOR1 = animate(colorBlock1, colorBlock1.type);
         }
-        
+
         var COLOR2 = null;
         if (colorBlock2?.fields?.COLOUR) {
           COLOR2 = hexToRgb(colorBlock2.fields.COLOUR);
@@ -975,7 +1617,7 @@ const useAnimation = ({blocks, tfs, items}) => {
       case type === "DisplayImage":
         // Todo, display image on robot....
         if (!params.inputs || !params.inputs.FIELD_DisplayImage_Filename) {
-            // todo: keep list of errors and push at end instead of now!!!!
+          // todo: keep list of errors and push at end instead of now!!!!
           throw new Error("err: DisplayImage is not complete!");
         }
         var alpha = 1;
@@ -987,7 +1629,7 @@ const useAnimation = ({blocks, tfs, items}) => {
       case type === "PlayAudio":
         // Todo, how to play audio in browser???? and how to play it at the correct time??? add a sleep for sum of time till play?
         if (!params.inputs || !params.inputs.FIELD_PlayAudio_Filename) {
-            // todo: keep list of errors and push at end instead of now!!!!
+          // todo: keep list of errors and push at end instead of now!!!!
           throw new Error("err: PlayAudio is not complete!");
         }
         var endpoint = "audio/play";
@@ -997,7 +1639,7 @@ const useAnimation = ({blocks, tfs, items}) => {
 
       case type === "DisplayAnimation":
         if (!params.inputs || !params.inputs.FIELD_DisplayAnimation_Filename) {
-            // todo: keep list of errors and push at end instead of now!!!!
+          // todo: keep list of errors and push at end instead of now!!!!
           throw new Error("err: DisplayAnimation is not complete!");
           return;
         }
@@ -1043,7 +1685,8 @@ const useAnimation = ({blocks, tfs, items}) => {
         return;
 
       case type === "MoveArm3":
-        var arm = params.fields.FIELD_MoveArm_Arm === "Right" ? "Right" : "Left";
+        var arm =
+          params.fields.FIELD_MoveArm_Arm === "Right" ? "Right" : "Left";
         var position = checkShadowinput(params.fields.FIELD_MoveArm_Position);
         var velocity = checkShadowinput(params.fields.FIELD_MoveArm_Velocity);
         addArmAnimationKeyFrame(arm, position, velocity);
@@ -1062,7 +1705,12 @@ const useAnimation = ({blocks, tfs, items}) => {
         var right_velocity = checkShadowinput(
           params.inputs.FIELD_MoveArm_RightVelocity
         );
-        addArmsAnimationKeyFrame(left_position, left_velocity, right_position, right_velocity);
+        addArmsAnimationKeyFrame(
+          left_position,
+          left_velocity,
+          right_position,
+          right_velocity
+        );
         return;
 
       case type === "MoveHead":
@@ -1095,7 +1743,8 @@ const useAnimation = ({blocks, tfs, items}) => {
         var angularVelocity = checkShadowinput(
           params.inputs.FIELD_DriveTime_Angular
         );
-        var time = checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs) * MS_TO_SEC;
+        var time =
+          checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs) * MS_TO_SEC;
         addDriveAnimationKeyFrame(linearVelocity, angularVelocity, time);
         return;
 
@@ -1108,7 +1757,9 @@ const useAnimation = ({blocks, tfs, items}) => {
 
       case type === "Turn2":
         var direction = params.fields.FIELD_Turn_Direction;
-        var time = parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration)) * MS_TO_SEC;
+        var time =
+          parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration)) *
+          MS_TO_SEC;
         var angularVelocity = direction === "L" ? 100 : -100;
         addDriveAnimationKeyFrame(0, angularVelocity, time);
         return;
@@ -1133,7 +1784,7 @@ const useAnimation = ({blocks, tfs, items}) => {
   const start = getBlocksByType("Start");
   let currParam = start;
   let num = 1;
-  
+
   while (currParam && currParam.next) {
     num += 1;
     currParam = getBlock(currParam.next);
@@ -1141,7 +1792,7 @@ const useAnimation = ({blocks, tfs, items}) => {
   }
 
   // Send data back to the main thread
-  return interpolateAnimationArray()
+  return interpolateAnimationArray();
 };
 
 export default useAnimation;
