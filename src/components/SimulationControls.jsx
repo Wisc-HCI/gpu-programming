@@ -43,6 +43,7 @@ export default function SimulationControls(props) {
       }
 
     const runCode = async () => {
+        appendActivity("Click Run Code button");
         clock.reset_elapsed();
 
         if (workerThread) {
@@ -67,7 +68,8 @@ export default function SimulationControls(props) {
             if (match) {
                 //console.log("Error block ID:", match[1]);
                 setHighlightBlocks(match[1])
-                
+                stopCode()
+                return
             } else {
                 console.log("ID not found in error message.");
             }
@@ -86,13 +88,14 @@ export default function SimulationControls(props) {
         let {newTfs, newEndingTfs, newItems, newEndingItems} = useAnimation({blocks: getBlocks(), tfs: endingTfs, items: getEndingItems()});
         setAnimationFrames(newTfs, newEndingTfs, newItems, newEndingItems);
 
-        appendActivity("Click Run Code button");
+       
     };
 
     const stopCode = () => {
         if (workerThread) {
             workerThread.terminate();
             setWorkerThread(null);
+            setHighlightBlocks('');
             sendPostRequestToRobot("halt", {});
         }
         appendActivity("Click Stop Code button");
