@@ -28,7 +28,7 @@ export default function GPTPanel(props) {
           </div>
         }
       />
-      <button
+      {/* <button
         onClick={() => setFullScreenPanel(!fullScreenPanel)}
         style={{
           position: "absolute",
@@ -43,7 +43,7 @@ export default function GPTPanel(props) {
         }}
       >
         ✖
-      </button>
+      </button> */}
     </div>
   );
 }
