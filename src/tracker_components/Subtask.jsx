@@ -35,10 +35,10 @@ const Subtask = ({ title, subtext, hints, isPlanningScreen }) => {
         <Typography variant="h6" align={"left"} sx={{ marginBottom: "8px" }}>
           {title}
         </Typography>
-        <Typography variant="subtitle1" align={"left"} sx={{ color: "#666" }}>
+        {!isChecked && <Typography variant="subtitle1" align={"left"} sx={{ color: "#666" }}>
           {subtext}
-        </Typography>
-        <div className="hints-container">
+        </Typography>}
+        {!isChecked && <div className="hints-container">
           {!isPlanningScreen &&
             hints &&
             hints.map((hint, idx) => (
@@ -62,8 +62,8 @@ const Subtask = ({ title, subtext, hints, isPlanningScreen }) => {
                 />
               );
             })}
-        </div>
-        {expandedHint && (
+        </div>}
+        {!isChecked && expandedHint && (
           <div className="hint-expansion">
             <p>{expandedHint.text}</p>
             <div className="close-button-container">
