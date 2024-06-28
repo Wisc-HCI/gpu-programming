@@ -17,35 +17,6 @@ export const toolbox = {
     'contents': [
       {
         'kind': 'category',
-        'name': 'Functions',
-        'categorystyle': 'procedure_category',
-        'custom': 'PROCEDURE',
-      },
-      {
-        "kind": "category",
-        "name": "Triggers",
-        'categorystyle': 'trigger_category',
-        "contents": [
-          {
-            'kind': 'block',
-            'type': 'FrontLeftBumperPress',
-          },
-          {
-            'kind': 'block',
-            'type': 'FrontRightBumperPress',
-          },
-          {
-            'kind': 'block',
-            'type': 'RearLeftBumperPress',
-          },
-          {
-            'kind': 'block',
-            'type': 'RearRightBumperPress',
-          },
-        ]
-      },
-      {
-        'kind': 'category',
         'name': 'Control',
         'categorystyle': 'logic_category',
         'contents': [
@@ -160,14 +131,6 @@ export const toolbox = {
           {
             'kind': 'block',
             'type': 'WaitForSeconds',
-          },
-          {
-            'kind': 'block',
-            'type': 'DriveTime',
-          },
-          {
-            'kind': 'block',
-            'type': 'DriveTime2',
           },
           {
             'kind': 'block',
