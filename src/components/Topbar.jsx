@@ -14,11 +14,14 @@ import {
   PROMPT_MODAL,
   SETTINGS_MODAL,
   SELECTION_SCREEN,
-  DAY_ONE_SCREEN,
-  DAY_TWO_SCREEN,
-  DAY_ONE_BTN_TEXT,
-  DAY_TWO_BTN_TEXT
+  PHASE_ONE_SCREEN,
+  PHASE_TWO_SCREEN,
+  PHASE_THREE_SCREEN,
+  PHASE_ONE_BTN_TEXT,
+  PHASE_TWO_BTN_TEXT,
+  PHASE_THREE_BTN_TEXT
 } from "../Constants";
+import Tab from "../tracker_components/Tab";
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
@@ -130,39 +133,29 @@ export default function TopBar(props) {
           container
           direction={"row"}
           justifyContent={"space-between"}
-          alignItems={"center"}
         >
           <Grid
             item
-            xs={3}
-            sm={3}
-            md={3}
+            xs={12}
+            sm={12}
+            md={12}
             lg={3}
             xl={3}
             style={{ justifyContent: "right", display: "flex" }}
           >
             {screenToShow !== SELECTION_SCREEN && (
-              <DropShadowButton
-                text={
-                  screenToShow === DAY_TWO_SCREEN
-                    ? DAY_ONE_BTN_TEXT
-                    : DAY_TWO_BTN_TEXT
-                }
-                clickFunction={() =>
-                  updateScreen(
-                    screenToShow === DAY_TWO_SCREEN
-                      ? DAY_ONE_SCREEN
-                      : DAY_TWO_SCREEN
-                  )
-                }
-              />
+              <div style={{display: "flex"}}>
+                <Tab isActive={PHASE_ONE_SCREEN === screenToShow} text={PHASE_ONE_BTN_TEXT} onClick={() => updateScreen(PHASE_ONE_SCREEN)}/>
+                <Tab isActive={PHASE_TWO_SCREEN === screenToShow} text={PHASE_TWO_BTN_TEXT} onClick={() => updateScreen(PHASE_TWO_SCREEN)} />
+                <Tab isActive={PHASE_THREE_SCREEN === screenToShow} text={PHASE_THREE_BTN_TEXT} onClick={() => updateScreen(PHASE_THREE_SCREEN)} />
+              </div>
             )}
           </Grid>
           <Grid
             item
-            xs={9}
-            sm={9}
-            md={9}
+            xs={12}
+            sm={12}
+            md={12}
             lg={9}
             xl={9}
             style={{ justifyContent: "right", display: "flex" }}

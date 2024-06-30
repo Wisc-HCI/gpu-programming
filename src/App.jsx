@@ -17,7 +17,7 @@ import { default as LoadingLogo } from './svgs/misty_loading_combined.gif';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
 
 import "react-reflex/styles.css";
-import { Backdrop, Box, CircularProgress } from "@mui/material";
+import { Backdrop, Box } from "@mui/material";
 import Simulator from "./components/Simulator.jsx";
 import { SettingsModal } from "./modals/Settings.jsx";
 import useStore from "./Store.js";
@@ -26,8 +26,9 @@ import GPTPanel from "./components/GPTPanel.jsx";
 import { PromptModal } from "./modals/PromptModal.jsx";
 import {
   SELECTION_SCREEN,
-  DAY_ONE_SCREEN,
-  DAY_TWO_SCREEN,
+  PHASE_ONE_SCREEN,
+  PHASE_THREE_SCREEN,
+  PHASE_TWO_SCREEN,
 } from "./Constants.js";
 import DayOneScreen from "./components/DayOneScreen.jsx";
 import SelectionScreen from "./components/SelectionScreen.jsx";
@@ -44,22 +45,19 @@ function App() {
   const llmMode = useStore(useShallow((state) => state.llmMode));
   const isLLMProcessing = useStore(useShallow((state) => state.llmProcessing));
   const headerHeight = useStore(useShallow((state) => state.headerHeight));
-  const fullScreenPanel = useStore((state) => state.fullScreenPanel);
   const screenToShow = useStore((state) => state.screenToShow);
 
   return (
     <Box width={"100vw"} height={`calc(100vh - ${headerHeight}px)`} padding={0}>
       <TopBar />
       {screenToShow === SELECTION_SCREEN && <SelectionScreen />}
-      {screenToShow === DAY_ONE_SCREEN && <DayOneScreen />}
-      {screenToShow === DAY_TWO_SCREEN && fullScreenPanel && (
-        <GPTPanel
+      {screenToShow === PHASE_ONE_SCREEN && <DayOneScreen />}
+      {screenToShow === PHASE_TWO_SCREEN && <GPTPanel
           style={{
             width: "100vw",
           }}
-        />
-      )}
-      {screenToShow === DAY_TWO_SCREEN && !fullScreenPanel && (
+        />}
+      {screenToShow === PHASE_THREE_SCREEN && (
         <ReflexContainer
           orientation="vertical"
           style={{
@@ -71,8 +69,7 @@ function App() {
         >
           <ReflexElement flex={0.55}>
             <Item style={{ width: "100%", height: "100%" }}>
-              {fullScreenPanel && <GPTPanel />}
-              {!fullScreenPanel && <BlocklyInterface />}
+              <BlocklyInterface />
             </Item>
           </ReflexElement>
 

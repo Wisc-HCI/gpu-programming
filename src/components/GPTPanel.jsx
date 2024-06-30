@@ -5,10 +5,10 @@ import useStore from "../Store";
 import TrackerScreen from "../tracker_components/TrackerScreen";
 import DropShadowButton from "./DropShadowButton";
 import useWindowDimensions from "../useWindowDimensions";
+import { PHASE_THREE_SCREEN } from "../Constants";
 
 export default function GPTPanel(props) {
-  const fullScreenPanel = useStore((state) => state.fullScreenPanel);
-  const setFullScreenPanel = useStore((state) => state.setFullScreenPanel);
+  const updateScreen = useStore((state) => state.updateScreen);
 
   const {height, _} = useWindowDimensions();
   let calcHeight = height-155;
@@ -23,7 +23,7 @@ export default function GPTPanel(props) {
               <TrackerScreen />
             </div>
             <div style={{ position: "absolute", right: 20 }}>
-              <DropShadowButton text={"Done"} clickFunction={() => setFullScreenPanel(!fullScreenPanel)} style={{backgroundColor: "#A0FF7E"}}/>
+              <DropShadowButton text={"Done"} clickFunction={() => updateScreen(PHASE_THREE_SCREEN)} style={{backgroundColor: "#A0FF7E"}}/>
             </div>
           </div>
         }

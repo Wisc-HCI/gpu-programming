@@ -42,6 +42,27 @@
   filter: none !important;
 }
 
+.tab {
+  padding: 3px 15px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 14px;
+  color: gray;
+  background-color: #E4E5F1;
+  align-self: flex-end;
+  margin-top: 10px;
+  position: relative;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; 
+}
+
+.tab.active {
+  background-color: white;
+  color: black;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

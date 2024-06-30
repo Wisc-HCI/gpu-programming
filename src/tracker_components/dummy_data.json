@@ -1,37 +1,27 @@
 {
     "task1": {
       "id": "task1",
-      "name": "Find and Grab Object",
+      "name": "Milestones - Programming",
       "order": 1,
       "type": "task",
-      "subtasks": ["subtask1a", "subtask1b", "subtask1c", "subtask1d", "subtask1e", "subtask1f", "subtask1g", "subtask1h"]
+      "subtasks": ["subtask1a", "subtask1b", "subtask1c", "subtask1d", "subtask1e", "subtask1f"]
     },
     "subtask1a": {
       "id": "subtask1a",
       "type": "subtask",
       "title": "Move the robot",
       "subtext": "Move the robot around, looking confused and searching for the object.",
-      "hints": ["hint1a", "hint1b", "hint1c", "hint1d"]
+      "hints": ["hint1a", "hint1b"]
     },
     "hint1a": {
       "id": "hint1a",
       "type": "hint",
-      "text": "To make the robot move around, add a 'Drive' block from the 'Movement' category to your program. You can add it after the 'Start' block."
+      "text": "To make the robot move around, add a 'Turn' block from the 'Movement' category to your program. You can add it after the 'Start' block."
     },
     "hint1b": {
       "id": "hint1b",
       "type": "hint",
-      "text": "Add an angular velocity of -100 for 2 seconds to make the robot turn left."
-    },
-    "hint1c": {
-      "id": "hint1c",
-      "type": "hint",
-      "text": "Add an angular velocity of 100 for 2 seconds to make the robot turn right."
-    },
-    "hint1d": {
-      "id": "hint1d",
-      "type": "hint",
-      "text": "Add a 'Wait' block from the 'Misc' category to your program to create pauses in the robot's movement."
+      "text": "Make it turn left for 2 seconds."
     },
     "subtask1b": {
       "id": "subtask1b",
@@ -79,7 +69,7 @@
       "type": "subtask",
       "title": "Make the robot look happy",
       "subtext": "Change the robot's facial expression to look happy and point to the object it found.",
-      "hints": ["hint4a", "hint4b", "hint4c"]
+      "hints": ["hint4a", "hint4b"]
     },
     "hint4a": {
       "id": "hint4a",
@@ -90,11 +80,6 @@
       "id": "hint4b",
       "type": "hint",
       "text": "Select 'Joy4' from the list of faces to make the robot look happy."
-    },
-    "hint4c": {
-      "id": "hint4c",
-      "type": "hint",
-      "text": "Add a 'Drive' block from the 'Movement' category to your program and set the angular velocity to 50. Follow it up with a 'Wait' block from the 'Misc' category to create a pause, then add another 'Drive' block with an angular velocity of -50."
     },
     "subtask1f": {
       "id": "subtask1f",
@@ -112,39 +97,5 @@
       "id": "hint5b",
       "type": "hint",
       "text": "Add a 'Text' block inside the 'Speak' block and type: 'Aha, there you are!'"
-    },
-    "subtask1g": {
-      "id": "subtask1g",
-      "type": "subtask",
-      "title": "Move the robot to the object",
-      "subtext": "Drive the robot to the object it found.",
-      "hints": ["hint6a", "hint6b"]
-    },
-    "hint6a": {
-      "id": "hint6a",
-      "type": "hint",
-      "text": "Add a 'Drive' block from the 'Movement' category to your program."
-    },
-    "hint6b": {
-      "id": "hint6b",
-      "type": "hint",
-      "text": "Choose a velocity that will get you to the object quickly but safely. Start with a linear velocity of 50 and adjust as necessary."
-    },
-    "subtask1h": {
-      "id": "subtask1h",
-      "type": "subtask",
-      "title": "Grab the object",
-      "subtext": "Make the robot grab the object it found.",
-      "hints": ["hint7a", "hint7b"]
-    },
-    "hint7a": {
-      "id": "hint7a",
-      "type": "hint",
-      "text": "Add a 'Grab' block from the 'Misc' category to your program."
-    },
-    "hint7b": {
-      "id": "hint7b",
-      "type": "hint",
-      "text": "The 'Grab' block is a toggle. Clicking the block once will make the robot open its grip. Click it again to make the robot close its grip."
     }
   }

@@ -1,7 +1,7 @@
 {
     "task1": {
       "id": "task1",
-      "name": "Create a Story",
+      "name": "Milestones - Story Creation",
       "order": 1,
       "type": "task",
       "subtasks": ["subtask1a", "subtask1b"]

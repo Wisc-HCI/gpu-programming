@@ -2,10 +2,12 @@ import React from "react";
 import { Button, Grid } from "@mui/material";
 import useStore from "../Store";
 import {
-  DAY_ONE_SCREEN,
-  DAY_TWO_SCREEN,
-  DAY_ONE_BTN_TEXT,
-  DAY_TWO_BTN_TEXT
+  PHASE_ONE_SCREEN,
+  PHASE_TWO_SCREEN,
+  PHASE_THREE_SCREEN,
+  PHASE_ONE_BTN_TEXT,
+  PHASE_TWO_BTN_TEXT,
+  PHASE_THREE_BTN_TEXT
 } from "../Constants.js";
 import DropShadowButton from "./DropShadowButton.jsx";
 
@@ -28,11 +30,13 @@ export default function SelectionScreen(props) {
     >
       <Grid item xs={1}></Grid>
       <Grid item xs={3}>
-        <DropShadowButton text={DAY_ONE_BTN_TEXT} clickFunction={() => updateScreen(DAY_ONE_SCREEN)} style={{padding: "50px"}}/>
+        <DropShadowButton text={PHASE_ONE_BTN_TEXT} clickFunction={() => updateScreen(PHASE_ONE_SCREEN)} style={{padding: "50px"}}/>
       </Grid>
-      <Grid item xs={2}></Grid>
       <Grid item xs={3}>
-        <DropShadowButton text={DAY_TWO_BTN_TEXT} clickFunction={() => updateScreen(DAY_TWO_SCREEN)} style={{padding: "50px"}}/>
+        <DropShadowButton text={PHASE_TWO_BTN_TEXT} clickFunction={() => updateScreen(PHASE_TWO_SCREEN)} style={{padding: "50px"}}/>
+      </Grid>
+      <Grid item xs={3}>
+        <DropShadowButton text={PHASE_THREE_BTN_TEXT} clickFunction={() => updateScreen(PHASE_THREE_SCREEN)} style={{padding: "50px"}}/>
       </Grid>
       <Grid item xs={1}></Grid>
     </Grid>
