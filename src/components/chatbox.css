@@ -1,5 +1,5 @@
 
-.my-outgoing-message {
+.my-incoming-message {
     .cs-message__content-wrapper {
         .cs-message__content {
             background-color: #585D92;
@@ -10,7 +10,7 @@
     }
 }
 
-.my-incoming-message {
+.my-outgoing-message {
     .cs-message__content-wrapper {
         .cs-message__content {
             background-color: #E4E5F1;
