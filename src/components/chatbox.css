@@ -19,14 +19,14 @@
 }
 
 .cs-message-input__content-editor-wrapper {
-    background-color: #585D92;
+    background-color: #E4E5F1;
     .cs-message-input__content-editor-container {
         .cs-message-input__content-editor {
-            background-color: #585D92;
-            color: #FFFFFF;
+            background-color: #E4E5F1;
+            color: #212121BF;
         }
         .cs-message-input__content-editor::before {
-            color: #FFFFFFA0;
+            color: #212121BF;
         }
     }
 }
