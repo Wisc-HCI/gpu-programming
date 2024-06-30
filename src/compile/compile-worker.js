@@ -778,7 +778,7 @@ self.onmessage = function (e) {
 
       case type === "Turn2":
         var direction = params.fields.FIELD_Turn_Direction;
-        var time = parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration)) * MS_TO_SEC;
+        var time = parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration));
         var angularVelocity = 100;
         var linearVelocity = 0;
         var degree = direction === "L" ? 90 : -90;

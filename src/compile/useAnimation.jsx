@@ -1715,8 +1715,7 @@ const useAnimation = ({ blocks, tfs, items }) => {
       case type === "Turn2":
         var direction = params.fields.FIELD_Turn_Direction;
         var time =
-          parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration)) *
-          MS_TO_SEC;
+          parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration));
         var angularVelocity = direction === "L" ? 100 : -100;
         addDriveAnimationKeyFrame(0, angularVelocity, time);
         return;

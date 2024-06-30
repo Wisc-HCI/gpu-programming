@@ -503,7 +503,7 @@ Blockly.Blocks[Turn2Type] = {
       var shadowBlockConnectionTime = this.getInput("FIELD_Turn_Duration").connection;
       shadowBlockConnectionTime.connect(timeBlock);
     this.appendDummyInput()
-      .appendField("milliseconds");
+      .appendField("seconds");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
