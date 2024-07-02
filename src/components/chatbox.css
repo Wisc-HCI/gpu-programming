@@ -18,6 +18,10 @@
     }
 }
 
+.no-margin-message {
+    margin-bottom: 0 !important;
+}
+
 .cs-message-input__content-editor-wrapper {
     background-color: #E4E5F1;
     .cs-message-input__content-editor-container {

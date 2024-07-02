@@ -5,6 +5,7 @@ import { Scene } from "robot-scene";
 import React from "react";
 import { Box } from "@mui/material";
 import SimulationControls from "./SimulationControls.jsx";
+import MistyChatBubble from "./MistyChatBubble.jsx";
 
 export default function Simulator(props) {
 
@@ -30,6 +31,9 @@ export default function Simulator(props) {
         {...otherArgs}
       />
       <SimulationControls />
+      <div style={{position: "absolute", right: 10, bottom: 0, padding: "10px" }}>
+        <MistyChatBubble />
+      </div>
     </Box>
   );
 }
