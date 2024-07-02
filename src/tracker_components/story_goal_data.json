@@ -4,13 +4,13 @@
       "name": "Milestones - Story Creation",
       "order": 1,
       "type": "task",
-      "subtasks": ["subtask1a", "subtask1b"]
+      "subtasks": ["character", "place", "time", "actions", "events", "ending", "feeling"]
     },
-    "subtask1a": {
-      "id": "subtask1a",
+    "character": {
+      "id": "character",
       "type": "subtask",
-      "title": "Define the characters",
-      "subtext": "Who is in the story?",
+      "title": "Characters",
+      "subtext": "Who is the main character?",
       "hints": ["hint1a"]
     },
     "hint1a": {
@@ -18,14 +18,74 @@
       "type": "help",
       "text": "Help me"
     },
-    "subtask1b": {
-      "id": "subtask1b",
+    "place": {
+      "id": "place",
       "type": "subtask",
-      "title": "Where are the characters at?",
+      "title": "Location",
       "subtext": "Where does the story take place?",
       "hints": ["hint2a"]
     },
     "hint2a": {
+      "id": "hint2a",
+      "type": "help",
+      "text": "Help me"
+    },
+    "time": {
+      "id": "location",
+      "type": "subtask",
+      "title": "Time",
+      "subtext": "When does the story take place?",
+      "hints": ["hint4a"]
+    },
+    "hint4a": {
+      "id": "hint4a",
+      "type": "help",
+      "text": "Help me"
+    },
+    "actions": {
+      "id": "location",
+      "type": "subtask",
+      "title": "Actions",
+      "subtext": "What does the main character do or want to do; what do other characters do?",
+      "hints": ["hint5a"]
+    },
+    "hint5a": {
+      "id": "hint5a",
+      "type": "help",
+      "text": "Help me"
+    },
+    "events": {
+      "id": "location",
+      "type": "subtask",
+      "title": "Events",
+      "subtext": "What happens then? What happens with other characters?",
+      "hints": ["hint6a"]
+    },
+    "hint6a": {
+      "id": "hint6a",
+      "type": "help",
+      "text": "Help me"
+    },
+    "ending": {
+      "id": "ending",
+      "type": "subtask",
+      "title": "Ending",
+      "subtext": "How does the story end?",
+      "hints": ["hint7a"]
+    },
+    "hint7a": {
+      "id": "hint7a",
+      "type": "help",
+      "text": "Help me"
+    },
+    "feeling": {
+      "id": "feeling",
+      "type": "subtask",
+      "title": "Emotions",
+      "subtext": "How does the main character feel; how do other characters feel?",
+      "hints": ["hint8a"]
+    },
+    "hint8a": {
       "id": "hint2a",
       "type": "help",
       "text": "Help me"
