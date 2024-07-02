@@ -1,5 +1,6 @@
 import {
   ChatContainer,
+  ConversationHeader,
   Message,
   MessageInput,
   MessageList,
@@ -110,14 +111,16 @@ export default function ChatBox(props) {
             })}
           </div>
         )}
-        <div style={{ right: 0, bottom: 5, position: "absolute" }}>
-          <DropShadowButton
-            key={"next-phase-btn"}
-            text={"Next Phase"}
-            clickFunction={() => addMessageToHistory("[Done]")}
-          />
-        </div>
       </MessageList>
+      <ConversationHeader style={{right: 0, bottom: 50, zIndex: 101, position: "absolute", backgroundColor: "transparent" }}>
+        <ConversationHeader.Content>
+              <DropShadowButton
+                key={"next-phase-btn"}
+                text={"Next Phase"}
+                clickFunction={() => addMessageToHistory("[Done]")}
+              />
+        </ConversationHeader.Content>
+      </ConversationHeader>
       <MessageInput
         placeholder="Type message here"
         attachButton={false}
