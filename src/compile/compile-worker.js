@@ -36,15 +36,17 @@ self.onmessage = function (e) {
   // Fixed case-sensitive function call
   const ifDo = (IF0, DO0) => {
     const ifInput = getBlock(IF0);
-    let doInput = getBlock(DO0);
     // Check if input is logically true
     if (compile(ifInput, ifInput.type)) {
-      //if true, iteratively run blocks
-      compile(doInput, doInput.type);
-      while (doInput.next) {
-        doInput = getBlock(doInput.next);
-
+      if (DO0) {
+        let doInput = getBlock(DO0);
+        //if true, iteratively run blocks
         compile(doInput, doInput.type);
+        while (doInput.next) {
+          doInput = getBlock(doInput.next);
+  
+          compile(doInput, doInput.type);
+        }
       }
     } else {
       return;
@@ -99,7 +101,7 @@ self.onmessage = function (e) {
     console.log(params);
     switch (true) {
       case type === "controls_if":
-        if (!params.inputs || !params.inputs.IF0 || !params.inputs.DO0) {
+        if (!params.inputs || !params.inputs.IF0) {
           throw new Error(`err: controls_if do not have input value! id: ${params.id}`);
           //appendActivity("Try running with incomplete controls_if");
         } else {
