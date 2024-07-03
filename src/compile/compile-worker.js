@@ -413,7 +413,7 @@ self.onmessage = function (e) {
         } else {
           COLOR2 = compile(colorBlock2, colorBlock2.type);
         }
-        var time = params.fields.FIELD_TransitionTime_TimeMs * MS_TO_SEC;
+        var time = getBlock(params.inputs.FIELD_Duration) * MS_TO_SEC;
         var transition = params.fields.TRANSITION_TYPE;
         var payload = {
           Red: COLOR1.r,
@@ -539,7 +539,7 @@ self.onmessage = function (e) {
         return;
 
       case type === "WaitForSeconds":
-        var time = parseFloat(params.fields.NumSeconds);
+        var time = checkShadowinput(params.fields.FIELD_Duration);
         delayJS(time * MS_TO_SEC);
         return;
 

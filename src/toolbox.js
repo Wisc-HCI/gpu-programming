@@ -131,11 +131,7 @@ export const toolbox = {
           {
             'kind': 'block',
             'type': 'WaitForSeconds',
-          },
-          {
-            'kind': 'block',
-            'type': 'Turn', 
-          },   
+          }, 
           {
             'kind': 'block',
             'type': 'Turn2',

@@ -8,7 +8,7 @@ import * as Blockly from 'blockly/core';
 import blockColors from '../blockPallete.json';
 import { MathNumSlider } from './MathNumSlider';
 
-let allBlockTypes = []
+let allBlockTypes = ["controls_if" , "controls_repeat_ext", "logic_compare", "logic_operation", "logic_negate", "logic_boolean", "logic_null", "logic_ternary"]
 
 // Create a custom block called 'add_text' that adds
 // text to the output div on the sample app.
@@ -56,28 +56,38 @@ let transitionLEDType = "TransitionLED";
 allBlockTypes.push(transitionLEDType);
 Blockly.Blocks[transitionLEDType] = {
   init: function () {
+    var shadowBlock_1 = this.workspace.newBlock('TimeSlider');
+    shadowBlock_1.setShadow(true);
+    shadowBlock_1.initSvg();
+    shadowBlock_1.render();
+    var lPosBlock = shadowBlock_1.outputConnection;
+
     this.setColour(blockColors["light_category"]["colour"]);
+    this.appendDummyInput("FIELD_TEXT_IGNORE")
+    .appendField("Transition LED");
     this.appendValueInput("COLOR1")
       .setCheck("Colour")
-      .appendField("Transition LED from");
+      .appendField("Color 1");
     this.appendValueInput("COLOR2")
       .setCheck("Colour")
-      .appendField("to");
+      .appendField("Color 2");
     this.appendDummyInput()
-      .appendField("using the")
+      .appendField("Mode: ")
       .appendField(new Blockly.FieldDropdown([
         ["Breathe", "BREATHE"],
         ["Blink", "BLINK"],
-        ["Transition Once", "TRANSITION_ONCE"]
-      ]), "TRANSITION_TYPE")
-      .appendField("transition");
-    this.appendDummyInput()
-      .appendField("for a duration of")
-      .appendField(new Blockly.FieldNumber(1, 0, 60, 1), "FIELD_TransitionTime_TimeMs")
-      .appendField("secs");
+        ["Blink Once", "TRANSITION_ONCE"]
+      ]), "TRANSITION_TYPE");
+    this.appendValueInput("FIELD_Duration")
+      .setCheck('Number')
+      .appendField("Duration (seconds): ")
+      this.setInputsInline(false);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Transition LED between two colors with the specified transition type and time.");
+    
+    var shadowBlockTime = this.getInput("FIELD_Duration").connection;
+    shadowBlockTime.connect(lPosBlock);
   }
 };
 
@@ -499,7 +509,7 @@ Blockly.Blocks[Turn2Type] = {
       .appendField("Turn")
       .appendField(new Blockly.FieldDropdown([["Left", "L"], ["Right", "R"]]), "FIELD_Turn_Direction");
     this.appendValueInput("FIELD_Turn_Duration").setCheck('Number')
-      .appendField("for time of");
+      .appendField("for");
       var shadowBlockConnectionTime = this.getInput("FIELD_Turn_Duration").connection;
       shadowBlockConnectionTime.connect(timeBlock);
     this.appendDummyInput()
@@ -575,18 +585,25 @@ let WaitForSecondsType = "WaitForSeconds";
 allBlockTypes.push(WaitForSecondsType);
 Blockly.Blocks[WaitForSecondsType] = {
   init: function() {
+    var shadowBlock_1 = this.workspace.newBlock('TimeSlider');
+    shadowBlock_1.setShadow(true);
+    shadowBlock_1.initSvg();
+    shadowBlock_1.render();
+    var lPosBlock = shadowBlock_1.outputConnection;
+    
     this.appendDummyInput()
-        .appendField("wait for");
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_CENTRE)
-        .appendField(new Blockly.FieldNumber(0, -Infinity, Infinity, 0.1), "NumSeconds");
-    this.appendDummyInput()
-        .appendField("Seconds");
-    this.setInputsInline(true);
+        .appendField("Wait");
+    this.appendValueInput("FIELD_Duration")
+        .setCheck(Number)
+        .appendField("Duration (seconds): ");
+    this.setInputsInline(false);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(blockColors["movement_category"]["colour"]);
     this.setTooltip("Delay the execution of the next block by some number of seconds");
+    
+    var shadowBlockTime = this.getInput("FIELD_Duration").connection;
+    shadowBlockTime.connect(lPosBlock);
   }
 };
 
