@@ -35,6 +35,7 @@ const useStore = create((set,get) => ({
   points:{},
   widgets:{},
   counter: 0,
+  generatedPreviously: false,
   screenToShow: SELECTION_SCREEN,
   blocklyWorkspaceXML:{},
   highlightBlocks:{},
@@ -170,19 +171,21 @@ const useStore = create((set,get) => ({
     headerHeight: height,
     headerWidth: width
   }),
-  generateProgramOutline: () => {
+  generateProgramOutline: (retry) => {
     set({
-      llmProcessing: true
+      llmProcessing: true,
+      generatedPreviously: true
     });
     let storeData = get();
     let userPrompt = storeData.userPrompt;
     let llmEndpoint = storeData.llmEndpoint;
     let llmDeployment = storeData.llmDeployment;
     let llmAPIKey = storeData.llmAPIKey;
+    let additionalPrompt = retry ? " Only use actionable goals for the Misty robot based on the rules specified." : "";
     // fetch("https://httpbin.org/delay/10")
     callLLM(llmEndpoint, llmDeployment, llmAPIKey, [
       {role: "system", content: goalPrompt},
-      {role: "user", content: "Give me the output for the following user prompt: \"" + userPrompt + "\""}
+      {role: "user", content: "Give me the output for the following user prompt: \"" + userPrompt + "\"" + additionalPrompt}
     ])
     .then(res => {
       if (!res.ok) {
