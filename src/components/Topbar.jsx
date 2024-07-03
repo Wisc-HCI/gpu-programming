@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import useStore from "../Store";
 import { appendActivity } from "./ActivityTracker";
 import { useShallow } from "zustand/react/shallow";
-import { TextField, Typography, Grid, IconButton, Stack } from "@mui/material";
+import {
+  TextField,
+  Typography,
+  Grid,
+  IconButton,
+  Stack,
+  Tabs,
+  Tab,
+  styled,
+} from "@mui/material";
 
 import { default as MistyLogo } from "../svgs/misty.svg";
 import { default as PluggedIcon } from "../svgs/plugged.svg";
@@ -19,9 +28,34 @@ import {
   PHASE_THREE_SCREEN,
   PHASE_ONE_BTN_TEXT,
   PHASE_TWO_BTN_TEXT,
-  PHASE_THREE_BTN_TEXT
+  PHASE_THREE_BTN_TEXT,
 } from "../Constants";
-import Tab from "../tracker_components/Tab";
+
+const CustomTabs = styled(Tabs)({
+  borderBottom: "1px solid #FAFAFA",
+});
+
+const CustomTab = styled((props) => <Tab {...props} />)(
+  ({ theme }) => ({
+    marginRight: theme.spacing(1),
+    color: "#666",
+    padding: "12px 30px",
+    backgroundColor: "#E4E5F1",
+    borderTopLeftRadius: "5px",
+    borderTopRightRadius: "5px",
+    "&:hover": {
+      color: "white",
+      opacity: 1,
+    },
+    "&.Mui-selected": {
+      height: "100%",
+      width: "100%",
+      color: "black",
+      backgroundColor: "#FAFAFA",
+      fontWeight: theme.typography.fontWeightMedium,
+    },
+  })
+);
 
 export default function TopBar(props) {
   const [inputVal, setInputVal] = useState("");
@@ -35,6 +69,16 @@ export default function TopBar(props) {
   const setHeaderDimensions = useStore((state) => state.setHeaderDimensions);
   const screenToShow = useStore(useShallow((state) => state.screenToShow));
   const updateScreen = useStore((state) => state.updateScreen);
+
+  function handleUpdateScreen(event) {
+    updateScreen(
+      event.target.textContent === PHASE_ONE_BTN_TEXT
+        ? PHASE_ONE_SCREEN
+        : event.target.textContent === PHASE_TWO_BTN_TEXT
+        ? PHASE_TWO_SCREEN
+        : PHASE_THREE_SCREEN
+    );
+  }
 
   useEffect(() => {
     const header = document.getElementById("website-header");
@@ -129,26 +173,29 @@ export default function TopBar(props) {
       </Grid>
 
       <Grid item xs={12} sm={8} md={8} lg={9} xl={9}>
-        <Grid
-          container
-          direction={"row"}
-          justifyContent={"space-between"}
-        >
+        <Grid container direction={"row"} justifyContent={"space-between"}>
           <Grid
             item
             xs={12}
             sm={12}
             md={12}
-            lg={3}
-            xl={3}
+            lg={5}
+            xl={5}
             style={{ justifyContent: "right", display: "flex" }}
           >
             {screenToShow !== SELECTION_SCREEN && (
-              <div style={{display: "flex"}}>
-                <Tab isActive={PHASE_ONE_SCREEN === screenToShow} text={PHASE_ONE_BTN_TEXT} onClick={() => updateScreen(PHASE_ONE_SCREEN)}/>
-                <Tab isActive={PHASE_TWO_SCREEN === screenToShow} text={PHASE_TWO_BTN_TEXT} onClick={() => updateScreen(PHASE_TWO_SCREEN)} />
-                <Tab isActive={PHASE_THREE_SCREEN === screenToShow} text={PHASE_THREE_BTN_TEXT} onClick={() => updateScreen(PHASE_THREE_SCREEN)} />
-              </div>
+              <CustomTabs
+                value={screenToShow - 1}
+                onChange={handleUpdateScreen}
+                indicatorColor="red"
+                textColor="black"
+                variant="fullWidth"
+                style={{ padding: "5px" }}
+              >
+                <CustomTab label={PHASE_ONE_BTN_TEXT} />
+                <CustomTab label={PHASE_TWO_BTN_TEXT} />
+                <CustomTab label={PHASE_THREE_BTN_TEXT} />
+              </CustomTabs>
             )}
           </Grid>
           <Grid
@@ -156,8 +203,8 @@ export default function TopBar(props) {
             xs={12}
             sm={12}
             md={12}
-            lg={9}
-            xl={9}
+            lg={7}
+            xl={7}
             style={{ justifyContent: "right", display: "flex" }}
           >
             <Stack direction={"row"} alignItems={"center"}>
