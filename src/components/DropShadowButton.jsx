@@ -1,7 +1,8 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-export default function DropShadowButton({ icon, text, clickFunction, disabled, style }) {
+export default function DropShadowButton({ icon, text, clickFunction, disabled, style, useCaps=true }) {
+  let buttonStyle = useCaps ? {} : { textTransform: 'none' }
   return (
     <Button
       onClick={clickFunction}
@@ -14,6 +15,7 @@ export default function DropShadowButton({ icon, text, clickFunction, disabled, 
         backgroundColor: "#FAFAFA",
         borderRadius: "10px",
         filter: "drop-shadow(0px 10px 4px rgba(0,0,0,0.25))",
+        ...buttonStyle,
         ...style,
       }}
     >

@@ -105,6 +105,7 @@ export default function ChatBox(props) {
                 <DropShadowButton
                   key={index}
                   text={suggestion}
+                  useCaps={false}
                   clickFunction={() => addMessageToHistory(suggestion)}
                 />
               );
