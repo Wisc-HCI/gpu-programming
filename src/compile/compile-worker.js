@@ -615,8 +615,8 @@ self.onmessage = function (e) {
 
       case type === "MoveArm3":
         var arm = params.fields.FIELD_MoveArm_Arm === "Right" ? "Right" : "Left";
-        var position = checkShadowinput(params.fields.FIELD_MoveArm_Position);
-        var velocity = checkShadowinput(params.fields.FIELD_MoveArm_Velocity);
+        var position = checkShadowinput(params.inputs.FIELD_MoveArm_Position);
+        var velocity = checkShadowinput(params.inputs.FIELD_MoveArm_Velocity);
         var endpoint = "arms";
         var payload = {
           Arm: arm,
