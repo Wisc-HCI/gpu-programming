@@ -25,6 +25,10 @@ const DialogContent = () => {
   const displayLLMBlockPrompt = useStore(useShallow((state) => state.displayLLMBlockPrompt));
   const chatMessageHistory = useStore(useShallow((state) => state.chatMessageHistory));
   const setChatMessageHistory = useStore(useShallow((state) => state.setChatMessageHistory));
+  const getBlockData = useStore(useShallow((state) => state.getBlockData));
+  const loadBlocks = useStore(useShallow((state) => state.loadBlocks));
+  const getBlocklyWorkspace = useStore((state) => state.getBlocklyWorkspace);
+
 
   const handleDownload = () => {
     var blob = new Blob([activityLog], { type: "text/plain;charset=utf-8" });
@@ -37,6 +41,11 @@ const DialogContent = () => {
     // console.log(blob);
     FileSaver.saveAs(blob, "chat_log.txt");
   };
+
+  const handleProgramDownload = () => {
+    var blob = new Blob([JSON.stringify(getBlockData())], { type: "text/plain;charset=utf-8" });
+    FileSaver.saveAs(blob, "program.json");
+  }
 
   const downloadWorkspace = () => {
     const xmlText = Blockly.Xml.domToPrettyText(
@@ -55,6 +64,15 @@ const DialogContent = () => {
     fileReader.onload = function () {
       const text = fileReader.result;
       setChatMessageHistory(JSON.parse(text));
+    };
+    fileReader.readAsText(event.target.files[0]);
+  }
+
+  const uploadProgram = (event) => {
+    const fileReader = new FileReader();
+    fileReader.onload = function () {
+      const text = fileReader.result;
+      loadBlocks(JSON.parse(text), getBlocklyWorkspace());
     };
     fileReader.readAsText(event.target.files[0]);
   }
@@ -116,7 +134,7 @@ const DialogContent = () => {
           buttonText={"Download"}
         />
         <LabeledButton
-          clickFunction={downloadWorkspace}
+          clickFunction={handleProgramDownload}
           label={"Download Program"}
           buttonText={"Download"}
         />
@@ -128,7 +146,7 @@ const DialogContent = () => {
       </SettingsDiv>
 
       <SettingsDiv title={"Upload"}>
-        <LabeledInput onChange={uploadBlocks} label={"Upload Program"} />
+        <LabeledInput onChange={uploadProgram} label={"Upload Program"} />
         <LabeledInput onChange={uploadChatHistory} label={"Upload Chat Logs"} />
       </SettingsDiv>
 

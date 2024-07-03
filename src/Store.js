@@ -259,6 +259,60 @@ const useStore = create((set,get) => ({
   clearProgramExceptStart: () => set({
     blocks: pickBy(get().blocks, block => block.type === "Start")
   }),
+  getBlockData: () => {
+    let state = get();
+    let blocks = state.blocks;
+    let data = { data: [] };
+    let blockKeys = Object.keys(blocks);
+    let numBlocks = blockKeys.length;
+    for (let i = 0; i < numBlocks; i++) {
+      let blockData = {
+        id: blocks[blockKeys[i]].id,
+        type: blocks[blockKeys[i]].type,
+      };
+      if (blocks[blockKeys[i]].next && blocks[blockKeys[i]].next !== "") {
+        blockData["nextStatement"] = blocks[blockKeys[i]].next;
+      }
+
+      let fieldKeys = blocks[blockKeys[i]]?.inputs
+        ? Object.keys(blocks[blockKeys[i]]?.inputs)
+        : [];
+      for (let j = 0; j < fieldKeys.length; j++) {
+        blockData[fieldKeys[j]] = blocks[blockKeys[i]]["inputs"][
+          fieldKeys[j]
+        ]?.["shadow"]
+          ? blocks[blockKeys[i]]["inputs"][fieldKeys[j]]["shadow"].id
+          : blocks[blockKeys[i]]["inputs"][fieldKeys[j]];
+      }
+
+      // Will need to do this for each input type (colors, numbers)
+      if (blockData.type === "math_number") {
+        blockData["value"] = blocks[blockKeys[i]].fields.NUM;
+      }
+      if (blockData.type === "colour_picker") {
+        blockData["value"] = blocks[blockKeys[i]].fields.COLOUR;
+      }
+      if (blockData.type === "text") {
+        blockData["value"] = blocks[blockKeys[i]].fields.TEXT;
+      }
+      if (
+        [
+          "BasicSlider",
+          "ArmPositionSlider",
+          "SpeedSlider",
+          "TimeSlider",
+          "HeadPitchSlider",
+          "HeadRollSlider",
+          "HeadYawSlider",
+        ].includes(blockData.type)
+      ) {
+        blockData["value"] =
+          blocks[blockKeys[i]].fields["FIELD_slider_value"];
+      }
+      data["data"].push({ ...blockData });
+    }
+    return data;
+  },
   loadBlocks: (data, ws) => {
     // Create blocks
     let startBlocks = ws.getBlocksByType("Start");
@@ -267,6 +321,7 @@ const useStore = create((set,get) => ({
     } else {
       get().clearProgram();
     }
+    ws.clear();
     let initialBlock = startBlocks.length > 0 ? startBlocks[0] : null;
     let blockIds = [];
     let blocklyBlockIds = [];

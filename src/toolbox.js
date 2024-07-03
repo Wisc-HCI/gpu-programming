@@ -150,14 +150,6 @@ export const toolbox = {
           },
           {
             'kind': 'block',
-            'type': 'MoveArm',
-          },
-          {
-            'kind': 'block',
-            'type': 'MoveArm2',
-          },
-          {
-            'kind': 'block',
             'type': 'MoveArms2',
           },
           {
