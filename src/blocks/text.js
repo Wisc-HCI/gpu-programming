@@ -69,6 +69,27 @@ Blockly.Blocks[changeLEDType] = {
   },
 };
 
+let customIfBlockType = "CustomIF";
+allBlockTypes.push(customIfBlockType);
+Blockly.Blocks[customIfBlockType] = {
+  init: function () {
+
+    this.setColour(blockColors["logic_category"]["colour"]);
+    this.appendValueInput("IF0")
+        .setCheck("Boolean")
+        .appendField("If");
+    this.appendStatementInput("DO0")
+        .appendField("Do");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip(
+      "If control block"
+    );
+
+  },
+};
+
 let transitionLEDType = "TransitionLED";
 allBlockTypes.push(transitionLEDType);
 Blockly.Blocks[transitionLEDType] = {
@@ -89,7 +110,7 @@ Blockly.Blocks[transitionLEDType] = {
         new Blockly.FieldDropdown([
           ["Breathe", "BREATHE"],
           ["Blink", "BLINK"],
-          ["Blink Once", "TRANSITION_ONCE"],
+          ["Switch", "TRANSITION_ONCE"],
         ]),
         "TRANSITION_TYPE"
       );

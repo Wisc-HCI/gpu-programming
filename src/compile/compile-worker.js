@@ -100,7 +100,7 @@ self.onmessage = function (e) {
   const compile = (params, type) => {
     console.log(params);
     switch (true) {
-      case type === "controls_if":
+      case type === "CustomIF":
         if (!params.inputs || !params.inputs.IF0) {
           throw new Error(`err: controls_if do not have input value! id: ${params.id}`);
           //appendActivity("Try running with incomplete controls_if");

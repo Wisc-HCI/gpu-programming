@@ -22,7 +22,7 @@ export const toolbox = {
         'contents': [
           {
             'kind': 'block',
-            'type': 'controls_if',
+            'type': 'CustomIF',
           },
           {
             'kind': 'block',
