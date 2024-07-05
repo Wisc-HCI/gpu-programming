@@ -39,7 +39,7 @@ export default function BlocklyInterface(props) {
   const findNext = (arr, blockId) => {
     arr.push(blockId);
     let currBlock = getBlock(blockId);
-    while (currBlock.next) {
+    while (currBlock && currBlock.next) {
       currBlock = currBlock.next;
       arr.push(currBlock);
     }
