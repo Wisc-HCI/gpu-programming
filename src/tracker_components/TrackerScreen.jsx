@@ -35,7 +35,7 @@ const TrackerScreen = ({isPlanningScreen=false}) => {
             className={`tab ${idx === activeTab ? 'active' : ''}`}
             onClick={() => handleTabChange(idx)}
           >
-            Milestones - Programming
+            {isPlanningScreen ? "Milestones - Story" : "Milestones - Programmng"}
           </div>
         ))}
       </div>
