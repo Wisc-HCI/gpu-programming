@@ -7,6 +7,7 @@ import {
   MS_TO_SEC,
   PI,
   SIM_TIME,
+  TIME_TO_SPEAK,
 } from "../Constants.js";
 import { JointLookup } from "../Misty-Robot/JointLookup.js";
 import { AudioLookup } from "../Misty-Robot/audio/audiolookup.js";
@@ -64,6 +65,7 @@ const useAnimation = ({ blocks, tfs, items }) => {
         w: [base.rotation.w],
       },
     },
+    Speech: [""],
     Time: [0],
   };
 
@@ -125,6 +127,8 @@ const useAnimation = ({ blocks, tfs, items }) => {
 
         for (let i = 0; i < appends; i++) {
           let lastElement = jointAnimationArrays[oppositeArm]["w"].length - 1;
+          jointAnimationArrays["Speech"].push("");
+          
           jointAnimationArrays[oppositeArm]["w"].push(
             jointAnimationArrays[oppositeArm]["w"][lastElement]
           );
@@ -394,6 +398,9 @@ const useAnimation = ({ blocks, tfs, items }) => {
 
       for (let i = 0; i < appends; i++) {
         let lastElement = jointAnimationArrays["Head"]["x"].length - 1;
+
+        jointAnimationArrays["Speech"].push("");
+
         jointAnimationArrays["Head"]["x"].push(
           jointAnimationArrays["Head"]["x"][lastElement]
         );
@@ -467,6 +474,9 @@ const useAnimation = ({ blocks, tfs, items }) => {
       jointAnimationArrays["Head"]["z"].push(headQuat._z);
 
       let lastElement = jointAnimationArrays["Left"]["w"].length - 1;
+
+      jointAnimationArrays["Speech"].push("");
+
       jointAnimationArrays["Left"]["w"].push(
         jointAnimationArrays["Left"]["w"][lastElement]
       );
@@ -614,6 +624,8 @@ const useAnimation = ({ blocks, tfs, items }) => {
       jointAnimationArrays["Base"]["rotation"]["y"].push(newQuat._y);
       jointAnimationArrays["Base"]["rotation"]["z"].push(newQuat._z);
 
+      jointAnimationArrays["Speech"].push("");
+
       jointAnimationArrays["Head"]["x"].push(
         jointAnimationArrays["Head"]["x"][
           jointAnimationArrays["Head"]["x"].length - 1
@@ -698,6 +710,9 @@ const useAnimation = ({ blocks, tfs, items }) => {
 
     // buffer all other frames
     let lastElement = jointAnimationArrays["Head"]["x"].length - 1;
+
+    jointAnimationArrays["Speech"].push("");
+
     jointAnimationArrays["Base"]["position"]["x"].push(
       jointAnimationArrays["Base"]["position"]["x"][lastElement]
     );
@@ -769,8 +784,94 @@ const useAnimation = ({ blocks, tfs, items }) => {
     jointAnimationArrays["Time"].push(time);
   };
 
+  const addSpeechKeyFrame = (speech, time) => {
+    let lastElement = jointAnimationArrays["Head"]["x"].length - 1;
+
+    jointAnimationArrays["Speech"].push(speech);
+
+    jointAnimationArrays["Base"]["position"]["x"].push(
+      jointAnimationArrays["Base"]["position"]["x"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["y"].push(
+      jointAnimationArrays["Base"]["position"]["y"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["z"].push(
+      jointAnimationArrays["Base"]["position"]["z"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["distance"].push(
+      jointAnimationArrays["Base"]["position"]["distance"][lastElement]
+    );
+    jointAnimationArrays["Base"]["position"]["angle"].push(
+      jointAnimationArrays["Base"]["position"]["angle"][lastElement]
+    );
+
+    jointAnimationArrays["Base"]["rotation"]["w"].push(
+      jointAnimationArrays["Base"]["rotation"]["w"][lastElement]
+    );
+    jointAnimationArrays["Base"]["rotation"]["x"].push(
+      jointAnimationArrays["Base"]["rotation"]["x"][lastElement]
+    );
+    jointAnimationArrays["Base"]["rotation"]["y"].push(
+      jointAnimationArrays["Base"]["rotation"]["y"][lastElement]
+    );
+    jointAnimationArrays["Base"]["rotation"]["z"].push(
+      jointAnimationArrays["Base"]["rotation"]["z"][lastElement]
+    );
+
+    jointAnimationArrays["Head"]["x"].push(
+      jointAnimationArrays["Head"]["x"][lastElement]
+    );
+    jointAnimationArrays["Head"]["y"].push(
+      jointAnimationArrays["Head"]["y"][lastElement]
+    );
+    jointAnimationArrays["Head"]["z"].push(
+      jointAnimationArrays["Head"]["z"][lastElement]
+    );
+    jointAnimationArrays["Head"]["w"].push(
+      jointAnimationArrays["Head"]["w"][lastElement]
+    );
+
+    jointAnimationArrays["Left"]["w"].push(
+      jointAnimationArrays["Left"]["w"][lastElement]
+    );
+    jointAnimationArrays["Left"]["x"].push(
+      jointAnimationArrays["Left"]["x"][lastElement]
+    );
+    jointAnimationArrays["Left"]["y"].push(
+      jointAnimationArrays["Left"]["y"][lastElement]
+    );
+    jointAnimationArrays["Left"]["z"].push(
+      jointAnimationArrays["Left"]["z"][lastElement]
+    );
+
+    jointAnimationArrays["Right"]["w"].push(
+      jointAnimationArrays["Right"]["w"][lastElement]
+    );
+    jointAnimationArrays["Right"]["x"].push(
+      jointAnimationArrays["Right"]["x"][lastElement]
+    );
+    jointAnimationArrays["Right"]["y"].push(
+      jointAnimationArrays["Right"]["y"][lastElement]
+    );
+    jointAnimationArrays["Right"]["z"].push(
+      jointAnimationArrays["Right"]["z"][lastElement]
+    );
+
+    let faceKeys = Object.keys(FaceFilenameMap);
+    for (let m = 0; m < faceKeys.length; m++) {
+      let face = faceKeys[m];
+      jointAnimationArrays[face].push(jointAnimationArrays[face][lastElement]);
+    }
+
+    jointAnimationArrays["Time"].push(time);
+
+  }
+
   const bufferAnimation = (time) => {
     let lastElement = jointAnimationArrays["Head"]["x"].length - 1;
+
+    jointAnimationArrays["Speech"].push("");
+
     jointAnimationArrays["Base"]["position"]["x"].push(
       jointAnimationArrays["Base"]["position"]["x"][lastElement]
     );
@@ -881,6 +982,8 @@ const useAnimation = ({ blocks, tfs, items }) => {
     let baseRotationYVector = [];
     let baseRotationZVector = [];
 
+    let speechVector = [];
+
     let faceDisplayVector = [];
     let keyIndex = Object.keys(FaceFilenameMap);
     for (let m = 0; m < keyIndex.length; m++) {
@@ -891,6 +994,7 @@ const useAnimation = ({ blocks, tfs, items }) => {
     // let priorRotation = {};
 
     console.log(jointAnimationArrays);
+
     for (let i = 1; i < totalLength; i++) {
       let time = jointAnimationArrays["Time"][i];
 
@@ -1014,6 +1118,8 @@ const useAnimation = ({ blocks, tfs, items }) => {
         baseRotationYVector.push(oldBaseQuat._y);
         baseRotationZVector.push(oldBaseQuat._z);
 
+        speechVector.push(jointAnimationArrays["Speech"][i]);
+
         for (let k = 0; k < keyIndex.length; k++) {
           faceDisplayVector[k].push(jointAnimationArrays[keyIndex[k]][i]);
         }
@@ -1114,6 +1220,14 @@ const useAnimation = ({ blocks, tfs, items }) => {
     newEndingTfs[JointLookup("Left")].rotation.y = finalLeftArmQuat._y;
     newEndingTfs[JointLookup("Left")].rotation.z = finalLeftArmQuat._z;
 
+    let speechObject = {};
+    console.log(speechVector);
+    console.log(timeVector);
+    speechObject["value"] = interpolateScalar(
+      timeVector,
+      speechVector
+    );
+
     newTfs[JointLookup("Right")].rotation.w = interpolateScalar(
       timeVector,
       rightArmWVector
@@ -1191,8 +1305,7 @@ const useAnimation = ({ blocks, tfs, items }) => {
     newEndingTfs[JointLookup("Base")].position.x = finalBaseVec.x;
     newEndingTfs[JointLookup("Base")].position.y = finalBaseVec.y;
     newEndingTfs[JointLookup("Base")].position.z = finalBaseVec.z;
-    console.log(newEndingTfs);
-    return { newTfs, newEndingTfs, newItems, newEndingItems };
+    return { newTfs, newEndingTfs, newItems, newEndingItems, speechObject};
   };
 
   const getBlocksByType = (type) => {
@@ -1252,7 +1365,7 @@ const useAnimation = ({ blocks, tfs, items }) => {
 
   const animate = (params, type) => {
     switch (true) {
-      case type === "controls_if":
+      case type === "CustomIF":
         if (!params.inputs || !params.inputs.IF0 || !params.inputs.DO0) {
           throw new Error("err: controls_if not complete!");
         } else {
@@ -1622,7 +1735,7 @@ const useAnimation = ({ blocks, tfs, items }) => {
         return;
 
       case type === "WaitForSeconds":
-        var time = parseFloat(params.fields.NumSeconds) * MS_TO_SEC;
+        var time = checkShadowinput(params.fields.FIELD_Duration) * MS_TO_SEC;
         bufferAnimation(time);
         return;
 
@@ -1724,11 +1837,13 @@ const useAnimation = ({ blocks, tfs, items }) => {
         // Todo, add new item????? to display text, then need to backtrack time....
         var textBlock = getBlock(params.inputs.FIELD_Speak_Text);
         var text = textBlock.fields.TEXT;
+        addSpeechKeyFrame(text, TIME_TO_SPEAK * text.split(" ").length * MS_TO_SEC);
         return;
 
       case type == "SpeakDefault":
         // Todo, add new item????? to display text, then need to backtrack time....
         var text = params.fields.FIELD_SpeakDefault_Text;
+        addSpeechKeyFrame(text, TIME_TO_SPEAK * text.split(" ").length * MS_TO_SEC);
         return;
 
       default:

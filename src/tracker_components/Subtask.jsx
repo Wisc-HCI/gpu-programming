@@ -16,6 +16,13 @@ const Subtask = ({ title, subtext, hints, isPlanningScreen }) => {
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
+    if (isPlanningScreen) {
+      if (!isChecked) {
+        addMessageToHistory(`Phase [${title}] marked complete.`);
+      } else {
+        addMessageToHistory(`Phase [${title}] marked not complete.`);
+      }
+    }
   };
 
   const toggleOpenHint = (hint) => {

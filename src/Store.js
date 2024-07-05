@@ -69,6 +69,7 @@ const useStore = create((set, get) => ({
   mistyImageList: [],
   headerHeight: 0,
   headerWidth: 0,
+  speechObject: {value: ""},
   clock: new Timer(),
   tfs: { ...starting_tfs },
   startingTfs: JSON.parse(JSON.stringify(starting_tfs)), // Used to start the animation from the center everytime
@@ -616,6 +617,9 @@ const useStore = create((set, get) => ({
       endingItems: {
         ...allItems,
       },
+      speechObject: {
+        value: ""
+      }
     });
   },
   toggleSimOnly: (value) => {
@@ -623,12 +627,13 @@ const useStore = create((set, get) => ({
       simOnly: value,
     });
   },
-  setAnimationFrames: (newTfs, newEndingTfs, newItems, newEndingItems) => {
+  setAnimationFrames: (newTfs, newEndingTfs, newItems, newEndingItems, speechObject) => {
     set({
       tfs: { ...newTfs },
       endingTfs: { ...newEndingTfs },
       items: { ...newItems },
       endingItems: { ...newEndingItems },
+      speechObject: {...speechObject}
     });
   },
 }));

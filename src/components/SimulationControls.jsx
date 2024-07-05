@@ -85,8 +85,8 @@ export default function SimulationControls(props) {
         });
         setWorkerThread(myWorker);
 
-        let {newTfs, newEndingTfs, newItems, newEndingItems} = useAnimation({blocks: getBlocks(), tfs: endingTfs, items: getEndingItems()});
-        setAnimationFrames(newTfs, newEndingTfs, newItems, newEndingItems);
+        let {newTfs, newEndingTfs, newItems, newEndingItems, speechObject} = useAnimation({blocks: getBlocks(), tfs: endingTfs, items: getEndingItems()});
+        setAnimationFrames(newTfs, newEndingTfs, newItems, newEndingItems, speechObject);
 
        
     };

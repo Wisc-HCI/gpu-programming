@@ -9,6 +9,9 @@ export const MAX_ANGLE_PER_SEC = 50 * PI/180; // I am estimating on a linear tre
 export const SIM_TIME = 1000;
 export const MS_TO_SEC = 1000;
 
+// https://wordstotime.com/
+export const TIME_TO_SPEAK = (3.8 * 60) / 500; // 500 words in 3.8 minutes 
+
 export const SETTINGS_MODAL = "settings"
 export const PROMPT_MODAL = "prompt"
 
