@@ -65,7 +65,7 @@ const useAnimation = ({ blocks, tfs, items }) => {
         w: [base.rotation.w],
       },
     },
-    Speech: [""],
+    Speech: [],
     Time: [0],
   };
 
@@ -993,8 +993,6 @@ const useAnimation = ({ blocks, tfs, items }) => {
     let priorPosition = {};
     // let priorRotation = {};
 
-    console.log(jointAnimationArrays);
-
     for (let i = 1; i < totalLength; i++) {
       let time = jointAnimationArrays["Time"][i];
 
@@ -1118,8 +1116,6 @@ const useAnimation = ({ blocks, tfs, items }) => {
         baseRotationYVector.push(oldBaseQuat._y);
         baseRotationZVector.push(oldBaseQuat._z);
 
-        speechVector.push(jointAnimationArrays["Speech"][i]);
-
         for (let k = 0; k < keyIndex.length; k++) {
           faceDisplayVector[k].push(jointAnimationArrays[keyIndex[k]][i]);
         }
@@ -1221,12 +1217,21 @@ const useAnimation = ({ blocks, tfs, items }) => {
     newEndingTfs[JointLookup("Left")].rotation.z = finalLeftArmQuat._z;
 
     let speechObject = {};
-    console.log(speechVector);
-    console.log(timeVector);
+    let speechTime = [];
+    for (let t = 0; t < jointAnimationArrays["Time"].length; t++) {
+      if (speechTime.length === 0) {
+        speechTime.push(jointAnimationArrays["Time"][t])
+      } else {
+        speechTime.push(speechTime[t - 1] + jointAnimationArrays["Time"][t])
+      }
+    }
+    speechTime[speechTime.length - 1 ] = Infinity;
+    jointAnimationArrays["Speech"].push(jointAnimationArrays["Speech"][jointAnimationArrays["Speech"].length-1]);
     speechObject["value"] = interpolateScalar(
-      timeVector,
-      speechVector
+      speechTime,
+      jointAnimationArrays["Speech"]
     );
+    console.log(speechTime, jointAnimationArrays["Speech"])
 
     newTfs[JointLookup("Right")].rotation.w = interpolateScalar(
       timeVector,
@@ -1735,7 +1740,10 @@ const useAnimation = ({ blocks, tfs, items }) => {
         return;
 
       case type === "WaitForSeconds":
-        var time = checkShadowinput(params.fields.FIELD_Duration) * MS_TO_SEC;
+        console.log(params);
+        console.log('here')
+        var time = checkShadowinput(params.inputs.FIELD_Duration) * MS_TO_SEC;
+        console.log(time);
         bufferAnimation(time);
         return;
 
@@ -1828,13 +1836,12 @@ const useAnimation = ({ blocks, tfs, items }) => {
       case type === "Turn2":
         var direction = params.fields.FIELD_Turn_Direction;
         var time =
-          parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration));
+          parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration)) * MS_TO_SEC;
         var angularVelocity = direction === "L" ? 100 : -100;
         addDriveAnimationKeyFrame(0, angularVelocity, time);
         return;
 
       case type == "Speak":
-        // Todo, add new item????? to display text, then need to backtrack time....
         var textBlock = getBlock(params.inputs.FIELD_Speak_Text);
         var text = textBlock.fields.TEXT;
         addSpeechKeyFrame(text, TIME_TO_SPEAK * text.split(" ").length * MS_TO_SEC);

@@ -1,4 +1,4 @@
-import { ARM_OFFSET_ANGLE, MAX_ARM_SPEED, MISTY_ARM_LENGTH, MS_TO_SEC, PI } from "../Constants.js";
+import { ARM_OFFSET_ANGLE, MAX_ARM_SPEED, MISTY_ARM_LENGTH, MS_TO_SEC, PI, TIME_TO_SPEAK } from "../Constants.js";
 import { JointLookup } from "../Misty-Robot/JointLookup.js";
 import { AudioLookup } from "../Misty-Robot/audio/audiolookup.js";
 import { FaceFilenameLookup } from "../Misty-Robot/faces/facefilename.js";
@@ -780,7 +780,7 @@ self.onmessage = function (e) {
 
       case type === "Turn2":
         var direction = params.fields.FIELD_Turn_Direction;
-        var time = parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration));
+        var time = parseInt(checkShadowinput(params.inputs.FIELD_Turn_Duration)) * MS_TO_SEC;
         var angularVelocity = 100;
         var linearVelocity = 0;
         var degree = direction === "L" ? 90 : -90;
@@ -803,7 +803,7 @@ self.onmessage = function (e) {
           Text: `<speak>${text}</speak>`,
         };
         sendPostRequestToRobot(endpoint, payload);
-        delayJS(500);
+        delayJS(TIME_TO_SPEAK * text.split(" ").length * MS_TO_SEC);
         return;
 
       case type == "SpeakDefault":
@@ -813,7 +813,7 @@ self.onmessage = function (e) {
           Text: `<speak>${text}</speak>`,
         };
         sendPostRequestToRobot(endpoint, payload);
-        delayJS(500);
+        delayJS(TIME_TO_SPEAK * text.split(" ").length * MS_TO_SEC);
         return;
 
       default:

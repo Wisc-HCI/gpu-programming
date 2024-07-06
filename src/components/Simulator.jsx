@@ -31,7 +31,7 @@ export default function Simulator(props) {
         {...otherArgs}
       />
       <SimulationControls />
-      <div style={{position: "absolute", right: 10, bottom: 0, padding: "10px" }}>
+      <div style={{position: "absolute", right: 10, bottom: 0, padding: "10px", maxWidth: "50%" }}>
         <MistyChatBubble />
       </div>
     </Box>
