@@ -29,11 +29,13 @@ export default function DayOneScreen(props) {
       <ReflexElement flex={0.65}>
         <ReflexContainer orientation="horizontal">
           <ReflexElement flex={0.30}>
-            <Item style={{ height: "100%", width: "100%", alignItems: "center", alignContent: "center"}}>
-              <DayOneTaskDescription />
-            </Item>
-            <div style={{position: "absolute", right: "10px", top: "10px"}}>
+          <div style={{display: "flex", flexFlow: "column", height: "100%"}}> 
+            <div style={{flex: "0 1 auto"}}>
               <TitleCard text={"Task Description"}/>
+            </div>
+            <div style={{flex: "1 1 auto", paddingTop: "5px", alignItems: "center", alignContent: "center"}}>
+              <DayOneTaskDescription />
+              </div>
             </div>
           </ReflexElement>
 
@@ -41,11 +43,13 @@ export default function DayOneScreen(props) {
 
           {/* LLM chatbox */}
           <ReflexElement flex={0.70}>
-            <Item style={{ width: "100%", height: "100%" }}>
-              <ChatBox />
-            </Item>
-            <div style={{position: "absolute", right: "10px", top: "3px"}}>
-              <TitleCard text={"Chat"}/>
+            <div style={{display: "flex", flexFlow: "column", height: "100%"}}> 
+              <div style={{flex: "0 1 auto"}}>
+                <TitleCard text={"Chat"}/>
+              </div>
+              <div style={{flex: "1 1 auto", paddingTop: "5px"}}>
+                <ChatBox />
+              </div>
             </div>
           </ReflexElement>
         </ReflexContainer>
@@ -64,29 +68,32 @@ export default function DayOneScreen(props) {
           <ReflexSplitter propagate={true} />
 
           <ReflexElement>
-            <div style={{textAlign: "center", height: "100%", display: "flex"}}>
-              <Grid container>
-                <Grid item xs={6} alignItems={"center"}>
-                    <img
-                      style={{
-                        alignContent: "center",
-                        width: "80%",
-                        height: "80%",
-                      }}
-                      src={MistyLogo}
-                    />
+            
+            <div style={{display: "flex", flexFlow: "column", height: "100%"}}> 
+              <div style={{flex: "0 1 auto"}}>
+                <TitleCard text={"Robot Features"} />
+              </div>
+              <div style={{flex: "1 1 auto", paddingTop: "5px", textAlign: "center"}}>
+                <Grid container style={{height: "100%"}}>
+                  <Grid item xs={6} alignItems={"center"}>
+                      <img
+                        style={{
+                          alignContent: "center",
+                          width: "80%",
+                          height: "80%",
+                        }}
+                        src={MistyLogo}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Descriptions 
+                        header={"Misty Robot"}
+                        content={["Misty can move both of its arms and head.", "It is also capable of turning left and right.", ""]}
+                        style={{paddingRight: "10px"}}
+                      />
                   </Grid>
-                  <Grid item xs={6}>
-                    <Descriptions 
-                      header={"Misty Robot"}
-                      content={["Misty can move both of its arms and head.", "It is also capable of turning left and right.", ""]}
-                      style={{paddingRight: "10px"}}
-                    />
                 </Grid>
-              </Grid>
-            </div>
-            <div style={{position: "absolute", left: "10px", top: "10px"}}>
-              <TitleCard text={"Robot Features"} />
+              </div>
             </div>
           </ReflexElement>
         </ReflexContainer>

@@ -3,6 +3,7 @@ import TaskTab from './TaskTab';
 import './TrackerScreen.css';
 import useStore from "../Store";
 import { useShallow } from 'zustand/react/shallow';
+import { Typography } from '@mui/material';
 
 const TrackerScreen = ({isPlanningScreen=false}) => {
 
@@ -35,7 +36,8 @@ const TrackerScreen = ({isPlanningScreen=false}) => {
             className={`tab ${idx === activeTab ? 'active' : ''}`}
             onClick={() => handleTabChange(idx)}
           >
-            {isPlanningScreen ? "Milestones - Story" : "Milestones - Programmng"}
+            {isPlanningScreen ? 
+            <Typography variant='h6'>Milestones - Story</Typography> : <Typography variant='h6'>Milestones - Programmng</Typography>}
           </div>
         ))}
       </div>
