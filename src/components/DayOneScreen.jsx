@@ -33,7 +33,7 @@ export default function DayOneScreen(props) {
             <div style={{flex: "0 1 auto"}}>
               <TitleCard text={"Task Description"}/>
             </div>
-            <div style={{flex: "1 1 auto", paddingTop: "5px", alignItems: "center", alignContent: "center"}}>
+            <div style={{flex: "1 1 auto", padding: "10px", alignItems: "center", alignContent: "center"}}>
               <DayOneTaskDescription />
               </div>
             </div>
@@ -88,7 +88,7 @@ export default function DayOneScreen(props) {
                     <Grid item xs={6}>
                       <Descriptions 
                         header={"Misty Robot"}
-                        content={["Misty can move both of its arms and head.", "It is also capable of turning left and right.", ""]}
+                        content={["Move Misty's arms and head!", "Change the color of the LED on its chest.", "Turn the flashlist on its head on.", "Change Misty's experessions, play audio files, or have it speak!", "Move Misty around by turning left and right."]}
                         style={{paddingRight: "10px"}}
                       />
                   </Grid>

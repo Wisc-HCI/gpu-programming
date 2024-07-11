@@ -1,12 +1,18 @@
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import React from "react";
-import SettingsDiv from "./SettingsDiv";
-import Descriptions from "./Descriptions";
 
 export default function DayOneTaskDescription(props) {
   return (
     <Typography variant="subtitle1">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Risus in hendrerit gravida rutrum quisque. Nulla malesuada pellentesque elit eget gravida cum sociis natoque penatibus. Erat velit scelerisque in dictum non. Nisl tincidunt eget nullam non nisi est. Sed tempus urna et pharetra. Nibh sit amet commodo nulla facilisi nullam vehicula. Eget dolor morbi non arcu risus. Donec ac odio tempor orci dapibus ultrices in iaculis.
+      Use the chatbox below to create a story about the Misty robot! 
+      Add characters to the story, describe where it takes place, and what happens in it. 
+      Use the Milestones panel on the right to figure out what to add to the story.
+      Use the Robot Features panel in the bottom right to understand what the Misty robot is capable of doing.
+      Your story should consist of actions Misty can actually perform.
+      If you get stuck at any point, you can click the "Help Me" button(s) in the Milestones panel on the right.
+
+      Most importantly, have fun!
+
     </Typography>
   );
 }
