@@ -246,29 +246,10 @@ export default function BlocklyInterface(props) {
         // Block has been deleted, remove it from store, as well as anything connect to it
         if (e.type === Blockly.Events.BLOCK_DELETE) {
           let currID = e.blockId;
-          let delArray = [currID];
-          let currInputs = getBlock(currID).inputs;
-          if (currInputs) {
-            // eslint-disable-next-line no-unused-vars
-            for (let [key, value] of Object.entries(currInputs)) {
-              // check for shadows
-              if (typeof value !== "string") {
-                delArray.push(value.id);
-              } else {
-                findNext(delArray, value);
-              }
-            }
-          }
-          let currNext = getBlock(e.blockId).next;
-          if (currNext) {
-            findNext(delArray, currNext);
-          }
-
-          const delBlockTypes = delArray.map((id) => getBlockType(id));
-          removeBlock(delArray);
+          removeBlock(currID);
 
           appendActivity(
-            `block ${currID} is deleted, total delete blocks: ${delBlockTypes}`
+            `block ${currID} and children are deleted`
           );
         }
 

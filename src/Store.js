@@ -557,7 +557,33 @@ const useStore = create((set, get) => ({
     set((state) => ({
       blocks: { ...state.blocks, [id]: json },
     })),
-  removeBlock: (ids) =>
+  removeBlock: (id) => {
+    let allBlocks = get().blocks;
+    let getBlock = get().getBlock;
+    let queue = [id];
+    let blocksToRemove = [];
+    let fields = [];
+
+    let currentBlock;
+    while (queue.length > 0) {
+      let currentID = queue[0]
+      currentBlock = allBlocks[currentID]
+      blocksToRemove.push(currentID);
+
+      let inputs = getBlock(currentID).inputs;
+      if (inputs) {
+        let iVals = Object.values(inputs);
+        for (let i = 0; i < iVals.length; i++) {
+          queue.push(iVals[i]);
+        }
+      }
+      queue.shift();
+    }
+
+    console.log(blocksToRemove);
+    get().removeBlocks(blocksToRemove);
+  },
+  removeBlocks: (ids) =>
     set((state) => {
       // Create a new object excluding the block with the given id
       const newBlocks = Object.keys(state.blocks).reduce((acc, currentId) => {
@@ -570,7 +596,6 @@ const useStore = create((set, get) => ({
       // Update the state with the new blocks object
       return { blocks: newBlocks };
     }),
-
   updateBlock: (id, updatedJson) =>
     set((state) => ({
       blocks: { ...state.blocks, [id]: updatedJson },
@@ -583,7 +608,6 @@ const useStore = create((set, get) => ({
     set((state) => ({
       Start: { ...state.Start, [id]: json },
     })),
-
   removeBlockfromStart: (id) =>
     set((state) => {
       // Create a new object excluding the block with the given id

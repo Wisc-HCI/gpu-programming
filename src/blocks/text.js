@@ -19,6 +19,8 @@ let allBlockTypes = [
   "logic_ternary",
   "math_number",
   "colour_picker",
+  "colour_blend",
+  "colour_rgb",
   "text",
   "logic_boolean",
   "math_number_property",
