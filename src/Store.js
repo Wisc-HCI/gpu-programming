@@ -182,6 +182,13 @@ const useStore = create((set, get) => ({
     set({
       llmDeployment: deployment,
     }),
+    
+  setLLMSettings: (data) => 
+    set({
+      llmAPIKey: data["apikey"],
+      llmEndpoint: data["endpoint"],
+      llmDeployment: data["model"],
+    }),
   setImageList: (list) =>
     set({
       mistyImageList: list,

@@ -20,6 +20,7 @@ const DialogContent = () => {
   const llmDeployment = useStore(useShallow((state) => state.llmDeployment));
   const llmAPIKey = useStore(useShallow((state) => state.llmAPIKey));
   const llmEndpoint = useStore(useShallow((state) => state.llmEndpoint));
+  const setLLMSettings = useStore(useShallow((state) => state.setLLMSettings));
   const blocklyWorkspace = useStore((state) => state.blocklyWorkspace);
   const toggleLLMBlockPrompt = useStore((state) => state.toggleLLMBlockPrompt);
   const displayLLMBlockPrompt = useStore(useShallow((state) => state.displayLLMBlockPrompt));
@@ -77,6 +78,15 @@ const DialogContent = () => {
     fileReader.readAsText(event.target.files[0]);
   }
 
+  const uploadLLMSettings = (event) => {
+    const fileReader = new FileReader();
+    fileReader.onload = function () {
+      const text = fileReader.result;
+      setLLMSettings(JSON.parse(text));
+    };
+    fileReader.readAsText(event.target.files[0]);
+  }
+
   const uploadBlocks = (event) => {
     const fileReader = new FileReader();
     fileReader.onload = function () {
@@ -126,6 +136,7 @@ const DialogContent = () => {
           fieldType={"password"}
           textFieldInput={llmDeployment}
         />
+        <LabeledInput onChange={uploadLLMSettings} label={"Upload LLM Settings"} />
       </SettingsDiv>
       <SettingsDiv title={"Downloads"}>
         <LabeledButton
