@@ -579,8 +579,6 @@ const useStore = create((set, get) => ({
       }
       queue.shift();
     }
-
-    console.log(blocksToRemove);
     get().removeBlocks(blocksToRemove);
   },
   removeBlocks: (ids) =>

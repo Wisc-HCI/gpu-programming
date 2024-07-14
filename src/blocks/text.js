@@ -18,15 +18,13 @@ let allBlockTypes = [
   "logic_null",
   "logic_ternary",
   "math_number",
-  "colour_picker",
-  "colour_blend",
-  "colour_rgb",
-  "text",
-  "logic_boolean",
   "math_number_property",
   "math_random_int",
-  "logic_operation",
-  "logic_compare"
+  "colour_picker",
+  "colour_blend",
+  "colour_random",
+  "colour_rgb",
+  "text",
 ];
 
 // Create a custom block called 'add_text' that adds
