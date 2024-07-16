@@ -539,7 +539,7 @@ self.onmessage = function (e) {
         return;
 
       case type === "WaitForSeconds":
-        var time = checkShadowinput(params.fields.FIELD_Duration);
+        var time = checkShadowinput(params.inputs.FIELD_Duration);
         delayJS(time * MS_TO_SEC);
         return;
 
