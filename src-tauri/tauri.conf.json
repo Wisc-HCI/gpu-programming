@@ -3,11 +3,11 @@
   "build": {
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:5173/gpu-programming/",
+    "devPath": "http://localhost:5173/",
     "distDir": "../dist"
   },
   "package": {
-    "productName": "gpu-programming",
+    "productName": "",
     "version": "0.1.0"
   },
   "tauri": {

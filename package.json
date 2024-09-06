@@ -1,7 +1,7 @@
 {
   "name": "my-blockly-app",
   "version": "0.1.0",
-  "homepage": "https://wisc-hci.github.io/gpu-programming/",
+  "homepage": "https://robo-blocks.com",
   "private": true,
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^2.0.3",

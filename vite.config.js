@@ -22,6 +22,6 @@ export default defineConfig({
       comlink()
     ]
   },
-  base: "/gpu-programming/",
+  base: "/",
   assetsInclude: ["**/*.gltf", "**/*.glb", "**/*.urdf","**/*.xacro"],
 })
