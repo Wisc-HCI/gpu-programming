@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Subtask.css";
 import DropShadowButton from "../components/DropShadowButton";
+import { appendActivity } from "../components/ActivityTracker";
 import useStore from "../Store";
 import { Typography } from "@mui/material";
 
@@ -18,14 +19,19 @@ const Subtask = ({ title, subtext, hints, isPlanningScreen }) => {
     setIsChecked(!isChecked);
     if (isPlanningScreen) {
       if (!isChecked) {
+        appendActivity(`Phase [${title}] marked complete.`);
         addMessageToHistory(`Phase [${title}] marked complete.`);
       } else {
+        appendActivity(`Phase [${title}] marked not complete.`);
         addMessageToHistory(`Phase [${title}] marked not complete.`);
       }
     }
   };
 
-  const toggleOpenHint = (hint) => {
+  const toggleOpenHint = (hint, title, subtext) => {
+    if (hint && expandedHint !== hint) {
+      appendActivity(`User clicked hint button: ${hint.text} for title: ${title} and subtext: ${subtext}`);
+    }
     expandedHint === hint ? setExpandedHint(null) : setExpandedHint(hint);
   };
 
@@ -52,7 +58,7 @@ const Subtask = ({ title, subtext, hints, isPlanningScreen }) => {
               <DropShadowButton
                 key={idx}
                 text={`Hint ${idx + 1}`}
-                clickFunction={() => toggleOpenHint(hint)}
+                clickFunction={() => toggleOpenHint(hint, title, subtext)}
               />
               // <button key={idx} className={`hint-button ${expandedHint === hint ? 'selected' : ''}`} onClick={() => toggleOpenHint(hint)}>
               //   Hint {idx+1}
@@ -65,7 +71,7 @@ const Subtask = ({ title, subtext, hints, isPlanningScreen }) => {
                 <DropShadowButton
                   key={i}
                   text={hint.text}
-                  clickFunction={() => addMessageToHistory("[Need Help]")}
+                  clickFunction={() => {appendActivity(`User clicked help button ${hint.text}`); addMessageToHistory("[Need Help]");}}
                 />
               );
             })}

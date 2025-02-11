@@ -10,6 +10,7 @@ import {
   PHASE_THREE_BTN_TEXT
 } from "../Constants.js";
 import DropShadowButton from "./DropShadowButton.jsx";
+import { appendActivity } from "./ActivityTracker.jsx";
 
 export default function SelectionScreen(props) {
   const updateScreen = useStore((state) => state.updateScreen);
@@ -30,13 +31,13 @@ export default function SelectionScreen(props) {
     >
       <Grid item xs={1}></Grid>
       <Grid item xs={3}>
-        <DropShadowButton text={PHASE_ONE_BTN_TEXT} clickFunction={() => updateScreen(PHASE_ONE_SCREEN)} style={{padding: "50px"}}/>
+        <DropShadowButton text={PHASE_ONE_BTN_TEXT} clickFunction={() => {appendActivity("User clicked new tab: Story"); updateScreen(PHASE_ONE_SCREEN)}} style={{padding: "50px"}}/>
       </Grid>
       <Grid item xs={3}>
-        <DropShadowButton text={PHASE_TWO_BTN_TEXT} clickFunction={() => updateScreen(PHASE_TWO_SCREEN)} style={{padding: "50px"}}/>
+        <DropShadowButton text={PHASE_TWO_BTN_TEXT} clickFunction={() => {appendActivity("User clicked new tab: Planning"); updateScreen(PHASE_TWO_SCREEN)}} style={{padding: "50px"}}/>
       </Grid>
       <Grid item xs={3}>
-        <DropShadowButton text={PHASE_THREE_BTN_TEXT} clickFunction={() => updateScreen(PHASE_THREE_SCREEN)} style={{padding: "50px"}}/>
+        <DropShadowButton text={PHASE_THREE_BTN_TEXT} clickFunction={() => {appendActivity("User clicked new tab: Programming"); updateScreen(PHASE_THREE_SCREEN)}} style={{padding: "50px"}}/>
       </Grid>
       <Grid item xs={1}></Grid>
     </Grid>

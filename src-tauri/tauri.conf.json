@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.wisc.hci.gpu",
+      "identifier": "com.institute.gpu",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

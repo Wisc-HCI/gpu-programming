@@ -71,6 +71,12 @@ export default function TopBar(props) {
   const updateScreen = useStore((state) => state.updateScreen);
 
   function handleUpdateScreen(event) {
+    let screenName = event.target.textContent === PHASE_ONE_BTN_TEXT
+    ? "Story"
+    : event.target.textContent === PHASE_TWO_BTN_TEXT
+    ? "Planning"
+    : "Programming"
+    appendActivity(`User clicked new tab: ${screenName}`)
     updateScreen(
       event.target.textContent === PHASE_ONE_BTN_TEXT
         ? PHASE_ONE_SCREEN
