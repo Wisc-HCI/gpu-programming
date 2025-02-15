@@ -5,7 +5,7 @@ import { appendActivity } from "../components/ActivityTracker";
 import useStore from "../Store";
 import { Typography } from "@mui/material";
 
-const Subtask = ({ title, subtext, hints, isPlanningScreen }) => {
+const Subtask = ({ title, story, subtext, hints, isPlanningScreen }) => {
   let addMessageToHistory = useStore((state) => state.addMessageToHistory);
 
   const [expandedHint, setExpandedHint] = useState(null);
@@ -49,7 +49,10 @@ const Subtask = ({ title, subtext, hints, isPlanningScreen }) => {
           {title}
         </Typography>
         {!isChecked && <Typography variant="subtitle1" align={"left"} sx={{ color: "#666" }}>
-          {subtext}
+          <strong>Story:</strong> {story}
+        </Typography>}
+        {!isChecked && <Typography variant="subtitle1" align={"left"} sx={{ color: "#666" }}>
+          <strong>Goal:</strong> {subtext}
         </Typography>}
         {!isChecked && <div className="hints-container">
           {!isPlanningScreen &&

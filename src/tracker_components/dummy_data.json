@@ -10,6 +10,7 @@
       "id": "subtask1a",
       "type": "subtask",
       "title": "Move the robot",
+      "story": "Misty is told to help search for something.",
       "subtext": "Move the robot around, looking confused and searching for the object.",
       "hints": ["hint1a", "hint1b"]
     },
@@ -27,6 +28,7 @@
       "id": "subtask1b",
       "type": "subtask",
       "title": "Make the robot look confused",
+      "story": "Then, while looking for the object Misty gets confused.",
       "subtext": "Change the robot's facial expression to look confused while it searches for the object.",
       "hints": ["hint2a", "hint2b"]
     },
@@ -44,6 +46,7 @@
       "id": "subtask1c",
       "type": "subtask",
       "title": "Find the object",
+      "story": "Eventually, Misty finds something!",
       "subtext": "Make the robot find the object it is searching for.",
       "hints": []
     },
@@ -51,6 +54,7 @@
       "id": "subtask1d",
       "type": "subtask",
       "title": "Make the robot look surprised",
+      "story": "Misty looks surprised then happy that it was able to find the object.",
       "subtext": "Change the robot's facial expression to look surprised when it finds the object.",
       "hints": ["hint3a", "hint3b"]
     },
@@ -68,6 +72,7 @@
       "id": "subtask1e",
       "type": "subtask",
       "title": "Make the robot look happy",
+      "story": "Misty looks surprised then happy that it was able to find the object.",
       "subtext": "Change the robot's facial expression to look happy and point to the object it found.",
       "hints": ["hint4a", "hint4b"]
     },
@@ -85,6 +90,7 @@
       "id": "subtask1f",
       "type": "subtask",
       "title": "Make the robot speak",
+      "story": "Finally, Misty alerts the user that they found the object.",
       "subtext": "Make the robot say 'Aha, there you are!'",
       "hints": ["hint5a", "hint5b"]
     },

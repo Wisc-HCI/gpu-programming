@@ -12,6 +12,7 @@ const TaskTab = ({hasNextTask, onNextTask, allTasks, subtasks, isPlanningScreen}
         <Subtask 
           key={subtask.title}
           title={subtask.title}
+          story={subtask.story}
           subtext={subtask.subtext}
           hints={subtask.hints.map(hintName => allTasks[hintName])}
           isPlanningScreen={isPlanningScreen}
