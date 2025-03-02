@@ -280,7 +280,7 @@ Blockly.Css.register(`
   display: flex;
   height: 32px;
   justify-content: center;
-  width: 150px;
+  width: auto;
 }
 .mathNumSliderLabel {
     color: white;

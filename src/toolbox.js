@@ -138,6 +138,10 @@ export const toolbox = {
           },
           {
             'kind': 'block',
+            'type': 'DriveTime2',
+          },
+          {
+            'kind': 'block',
             'type': 'MoveHead',
           },
           {

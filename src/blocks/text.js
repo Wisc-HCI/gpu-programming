@@ -270,6 +270,39 @@ Blockly.Blocks[armPositionSliderType] = {
   },
 };
 
+let linearSpeedSlider = "LinearSpeedSlider";
+allBlockTypes.push(linearSpeedSlider);
+Blockly.Blocks[linearSpeedSlider] = {
+  init: function () {
+    this.setColour(blockColors["math_category"]["colour"]);
+    this.appendDummyInput().appendField(
+      new MathNumSlider(0, -100, 100, 1, "Reverse", "Forward"),
+      "FIELD_slider_value"
+    );
+    this.setInputsInline(false);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, null);
+  },
+};
+
+
+let angularSpeedSlider = "AngularSpeedSlider";
+allBlockTypes.push(angularSpeedSlider);
+Blockly.Blocks[angularSpeedSlider] = {
+  init: function () {
+    this.setColour(blockColors["math_category"]["colour"]);
+    this.appendDummyInput().appendField(
+      new MathNumSlider(0, -100, 100, 1, "Left", "Right"),
+      "FIELD_slider_value"
+    );
+    this.setInputsInline(false);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, null);
+  },
+};
+
 let speedSliderType = "SpeedSlider";
 allBlockTypes.push(speedSliderType);
 Blockly.Blocks[speedSliderType] = {
@@ -571,19 +604,19 @@ let DriveTime2Type = "DriveTime2";
 allBlockTypes.push(DriveTime2Type);
 Blockly.Blocks[DriveTime2Type] = {
   init: function () {
-    var shadowBlock_1 = this.workspace.newBlock("math_number");
+    var shadowBlock_1 = this.workspace.newBlock(linearSpeedSlider);
     shadowBlock_1.setShadow(true);
     shadowBlock_1.initSvg();
     shadowBlock_1.render();
     var velocityBlock = shadowBlock_1.outputConnection;
 
-    var shadowBlock_2 = this.workspace.newBlock("math_number");
+    var shadowBlock_2 = this.workspace.newBlock(angularSpeedSlider);
     shadowBlock_2.setShadow(true);
     shadowBlock_2.initSvg();
     shadowBlock_2.render();
     var angularBlock = shadowBlock_2.outputConnection;
 
-    var shadowBlock_3 = this.workspace.newBlock("math_number");
+    var shadowBlock_3 = this.workspace.newBlock(timeSliderType);
     shadowBlock_3.setShadow(true);
     shadowBlock_3.initSvg();
     shadowBlock_3.render();

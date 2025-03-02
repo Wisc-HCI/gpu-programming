@@ -265,6 +265,8 @@ self.onmessage = function (e) {
       case type == "HeadPitchSlider":
       case type == "HeadRollSlider":
       case type == "HeadYawSlider":
+      case type == "LinearSpeedSlider":
+      case type == "AngularSpeedSlider":
         return params.fields["FIELD_slider_value"];
 
       case type === "math_number_property":
