@@ -52,7 +52,7 @@ const Subtask = ({ title, story, subtext, hints, isPlanningScreen }) => {
           <strong>Story:</strong> {story}
         </Typography>}
         {!isChecked && <Typography variant="subtitle1" align={"left"} sx={{ color: "#666" }}>
-          {story && story !== "" && <strong>Goal:</strong> }{subtext}
+          {story && story !== "" && <strong>Goal:</strong> } {subtext}
         </Typography>}
         {!isChecked && <div className="hints-container">
           {!isPlanningScreen &&

@@ -385,6 +385,8 @@ const useStore = create((set, get) => ({
           "HeadPitchSlider",
           "HeadRollSlider",
           "HeadYawSlider",
+          "LinearSpeedSlider",
+          "AngularSpeedSlider",
         ].includes(blockData.type)
       ) {
         blockData["value"] = blocks[blockKeys[i]].fields["FIELD_slider_value"];
@@ -471,6 +473,8 @@ const useStore = create((set, get) => ({
           "HeadPitchSlider",
           "HeadRollSlider",
           "HeadYawSlider",
+          "LinearSpeedSlider",
+          "AngularSpeedSlider",
         ].includes(type)
       ) {
         t.getField("FIELD_slider_value").setValue(data["data"][i]["value"]);

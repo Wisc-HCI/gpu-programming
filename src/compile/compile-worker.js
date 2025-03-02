@@ -750,13 +750,13 @@ self.onmessage = function (e) {
         var linearVelocity = checkShadowinput(
           params.inputs.FIELD_DriveTime_Velocity
         );
-        var angularVelocity = checkShadowinput(
-          params.inputs.FIELD_DriveTime_Angular
-        );
+        // var angularVelocity = checkShadowinput(
+        //   params.inputs.FIELD_DriveTime_Angular
+        // );
         var time = checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs) * MS_TO_SEC;
         var payload = {
           LinearVelocity: linearVelocity,
-          AngularVelocity: angularVelocity,
+          AngularVelocity: 0,
           TimeMs: time,
         };
         sendPostRequestToRobot(endpoint, payload);

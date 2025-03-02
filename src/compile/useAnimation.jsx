@@ -587,31 +587,17 @@ const useAnimation = ({ blocks, tfs, items }) => {
       var currentEulerZ = determineZAngleFromQuaternion(newQuat);
       if (angle !== 0) {
         var temp = { x: 0, y: 0, z: angle };
-        newQuat = eulerToQuaternion(temp.x, temp.y, temp.z);
-        newQuat.multiply(
-          new Quaternion(
-            baseTf.rotation.x,
-            baseTf.rotation.y,
-            baseTf.rotation.z,
-            baseTf.rotation.w
-          )
-        );
+        let rotQuat = eulerToQuaternion(temp.x, temp.y, temp.z);
+        newQuat.multiply(rotQuat);
       }
 
-      // offset to circle center
-      let aX = baseTf.position.x;
-      let aY = baseTf.position.y;
+      let newPosition = new Vector3(1, 0, 0);
+      newPosition.applyQuaternion(newQuat);
+      newPosition.multiplyScalar(distance);
 
-      let newPosition = null;
-      // if (angle !== 0) {
-      //   // newPosition = new Vector3(aX + (Math.cos(currentEulerZ) * distance / angle * Math.cos(distance)), aY + (Math.sin(currentEulerZ) * distance / angle * Math.sin(distance)), baseTf.position.z);
-      // } else {
-      newPosition = new Vector3(
-        aX + Math.sin(currentEulerZ - angle) * distance,
-        aY - Math.cos(currentEulerZ - angle) * distance,
-        baseTf.position.z
-      );
-      // }
+      newPosition.x += baseTf.position.x;
+      newPosition.y += baseTf.position.y;
+      newPosition.z += baseTf.position.z;
 
       jointAnimationArrays["Base"]["position"]["x"].push(newPosition.x);
       jointAnimationArrays["Base"]["position"]["y"].push(newPosition.y);
@@ -1073,11 +1059,13 @@ const useAnimation = ({ blocks, tfs, items }) => {
         // console.log(oldBaseQuat);
         let z = determineZAngleFromQuaternion(oldBaseQuat);
         console.log(z);
-        oldBaseVec = new Vector3(
-          priorPosition.x + distance_i_t * Math.cos(z + angle_i_t),
-          priorPosition.y + distance_i_t * Math.sin(z + angle_i_t),
-          priorPosition.z
-        );
+        oldBaseVec = new Vector3(1, 0, 0);
+        oldBaseVec.applyQuaternion(oldBaseQuat);
+        oldBaseVec.multiplyScalar(distance_i_t);
+
+        oldBaseVec.x += priorPosition.x;
+        oldBaseVec.y += priorPosition.y;
+        oldBaseVec.z += priorPosition.z;
         // let oldBaseVec = new Vector3(
         //   jointAnimationArrays["Base"]["position"]["x"][i ],
         //   jointAnimationArrays["Base"]["position"]["y"][i ],
@@ -1231,7 +1219,6 @@ const useAnimation = ({ blocks, tfs, items }) => {
       speechTime,
       jointAnimationArrays["Speech"]
     );
-    console.log(speechTime, jointAnimationArrays["Speech"])
 
     newTfs[JointLookup("Right")].rotation.w = interpolateScalar(
       timeVector,
@@ -1531,6 +1518,8 @@ const useAnimation = ({ blocks, tfs, items }) => {
       case type == "HeadPitchSlider":
       case type == "HeadRollSlider":
       case type == "HeadYawSlider":
+      case type == "LinearSpeedSlider":
+      case type == "AngularSpeedSlider":
         return params.fields["FIELD_slider_value"];
 
       case type === "math_number_property":
@@ -1818,12 +1807,12 @@ const useAnimation = ({ blocks, tfs, items }) => {
         var linearVelocity = checkShadowinput(
           params.inputs.FIELD_DriveTime_Velocity
         );
-        var angularVelocity = checkShadowinput(
-          params.inputs.FIELD_DriveTime_Angular
-        );
+        // var angularVelocity = checkShadowinput(
+        //   params.inputs.FIELD_DriveTime_Angular
+        // );
         var time =
           checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs) * MS_TO_SEC;
-        addDriveAnimationKeyFrame(linearVelocity, angularVelocity, time);
+        addDriveAnimationKeyFrame(linearVelocity, 0, time);
         return;
 
       case type === "Turn":
