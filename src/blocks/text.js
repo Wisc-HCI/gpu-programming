@@ -610,11 +610,11 @@ Blockly.Blocks[DriveTime2Type] = {
     shadowBlock_1.render();
     var velocityBlock = shadowBlock_1.outputConnection;
 
-    // var shadowBlock_2 = this.workspace.newBlock(angularSpeedSlider);
-    // shadowBlock_2.setShadow(true);
-    // shadowBlock_2.initSvg();
-    // shadowBlock_2.render();
-    // var angularBlock = shadowBlock_2.outputConnection;
+    var shadowBlock_2 = this.workspace.newBlock(angularSpeedSlider);
+    shadowBlock_2.setShadow(true);
+    shadowBlock_2.initSvg();
+    shadowBlock_2.render();
+    var angularBlock = shadowBlock_2.outputConnection;
 
     var shadowBlock_3 = this.workspace.newBlock(timeSliderType);
     shadowBlock_3.setShadow(true);
@@ -630,13 +630,13 @@ Blockly.Blocks[DriveTime2Type] = {
       "FIELD_DriveTime_Velocity"
     ).connection;
     shadowBlockConnectionVelocity.connect(velocityBlock);
-    // this.appendValueInput("FIELD_DriveTime_Angular")
-    //   .setCheck("Number")
-    //   .appendField("with angular velocity of (-100 CW to 100 CCW)");
-    // var shadowBlockConnectionAngular = this.getInput(
-    //   "FIELD_DriveTime_Angular"
-    // ).connection;
-    // shadowBlockConnectionAngular.connect(angularBlock);
+    this.appendValueInput("FIELD_DriveTime_Angular")
+      .setCheck("Number")
+      .appendField("with angular velocity of (-100 CW to 100 CCW)");
+    var shadowBlockConnectionAngular = this.getInput(
+      "FIELD_DriveTime_Angular"
+    ).connection;
+    shadowBlockConnectionAngular.connect(angularBlock);
     this.appendValueInput("FIELD_DriveTime_TimeMs")
       .setCheck("Number")
       .appendField("for a duration of secs");

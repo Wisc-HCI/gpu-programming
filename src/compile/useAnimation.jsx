@@ -1058,7 +1058,11 @@ const useAnimation = ({ blocks, tfs, items }) => {
         );
         // console.log(oldBaseQuat);
         let z = determineZAngleFromQuaternion(oldBaseQuat);
-        console.log(z);
+        if (angle_i_t !== 0) {
+          var temp = { x: 0, y: 0, z: angle_i_t };
+          let rotQuat = eulerToQuaternion(temp.x, temp.y, temp.z);
+          oldBaseQuat.multiply(rotQuat);
+        }
         oldBaseVec = new Vector3(1, 0, 0);
         oldBaseVec.applyQuaternion(oldBaseQuat);
         oldBaseVec.multiplyScalar(distance_i_t);
@@ -1807,12 +1811,12 @@ const useAnimation = ({ blocks, tfs, items }) => {
         var linearVelocity = checkShadowinput(
           params.inputs.FIELD_DriveTime_Velocity
         );
-        // var angularVelocity = checkShadowinput(
-        //   params.inputs.FIELD_DriveTime_Angular
-        // );
+        var angularVelocity = checkShadowinput(
+          params.inputs.FIELD_DriveTime_Angular
+        );
         var time =
           checkShadowinput(params.inputs.FIELD_DriveTime_TimeMs) * MS_TO_SEC;
-        addDriveAnimationKeyFrame(linearVelocity, 0, time);
+        addDriveAnimationKeyFrame(linearVelocity, angularVelocity, time);
         return;
 
       case type === "Turn":
