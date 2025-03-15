@@ -293,7 +293,7 @@ Blockly.Blocks[angularSpeedSlider] = {
   init: function () {
     this.setColour(blockColors["math_category"]["colour"]);
     this.appendDummyInput().appendField(
-      new MathNumSlider(0, -100, 100, 1, "Left", "Right"),
+      new MathNumSlider(0, -100, 100, 1, "Right", "Left"),
       "FIELD_slider_value"
     );
     this.setInputsInline(false);
